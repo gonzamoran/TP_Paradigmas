@@ -1,18 +1,19 @@
 
 ![tp2](https://github.com/fiuba/algo3_proyecto_base_tp2/actions/workflows/build.yml/badge.svg) [![codecov](https://codecov.io/gh/fiuba/algo3_proyecto_base_tp2/branch/master/graph/badge.svg)](https://codecov.io/gh/fiuba/algo3_proyecto_base_tp2)
 
-# TP2 Algoritmos 3: {nombre} 
+# TP2 Algoritmos 3: CATAN
 
 Trabajo Práctico número 2 de la materia Algoritmos y Programación III de FIUBA
 
 ## Grupo {N}
 
-* **Integrante 1** - [integrante1](https://github.com/integrante1)
-* **Integrante 2** - [integrante2](https://github.com/integrante2)
-* **Integrante 3** - [integrante3](https://github.com/integrante3)
-* **Integrante 4** - [integrante4](https://github.com/integrante4)
-
-Corrector: **{Corrector}**
+* **Integrante 1** - [Gonzalo Benitez](https://github.com/gonzalobenitezfiuba)
+* **Integrante 2** - [Gonzalo Moran](https://github.com/gonzamoran)
+* **Integrante 3** - [Maximiliano Exequiel Prantera](https://github.com/MaxiPranter)
+* **Integrante 4** - [Guillermo Andres Silva](https://github.com/guillsil)
+* **Integrante 5** - [Tomas Garcia Alimena](https://github.com/TomasGarciaA)
+* 
+Corrector: Diego Sanchez
 
 ## Aplicación
 
