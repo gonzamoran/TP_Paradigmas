@@ -2,6 +2,9 @@ package edu.fiuba.algo3.modelo;
 
 import java.util.List;
 import java.util.ArrayList;
+import java.util.Map;
+import java.util.Set;
+import java.util.HashMap;
 import java.util.Collections;
 import edu.fiuba.algo3.modelo.Hexagono;
 import edu.fiuba.algo3.modelo.Ladron;
@@ -10,20 +13,26 @@ import edu.fiuba.algo3.modelo.TipoRecurso;
 
 
 public class Tablero {
-    private List<Hexagono> hexagonos;
     private Ladron ladron;
-    private Vertice vertices;
+    private List<Hexagono> hexagonos;
+    private Map<Coordenadas, Hexagono> mapaHexagonos;
+    private Map<Coordenadas, Vertice> mapaVertices;
 
     public Tablero() {
         this.ladron = new Ladron();
-        this.hexagonos = new ArrayList<Hexagono>();
+        this.mapaHexagonos = new HashMap<>();
+        this.hexagonos = new ArrayList<>();
+        this.mapaVertices = new HashMap<>();
         this.inicializarHexagonos();
         this.inicializarLadron();
         this.asignarNumeroALosHexagonos();
 
     }
+//crear lista de coordenadas, shufflear y asignar a hexagonos
 
     public void inicializarHexagonos(){
+        // logica para inicializar coordenada, hexagono
+        List<Coordenadas> coord = {} 
         for (int i = 0; i < 1; i++){
             hexagonos.add(new Hexagono(i, TipoRecurso.DESIERTO));
         }
@@ -55,7 +64,6 @@ public class Tablero {
             }
         }
     }
-    
 
     public void inicializarLadron(){
         for (Hexagono hexagono : hexagonos){
@@ -64,10 +72,26 @@ public class Tablero {
             }
         }
     }
+
+    public List<Hexagono> obtenerHexagonos(){
+        return this.hexagonos;
+    }
 }
 /*
- 1 desierto. 4 Trigo/grano, 4 madera, 4 oveja/lana, 3 arcilla/ladrillo, 3 piedra/minera. 
- 
+1 desierto. 4 Trigo/grano, 4 madera, 4 oveja/lana, 3 arcilla/ladrillo, 3 piedra/minera. 
+
+cada hexagono tiene coordenadas x,y.
+a partir de ellas se calculan los vertices con:
+            x,y
+         /      \
+   x,y-1/        \ x,y+1
+        |         | 
+        |         | 
+x+1,y-1 \        / x+1,y+1
+         \      /
+           x+1,y
+
+
 Numeros:
         2 
         3,3

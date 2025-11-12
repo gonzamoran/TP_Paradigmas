@@ -11,4 +11,7 @@ public class Ladron {
     public void robarRecurso(Jugador desde, Jugador hacia){
         
     }
+    public void moverLadronA(Hexagono hexagono){
+        //implementar
+    }
 }
