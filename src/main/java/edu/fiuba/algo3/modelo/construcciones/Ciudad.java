@@ -10,20 +10,15 @@ class Ciudad extends Construccion {
         return 2;
     }
 
-    public boolean puedeConstruirse(Jugador jugador, Vertice vertice, List<Vertice> adyacentes, List<Construccion> construccionesAdyacentes){
-        if (!vertice.estaConstruido()) {
+    public boolean puedeConstruirse(Jugador jugador, Vertice vertice){
+        if (!vertice.tieneConstruccion()) {
             return false;
         }
 
         if (vertice.esPoseidoPor(jugador) && vertice.esPoblado()) {
             return true;
         }
-
         return false;
-    }
-    
-    public boolean esCiudad() {
-        return true;
     }
 
     public boolean esPoblado() {

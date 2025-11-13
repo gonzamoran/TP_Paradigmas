@@ -2,6 +2,7 @@ package edu.fiuba.algo3.modelo.construcciones;
 
 
 import edu.fiuba.algo3.modelo.Jugador;
+import edu.fiuba.algo3.modelo.excepciones.PosInvalidaParaConstruirException;
 import edu.fiuba.algo3.modelo.tablero.Vertice;
 import java.util.List;
 
@@ -11,34 +12,34 @@ public abstract class Construccion {
     private Jugador dueño;
     
     // renombramos el constructor?
-    static public Construccion crearConstruccion(String tipo,Jugador jugActual){
+    static public Construccion crearConstruccion(String tipo,Jugador jugActual, Vertice vertice){
         Construccion construccion = null;
         switch (tipo){
-            case "Aldea":
+            case "Poblado":
                 construccion = new Poblado();
                 break;
             case "Ciudad":
                 construccion = new Ciudad();
                 break;
             case "Camino":
-                construccion = new Camino();
+                //construccion = new Camino();
                 break;
             default:
                 throw new IllegalArgumentException("Tipo de construcción inválido"); //hacer excepcion personalizada
         }
         construccion.puntosVictoria = construccion.obtenerPuntosDeVictoria();
         construccion.dueño = jugActual;
-
-        return construccion;
+        if (construccion.puedeConstruirse(jugActual, vertice)) {
+            return construccion;
+        }
+        throw new PosInvalidaParaConstruirException();
     }
-    
+
     public abstract int obtenerPuntosDeVictoria();
 
-    public abstract boolean puedeConstruirse(Jugador jugador, Vertice vertice, List<Vertice> adyacentes, List<Construccion> construccionesAdyacentes);
+    public abstract boolean puedeConstruirse(Jugador jugador, Vertice vertice);
 
     public abstract boolean esPoblado();
-
-    public abstract boolean esCiudad();
 }
 
 

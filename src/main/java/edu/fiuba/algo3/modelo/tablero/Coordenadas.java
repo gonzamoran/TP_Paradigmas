@@ -20,4 +20,15 @@ public class Coordenadas {
     public int obtenerCoordenadaY() {
         return y;
     }
+
+    public boolean equals(Object obj) {
+
+        Coordenadas that = (Coordenadas) obj;
+        return x == that.x && y == that.y;
+    }
+
+    public int hashCode() {
+        return 31 * x + y;
+    }
+    
 }

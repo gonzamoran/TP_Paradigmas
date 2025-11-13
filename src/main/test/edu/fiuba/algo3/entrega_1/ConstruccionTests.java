@@ -4,37 +4,42 @@ import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import org.junit.jupiter.api.BeforeEach;
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
-
-import edu.fiuba.algo3.modelo.Juego;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import edu.fiuba.algo3.modelo.tablero.Tablero;
 import edu.fiuba.algo3.modelo.tablero.Vertice;
 import edu.fiuba.algo3.modelo.Jugador;
-import edu.fiuba.algo3.modelo.excepciones.ConstruccionPosInvalidaException;
+import edu.fiuba.algo3.modelo.excepciones.PosInvalidaParaConstruirException;
 import edu.fiuba.algo3.modelo.excepciones.NoPuedeColocarConstruccionIniciales;
 
 public class ConstruccionTests {
 
-    private Juego juego;
+    private Tablero tablero;
+    private Jugador jugador1;
 
     @BeforeEach
     public void setUp() {
-        Juego juego = new Juego();
-        Jugador jugador = new Jugador("1");
-    };
+        this.tablero = new Tablero();
+        this.jugador1 = new Jugador("jugador1");
+    }
  
     @Test
     public void test01JugadorConstruyeEnUbicacionInvalidaLanzaException() {
-        int unaCoordenadax = -8;
-        juego.jugadorConstruyeEnCoordenada(unaCoordenada);
-        assertThrows(ConstruccionPosInvalidaException.class, juego.jugadorConstruyeEnCoordenada(unaCoordenada));
+        tablero.colocarConstruccionInicial(3,5, jugador1);
+        assertThrows(PosInvalidaParaConstruirException.class,() -> tablero.colocarConstruccionInicial(3,6, jugador1));
+    }
 
+    @Test
+    public void test02JugadorConstruyeEnUbicacionValidaNoLanzaException() {
+        tablero.colocarConstruccionInicial(3,5, jugador1);
+        assertDoesNotThrow(() -> tablero.colocarConstruccionInicial(4,6, jugador1));
     }
 
     @Test
     public void test02JugadorConstruyeEnUbicacionInvalidaLanzaException() {
-        juego.jugadorConstruyeEnCoordenada(unaCoordenada);
-        assertThrows(ConstruccionPosInvalidaException.class,
-                juego.jugadorConstruyeEnCoordenada(unaCoordenadaAdyacente));
-
+        tablero.colocarConstruccionInicial(0,1, jugador1);
+        tablero.colocarConstruccionInicial(0,1, jugador1);
+        tablero.colocarConstruccionInicial(0,1, jugador1);
+        tablero.colocarConstruccionInicial(0,1, jugador1);
     }
 
 }

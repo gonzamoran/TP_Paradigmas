@@ -1,5 +1,6 @@
 package edu.fiuba.algo3.modelo.tablero;
 
+// import java.system.out;
 import java.util.List;
 import java.lang.reflect.Constructor;
 import java.util.ArrayList;
@@ -12,6 +13,7 @@ import edu.fiuba.algo3.modelo.tablero.TipoRecurso;
 import edu.fiuba.algo3.modelo.tablero.Vertice;
 import edu.fiuba.algo3.modelo.tablero.Coordenadas;
 import edu.fiuba.algo3.modelo.Jugador;
+import edu.fiuba.algo3.modelo.excepciones.PosInvalidaParaConstruirException;
 
 import java.util.HashMap;
 import java.util.Collections;
@@ -38,9 +40,6 @@ public class Tablero {
         return new ArrayList<>(mapaHexagonos.values());
     }
 
-    public void /* Construccion */ construirEnCoordenada(Coordenadas unaCoordenada) {
-
-    }
     // crear lista de coordenadas, shufflear y asignar a hexagonos
     private void inicializarHexagonos() {
         // logica para inicializar coordenada, hexagono
@@ -141,7 +140,10 @@ public class Tablero {
             Vertice vertice = entrada.getValue();
             List<Coordenadas> coordsAdyacentes = this.calcularCoordenadasAdyacentesDeVertice(coordVertice);
             for (Coordenadas coordAdyacente : coordsAdyacentes) {
-                vertice.agregarAdyacente(mapaVertices.get(coordAdyacente));
+                if (mapaVertices.containsKey(coordAdyacente)){
+ 
+                    vertice.agregarAdyacente(mapaVertices.get(coordAdyacente));
+                }
             }
         }
     }
@@ -176,17 +178,22 @@ public class Tablero {
     }
 
     public void colocarConstruccionInicial(int x, int y, Jugador jugador) {
-        Coordenadas coordAConstruir = new Coordenadas(x,y);
-        Vertice verticeAConstruir =  mapaVertices.get(coordAConstruir);
-        
-        
-        boolean pudoConstruirEnVertice = verticeAConstruir.construirEn("Poblado", jugador);
-        if (!pudoConstruirEnVertice){
-            throw new NoPuedeColocarConstruccionInicial();
+        Vertice verticeAConstruir = null;
+        boolean encontrado = false;
+        for (Map.Entry<Coordenadas, Vertice> entrada : mapaVertices.entrySet()) {
+            Coordenadas coords = entrada.getKey();
+            if ((coords.obtenerCoordenadaX() == x) && (coords.obtenerCoordenadaY() == y)) {
+                verticeAConstruir = entrada.getValue();
+                verticeAConstruir.construirEn("Poblado", jugador);
+                encontrado = true;
+            }
+        }
+        if (!encontrado) {
+            //throw new PosInvalidaParaConstruirException();
+            throw new IllegalArgumentException("No se encontró un vértice en las coordenadas dadas.");
         }
     }
 }
-
 /*  
  * NUEVA ESTRUCTURA DE TABLERO:
  * TABLERO CONOCE HEXAGONOS Y VERTICES Y SUS COORDENADAS JUNTO CON UNA REFERENCIA AL LADRON

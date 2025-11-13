@@ -3,8 +3,9 @@ package edu.fiuba.algo3.modelo.tablero;
 import java.util.List;
 
 import edu.fiuba.algo3.modelo.construcciones.Construccion;
+import edu.fiuba.algo3.modelo.tablero.Vertice;
 import edu.fiuba.algo3.modelo.Jugador;
-
+import edu.fiuba.algo3.modelo.excepciones.PosInvalidaParaConstruirException;
 import java.util.ArrayList;
 
 public class Vertice {
@@ -13,13 +14,14 @@ public class Vertice {
     private Construccion construccion;
     private boolean estaConstruido;
     private List<Vertice> verticesAdyacentes;
-    private List<Construccion> construccionesAdyacentes;
+    private List<List<Vertice>> caminosIngresantes;
+
     //deberia tener referencia al jugador dueño de la construccion?
     
     public Vertice() {
         this.hexagonosAdyacentes = new ArrayList<>();
         this.verticesAdyacentes = new ArrayList<>();
-        this.construccionesAdyacentes = new ArrayList<>();
+        this.caminosIngresantes = new ArrayList<>();
         this.estaConstruido = false;
     }
 
@@ -29,20 +31,23 @@ public class Vertice {
         }
     }
 
-    public void agregarAdyacente(Vertice otroVertice) {
-        if (!verticesAdyacentes.contains(otroVertice)) {
-            verticesAdyacentes.add(otroVertice);
+    public void agregarAdyacente(Vertice unVertice) {
+        if (!verticesAdyacentes.contains(unVertice)) {
+            verticesAdyacentes.add(unVertice);
         }
     }
 
-    public boolean estaConstruido() {
-        return estaConstruido;
+    public boolean tieneConstruccion() {
+        if(!estaConstruido){
+            return false;
+        }
+        return true;
     }
 
     public boolean esPoseidoPor(Jugador jugador) {
-        return estaConstruido() && dueño.equals(jugador);
+        return tieneConstruccion() && dueño.equals(jugador);
     }
-
+    /*
     private List<Construccion> conseguirConstruccionesAdyacentes() {
         for (Vertice vertice : verticesAdyacentes) {
             if (vertice.estaConstruido()) {
@@ -51,14 +56,19 @@ public class Vertice {
         }
         return construccionesAdyacentes;
     }
+    */
+   
+    public void construirEn(String tipoConstruccion, Jugador jugador) {
+        for (Vertice vertice : verticesAdyacentes) {
+            if (vertice.tieneConstruccion()) {
+                throw new PosInvalidaParaConstruirException();
+            }
+        }
+        this.construccion = Construccion.crearConstruccion(tipoConstruccion, jugador, this);
+        this.estaConstruido = true;
+    }
 
-    // construye y devuelve true si se pudo construir, false si no
-    public boolean construirEn(String tipoConstruccion, Jugador jugador) {
-        // for vertices adyacentes:
-        //     si alguno tiene construccion, no se puede construir
-        //     exception
-        // crear construccion
-        
+        /*
         Construccion nuevaConstruccion = Construccion.crearConstruccion(tipoConstruccion, jugador);
 
         List<Construccion> construccionesAdyacentes = conseguirConstruccionesAdyacentes();
@@ -71,7 +81,7 @@ public class Vertice {
         }
         
         return false;
-    }
+        */
     
     public boolean esPoblado() {
         if (!estaConstruido) {
