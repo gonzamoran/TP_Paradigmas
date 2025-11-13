@@ -1,7 +1,7 @@
 package edu.fiuba.algo3.modelo;
+
 import edu.fiuba.algo3.modelo.*;
 import java.util.List;
-
 
 public class Juego {
     private List<Jugador> jugadores;
@@ -19,6 +19,10 @@ public class Juego {
 
     public void lanzarDados(){
         return dados.();
+
+    }
+
+    public void construirEnCoordenada(Coordenada unaCoordenada) {
 
     }
 }
