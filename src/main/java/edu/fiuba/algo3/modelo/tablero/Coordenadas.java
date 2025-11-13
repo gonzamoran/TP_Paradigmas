@@ -1,7 +1,8 @@
-package edu.fiuba.algo3.modelo;
+package edu.fiuba.algo3.modelo.tablero;
 
-import edu.fiuba.algo3.modelo.Hexagono;
 import java.util.ArrayList;
+
+import edu.fiuba.algo3.modelo.tablero.Hexagono;
 
 public class Coordenadas {
     private final int x;

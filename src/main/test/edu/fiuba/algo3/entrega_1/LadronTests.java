@@ -1,10 +1,12 @@
 package edu.fiuba.algo3.entrega_1;
 
-import edu.fiuba.algo3.modelo.Hexagono;
-import edu.fiuba.algo3.modelo.Ladron;
-import edu.fiuba.algo3.modelo.Tablero;
-import edu.fiuba.algo3.modelo.TipoRecurso;
 import org.junit.jupiter.api.Test;
+
+import edu.fiuba.algo3.modelo.tablero.Hexagono;
+import edu.fiuba.algo3.modelo.tablero.Ladron;
+import edu.fiuba.algo3.modelo.tablero.Tablero;
+import edu.fiuba.algo3.modelo.tablero.TipoRecurso;
+
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import java.util.List;
@@ -41,10 +43,10 @@ public class LadronTests {
 
     @Test
     public void test01LadronEmpiezaEnTerrenoDesierto() {
-        //Arrange
+        //Act y Assert
         Hexagono hexagonoDesierto = null;
         for (Hexagono hexagono : hexagonos) {
-            if (hexagono.obtenerRecurso() == TipoRecurso.DESIERTO) {
+            if (hexagono.esDesierto()) {
                 hexagonoDesierto = hexagono;
 
                 hexagonoDesierto.colocarLadron();
@@ -52,18 +54,18 @@ public class LadronTests {
         }
     }
     @Test void test02TerrenoBajoElLadronNoGeneraRecursos(){
-        //Arrange
+        //Act y Assert
         for (Hexagono hexagono : hexagonos) {
-            if (hexagono.obtenerRecurso() != TipoRecurso.DESIERTO) {
+            if (!hexagono.esDesierto()) {
                 ladron.moverLadronA(hexagono);
                 assertEquals(false, hexagono.puedeGenerarRecursos());
             }
         }
     }
     @Test void test03TerrenoSinLadronGeneraRecursos(){
-        //Arrange
+        //Act y Assert
         for (Hexagono hexagono : hexagonos) {
-            if (hexagono.obtenerRecurso() != TipoRecurso.DESIERTO) {
+            if (!hexagono.esDesierto()) {
                 assertEquals(true, hexagono.puedeGenerarRecursos());
             }
         }
@@ -71,12 +73,12 @@ public class LadronTests {
     @Test void test04JugadorActivoPuedeMoverLadron(){
         //Arrange
         Hexagono hexagonoDestino = null;    //Hexagono al que se movera el ladron esta bien inicializarlo en null?
+        //Act
         for (Hexagono hexagono : hexagonos) {
-            if (hexagono.obtenerRecurso() != TipoRecurso.DESIERTO) {
+            if (!hexagono.esDesierto()) {
                 hexagonoDestino = hexagono;
             }
         }
-        //Act
         ladron.moverLadronA(hexagonoDestino);
         //Assert
         assertEquals(false, hexagonoDestino.puedeGenerarRecursos());

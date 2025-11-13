@@ -17,19 +17,20 @@ public class DadosTests{
     
     @Test
     public void test02TirarDadosNoPuedeSerMayorA12() {
-
+        //Arrange
         Dados dados = new Dados();
-
+        //Act
         int res = dados.lanzarDados();
-
+        //Assert
         assertTrue(res <= 12);
     }
     @Test
     public void test03TirarDadosNoPuedeSerMenorA2() {
+        //Arrange
         Dados dados = new Dados();
-  
+        //Act
         int res = dados.lanzarDados();
-
+        //Assert
         assertTrue(res >= 2);
     }
     
