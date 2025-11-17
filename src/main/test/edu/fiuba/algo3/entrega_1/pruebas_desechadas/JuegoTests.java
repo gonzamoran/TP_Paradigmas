@@ -1,4 +1,4 @@
-package edu.fiuba.algo3.entrega_1;
+package edu.fiuba.algo3.entrega_1.pruebas_desechadas;
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
 import edu.fiuba.algo3.modelo.tablero.TipoRecurso;

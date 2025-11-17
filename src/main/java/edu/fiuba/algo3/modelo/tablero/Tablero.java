@@ -21,17 +21,21 @@ import java.util.Collections;
 public class Tablero {
     private Ladron ladron;
     private Jugador jugador;
+    private ArrayList<Hexagono> listaHexagonos;
+    private ArrayList<Produccion> listaNumeros;
     private Map<Coordenadas, Hexagono> mapaHexagonos;
     private Map<Coordenadas, Vertice> mapaVertices;
 
-    public Tablero() {
+    public Tablero(ArrayList<Hexagono> listaHexagonos, ArrayList<Produccion> listaNumeros) {
         this.ladron = new Ladron();
+        this.listaHexagonos = listaHexagonos;
+        this.listaNumeros = listaNumeros;
         this.mapaHexagonos = new HashMap<>();
         this.mapaVertices = new HashMap<>();
-        this.inicializarHexagonos();
-        this.asignarNumeroALosHexagonos();
-        this.inicializarVertices();
-        this.asignarAdyacentesAVertices();
+        // this.inicializarHexagonos();
+        // this.asignarNumeroALosHexagonos();
+        // this.inicializarVertices();
+        // this.asignarAdyacentesAVertices();
         this.inicializarLadron();
     }
     
@@ -40,26 +44,26 @@ public class Tablero {
         return new ArrayList<>(mapaHexagonos.values());
     }
 
-    // crear lista de coordenadas, shufflear y asignar a hexagonos
-    private void inicializarHexagonos() {
-        // logica para inicializar coordenada, hexagono
-        List<Coordenadas> coord = this.crearListaDeCoordenadasHexagonos();
-        Collections.shuffle(coord);
+    // // crear lista de coordenadas, shufflear y asignar a hexagonos
+    // private void inicializarHexagonos() {
+    //     // logica para inicializar coordenada, hexagono
+    //     List<Coordenadas> coord = this.crearListaDeCoordenadasHexagonos();
+    //     Collections.shuffle(coord);
 
-        int indiceCoord = 0;
-        TipoRecurso[] tipoRecursos = { TipoRecurso.DESIERTO, TipoRecurso.GRANO, TipoRecurso.MADERA, TipoRecurso.LANA,
-                TipoRecurso.LADRILLO, TipoRecurso.MINERAL };
-        int[] cantidades = { 1, 4, 4, 4, 3, 3 };
-        //asignacion de tipos e id a cada hexagono, no coordenadas
-        for (int i = 0; i < tipoRecursos.length; i++) {
-            for (int j = 0; j < cantidades[i]; j++) {
-                Coordenadas coords = coord.get(indiceCoord);
-                Hexagono hexagono = new Hexagono(indiceCoord, tipoRecursos[i]);
-                mapaHexagonos.put(coords, hexagono);
-                indiceCoord += 1;
-            }
-        }
-    }
+    //     int indiceCoord = 0;
+    //     TipoRecurso[] tipoRecursos = { TipoRecurso.DESIERTO, TipoRecurso.GRANO, TipoRecurso.MADERA, TipoRecurso.LANA,
+    //             TipoRecurso.LADRILLO, TipoRecurso.MINERAL };
+    //     int[] cantidades = { 1, 4, 4, 4, 3, 3 };
+    //     //asignacion de tipos e id a cada hexagono, no coordenadas
+    //     for (int i = 0; i < tipoRecursos.length; i++) {
+    //         for (int j = 0; j < cantidades[i]; j++) {
+    //             Coordenadas coords = coord.get(indiceCoord);
+    //             Hexagono hexagono = new Hexagono(indiceCoord, tipoRecursos[i]);
+    //             mapaHexagonos.put(coords, hexagono);
+    //             indiceCoord += 1;
+    //         }
+    //     }
+    // }
 
     private ArrayList<Coordenadas> crearListaDeCoordenadasHexagonos() {
         ArrayList<Coordenadas> coords = new ArrayList<>();
@@ -80,44 +84,44 @@ public class Tablero {
     }
     
 
-    private void asignarNumeroALosHexagonos() {
-        List<Integer> numeros = new ArrayList<>(List.of(2, 3, 3, 4, 4, 5, 5, 6, 6, 8, 8, 9, 9, 10, 10, 11, 11, 12));
-        List<Hexagono> hexagonos = new ArrayList<>(mapaHexagonos.values());
-        Collections.shuffle(numeros);
-        int indiceHexagonos = 0;
-        int indiceNumeros = 0;
-        for (; indiceHexagonos < hexagonos.size() && indiceNumeros < numeros.size();) {
-            Hexagono hexagono = hexagonos.get(indiceHexagonos);
-            if (!hexagono.esDesierto()) {
-                hexagono.asignarNumero(numeros.get(indiceNumeros));
-                indiceNumeros++;
-            }
-            indiceHexagonos++;
-        }
-    }
+    // private void asignarNumeroALosHexagonos() {
+    //     List<Integer> numeros = new (List.of(2, 3, 3, 4, 4, 5, 5, 6, 6, 8, 8, 9, 9, 10, 10, 11, 11, 12));
+    //     List<Hexagono> hexagonos = new ArrayList<>(mapaHexagonos.values());
+    //     Collections.shuffle(numeros);
+    //     int indiceHexagonos = 0;
+    //     int indiceNumeros = 0;
+    //     for (; indiceHexagonos < hexagonos.size() && indiceNumeros < numeros.size();) {
+    //         Hexagono hexagono = hexagonos.get(indiceHexagonos);
+    //         if (!hexagono.esDesierto()) {
+    //             hexagono.asignarNumero(numeros.get(indiceNumeros));
+    //             indiceNumeros++;
+    //         }
+    //         indiceHexagonos++;
+    //     }
+    // }
 
-    private void inicializarVertices() {
-        // recorrer hexagonos y obtener vertices
-        for (Map.Entry<Coordenadas, Hexagono> entrada : mapaHexagonos.entrySet()) {
-            Hexagono hexagono = entrada.getValue();
-            Coordenadas coords = entrada.getKey();
-            Coordenadas[] coordsVertices = this.obtenerVerticesDeHexagono(hexagono, coords);
-            for (Coordenadas coordVertice : coordsVertices) {
-                //el vertice no existe:
-                if (!mapaVertices.containsKey(coordVertice)) {
-                    Vertice vertice = new Vertice();
-                    vertice.agregarHexagono(hexagono);
-                    hexagono.agregarVerticeAdyacente(vertice);
-                    mapaVertices.put(coordVertice, vertice);
-                } else {
-                //el vertice ya existe:
-                    Vertice verticeExistente = mapaVertices.get(coordVertice);
-                    verticeExistente.agregarHexagono(hexagono);
-                    hexagono.agregarVerticeAdyacente(verticeExistente);
-                }
-            }
-        }
-    }
+    // private void inicializarVertices() {
+    //     // recorrer hexagonos y obtener vertices
+    //     for (Map.Entry<Coordenadas, Hexagono> entrada : mapaHexagonos.entrySet()) {
+    //         Hexagono hexagono = entrada.getValue();
+    //         Coordenadas coords = entrada.getKey();
+    //         Coordenadas[] coordsVertices = this.obtenerVerticesDeHexagono(hexagono, coords);
+    //         for (Coordenadas coordVertice : coordsVertices) {
+    //             //el vertice no existe:
+    //             if (!mapaVertices.containsKey(coordVertice)) {
+    //                 Vertice vertice = new Vertice();
+    //                 vertice.agregarHexagono(hexagono);
+    //                 hexagono.agregarVerticeAdyacente(vertice);
+    //                 mapaVertices.put(coordVertice, vertice);
+    //             } else {
+    //             //el vertice ya existe:
+    //                 Vertice verticeExistente = mapaVertices.get(coordVertice);
+    //                 verticeExistente.agregarHexagono(hexagono);
+    //                 hexagono.agregarVerticeAdyacente(verticeExistente);
+    //             }
+    //         }
+    //     }
+    // }
 
     private Coordenadas[] obtenerVerticesDeHexagono(Hexagono hexagono, Coordenadas coordenadas) {
         int hx = coordenadas.obtenerCoordenadaX();
@@ -192,6 +196,26 @@ public class Tablero {
             //throw new PosInvalidaParaConstruirException();
             throw new IllegalArgumentException("No se encontró un vértice en las coordenadas dadas.");
         }
+    }
+
+    public void mezclarHexagonos(){
+        var hexagonosMezclados = new ArrayList<Hexagono>(this.listaHexagonos);
+        Collections.shuffle(hexagonosMezclados);
+        this.listaHexagonos = hexagonosMezclados;
+    }
+
+    public void mezclarNumeros(){
+        var numerosMezclados = new ArrayList<Produccion>(this.listaNumeros);
+        Collections.shuffle(numerosMezclados);
+        this.listaNumeros = numerosMezclados;
+    }
+
+    public boolean equals(Object obj) {
+        if (this == obj) return true;
+        if (obj == null || getClass() != obj.getClass()) return false;
+        Tablero otro = (Tablero) obj;
+        return listaHexagonos.equals(otro.listaHexagonos) &&
+               listaNumeros.equals(otro.listaNumeros);
     }
 }
 /*  

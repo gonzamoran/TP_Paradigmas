@@ -1,33 +1,21 @@
 package edu.fiuba.algo3.modelo.tablero;
 
-import edu.fiuba.algo3.modelo.*;
+import edu.fiuba.algo3.modelo.tablero.Produccion;
+import edu.fiuba.algo3.modelo.Recurso;
+
 import edu.fiuba.algo3.modelo.excepciones.*;
 import java.util.List;
 import java.util.ArrayList;
 
-public class Hexagono {
-    private TipoRecurso recurso;
-    private int id;
-    private int numero;
-    private ArrayList<Vertice> verticesAdyacentes;
+public abstract class Hexagono {
     private boolean tieneLadron;
 
-    public Hexagono(int id, TipoRecurso recurso) {
-        if (id < 0) {
-            throw new IllegalArgumentException("El ID del hexagono no puede ser negativo");
-        }
-        this.id = id;
-        this.recurso = recurso;
+    public Hexagono() {
         this.tieneLadron = false;
-        this.verticesAdyacentes = new ArrayList<>();
-    }
-
-    public void asignarNumero(int numero) {
-        this.numero = numero;
     }
 
     public boolean esDesierto() {
-        return this.recurso == TipoRecurso.DESIERTO;
+        return false;
     }
 
     public void colocarLadron() {
@@ -38,31 +26,26 @@ public class Hexagono {
         this.tieneLadron = false;
     }
 
-    public int obtenerNumeroFicha() {
-        if (this.recurso == TipoRecurso.DESIERTO) {
-            throw new DesiertoNoTieneFichaException();
-        }
-        return this.numero;
-    }
-
-    public TipoRecurso obtenerRecurso() {
-        return recurso;
-    }
-
-    public boolean puedeGenerarRecursos() {
-        if (this.tieneLadron) {
-            return false;
-        }
-        if (this.esDesierto()) {
+    public boolean puedeGenerarRecursos(){
+        if (tieneLadron) {
             return false;
         }
         return true;
     }
 
-    public void agregarVerticeAdyacente(Vertice vertice) {
-        if (!this.verticesAdyacentes.contains(vertice)) {
-            this.verticesAdyacentes.add(vertice);
-        }
+    public abstract Recurso generarRecurso(int cantidad);
+
+    // public void agregarVerticeAdyacente(Vertice vertice) {
+    //     if (!this.verticesAdyacentes.contains(vertice)) {
+    //         this.verticesAdyacentes.add(vertice);
+    //     }
+    // }
+
+    public boolean equals(Object obj) {
+        if (this == obj) return true;
+        if (obj == null || getClass() != obj.getClass()) return false;
+        Hexagono hexagono = (Hexagono) obj;
+        return tieneLadron == hexagono.tieneLadron; //para este punto son dos hexagonos iguales
     }
 }
 
