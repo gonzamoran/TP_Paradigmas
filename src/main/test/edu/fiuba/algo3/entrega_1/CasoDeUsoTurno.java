@@ -41,13 +41,13 @@ public class CasoDeUsoTurno {
         Tablero tablero = new Tablero();
 
         CasoDeUsoDadoCargado caso = new CasoDeUsoDadoCargado(tablero, "Azul");
-        caso.colocarEn(new Coordenadas(2, 7), new Poblado("Azul"), "Azul");
+        caso.colocarEn(new Coordenadas(5, 1), new Poblado("Azul"), "Azul");
 
-        int resultado = caso.lanzarDados();
+        // int resultado = caso.lanzarDados();
 
-        var recursosObtenidos = caso.producirRecursos(resultado);
+        var recursosObtenidos = caso.producirRecursos(11);
         var produccionEsperada = List.of(
-                Recurso.generarRecurso("Lana", 1));
+                Recurso.generarRecurso("Piedra", 1));
 
         assertEquals(produccionEsperada, recursosObtenidos);
 
