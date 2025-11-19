@@ -1,7 +1,9 @@
 package edu.fiuba.algo3.entrega_1.pruebas_desechadas;
 
-import edu.fiuba.algo3.modelo.Message;
 import org.junit.jupiter.api.Test;
+
+import edu.fiuba.algo3.modelo.utils.Message;
+
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class MessageTest {

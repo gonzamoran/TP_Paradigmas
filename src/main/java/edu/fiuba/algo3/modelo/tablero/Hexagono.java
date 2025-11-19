@@ -9,6 +9,7 @@ import java.util.ArrayList;
 
 public abstract class Hexagono {
     private boolean tieneLadron;
+    private Produccion produccion;
 
     public Hexagono() {
         this.tieneLadron = false;
@@ -33,6 +34,17 @@ public abstract class Hexagono {
         return true;
     }
 
+    public void asignarProduccion(Produccion produccion) {
+        this.produccion = produccion;
+    }
+
+    public boolean compararProduccion(Produccion produccion) {
+        if (this.produccion == null || produccion == null) {
+            return false;
+        }
+        return this.produccion.equals(produccion);
+    }
+    
     public abstract Recurso generarRecurso(int cantidad);
 
     // public void agregarVerticeAdyacente(Vertice vertice) {

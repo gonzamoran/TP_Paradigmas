@@ -1,4 +1,6 @@
-package edu.fiuba.algo3.modelo;
+package edu.fiuba.algo3.modelo.utils;
+
+import edu.fiuba.algo3.modelo.Localize;
 
 public class Message extends Localize {
 

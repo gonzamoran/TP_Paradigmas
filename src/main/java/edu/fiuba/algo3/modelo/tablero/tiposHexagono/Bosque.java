@@ -16,5 +16,4 @@ public class Bosque extends Hexagono {
     public Recurso generarRecurso(int cantidad) {
         return Recurso.generarRecurso(this.recurso, cantidad);
     }
-
 }

@@ -8,18 +8,17 @@ import java.util.List;
 
 
 public abstract class Construccion {
-    int puntosVictoria;
-    private Jugador dueño;
-    
-    // renombramos el constructor?
-    static public Construccion crearConstruccion(String tipo,Jugador jugActual, Vertice vertice){
+    protected int puntosVictoria;
+    protected String jugador;
+
+    static public Construccion crearConstruccion(String tipo, String jugador){
         Construccion construccion = null;
         switch (tipo){
             case "Poblado":
-                construccion = new Poblado();
+                construccion = new Poblado(jugador);
                 break;
             case "Ciudad":
-                construccion = new Ciudad();
+                construccion = new Ciudad(jugador);
                 break;
             case "Camino":
                 //construccion = new Camino();
@@ -28,18 +27,16 @@ public abstract class Construccion {
                 throw new IllegalArgumentException("Tipo de construcción inválido"); //hacer excepcion personalizada
         }
         construccion.puntosVictoria = construccion.obtenerPuntosDeVictoria();
-        construccion.dueño = jugActual;
-        if (construccion.puedeConstruirse(jugActual, vertice)) {
-            return construccion;
-        }
-        throw new PosInvalidaParaConstruirException();
+        return construccion;
     }
 
     public abstract int obtenerPuntosDeVictoria();
 
-    public abstract boolean puedeConstruirse(Jugador jugador, Vertice vertice);
-
     public abstract boolean esPoblado();
+
+    public boolean esDueno(String jugador){
+        return this.jugador.equals(jugador);
+    }
 }
 
 

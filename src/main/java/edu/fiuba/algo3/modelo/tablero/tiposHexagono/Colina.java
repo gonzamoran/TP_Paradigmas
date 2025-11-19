@@ -8,7 +8,7 @@ public class Colina extends Hexagono {
 
     public Colina() {
         super();
-        this.recurso = "Arcilla";
+        this.recurso = "Ladrillo";
     }
     
     @Override

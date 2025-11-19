@@ -1,12 +1,13 @@
 package edu.fiuba.algo3.repositorios;
 
-import edu.fiuba.algo3.modelo.Message;
-import edu.fiuba.algo3.modelo.MessageRepository;
-import edu.fiuba.algo3.modelo.MessagesFileInvalid;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
+
+import edu.fiuba.algo3.modelo.utils.Message;
+import edu.fiuba.algo3.modelo.utils.MessageRepository;
+import edu.fiuba.algo3.modelo.utils.MessagesFileInvalid;
 
 import java.io.*;
 import java.nio.charset.StandardCharsets;

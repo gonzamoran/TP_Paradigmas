@@ -4,12 +4,15 @@ import java.util.List;
 
 import edu.fiuba.algo3.modelo.construcciones.Construccion;
 import edu.fiuba.algo3.modelo.tablero.Vertice;
+import edu.fiuba.algo3.modelo.tablero.Produccion;
+import edu.fiuba.algo3.modelo.tablero.Hexagono;
+import edu.fiuba.algo3.modelo.Recurso;
 import edu.fiuba.algo3.modelo.Jugador;
 import edu.fiuba.algo3.modelo.excepciones.PosInvalidaParaConstruirException;
 import java.util.ArrayList;
 
 public class Vertice {
-    private Jugador dueño;
+    private String dueño;
     private List<Hexagono> hexagonosAdyacentes;
     private Construccion construccion;
     private boolean estaConstruido;
@@ -25,12 +28,31 @@ public class Vertice {
         this.estaConstruido = false;
     }
 
+    public void construir(Construccion construccion, String jugador){
+        this.construccion = construccion;
+        this.dueño = jugador;
+        this.estaConstruido = true;
+    }
+
     public void agregarHexagono(Hexagono hexagono) {
         if (!hexagonosAdyacentes.contains(hexagono)) {
             hexagonosAdyacentes.add(hexagono);
         }
     }
-
+    
+    public ArrayList<Hexagono> obtenerHexagonosPorProduccion(Produccion produccion){
+        ArrayList<Hexagono> res = new ArrayList<>();
+        for (Hexagono hexagono : hexagonosAdyacentes) {
+            if (hexagono.esDesierto()) {
+                continue;
+            }
+            if (hexagono.compararProduccion(produccion)) {
+                res.add(hexagono);
+            }
+        }
+        return res;
+    }
+    
     public void agregarAdyacente(Vertice unVertice) {
         if (!verticesAdyacentes.contains(unVertice)) {
             verticesAdyacentes.add(unVertice);
@@ -57,17 +79,54 @@ public class Vertice {
         return construccionesAdyacentes;
     }
     */
-   
-    public void construirEn(String tipoConstruccion, Jugador jugador) {
+    public boolean cumpleReglaDistancia() {
+            for (Vertice vertice : verticesAdyacentes) {
+                if (vertice.tieneConstruccion()) {
+                    return false;
+                }
+            }
+            return true;
+        }
+        
+    public ArrayList<Recurso> construirInicial(Construccion construccion, String jugador) {
         for (Vertice vertice : verticesAdyacentes) {
             if (vertice.tieneConstruccion()) {
                 throw new PosInvalidaParaConstruirException();
             }
         }
-        this.construccion = Construccion.crearConstruccion(tipoConstruccion, jugador, this);
+        this.construccion = construccion;
+        this.dueño = jugador;
         this.estaConstruido = true;
+        var recursos = new ArrayList<Recurso>();
+        for (Hexagono hexagono : hexagonosAdyacentes) {
+            int cantidad = this.construccion.obtenerPuntosDeVictoria();
+            recursos.add(hexagono.generarRecurso(cantidad));
+        }
+        return recursos;
+    }
+    
+    public ArrayList<Recurso> producirRecursos(int resultado){
+        ArrayList<Recurso> recursosDelVertice = new ArrayList<>();
+    
+        if (!this.tieneConstruccion()){
+            return new ArrayList<Recurso>();
+        }
+        ArrayList<Hexagono> hexagonos = this.obtenerHexagonosPorProduccion(new Produccion(resultado));
+        
+        for (Hexagono hexa: hexagonos){
+            int cantidad = this.construccion.obtenerPuntosDeVictoria();
+            recursosDelVertice.add(hexa.generarRecurso(cantidad));
+        }
+        return recursosDelVertice;
     }
 
+    public boolean esDueno(String jugador){
+        if(!tieneConstruccion()) return false;
+        return this.construccion.esDueno(jugador);
+    }
+
+
+    
         /*
         Construccion nuevaConstruccion = Construccion.crearConstruccion(tipoConstruccion, jugador);
 
@@ -82,13 +141,6 @@ public class Vertice {
         
         return false;
         */
-    
-    public boolean esPoblado() {
-        if (!estaConstruido) {
-            return false;
-        }
-        return this.construccion.esPoblado();
-    }
 
 }
 

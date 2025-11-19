@@ -5,6 +5,7 @@ import edu.fiuba.algo3.modelo.tiposRecurso.Madera;
 import edu.fiuba.algo3.modelo.tiposRecurso.Piedra;
 import edu.fiuba.algo3.modelo.tiposRecurso.Lana;
 import edu.fiuba.algo3.modelo.tiposRecurso.Grano;
+import edu.fiuba.algo3.modelo.tiposRecurso.Ladrillo;
 import edu.fiuba.algo3.modelo.tiposRecurso.Nulo;
 
 public abstract class Recurso {
@@ -27,10 +28,21 @@ public abstract class Recurso {
             case "Grano":
                 recurso = new Grano(tipo, cantidad);
                 break;
+            case "Ladrillo":
+                recurso = new Ladrillo(tipo, cantidad);
+                break;
             default:
                 recurso = new Nulo();
         }
         return recurso;
+    }
+
+    public String getTipo() {
+        return tipo;
+    }
+
+    public int getCantidad() {
+        return cantidad;
     }
 
     public boolean equals(Object obj) {
