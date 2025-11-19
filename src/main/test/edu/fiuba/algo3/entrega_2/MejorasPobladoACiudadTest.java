@@ -53,7 +53,7 @@ public class MejorasPobladoACiudadTest {
     public void test03MejorarPobladoACiudadSinPobladoExistenteFalla() {
         Jugador jugador = new Jugador("Jugador1");
         Tablero tablero = new Tablero();
-        
+
         jugador.agregarRecurso(new Madera(), 2);
         jugador.agregarRecurso(new Ladrillo(), 2);
         jugador.agregarRecurso(new Lana(), 2);
@@ -73,7 +73,7 @@ public class MejorasPobladoACiudadTest {
         Jugador jugador1 = new Jugador("Jugador1");
         Jugador jugador2 = new Jugador("Jugador2");
         Tablero tablero = new Tablero();
-        
+
         // dar recursos a j1
         jugador1.agregarRecurso(new Madera(), 2);
         jugador1.agregarRecurso(new Ladrillo(), 2);
@@ -84,9 +84,9 @@ public class MejorasPobladoACiudadTest {
         jugador2.agregarRecurso(new Ladrillo(), 2);
         jugador2.agregarRecurso(new Lana(), 2);
         jugador2.agregarRecurso(new Grano(), 3);
-        
+
         Coordenada coordenada = new Coordenada(2, 3);
-        
+
         tablero.construirPoblado(jugador1, coordenada);
 
         boolean mejorado = tablero.mejorarPobladoACiudad(jugador2, coordenada);
@@ -100,14 +100,14 @@ public class MejorasPobladoACiudadTest {
     public void testMejorarPobladoACiudad_PuntosVictoriaCorrectos() {
         Jugador jugador = new Jugador("Jugador1");
         Tablero tablero = new Tablero();
-        
+
         jugador.agregarRecurso(new Madera(), 2);
         jugador.agregarRecurso(new Ladrillo(), 2);
         jugador.agregarRecurso(new Lana(), 2);
         jugador.agregarRecurso(new Grano(), 3);
-        
+
         Coordenada coordenada = new Coordenada(2, 3);
-        
+
         int puntosIniciales = jugador.getPuntosVictoria();
 
         // poblado +1 PV
@@ -119,6 +119,6 @@ public class MejorasPobladoACiudadTest {
         int puntosConCiudad = jugador.getPuntosVictoria();
 
         assertEquals(puntosIniciales + 1, puntosConPoblado); // Poblado = +1
-        assertEquals(puntosIniciales + 2, puntosConCiudad);  // Ciudad = +2
+        assertEquals(puntosIniciales + 2, puntosConCiudad); // Ciudad = +2
     }
 }

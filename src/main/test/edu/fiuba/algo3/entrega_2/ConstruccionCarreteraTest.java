@@ -10,7 +10,7 @@ import static org.junit.jupiter.api.Assertions.*;
 public class ConstruccionCarreteraTest {
 
     @Test
-    public void test01ConstruirCarreteraConsumeRecursosCorrectos(){
+    public void test01ConstruirCarreteraConsumeRecursosCorrectos() {
         Jugador jugador = new Jugador("Jugador 1");
         Tablero tablero = new Tablero();
         jugador.agregarRecurso(new Madera(), 1);
@@ -26,7 +26,7 @@ public class ConstruccionCarreteraTest {
     }
 
     @Test
-    public void test02ConstruirCarreteraSinRecursosNoPermiteConstruir(){
+    public void test02ConstruirCarreteraSinRecursosNoPermiteConstruir() {
         Jugador jugador = new Jugador("Jugador 1");
         Tablero tablero = new Tablero();
 
@@ -39,7 +39,7 @@ public class ConstruccionCarreteraTest {
     }
 
     @Test
-    public void test03ConstruirCarreteraAdyacenteAOtraEsPermitido(){
+    public void test03ConstruirCarreteraAdyacenteAOtraEsPermitido() {
         Jugador jugador = new Jugador("Jugador 1");
         Tablero tablero = new Tablero();
         jugador.agregarRecurso(new Madera(), 2);
@@ -56,7 +56,7 @@ public class ConstruccionCarreteraTest {
     }
 
     @Test
-    public void test04ConstruirCarreteraNoAdyacenteAOtraNoEsPermitido(){
+    public void test04ConstruirCarreteraNoAdyacenteAOtraNoEsPermitido() {
         Jugador jugador = new Jugador("Jugador 1");
         Tablero tablero = new Tablero();
         jugador.agregarRecurso(new Madera(), 2);
@@ -73,7 +73,7 @@ public class ConstruccionCarreteraTest {
     }
 
     @Test
-    public void test05ConstuirCarreteraAdyacenteAPobladoEsPermitido(){
+    public void test05ConstuirCarreteraAdyacenteAPobladoEsPermitido() {
         Jugador jugador = new Jugador("Jugador 1");
         Tablero tablero = new Tablero();
         jugador.agregarRecurso(new Madera(), 3);

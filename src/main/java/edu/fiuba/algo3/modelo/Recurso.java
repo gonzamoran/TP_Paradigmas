@@ -46,16 +46,28 @@ public abstract class Recurso {
     }
 
     public boolean equals(Object obj) {
-        if (this == obj) return true;
-        if (obj == null || getClass() != obj.getClass()) return false;
+        if (this == obj)
+            return true;
+        if (obj == null || getClass() != obj.getClass())
+            return false;
         Recurso recurso = (Recurso) obj;
         return this.tipo == recurso.tipo;
     }
 
     public void sumar(Recurso recurso) {
-        if (this == recurso){
+        if (this != recurso) {
             throw new SumaDeRecursosDistintosException();
-        };
+        }
+        ;
         this.cantidad += recurso.cantidad;
     }
+
+    public int hashCode() {
+        return tipo.hashCode();
+    }
+
+    public int obtenerCantidad() {
+        return cantidad;
+    }
+
 }

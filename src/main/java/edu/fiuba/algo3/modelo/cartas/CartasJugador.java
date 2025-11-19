@@ -11,12 +11,13 @@ import java.util.HashMap;
 import java.util.List;
 import java.security.KeyStore.Entry;
 import java.util.ArrayList;
-import java.util.Map;
 import java.util.Random;
+import java.util.Map;
 
 public class CartasJugador {
 
-    private Map<Recurso, Integer> recursos;
+    private Map<Class<? extends Recurso>, Recurso> recursos;
+
     // private List<cartasDeDesarrollo> desarrollo;
 
     // Crear constructor.
@@ -25,24 +26,26 @@ public class CartasJugador {
     }
 
     public void inicializarRecursos() {
-        recursos.put(new Madera("Madera", 0), 0);
-        recursos.put(new Ladrillo("Ladrillo", 0), 0);
-        recursos.put(new Grano("Grano", 0), 0);
-        recursos.put(new Lana("Lana", 0), 0);
-        recursos.put(new Piedra("Piedra", 0), 0);
+        recursos.put(Madera.class, new Madera("Madera", 0));
+        recursos.put(Ladrillo.class, new Ladrillo("Ladrillo", 0));
+        recursos.put(Grano.class, new Grano("Grano", 0));
+        recursos.put(Lana.class, new Lana("Lana", 0));
+        recursos.put(Piedra.class, new Piedra("Piedra", 0));
     }
 
-    public void agregarRecurso(Recurso recurso, int cantidad) {
-        recursos.put(recurso, obtenerCantidadCartasRecurso(recurso) + cantidad);
+    public void agregarRecursos(Recurso recurso) {
+        Recurso actual = this.recursos.get(recurso.getClass());
+        actual.sumar(recurso);
     }
 
     public int obtenerCantidadCartasRecurso(Recurso recurso) {
-        return recursos.get(recurso);
+        Recurso actual = recursos.get(recurso.getClass());
+        actual.obtenerCantidad();
     }
 
     public int cantidadTotalCartasRecurso() {
         int cantidadCartas = 0;
-        for (Recurso rec : recursos.keySet()) {
+        for (Recurso rec : recursos.values()) {
             cantidadCartas = cantidadCartas + obtenerCantidadCartasRecurso(rec);
         }
         return cantidadCartas;
@@ -61,8 +64,8 @@ public class CartasJugador {
     }
 
     // Solo se llama cuando el jugador tien 8 cartas o más.
-    public ArrayList<CartasRecurso> descarteCartas() {
-        ArrayList<CartasRecurso> descarte = new ArrayList<>();
+    public ArrayList<Recurso> descarteCartas() {
+        ArrayList<Recurso> descarte = new ArrayList<>();
         int cantCartasDescarte = (this.cantidadTotalCartasRecurso() / 2);
 
         for (int i = 0; i < cantCartasDescarte; i++) {
@@ -77,5 +80,21 @@ public class CartasJugador {
             recursos.put(tipo, cantidad - 1);
         }
         return descarte;
+    }
+
+    // verificar si un jugador puede construir. Hay que verlo.
+    public boolean tieneRecursos() {
+
+    }
+
+    // Sacar recursos del jugador.
+    public void gastarRecurso(Recurso recurso, int cantidad);
+
+    {
+        // for
+        Recurso actual = recursos.getKey(recurso);
+        int cantidadAGastar = entry.getValue();
+
+        recursos.add(recurso, obtenerCantidadCartasRecurso(recurso) - cantidadAGastar);
     }
 }

@@ -19,8 +19,8 @@ public class Vertice {
     private List<Vertice> verticesAdyacentes;
     private List<List<Vertice>> caminosIngresantes;
 
-    //deberia tener referencia al jugador dueño de la construccion?
-    
+    // deberia tener referencia al jugador dueño de la construccion?
+
     public Vertice() {
         this.hexagonosAdyacentes = new ArrayList<>();
         this.verticesAdyacentes = new ArrayList<>();
@@ -28,7 +28,7 @@ public class Vertice {
         this.estaConstruido = false;
     }
 
-    public void construir(Construccion construccion, String jugador){
+    public void construir(Construccion construccion, String jugador) {
         this.construccion = construccion;
         this.dueño = jugador;
         this.estaConstruido = true;
@@ -39,8 +39,8 @@ public class Vertice {
             hexagonosAdyacentes.add(hexagono);
         }
     }
-    
-    public ArrayList<Hexagono> obtenerHexagonosPorProduccion(Produccion produccion){
+
+    public ArrayList<Hexagono> obtenerHexagonosPorProduccion(Produccion produccion) {
         ArrayList<Hexagono> res = new ArrayList<>();
         for (Hexagono hexagono : hexagonosAdyacentes) {
             if (hexagono.esDesierto()) {
@@ -52,7 +52,7 @@ public class Vertice {
         }
         return res;
     }
-    
+
     public void agregarAdyacente(Vertice unVertice) {
         if (!verticesAdyacentes.contains(unVertice)) {
             verticesAdyacentes.add(unVertice);
@@ -60,34 +60,31 @@ public class Vertice {
     }
 
     public boolean tieneConstruccion() {
-        if(!estaConstruido){
+        if (!estaConstruido) {
             return false;
         }
         return true;
     }
 
-    public boolean esPoseidoPor(Jugador jugador) {
-        return tieneConstruccion() && dueño.equals(jugador);
-    }
     /*
-    private List<Construccion> conseguirConstruccionesAdyacentes() {
-        for (Vertice vertice : verticesAdyacentes) {
-            if (vertice.estaConstruido()) {
-                construccionesAdyacentes.add(vertice.construccion);
-            }
-        }
-        return construccionesAdyacentes;
-    }
-    */
+     * private List<Construccion> conseguirConstruccionesAdyacentes() {
+     * for (Vertice vertice : verticesAdyacentes) {
+     * if (vertice.estaConstruido()) {
+     * construccionesAdyacentes.add(vertice.construccion);
+     * }
+     * }
+     * return construccionesAdyacentes;
+     * }
+     */
     public boolean cumpleReglaDistancia() {
-            for (Vertice vertice : verticesAdyacentes) {
-                if (vertice.tieneConstruccion()) {
-                    return false;
-                }
+        for (Vertice vertice : verticesAdyacentes) {
+            if (vertice.tieneConstruccion()) {
+                return false;
             }
-            return true;
         }
-        
+        return true;
+    }
+
     public ArrayList<Recurso> construirInicial(Construccion construccion, String jugador) {
         for (Vertice vertice : verticesAdyacentes) {
             if (vertice.tieneConstruccion()) {
@@ -104,46 +101,47 @@ public class Vertice {
         }
         return recursos;
     }
-    
-    public ArrayList<Recurso> producirRecursos(int resultado){
+
+    public ArrayList<Recurso> producirRecursos(int resultado) {
         ArrayList<Recurso> recursosDelVertice = new ArrayList<>();
-    
-        if (!this.tieneConstruccion()){
+
+        if (!this.tieneConstruccion()) {
             return new ArrayList<Recurso>();
         }
         ArrayList<Hexagono> hexagonos = this.obtenerHexagonosPorProduccion(new Produccion(resultado));
-        
-        for (Hexagono hexa: hexagonos){
+
+        for (Hexagono hexa : hexagonos) {
             int cantidad = this.construccion.obtenerPuntosDeVictoria();
             recursosDelVertice.add(hexa.generarRecurso(cantidad));
         }
         return recursosDelVertice;
     }
 
-    public boolean esDueno(String jugador){
-        if(!tieneConstruccion()) return false;
+    public boolean esDueno(String jugador) {
+        if (!tieneConstruccion())
+            return false;
         return this.construccion.esDueno(jugador);
     }
 
-
-    
-        /*
-        Construccion nuevaConstruccion = Construccion.crearConstruccion(tipoConstruccion, jugador);
-
-        List<Construccion> construccionesAdyacentes = conseguirConstruccionesAdyacentes();
-
-        if (nuevaConstruccion.puedeConstruirse(jugador, this, verticesAdyacentes, construccionesAdyacentes)) {
-            this.construccion = nuevaConstruccion;
-            this.dueño = jugador;
-            this.estaConstruido = true;
-            return true;
-        }
-        
-        return false;
-        */
+    /*
+     * Construccion nuevaConstruccion =
+     * Construccion.crearConstruccion(tipoConstruccion, jugador);
+     * 
+     * List<Construccion> construccionesAdyacentes =
+     * conseguirConstruccionesAdyacentes();
+     * 
+     * if (nuevaConstruccion.puedeConstruirse(jugador, this, verticesAdyacentes,
+     * construccionesAdyacentes)) {
+     * this.construccion = nuevaConstruccion;
+     * this.dueño = jugador;
+     * this.estaConstruido = true;
+     * return true;
+     * }
+     * 
+     * return false;
+     */
 
 }
-
 
 /*
  * NUEVA ESTRUCTURA DE VERTICE:
@@ -154,7 +152,8 @@ public class Vertice {
  * TIENE REFERENCIAS A QUE HEXAGONOS SON ADYACENTES
  * TIENE REFERENCIA A QUE CONSTRUCCION HAY EN EL VERTICE
  * TIENE REFERENCIA A QUE JUGADOR ES DUEÑO DE LA CONSTRUCCION
- * TIENE METODOS PARA COLOCAR CONSTRUCCION, CONSULTAR DUEÑO, CONSULTAR TIPO DE CONSTRUCCION?
+ * TIENE METODOS PARA COLOCAR CONSTRUCCION, CONSULTAR DUEÑO, CONSULTAR TIPO DE
+ * CONSTRUCCION?
  * 
  * 
  */

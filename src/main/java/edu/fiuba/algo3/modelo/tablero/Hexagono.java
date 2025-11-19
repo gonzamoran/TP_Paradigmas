@@ -27,11 +27,8 @@ public abstract class Hexagono {
         this.tieneLadron = false;
     }
 
-    public boolean puedeGenerarRecursos(){
-        if (tieneLadron) {
-            return false;
-        }
-        return true;
+    public boolean puedeGenerarRecursos() {
+        return !this.tieneLadron;
     }
 
     public void asignarProduccion(Produccion produccion) {
@@ -44,20 +41,22 @@ public abstract class Hexagono {
         }
         return this.produccion.equals(produccion);
     }
-    
+
     public abstract Recurso generarRecurso(int cantidad);
 
     // public void agregarVerticeAdyacente(Vertice vertice) {
-    //     if (!this.verticesAdyacentes.contains(vertice)) {
-    //         this.verticesAdyacentes.add(vertice);
-    //     }
+    // if (!this.verticesAdyacentes.contains(vertice)) {
+    // this.verticesAdyacentes.add(vertice);
+    // }
     // }
 
     public boolean equals(Object obj) {
-        if (this == obj) return true;
-        if (obj == null || getClass() != obj.getClass()) return false;
+        if (this == obj)
+            return true;
+        if (obj == null || getClass() != obj.getClass())
+            return false;
         Hexagono hexagono = (Hexagono) obj;
-        return tieneLadron == hexagono.tieneLadron; //para este punto son dos hexagonos iguales
+        return tieneLadron == hexagono.tieneLadron; // para este punto son dos hexagonos iguales
     }
 }
 

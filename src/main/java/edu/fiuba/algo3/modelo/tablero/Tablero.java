@@ -265,15 +265,16 @@ public class Tablero {
 
     public boolean sePuedeConstruirInicial(Coordenadas coordenadas, Construccion construccion) {
         if (construccion == null) {
-            throw new IllegalArgumentException("Construccion nula"); // cambiar excepcion
+            return false;
         }
         if (!construccion.esPoblado()) {
-            throw new IllegalArgumentException("Solo se pueden construir poblados en la colocacion inicial"); // cambiar
-                                                                                                              // excepcion
+            return false;
         }
+
         if (!this.sonCoordenadasValidas(coordenadas)) {
-            throw new IllegalArgumentException("Coordenadas invalidas"); // cambiar excepcion
+            return false;
         }
+
         Vertice vertice = mapaVertices.get(coordenadas);
         return vertice.cumpleReglaDistancia() && !vertice.tieneConstruccion();
     }
@@ -345,6 +346,18 @@ public class Tablero {
         }
         Vertice vertice = mapaVertices.get(coordenadas);
         return vertice.cumpleReglaDistancia() && !vertice.tieneConstruccion();
+    }
+
+    public void moverLadronA(Hexagono hexagonoDestino) {
+        this.ladron.moverLadronA(hexagonoDestino);
+    }
+
+    public Hexagono obtenerHexagono(Coordenadas coordenadas) {
+        return mapaHexagonos.get(coordenadas);
+    }
+
+    public Hexagono obtenerHexagonoLadron() {
+        return ladron.obtenerHexagonoActual();
     }
 }
 /*

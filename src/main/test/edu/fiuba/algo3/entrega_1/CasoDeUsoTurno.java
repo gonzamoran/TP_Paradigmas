@@ -30,7 +30,6 @@ public class CasoDeUsoTurno {
         Dados dados = new Dados();
         // Act
         int res = dados.lanzarDados();
-
         // Assert
         assert (res >= 2 && res <= 12);
     }
@@ -41,13 +40,20 @@ public class CasoDeUsoTurno {
         Tablero tablero = new Tablero();
 
         CasoDeUsoDadoCargado caso = new CasoDeUsoDadoCargado(tablero, "Azul");
-        caso.colocarEn(new Coordenadas(5, 1), new Poblado("Azul"), "Azul");
+        caso.colocarEn(new Coordenadas(2, 3), new Poblado("Azul"), "Azul");
+        caso.colocarEn(new Coordenadas(2, 9), new Ciudad("Azul"), "Azul");
 
-        // int resultado = caso.lanzarDados();
+        int resultado = caso.lanzarDados();
 
-        var recursosObtenidos = caso.producirRecursos(11);
+        var recursosObtenidos = caso.producirRecursos(6);
         var produccionEsperada = List.of(
-                Recurso.generarRecurso("Piedra", 1));
+                // Recurso.generarRecurso("Lana", 1), // Poblado esta entre dos pastizales tiene
+                // que devolver 2 y esta devolviendo 1
+                Recurso.generarRecurso("Madera", 1),
+                Recurso.generarRecurso("Lana", 1));
+        // Recurso.generarRecurso("Lana", 2)); // ciudad esta entre el mar y un pastizal
+        // tiene que devolver 2 y
+        // esta devolviendo 2
 
         assertEquals(produccionEsperada, recursosObtenidos);
 

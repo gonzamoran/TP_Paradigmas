@@ -11,7 +11,7 @@ import static org.junit.jupiter.api.Assertions.*;
 public class ConstruccionPobladoTest {
 
     @Test
-    public void test01ConstruirPobladoConsumeRecursosCorrectos(){
+    public void test01ConstruirPobladoConsumeRecursosCorrectos() {
         Jugador jugador = new Jugador("Jugador 1");
         Tablero tablero = new Tablero();
 
@@ -32,7 +32,7 @@ public class ConstruccionPobladoTest {
     }
 
     @Test
-    public void test02ConstruirPobladoSinRecursosEsInvalido(){
+    public void test02ConstruirPobladoSinRecursosEsInvalido() {
         Jugador jugador = new Jugador("Jugador 1");
         Tablero tablero = new Tablero();
 
@@ -43,9 +43,9 @@ public class ConstruccionPobladoTest {
         assertFalse(construido);
         assertFalse(tablero.hayPobladoEn(coordenadaOK, jugador));
     }
-    
+
     @Test
-    public void test03ConstruirPobladoAdyacenteEsInvalido(){
+    public void test03ConstruirPobladoAdyacenteEsInvalido() {
         Jugador jugador = new Jugador("Jugador 1");
         Tablero tablero = new Tablero();
 
@@ -65,7 +65,7 @@ public class ConstruccionPobladoTest {
     }
 
     @Test
-    public void test04ConstruirPobladoNoAdyacenteEsValido(){
+    public void test04ConstruirPobladoNoAdyacenteEsValido() {
         Jugador jugador = new Jugador("Jugador 1");
         Tablero tablero = new Tablero();
 
@@ -84,6 +84,4 @@ public class ConstruccionPobladoTest {
         assertTrue(tablero.hayPobladoEn(coordenadaPoblado2, jugador));
     }
 
-
 }
-
