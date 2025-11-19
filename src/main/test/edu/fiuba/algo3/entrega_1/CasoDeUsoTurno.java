@@ -25,37 +25,32 @@ public class CasoDeUsoTurno {
     private String jugador;
 
     @Test
-    public void test01LanzarDadosGeneraNumeroValido(){
-        //Arrange
+    public void test01LanzarDadosGeneraNumeroValido() {
+        // Arrange
         Dados dados = new Dados();
-        //Act
+        // Act
         int res = dados.lanzarDados();
 
-        //Assert
-        assert(res >= 2 && res <= 12);
+        // Assert
+        assert (res >= 2 && res <= 12);
     }
-    
+
     @Test
-    public void test02ProduccionCorrectaPorConstruccion(){
+    public void test02ProduccionCorrectaPorConstruccion() {
 
         Tablero tablero = new Tablero();
 
         CasoDeUsoDadoCargado caso = new CasoDeUsoDadoCargado(tablero, "Azul");
-        caso.colocarEn(new Coordenadas(2,3),new Poblado("Azul"), "Azul");
-
-       //caso.colocarEn(new Coordenadas(2,7),new Ciudad("Azul")); 
+        caso.colocarEn(new Coordenadas(2, 7), new Poblado("Azul"), "Azul");
 
         int resultado = caso.lanzarDados();
-        
+
         var recursosObtenidos = caso.producirRecursos(resultado);
         var produccionEsperada = List.of(
-            Recurso.generarRecurso("Lana", 1)
-        );
+                Recurso.generarRecurso("Lana", 1));
 
         assertEquals(produccionEsperada, recursosObtenidos);
-        
-    }
 
-    // public abstract Recurso generarRecurso(int cantidad);
+    }
 
 }
