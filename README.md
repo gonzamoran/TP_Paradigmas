@@ -9,9 +9,8 @@ Trabajo Práctico número 2 de la materia Algoritmos y Programación III de FIUB
 
 * **Integrante 1** - [Gonzalo Benitez](https://github.com/gonzalobenitezfiuba)
 * **Integrante 2** - [Gonzalo Moran](https://github.com/gonzamoran)
-* **Integrante 3** - [Maximiliano Exequiel Prantera](https://github.com/MaxiPranter)
-* **Integrante 4** - [Guillermo Andres Silva](https://github.com/guillsil)
-* **Integrante 5** - [Tomas Garcia Alimena](https://github.com/TomasGarciaA)
+* **Integrante 3** - [Maximiliano Exequiel Prantera](https://github.com/MaxiPrantera)
+* **Integrante 4** - [Tomas Garcia Alimena](https://github.com/TomasGarciaA)
   
 Corrector: Diego Sanchez
 
