@@ -11,36 +11,7 @@ import edu.fiuba.algo3.modelo.tiposRecurso.Nulo;
 public abstract class Recurso {
 
     protected int cantidad;
-    protected String tipo;
-
-    static public Recurso generarRecurso(String tipo, int cantidad) {
-        Recurso recurso = null;
-        switch (tipo) {
-            case "Madera":
-                recurso = new Madera(tipo, cantidad);
-                break;
-            case "Piedra":
-                recurso = new Piedra(tipo, cantidad);
-                break;
-            case "Lana":
-                recurso = new Lana(tipo, cantidad);
-                break;
-            case "Grano":
-                recurso = new Grano(tipo, cantidad);
-                break;
-            case "Ladrillo":
-                recurso = new Ladrillo(tipo, cantidad);
-                break;
-            default:
-                recurso = new Nulo();
-        }
-        return recurso;
-    }
-
-    public String getTipo() {
-        return tipo;
-    }
-
+    
     public int getCantidad() {
         return cantidad;
     }
@@ -51,12 +22,11 @@ public abstract class Recurso {
         if (obj == null || getClass() != obj.getClass())
             return false;
         Recurso recurso = (Recurso) obj;
-        return this.tipo == recurso.tipo &&
-               this.cantidad == recurso.cantidad;
+        return this.cantidad == recurso.cantidad;
     }
 
     public void sumar(Recurso recurso) {
-        if (this.tipo != recurso.tipo) {
+        if (this.getClass() != recurso.getClass()) {
             throw new SumaDeRecursosDistintosException();
         }
         ;
@@ -64,7 +34,7 @@ public abstract class Recurso {
     }
 
     public int hashCode() {
-        return tipo.hashCode();
+        return getClass().hashCode();
     }
 
     public void restar(int cantidad) {

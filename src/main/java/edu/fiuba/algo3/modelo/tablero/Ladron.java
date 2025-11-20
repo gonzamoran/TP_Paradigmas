@@ -7,21 +7,22 @@ import edu.fiuba.algo3.modelo.Jugador;
 public class Ladron {
     private Hexagono hexagonoActual;
 
-    public void moverA(Hexagono hexagono) {
-        hexagonoActual = hexagono;
-    }
-
-    public void robarRecurso(Jugador desde, Jugador hacia) {
-
+    public Ladron(Hexagono hexagonoInicial) {
+        this.hexagonoActual = hexagonoInicial;
     }
 
     public void moverLadronA(Hexagono hexagono) {
         this.hexagonoActual.sacarLadron();
         this.hexagonoActual = hexagono;
         this.hexagonoActual.colocarLadron();
+        this.robarRecurso();
     }
 
     public Hexagono obtenerHexagonoActual() {
         return this.hexagonoActual;
+    }
+    
+    public void robarRecurso(Jugador desde, Jugador hacia) {
+
     }
 }

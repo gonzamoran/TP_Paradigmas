@@ -3,13 +3,9 @@ package edu.fiuba.algo3.entrega_1;
 import edu.fiuba.algo3.modelo.tablero.Tablero;
 import edu.fiuba.algo3.modelo.tablero.tiposHexagono.*;
 import edu.fiuba.algo3.modelo.Recurso;
-import edu.fiuba.algo3.modelo.tiposRecurso.Madera;
-import edu.fiuba.algo3.modelo.tiposRecurso.Ladrillo;
-import edu.fiuba.algo3.modelo.tiposRecurso.Piedra;
-import edu.fiuba.algo3.modelo.tiposRecurso.Lana;
+import edu.fiuba.algo3.modelo.tiposRecurso.*;
 import edu.fiuba.algo3.modelo.cartas.CartasJugador;
-
-import javafx.scene.control.Tab;
+import edu.fiuba.algo3.modelo.construcciones.*;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
@@ -21,76 +17,114 @@ import edu.fiuba.algo3.entrega_1.casosDeUso.CasoDeUsoTocaUsarLadron;
 import edu.fiuba.algo3.modelo.tablero.Coordenadas;
 import edu.fiuba.algo3.modelo.tablero.Hexagono;
 import edu.fiuba.algo3.modelo.tablero.Produccion;
+import edu.fiuba.algo3.entrega_1.casosDeUso.DadoCargado;
+import edu.fiuba.algo3.modelo.Jugador;
 
 public class CasoDeUsoTocaUn7Test {
 
     @Test
-    public void testMoverLadron() {
+    public void test01MoverLadronLoDejaEnElHexagonoDeseado() {
+        //arrange
         Tablero tablero = new Tablero();
-        CartasJugador cartasJugador = new CartasJugador();
-
+        Jugador jugador = new Jugador("Azul");
         Hexagono origen = tablero.obtenerHexagono(new Coordenadas(2, 2));
-        CasoDeUsoTocaUsarLadron caso = new CasoDeUsoTocaUsarLadron(tablero, "Azul", origen, cartasJugador);
+        CasoDeUsoTocaUsarLadron caso = new CasoDeUsoTocaUsarLadron(tablero, jugador, origen);
         Hexagono destino = tablero.obtenerHexagono(new Coordenadas(2, 2));
+        caso.configurarDestino(destino);
 
-        caso.moverLadronA(destino);
+        //act
+        caso.lanzarDado(new DadoCargado(7));
 
+        //assert
         assertEquals(destino, tablero.obtenerHexagonoLadron());
     }
 
     @Test
-    public void testHexagonoConLadronNoGeneraRecursos() {
+    public void test02HexagonoConLadronNoGeneraRecursos() {
+        //arrange
         Tablero tablero = new Tablero();
-        CartasJugador cartasJugador = new CartasJugador();
+        Jugador jugador = new Jugador("Azul");
 
         Hexagono origen = tablero.obtenerHexagono(new Coordenadas(2, 2));
-        CasoDeUsoTocaUsarLadron caso = new CasoDeUsoTocaUsarLadron(tablero, "Azul", origen, cartasJugador);
+        CasoDeUsoTocaUsarLadron caso = new CasoDeUsoTocaUsarLadron(tablero, jugador, origen);
         Hexagono destino = tablero.obtenerHexagono(new Coordenadas(0, 6));
+        caso.configurarDestino(destino);
 
-        assertFalse(origen.puedeGenerarRecursos());
-        assertTrue(destino.puedeGenerarRecursos());
-        caso.moverLadronA(destino); //desierto -> otroHexagono
+        //act
+        caso.lanzarDado(new DadoCargado(7));
+
+        //assert
         assertTrue(origen.puedeGenerarRecursos());
         assertFalse(destino.puedeGenerarRecursos());
     }
 
     @Test
-    public void testSacarUn7ReduceLosRecursosAlJugador(){
+    public void test03SacarUn7ReduceLosRecursosAlJugador(){
+        //arrange
         Tablero tablero = new Tablero();
-        CartasJugador cartasJugador = new CartasJugador();
-        Recurso[] recursos = {
-            new Madera("Madera", 3),
-            new Ladrillo("Ladrillo", 3),
-            new Piedra("Piedra", 3),
-            new Lana("Lana", 6)
-        };
+        Jugador jugador = new Jugador("Azul");
+        jugador.agregarRecurso(new Madera(3));
+        jugador.agregarRecurso(new Ladrillo(3));
+        jugador.agregarRecurso(new Piedra(3));
+        jugador.agregarRecurso(new Lana(6));
 
         Hexagono origen = tablero.obtenerHexagono(new Coordenadas(2, 2));
-        CasoDeUsoTocaUsarLadron caso = new CasoDeUsoTocaUsarLadron(tablero, "Azul", origen, cartasJugador);
-        caso.agregarRecursos(recursos);
+        CasoDeUsoTocaUsarLadron caso = new CasoDeUsoTocaUsarLadron(tablero, jugador, origen);
+        caso.configurarDestino(tablero.obtenerHexagono(new Coordenadas(0,6)));
 
-        caso.ladronRobaRecursos();
+        //act
+        caso.lanzarDado(new DadoCargado(7));
 
-        int totalRecursosDespuesDeRobar = cartasJugador.cantidadTotalCartasRecurso();
+        int totalRecursosDespuesDeRobar = jugador.obtenerCantidadCartasRecurso();
+        
+        //assert
         assertEquals(8, totalRecursosDespuesDeRobar);
     }
 
+
+
     @Test
-    public void testSacarUn7NoReduceRecursosSiJugadorTieneMenosDe7Cartas(){
+    public void test04SacarUn7NoReduceRecursosSiJugadorTieneMenosDe7Cartas(){
+        //arrange
         Tablero tablero = new Tablero();
-        CartasJugador cartasJugador = new CartasJugador();
-        Recurso[] recursos = {
-            new Madera("Madera", 2),
-            new Ladrillo("Ladrillo", 2),
-            new Piedra("Piedra", 2),
-            new Lana("Lana", 0)
-        };
+        Jugador jugador = new Jugador("Azul");
+        jugador.agregarRecurso(new Madera(2));
+        jugador.agregarRecurso(new Ladrillo(2));
+        jugador.agregarRecurso(new Piedra(2));
+
         Hexagono origen = tablero.obtenerHexagono(new Coordenadas(2, 2));
-        CasoDeUsoTocaUsarLadron caso = new CasoDeUsoTocaUsarLadron(tablero, "Azul", origen, cartasJugador);
-        caso.agregarRecursos(recursos);
-        caso.ladronRobaRecursos();
-        int totalRecursosDespuesDeRobar = cartasJugador.cantidadTotalCartasRecurso();
+        CasoDeUsoTocaUsarLadron caso = new CasoDeUsoTocaUsarLadron(tablero, jugador, origen);
+        caso.configurarDestino(tablero.obtenerHexagono(new Coordenadas(0,6)));
+        //act
+        caso.lanzarDado(new DadoCargado(7));
+        int totalRecursosDespuesDeRobar = jugador.obtenerCantidadCartasRecurso();
+
+        //assert
         assertEquals(6, totalRecursosDespuesDeRobar);
+    }
+
+
+    //Hay que crear la clase jugador para hacer este test?
+    //Seguro que si, hay que robar una carta aleatoria de otro jugador
+    @Test
+    public void test05JugadorMueveLadronYRobaUnRecursoAleatorioDeOtroJugador(){
+        Tablero tablero = new Tablero();
+        Jugador jugador1 = new Jugador("Azul");
+        Jugador jugador2 = new Jugador("Rojo");
+        
+        jugador1.agregarRecurso(new Madera(3));
+
+        Hexagono origen = tablero.obtenerHexagono(new Coordenadas(2, 2));
+        CasoDeUsoTocaUsarLadron caso = new CasoDeUsoTocaUsarLadron(tablero, jugador1, origen);
+        caso.colocarEn(new Coordenadas(0,6), new Poblado() ,jugador1);
+        
+        Hexagono destino = tablero.obtenerHexagono(new Coordenadas(0,6));
+        caso.configurarDestino(tablero.obtenerHexagono(new Coordenadas(0,6)));
+
+        //jugador2 mueve al ladron al hexagono donde esta el poblado de jugador1
+        assertEquals(2, jugador1.obtenerCantidadCartasRecurso());
+        //Jugador2 sin cartas roba 1 carta a jugador1 y queda con 1 carta.
+        assertEquals(1, jugador2.obtenerCantidadCartasRecurso());
     }
     
         /*

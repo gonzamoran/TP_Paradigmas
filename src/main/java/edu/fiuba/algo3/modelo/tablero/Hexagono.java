@@ -44,12 +44,6 @@ public abstract class Hexagono {
 
     public abstract Recurso generarRecurso(int cantidad);
 
-    // public void agregarVerticeAdyacente(Vertice vertice) {
-    // if (!this.verticesAdyacentes.contains(vertice)) {
-    // this.verticesAdyacentes.add(vertice);
-    // }
-    // }
-
     public boolean equals(Object obj) {
         if (this == obj)
             return true;

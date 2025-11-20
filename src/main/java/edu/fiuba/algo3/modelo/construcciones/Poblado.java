@@ -6,8 +6,7 @@ import java.util.List;
 
 public class Poblado extends Construccion {
    
-    public Poblado(String jugador){
-        this.jugador = jugador;
+    public Poblado(){
         this.puntosVictoria = 1;
     }
 

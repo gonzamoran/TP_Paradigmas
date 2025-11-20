@@ -1,8 +1,7 @@
 package edu.fiuba.algo3.modelo.tablero;
 
-// import java.system.out;
-import java.util.List;
 import java.lang.reflect.Constructor;
+// import java.system.out;
 import java.util.*;
 
 import edu.fiuba.algo3.modelo.Recurso;
@@ -12,6 +11,7 @@ import edu.fiuba.algo3.modelo.tablero.Ladron;
 import edu.fiuba.algo3.modelo.tablero.Coordenadas;
 import edu.fiuba.algo3.modelo.tablero.Produccion;
 import edu.fiuba.algo3.modelo.construcciones.Construccion;
+import edu.fiuba.algo3.modelo.Jugador;
 
 import edu.fiuba.algo3.modelo.tablero.tiposHexagono.Desierto;
 import edu.fiuba.algo3.modelo.tablero.tiposHexagono.Bosque;
@@ -22,12 +22,9 @@ import edu.fiuba.algo3.modelo.tablero.tiposHexagono.Pastizal;
 
 import edu.fiuba.algo3.modelo.excepciones.PosInvalidaParaConstruirException;
 
-import java.util.HashMap;
-import java.util.Collections;
-
 public class Tablero {
     private Ladron ladron;
-    private Map<Coordenadas, Carretera> carreteras;
+    // private Map<Coordenadas, Carretera> carreteras;
     // private Map<Coordenadas, Poblado> poblados;
     private ArrayList<Hexagono> listaHexagonos;
     private ArrayList<Produccion> listaNumeros;
@@ -35,9 +32,8 @@ public class Tablero {
     private Map<Coordenadas, Vertice> mapaVertices;
 
     public Tablero() {
-        this.ladron = new Ladron();
-        this.carreteras = new HashMap<>();
-        // this.poblados = new HashMap<>();
+        // this.carreteras = new HashMap<>();
+        // this.poblados = new HashMap<>(); 
         this.listaHexagonos = new ArrayList<Hexagono>();
         this.listaNumeros = new ArrayList<Produccion>();
         this.mapaHexagonos = new HashMap<>();
@@ -55,7 +51,6 @@ public class Tablero {
         if (listaHexagonos.size() != 19 || listaNumeros.size() != 18) {
             throw new IllegalArgumentException("Cantidad de hexagonos o numeros invalida para el tablero");
         }
-        this.ladron = new Ladron();
         this.listaHexagonos = listaHexagonos;
         this.listaNumeros = listaNumeros;
         this.mapaHexagonos = new HashMap<>();
@@ -191,7 +186,7 @@ public class Tablero {
         for (Map.Entry<Coordenadas, Hexagono> entrada : mapaHexagonos.entrySet()) {
             Hexagono hexagono = entrada.getValue();
             Coordenadas coords = entrada.getKey();
-            Coordenadas[] coordsVertices = this.obtenerVerticesDeHexagono(hexagono, coords);
+            Coordenadas[] coordsVertices = this.obtenerVerticesDeHexagono(coords);
             for (Coordenadas coordVertice : coordsVertices) {
                 if (!mapaVertices.containsKey(coordVertice)) {
                     Vertice vertice = new Vertice();
@@ -206,7 +201,7 @@ public class Tablero {
         }
     }
 
-    private Coordenadas[] obtenerVerticesDeHexagono(Hexagono hexagono, Coordenadas coordenadas) {
+    private Coordenadas[] obtenerVerticesDeHexagono(Coordenadas coordenadas) {
         int hx = coordenadas.obtenerCoordenadaX();
         int hy = coordenadas.obtenerCoordenadaY();
 
@@ -258,7 +253,7 @@ public class Tablero {
         List<Hexagono> hexagonos = new ArrayList<>(mapaHexagonos.values());
         for (Hexagono hexagono : hexagonos) {
             if (hexagono.esDesierto()) {
-                ladron.moverA(hexagono);
+                this.ladron = new Ladron(hexagono);
             }
         }
     }
@@ -277,10 +272,9 @@ public class Tablero {
 
         Vertice vertice = mapaVertices.get(coordenadas);
         return vertice.cumpleReglaDistancia() && !vertice.tieneConstruccion();
-    }
-
-    public ArrayList<Recurso> colocarConstruccionInicial(Construccion construccion, Coordenadas coordenadas,
-            String jugador) {
+    }  
+    
+    public ArrayList<Recurso> colocarConstruccionInicial(Construccion construccion, Coordenadas coordenadas, Jugador jugador) {
         if (!this.sePuedeConstruirInicial(coordenadas, construccion)) {
             throw new PosInvalidaParaConstruirException();
         }
@@ -317,7 +311,7 @@ public class Tablero {
                 listaNumeros.equals(otro.listaNumeros);
     }
 
-    public void colocarEn(Coordenadas coordenadas, Construccion construccion, String jugador) {
+    public void colocarEn(Coordenadas coordenadas, Construccion construccion, Jugador jugador) {
         Vertice vertice = mapaVertices.get(coordenadas);
 
         if (vertice != null) {
@@ -327,7 +321,7 @@ public class Tablero {
         }
     }
 
-    public ArrayList<Recurso> producirRecurso(int produccionDado, String jugador) {
+    public ArrayList<Recurso> producirRecurso(int produccionDado, Jugador jugador) {
         ArrayList<Recurso> produccionDelJugador = new ArrayList<>();
         for (Vertice vertice : mapaVertices.values()) {
             if (vertice.tieneConstruccion() && vertice.esDueno(jugador)) {
@@ -348,8 +342,9 @@ public class Tablero {
         return vertice.cumpleReglaDistancia() && !vertice.tieneConstruccion();
     }
 
-    public void moverLadronA(Hexagono hexagonoDestino) {
-        this.ladron.moverLadronA(hexagonoDestino);
+    public void moverLadronA(Hexagono hexagonoDestino, Jugador jugadorMovedor) {
+        var jugadorHacia = this.obtenerJugadoresAdyacentes(hexagonoDestino); //algo;
+        this.ladron.moverLadronA(hexagonoDestino, jugadorMovedor, jugadorHacia);
     }
 
     public Hexagono obtenerHexagono(Coordenadas coordenadas) {
@@ -358,6 +353,36 @@ public class Tablero {
 
     public Hexagono obtenerHexagonoLadron() {
         return ladron.obtenerHexagonoActual();
+    }
+
+    public Coordenadas obtenerCoordenadasHexagono(Hexagono hexagono){
+        for (Map.Entry<Coordenadas, Hexagono> entrada : mapaHexagonos.entrySet()) {
+            if (entrada.getValue().equals(hexagono)){
+                return entrada.getKey();
+            }
+        }
+        return null;
+    }
+
+    public List <Jugador> obtenerJugadoresAdyacentes(Hexagono hexagono){
+        List<Jugador> jugadores = new ArrayList<>();
+
+        List<Coordenadas> coordsVertices = Arrays.asList(this.obtenerVerticesDeHexagono(this.obtenerCoordenadasHexagono(hexagono)));
+
+        List<Vertice> vertices = new ArrayList<>();
+        for (Coordenadas coord : coordsVertices){
+            vertices.add(mapaVertices.get(coord));
+        }
+        
+        for ( Vertice vertice : vertices ){
+            if (vertice.tieneConstruccion()){
+                Jugador dueno = vertice.obtenerDueno();
+                if (!jugadores.contains(dueno)){
+                    jugadores.add(dueno);
+                }
+            }
+        }
+        return jugadores;
     }
 }
 /*

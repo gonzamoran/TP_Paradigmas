@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import edu.fiuba.algo3.modelo.tablero.Tablero;
 import edu.fiuba.algo3.modelo.construcciones.Construccion;
 import edu.fiuba.algo3.modelo.tablero.Coordenadas;
+import edu.fiuba.algo3.modelo.Jugador;
 import edu.fiuba.algo3.modelo.Recurso;
 
 public class CasoDeUsoColocacionInicial {
@@ -14,12 +15,8 @@ public class CasoDeUsoColocacionInicial {
         this.tablero = tablero;
     }
 
-    public ArrayList<Recurso> colocarConstruccionInicial(Coordenadas coordenadas, Construccion construccion,
-            String jugador) {
-        var recursos = tablero.colocarConstruccionInicial(construccion, coordenadas, jugador); // devuelve recursos
-                                                                                               // siempre, el primer
-                                                                                               // poblado solo los
-                                                                                               // desecha
+    public ArrayList<Recurso> colocarConstruccionInicial(Coordenadas coordenadas, Construccion construccion, Jugador jugador) {
+        var recursos = tablero.colocarConstruccionInicial(construccion, coordenadas, jugador);
         return recursos;
     }
 }

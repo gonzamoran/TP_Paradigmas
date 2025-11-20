@@ -9,32 +9,18 @@ import java.util.List;
 
 public abstract class Construccion {
     protected int puntosVictoria;
-    protected String jugador;
-
-    static public Construccion crearConstruccion(String tipo, String jugador){
-        Construccion construccion = null;
-        switch (tipo){
-            case "Poblado":
-                construccion = new Poblado(jugador);
-                break;
-            case "Ciudad":
-                construccion = new Ciudad(jugador);
-                break;
-            case "Camino":
-                //construccion = new Camino();
-                break;
-            default:
-                throw new IllegalArgumentException("Tipo de construcción inválido"); //hacer excepcion personalizada
-        }
-        construccion.puntosVictoria = construccion.obtenerPuntosDeVictoria();
-        return construccion;
-    }
+    protected Jugador jugador;
 
     public abstract int obtenerPuntosDeVictoria();
 
+    public void asignarJugador(Jugador jugador){
+        this.jugador = jugador;
+        jugador.agregarConstruccion(this);
+    }
+
     public abstract boolean esPoblado();
 
-    public boolean esDueno(String jugador){
+    public boolean esDueno(Jugador jugador){
         return this.jugador.equals(jugador);
     }
 }

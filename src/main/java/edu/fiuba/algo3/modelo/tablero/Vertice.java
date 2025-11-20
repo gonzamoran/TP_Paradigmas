@@ -12,7 +12,7 @@ import edu.fiuba.algo3.modelo.excepciones.PosInvalidaParaConstruirException;
 import java.util.ArrayList;
 
 public class Vertice {
-    private String dueño;
+    private Jugador dueno;
     private List<Hexagono> hexagonosAdyacentes;
     private Construccion construccion;
     private boolean estaConstruido;
@@ -28,14 +28,19 @@ public class Vertice {
         this.estaConstruido = false;
     }
 
-    public void construir(Construccion construccion, String jugador) {
+    public void construir(Construccion construccion, Jugador jugador) {
         this.construccion = construccion;
-        this.dueño = jugador;
+        this.dueno = jugador;
         this.estaConstruido = true;
+        construccion.asignarJugador(jugador);
     }
 
     public void agregarHexagono(Hexagono hexagono) {
             hexagonosAdyacentes.add(hexagono);
+    }
+
+    public Jugador obtenerDueno() {
+        return this.dueno;
     }
 
     public ArrayList<Hexagono> obtenerHexagonosPorProduccion(Produccion produccion) {
@@ -83,7 +88,7 @@ public class Vertice {
         return true;
     }
 
-    public ArrayList<Recurso> construirInicial(Construccion construccion, String jugador) {
+    public ArrayList<Recurso> construirInicial(Construccion construccion, Jugador jugador) {
         for (Vertice vertice : verticesAdyacentes) {
             if (vertice.tieneConstruccion()) {
                 throw new PosInvalidaParaConstruirException();
@@ -113,7 +118,7 @@ public class Vertice {
         return recursosDelVertice;
     }
 
-    public boolean esDueno(String jugador) {
+    public boolean esDueno(Jugador jugador) {
         if (!tieneConstruccion())
             return false;
         return this.construccion.esDueno(jugador);

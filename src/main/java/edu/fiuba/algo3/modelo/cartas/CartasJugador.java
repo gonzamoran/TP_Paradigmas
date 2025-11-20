@@ -27,11 +27,11 @@ public class CartasJugador {
     }
 
     public void inicializarRecursos() {
-        recursos.put(Madera.class, new Madera("Madera", 0));
-        recursos.put(Ladrillo.class, new Ladrillo("Ladrillo", 0));
-        recursos.put(Grano.class, new Grano("Grano", 0));
-        recursos.put(Lana.class, new Lana("Lana", 0));
-        recursos.put(Piedra.class, new Piedra("Piedra", 0));
+        recursos.put(Madera.class, new Madera(0));
+        recursos.put(Ladrillo.class, new Ladrillo(0));
+        recursos.put(Grano.class, new Grano(0));
+        recursos.put(Lana.class, new Lana(0));
+        recursos.put(Piedra.class, new Piedra(0));
     }
 
     public void agregarRecursos(Recurso recurso) {
@@ -53,9 +53,6 @@ public class CartasJugador {
         return cantidadCartas;
     }
 
-    /*
-     * Metodo a revisar, no se que tan bien esta esto
-     */
     public Map.Entry<Class<? extends Recurso>, Recurso> conseguirRecursoAleatorio() {
         if (recursos.isEmpty()) {
             return null;

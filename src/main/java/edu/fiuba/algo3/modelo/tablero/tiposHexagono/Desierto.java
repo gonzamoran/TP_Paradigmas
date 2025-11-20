@@ -2,12 +2,9 @@ package edu.fiuba.algo3.modelo.tablero.tiposHexagono;
 
 import edu.fiuba.algo3.modelo.tablero.Hexagono;
 import edu.fiuba.algo3.modelo.Recurso;
+import edu.fiuba.algo3.modelo.tiposRecurso.Nulo;
 
 public class Desierto extends Hexagono {
-
-    public Desierto() {
-        super();
-    }
 
     @Override
     public boolean esDesierto() {
@@ -21,7 +18,7 @@ public class Desierto extends Hexagono {
 
     @Override
     public Recurso generarRecurso(int cantidad) {
-        return Recurso.generarRecurso("Nulo", 0);
+        return new Nulo();
     }
     
 }

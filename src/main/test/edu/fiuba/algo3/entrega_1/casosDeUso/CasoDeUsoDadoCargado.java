@@ -7,46 +7,32 @@ import edu.fiuba.algo3.modelo.tablero.Coordenadas;
 import edu.fiuba.algo3.modelo.construcciones.*;
 import edu.fiuba.algo3.modelo.Recurso;
 import edu.fiuba.algo3.modelo.Dados;
+import edu.fiuba.algo3.modelo.Jugador;
 
 import java.util.ArrayList;
 
 public class CasoDeUsoDadoCargado {
     private int resultado = 8;
-    private String jugador;
+    private Jugador jugador;
     private Tablero tablero;
 
-    public CasoDeUsoDadoCargado(Tablero tablero, String nombreJugador, int resultado) {
+    public CasoDeUsoDadoCargado(Tablero tablero, Jugador nombreJugador) {
         this.tablero = tablero;
         this.jugador = nombreJugador;
-        this.resultado = resultado;
     }
 
-    public void colocarEn(Coordenadas coordenadas, Construccion construccion, String jugador) {
-        tablero.colocarEn(coordenadas, construccion, this.jugador);
+    public void colocarEn(Coordenadas coordenadas, Construccion construccion) {
+        tablero.colocarEn(coordenadas, construccion, jugador);
     }
 
-    public ArrayList<Recurso> producirRecursos() {
+    private ArrayList<Recurso> producirRecursos(int nroProduccion) {
         return tablero.producirRecurso(resultado, jugador);
     }
 
-    public int lanzarDados() {
-        return resultado;
+    public ArrayList<Recurso> lanzarDados(Dados dado) {
+        resultado = dado.lanzarDados();
+        ArrayList<Recurso> recursos = this.producirRecursos(resultado);
+        return recursos;
     }
-    /*
-     * public ArrayList<Recurso> producirRecursos(){
-     * ArrayList<Recurso> recursosGenerados = new ArrayList<>();
-     * ArrayList<Hexagono> hexagonos = tablero.obtenerHexagonosConNumero(resultado);
-     * tablero.generarRecursos(produccion);
-     * 
-     * for (Hexagono hex: hexagonos){
-     * int cantidad = si es ciudad 2 sino 1 //lo maneja construccion
-     * 
-     * recursosGenerados.add(Recurso.producirRecursos(hex, cantidad));
-     * }
-     * 
-     * return recursosGenerados;
-     * 
-     * }
-     */
 
 }

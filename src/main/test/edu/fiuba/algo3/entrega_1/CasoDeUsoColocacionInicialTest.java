@@ -8,12 +8,16 @@ import org.junit.Test;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import edu.fiuba.algo3.modelo.tablero.Tablero;
-import edu.fiuba.algo3.modelo.construcciones.Construccion;
+import edu.fiuba.algo3.modelo.construcciones.Poblado;
 import edu.fiuba.algo3.modelo.tablero.Coordenadas;
 import edu.fiuba.algo3.entrega_1.casosDeUso.CasoDeUsoColocacionInicial;
 import edu.fiuba.algo3.modelo.Recurso;
+import edu.fiuba.algo3.modelo.tiposRecurso.*;
+import edu.fiuba.algo3.modelo.Jugador;
 
 import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
 import edu.fiuba.algo3.modelo.excepciones.PosInvalidaParaConstruirException;
 
 public class CasoDeUsoColocacionInicialTest {
@@ -26,61 +30,52 @@ public class CasoDeUsoColocacionInicialTest {
                 // que se coloquen bien los poblados y que el segundo devuelva recursos
                 // correctamente
                 Tablero tablero = new Tablero();
-                String jugador = "Azul";
+                Jugador jugador = new Jugador("Azul");
                 CasoDeUsoColocacionInicial caso = new CasoDeUsoColocacionInicial(tablero);
 
-                caso.colocarConstruccionInicial(new Coordenadas(4, 3),
-                                Construccion.crearConstruccion("Poblado", jugador),
-                                jugador);
-                ArrayList<Recurso> produccion = caso.colocarConstruccionInicial(new Coordenadas(2, 1),
-                                Construccion.crearConstruccion("Poblado", jugador), jugador);
+                caso.colocarConstruccionInicial(new Coordenadas(4, 3),new Poblado(), jugador);
+                ArrayList<Recurso> produccion = caso.colocarConstruccionInicial(new Coordenadas(2, 1),new Poblado(), jugador);
 
                 var produccionEsperada = new ArrayList<Recurso>(List.of(
-                                Recurso.generarRecurso("Grano", 1),
-                                Recurso.generarRecurso("Madera", 1),
-                                Recurso.generarRecurso("Madera", 1)));
+                                new Grano(1),
+                                new Madera(1),
+                                new Madera(1)));
 
-                assertEquals(produccionEsperada, produccion);
+                assertTrue(produccion.containsAll(produccionEsperada));
+                assertTrue(produccionEsperada.containsAll(produccion));
         }
 
         @Test
         public void test02CasoDeUsoColocacionInicialCumpleReglaDeDistancia() {
                 Tablero tablero = new Tablero();
-                String jugador = "Azul";
+                Jugador jugador = new Jugador("Azul");
                 CasoDeUsoColocacionInicial caso = new CasoDeUsoColocacionInicial(tablero);
 
-                caso.colocarConstruccionInicial(new Coordenadas(4, 3),
-                                Construccion.crearConstruccion("Poblado", jugador),
-                                jugador);
+                caso.colocarConstruccionInicial(new Coordenadas(4, 3), new Poblado(), jugador);
 
                 assertThrows(PosInvalidaParaConstruirException.class,
-                                () -> caso.colocarConstruccionInicial(new Coordenadas(4, 4),
-                                                Construccion.crearConstruccion("Poblado", jugador), jugador));
+                                () -> caso.colocarConstruccionInicial(new Coordenadas(4, 4), new Poblado(), jugador));
         }
 
         @Test
         public void test03CasoDeUsoColocacionInicialNoSePuedeColocarFueraDelTablero() {
                 Tablero tablero = new Tablero();
-                String jugador = "Azul";
+                Jugador jugador = new Jugador("Azul");
                 CasoDeUsoColocacionInicial caso = new CasoDeUsoColocacionInicial(tablero);
 
                 assertThrows(PosInvalidaParaConstruirException.class,
-                                () -> caso.colocarConstruccionInicial(new Coordenadas(20, 20),
-                                                Construccion.crearConstruccion("Poblado", jugador), jugador));
+                                () -> caso.colocarConstruccionInicial(new Coordenadas(20, 20), new Poblado(), jugador));
         }
 
         @Test
         public void test05CasoDeUsoColocacionInicialNoSePuedeColocarEnLaMismaPosicion() {
                 Tablero tablero = new Tablero();
-                String jugador = "Azul";
+                Jugador jugador = new Jugador("Azul");
                 CasoDeUsoColocacionInicial caso = new CasoDeUsoColocacionInicial(tablero);
 
-                caso.colocarConstruccionInicial(new Coordenadas(4, 3),
-                                Construccion.crearConstruccion("Poblado", jugador),
-                                jugador);
+                caso.colocarConstruccionInicial(new Coordenadas(4, 3), new Poblado(), jugador);
 
                 assertThrows(PosInvalidaParaConstruirException.class,
-                                () -> caso.colocarConstruccionInicial(new Coordenadas(4, 3),
-                                                Construccion.crearConstruccion("Poblado", jugador), jugador));
+                                () -> caso.colocarConstruccionInicial(new Coordenadas(4, 3),new Poblado(), jugador));
         }
 }
