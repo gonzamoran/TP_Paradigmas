@@ -53,7 +53,7 @@ public abstract class Hexagono {
     public boolean equals(Object obj) {
         if (this == obj)
             return true;
-        if (obj == null || getClass() != obj.getClass())
+        if (obj == null || this.getClass() != obj.getClass())
             return false;
         Hexagono hexagono = (Hexagono) obj;
         return tieneLadron == hexagono.tieneLadron; // para este punto son dos hexagonos iguales

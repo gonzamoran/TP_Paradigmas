@@ -67,6 +67,10 @@ public abstract class Recurso {
         return tipo.hashCode();
     }
 
+    public void restar(int cantidad) {
+        this.cantidad -= cantidad;
+    }
+
     public int obtenerCantidad() {
         return cantidad;
     }

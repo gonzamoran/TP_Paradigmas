@@ -35,9 +35,7 @@ public class Vertice {
     }
 
     public void agregarHexagono(Hexagono hexagono) {
-        if (!hexagonosAdyacentes.contains(hexagono)) {
             hexagonosAdyacentes.add(hexagono);
-        }
     }
 
     public ArrayList<Hexagono> obtenerHexagonosPorProduccion(Produccion produccion) {

@@ -32,12 +32,13 @@ public class CasoDeUsoColocacionInicialTest {
                 caso.colocarConstruccionInicial(new Coordenadas(4, 3),
                                 Construccion.crearConstruccion("Poblado", jugador),
                                 jugador);
-                var produccion = caso.colocarConstruccionInicial(new Coordenadas(2, 1),
+                ArrayList<Recurso> produccion = caso.colocarConstruccionInicial(new Coordenadas(2, 1),
                                 Construccion.crearConstruccion("Poblado", jugador), jugador);
 
                 var produccionEsperada = new ArrayList<Recurso>(List.of(
                                 Recurso.generarRecurso("Grano", 1),
-                                Recurso.generarRecurso("Madera", 2)));
+                                Recurso.generarRecurso("Madera", 1),
+                                Recurso.generarRecurso("Madera", 1)));
 
                 assertEquals(produccionEsperada, produccion);
         }

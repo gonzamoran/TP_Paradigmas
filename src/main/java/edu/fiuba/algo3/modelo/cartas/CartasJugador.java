@@ -22,6 +22,7 @@ public class CartasJugador {
 
     // Crear constructor.
     public CartasJugador() {
+        this.recursos = new HashMap<Class<? extends Recurso>, Recurso>();
         inicializarRecursos();
     }
 
@@ -40,7 +41,8 @@ public class CartasJugador {
 
     public int obtenerCantidadCartasRecurso(Recurso recurso) {
         Recurso actual = recursos.get(recurso.getClass());
-        actual.obtenerCantidad();
+        int cantidadactual = actual.obtenerCantidad();
+        return cantidadactual;
     }
 
     public int cantidadTotalCartasRecurso() {
@@ -54,47 +56,59 @@ public class CartasJugador {
     /*
      * Metodo a revisar, no se que tan bien esta esto
      */
-    public static <K, V> Map.Entry<K, V> getRandomEntry(Map<K, V> map) {
-        if (map.isEmpty()) {
+    public Map.Entry<Class<? extends Recurso>, Recurso> conseguirRecursoAleatorio() {
+        if (recursos.isEmpty()) {
             return null;
         }
-        List<Map.Entry<K, V>> entries = new ArrayList<>(map.entrySet());
+        List<Map.Entry<Class<? extends Recurso>, Recurso>> entries = new ArrayList<>(recursos.entrySet());
         Random random = new Random();
-        return entries.get(random.nextInt(entries.size()));
+        for (int i = 0; i < entries.size(); i++) {
+            var entrada = entries.get(random.nextInt(entries.size()));
+            Recurso recurso = (Recurso) entrada.getValue();
+            if (recurso.obtenerCantidad() > 0){
+                return entrada;
+            }
+        }
+        return null;
     }
 
-    // Solo se llama cuando el jugador tien 8 cartas o más.
+    // Solo se llama cuando el jugador tiene 7 cartas o más.
     public ArrayList<Recurso> descarteCartas() {
         ArrayList<Recurso> descarte = new ArrayList<>();
-        int cantCartasDescarte = (this.cantidadTotalCartasRecurso() / 2);
-
+        int cantCartasDescarte = (int) Math.floor(this.cantidadTotalCartasRecurso() / 2.0);
         for (int i = 0; i < cantCartasDescarte; i++) {
-            Map.Entry<Recurso, Integer> entry = getRandomEntry(recursos);
+            Map.Entry<Class<? extends Recurso>, Recurso> entrada = conseguirRecursoAleatorio();
+            if (entrada == null){
+                break;
+            }
 
-            Recurso tipo = entry.getKey();
-            int cantidad = entry.getValue();
+            Recurso recurso = entrada.getValue();
+            int cantidad = recurso.obtenerCantidad();
 
             // Despues hay que ver si lo ponemos como re
-            descarte.add(tipo);
+            descarte.add(recurso);
 
-            recursos.put(tipo, cantidad - 1);
+            recurso.restar(1);
         }
-        return descarte;
+        return descarte; //podria devolver o no, por ahora no lo necesitamos
     }
 
+    public boolean puedeDescartarse() {
+        return this.cantidadTotalCartasRecurso() >= 7;
+    }
     // verificar si un jugador puede construir. Hay que verlo.
-    public boolean tieneRecursos() {
+    // public boolean tieneRecursos() {
 
-    }
+    // }
 
     // Sacar recursos del jugador.
-    public void gastarRecurso(Recurso recurso, int cantidad);
+    // public void gastarRecurso(Recurso recurso, int cantidad);
 
-    {
-        // for
-        Recurso actual = recursos.getKey(recurso);
-        int cantidadAGastar = entry.getValue();
+    // {
+    //     // for
+    //     Recurso actual = recursos.getKey(recurso);
+    //     int cantidadAGastar = entry.getValue();
 
-        recursos.add(recurso, obtenerCantidadCartasRecurso(recurso) - cantidadAGastar);
-    }
+    //     recursos.add(recurso, obtenerCantidadCartasRecurso(recurso) - cantidadAGastar);
+    // }
 }

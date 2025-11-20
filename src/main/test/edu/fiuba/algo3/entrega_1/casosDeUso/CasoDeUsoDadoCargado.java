@@ -15,22 +15,17 @@ public class CasoDeUsoDadoCargado {
     private String jugador;
     private Tablero tablero;
 
-    public CasoDeUsoDadoCargado(Tablero tablero, String nombreJugador) {
+    public CasoDeUsoDadoCargado(Tablero tablero, String nombreJugador, int resultado) {
         this.tablero = tablero;
         this.jugador = nombreJugador;
+        this.resultado = resultado;
     }
 
     public void colocarEn(Coordenadas coordenadas, Construccion construccion, String jugador) {
-        if (coordenadas == null || (!tablero.sonCoordenadasValidas(coordenadas))) {
-            throw new IllegalArgumentException("Coordenadas invalidas"); // cambiar excepcion
-        }
-        if (!tablero.sePuedeConstruir(coordenadas, construccion)) {
-            throw new IllegalArgumentException("No se puede construir aqui"); // cambiar excepcion
-        }
         tablero.colocarEn(coordenadas, construccion, this.jugador);
     }
 
-    public ArrayList<Recurso> producirRecursos(int resultado) {
+    public ArrayList<Recurso> producirRecursos() {
         return tablero.producirRecurso(resultado, jugador);
     }
 
