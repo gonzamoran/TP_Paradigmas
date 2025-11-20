@@ -13,17 +13,17 @@ import edu.fiuba.algo3.modelo.tablero.Coordenadas;
 public class CasoDeUsoTocaUsarLadron {
     private Tablero tablero;
     private Jugador jugador;
-    private Hexagono hexagonoActual;
-    private Hexagono hexagonoDestino;
+    private Coordenadas hexagonoActual;
+    private Coordenadas hexagonoDestino;
 
-    public CasoDeUsoTocaUsarLadron(Tablero tablero, Jugador jugador, Hexagono hexagonoInicio) {
+    public CasoDeUsoTocaUsarLadron(Tablero tablero, Jugador jugador, Coordenadas hexagonoInicio) {
         this.tablero = tablero;
         this.jugador = jugador;
         tablero.moverLadronA(hexagonoInicio);
         this.hexagonoActual = hexagonoInicio;
     }
 
-    public void configurarDestino(Hexagono hexagonoDestino) {
+    public void configurarDestino(Coordenadas hexagonoDestino) {
         this.hexagonoDestino = hexagonoDestino;
     }
 
@@ -31,13 +31,13 @@ public class CasoDeUsoTocaUsarLadron {
         int resultado = dado.lanzarDados();
         if (resultado == 7) {
             this.ladronRobaRecursos(); ///descarte
-            this.moverLadronA(); //mover ladron y robar cartas
-            this.robarCartas();
+            this.moverLadronA(hexagonoDestino); //mover ladron
+            this.robarCartas(jugador);
         }
     }
 
-    public void moverLadronA() {
-        tablero.moverLadronA(hexagonoDestino);
+    public void moverLadronA(Coordenadas coordenadas) {
+        tablero.moverLadronA(coordenadas);
         this.hexagonoActual = hexagonoDestino;
     }
 
@@ -57,9 +57,7 @@ public class CasoDeUsoTocaUsarLadron {
         tablero.colocarEn(coordenadas,construccion, jugador);
     }
 
-    public void robarCartas(Jugador jugador1, Jugador jugador2){
-        // Mover 
-        // Segundo coordenada nueva del ladron sea igual a la coordenada del jugador a robar.
-
+    public void robarCartas(Jugador jugador){
+        tablero.ladronRobaRecurso(jugador);
     }
 }

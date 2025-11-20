@@ -8,6 +8,7 @@ import edu.fiuba.algo3.modelo.construcciones.*;
 import edu.fiuba.algo3.modelo.Recurso;
 import edu.fiuba.algo3.modelo.Dados;
 import edu.fiuba.algo3.modelo.Jugador;
+import edu.fiuba.algo3.modelo.tiposRecurso.*;
 
 import java.util.ArrayList;
 
@@ -19,6 +20,11 @@ public class CasoDeUsoDadoCargado {
     public CasoDeUsoDadoCargado(Tablero tablero, Jugador nombreJugador) {
         this.tablero = tablero;
         this.jugador = nombreJugador;
+        jugador.agregarRecurso(new Grano(10));
+        jugador.agregarRecurso(new Lana(10));
+        jugador.agregarRecurso(new Madera(10));
+        jugador.agregarRecurso(new Ladrillo(10));
+        jugador.agregarRecurso(new Piedra(10));
     }
 
     public void colocarEn(Coordenadas coordenadas, Construccion construccion) {

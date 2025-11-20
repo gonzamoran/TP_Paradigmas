@@ -4,6 +4,8 @@ import edu.fiuba.algo3.modelo.Jugador;
 import edu.fiuba.algo3.modelo.tablero.Tablero;
 import edu.fiuba.algo3.modelo.tablero.Coordenadas;
 import edu.fiuba.algo3.modelo.tiposRecurso.*;
+import edu.fiuba.algo3.modelo.construcciones.Poblado;
+
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -13,16 +15,16 @@ public class ConstruccionCarreteraTest {
     public void test01ConstruirCarreteraConsumeRecursosCorrectos() {
         Jugador jugador = new Jugador("Jugador 1");
         Tablero tablero = new Tablero();
-        jugador.agregarRecurso(new Madera(), 1);
-        jugador.agregarRecurso(new Ladrillo(), 1);
+        jugador.agregarRecurso(new Madera(1));
+        jugador.agregarRecurso(new Ladrillo(1));
 
-        Coordenada coordenadaOK = new Coordenada(0, 0);
+        Coordenadas coordenadaOK = new Coordenadas(0, 0);
 
         boolean construido = tablero.construirCarretera(jugador, coordenadaOK);
 
         assertTrue(construido);
-        assertEquals(0, jugador.getCantidadRecurso(TipoRecurso.MADERA));
-        assertEquals(0, jugador.getCantidadRecurso(TipoRecurso.LADRILLO));
+        assertEquals(0, jugador.obtenerCantidadRecurso(new Madera(0)));
+        assertEquals(0, jugador.obtenerCantidadRecurso(new Ladrillo(0)));
     }
 
     @Test
@@ -42,11 +44,11 @@ public class ConstruccionCarreteraTest {
     public void test03ConstruirCarreteraAdyacenteAOtraEsPermitido() {
         Jugador jugador = new Jugador("Jugador 1");
         Tablero tablero = new Tablero();
-        jugador.agregarRecurso(new Madera(), 2);
-        jugador.agregarRecurso(new Ladrillo(), 2);
+        jugador.agregarRecurso(new Madera(2));
+        jugador.agregarRecurso(new Ladrillo(2));
 
-        Coordenada coordenada1 = new Coordenada(0, 0);
-        Coordenada coordenada2 = new Coordenada(0, 1);
+        Coordenadas coordenada1 = new Coordenadas(0, 0);
+        Coordenadas coordenada2 = new Coordenadas(0, 1);
 
         tablero.construirCarretera(jugador, coordenada1);
         boolean segundaCarretera = tablero.construirCarretera(jugador, coordenada2);
@@ -59,11 +61,11 @@ public class ConstruccionCarreteraTest {
     public void test04ConstruirCarreteraNoAdyacenteAOtraNoEsPermitido() {
         Jugador jugador = new Jugador("Jugador 1");
         Tablero tablero = new Tablero();
-        jugador.agregarRecurso(new Madera(), 2);
-        jugador.agregarRecurso(new Ladrillo(), 2);
+        jugador.agregarRecurso(new Madera(2));
+        jugador.agregarRecurso(new Ladrillo(2));
 
-        Coordenada coordenada1 = new Coordenada(0, 0);
-        Coordenada coordenadaNoAdyacente = new Coordenada(3, 3);
+        Coordenadas coordenada1 = new Coordenadas(0, 0);
+        Coordenadas coordenadaNoAdyacente = new Coordenadas(3, 3);
 
         tablero.construirCarretera(jugador, coordenada1);
         boolean segundaCarretera = tablero.construirCarretera(jugador, coordenadaNoAdyacente);
@@ -76,18 +78,20 @@ public class ConstruccionCarreteraTest {
     public void test05ConstuirCarreteraAdyacenteAPobladoEsPermitido() {
         Jugador jugador = new Jugador("Jugador 1");
         Tablero tablero = new Tablero();
-        jugador.agregarRecurso(new Madera(), 3);
-        jugador.agregarRecurso(new Ladrillo(), 3);
-        jugador.agregarRecurso(new Lana(), 1);
-        jugador.agregarRecurso(new Trigo(), 1);
+        Poblado poblado = new Poblado();
 
-        Coordenadas coordenadaPoblado = new Coordenadas(0, 0);
-        Coordenadas coordenadaCarretera = new Coordenadas(0, 1);
+        jugador.agregarRecurso(new Madera(3));
+        jugador.agregarRecurso(new Ladrillo(3));
+        jugador.agregarRecurso(new Lana(1));
+        jugador.agregarRecurso(new Grano(1));
 
-        tablero.construirPoblado(jugador, coordenadaPoblado);
-        boolean carreteraConstruida = tablero.construirCarretera(jugador, coordenadaCarretera);
+        Coordenadas coordenadasPoblado = new Coordenadas(0, 0);
+        Coordenadas coordenadasCarretera = new Coordenadas(0, 1);
+
+        tablero.colocarEn(coordenadasPoblado, poblado,jugador);
+        boolean carreteraConstruida = tablero.construirCarretera(jugador, coordenadasCarretera);
 
         assertTrue(carreteraConstruida);
-        assertTrue(tablero.hayCarreteraEn(coordenadaCarretera, jugador));
+        assertTrue(tablero.hayCarreteraEn(coordenadasCarretera, jugador));
     }
 }

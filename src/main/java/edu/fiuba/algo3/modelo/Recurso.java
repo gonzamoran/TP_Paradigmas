@@ -33,6 +33,8 @@ public abstract class Recurso {
         this.cantidad += recurso.cantidad;
     }
 
+    public abstract Recurso obtenerCopia(int cantidad);
+
     public int hashCode() {
         return getClass().hashCode();
     }

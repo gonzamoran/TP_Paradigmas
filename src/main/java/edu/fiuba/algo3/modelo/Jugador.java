@@ -26,6 +26,14 @@ public class Jugador {
         mazos.agregarRecursos(recurso);
     }
 
+    public Recurso removerRecursoAleatorio() {
+        return mazos.removerRecursoAleatorio();
+    }
+
+    public void removerRecurso(Recurso recurso) {
+        mazos.removerRecurso(recurso);
+    }
+
     public int obtenerCantidadRecurso(Recurso recurso) {
         return mazos.obtenerCantidadCartasRecurso(recurso);
     }
@@ -40,10 +48,18 @@ public class Jugador {
 
     public void agregarConstruccion(Construccion construccion) {
         construccionesJugador.add(construccion);
-        puntosDeVictoria += construccion.obtenerPuntosDeVictoria();
+    }
+
+    public void removerConstruccion(Construccion construccion) {
+        construccionesJugador.remove(construccion);
     }
 
     public int calculoPuntosVictoria(){
+        int sumaTotal = 0;
+        for (Construccion c : construccionesJugador) {
+            sumaTotal += c.obtenerPuntosDeVictoria();
+        }
+        this.puntosDeVictoria = sumaTotal;
         return puntosDeVictoria;
     }
 
@@ -55,14 +71,27 @@ public class Jugador {
         mazos.descarteCartas();
     }
 
-    
+    public boolean tieneRecursos() {
+        return this.obtenerCantidadCartasRecurso() > 0;
+    }
+
+    public boolean poseeRecursosParaConstruir(Construccion construccion) {
+        var recursosNecesarios = construccion.obtenerRecursosNecesarios();
+        for (Recurso recurso : recursosNecesarios) {
+            if (this.obtenerCantidadRecurso(recurso) < recurso.obtenerCantidad()) {
+                return false;
+            }
+        }
+        return true;
+    }
+
     public boolean equals(Object obj) {
         if (this == obj)
             return true;
         if (obj == null || getClass() != obj.getClass())
             return false;
         Jugador jugador = (Jugador) obj;
-        return Objects.equals(color, jugador.color);
+        return this.color == jugador.color;
     }
     // OJOOO chequear el Map
     // public boolean puedeConstruirCarretera() {

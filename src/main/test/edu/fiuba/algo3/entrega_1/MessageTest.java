@@ -1,4 +1,4 @@
-package edu.fiuba.algo3.entrega_1.pruebas_desechadas;
+package edu.fiuba.algo3.entrega_1;
 
 import org.junit.jupiter.api.Test;
 

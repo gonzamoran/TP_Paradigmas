@@ -5,4 +5,8 @@ public class Grano extends Recurso {
     public Grano(int cantidad) {
         this.cantidad = cantidad;
     }
+
+    public Recurso obtenerCopia(int cantidad) {
+        return new Grano(cantidad);
+    }
 }

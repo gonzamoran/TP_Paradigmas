@@ -2,8 +2,9 @@ package edu.fiuba.algo3.modelo.construcciones;
 
 
 import edu.fiuba.algo3.modelo.Jugador;
-import edu.fiuba.algo3.modelo.excepciones.PosInvalidaParaConstruirException;
+import edu.fiuba.algo3.modelo.excepciones.*;
 import edu.fiuba.algo3.modelo.tablero.Vertice;
+import edu.fiuba.algo3.modelo.Recurso;
 import java.util.List;
 
 
@@ -11,7 +12,9 @@ public abstract class Construccion {
     protected int puntosVictoria;
     protected Jugador jugador;
 
-    public abstract int obtenerPuntosDeVictoria();
+    public int obtenerPuntosDeVictoria() {
+        return this.puntosVictoria;
+    }
 
     public void asignarJugador(Jugador jugador){
         this.jugador = jugador;
@@ -20,9 +23,16 @@ public abstract class Construccion {
 
     public abstract boolean esPoblado();
 
+    public abstract boolean esCiudad();
+
+    public abstract boolean puedeConstruirse(Construccion construccionPrevia);
+
     public boolean esDueno(Jugador jugador){
         return this.jugador.equals(jugador);
     }
+
+    public abstract List<Recurso> obtenerRecursosNecesarios();
+    
 }
 
 

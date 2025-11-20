@@ -50,7 +50,8 @@ public abstract class Hexagono {
         if (obj == null || this.getClass() != obj.getClass())
             return false;
         Hexagono hexagono = (Hexagono) obj;
-        return tieneLadron == hexagono.tieneLadron; // para este punto son dos hexagonos iguales
+        return tieneLadron == hexagono.tieneLadron &&
+        this.produccion.equals(hexagono.produccion);
     }
 }
 

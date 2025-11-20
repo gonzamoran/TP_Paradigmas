@@ -6,4 +6,8 @@ public class Piedra extends Recurso {
     public Piedra(int cantidad) {
         this.cantidad = cantidad;
     }
+
+    public Recurso obtenerCopia(int cantidad) {
+        return new Piedra(cantidad);
+    }
 }

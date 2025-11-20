@@ -4,6 +4,7 @@ import edu.fiuba.algo3.modelo.Jugador;
 import edu.fiuba.algo3.modelo.tiposRecurso.*;
 import edu.fiuba.algo3.modelo.tablero.Coordenadas;
 import edu.fiuba.algo3.modelo.tablero.Tablero;
+import edu.fiuba.algo3.modelo.construcciones.Poblado;
 
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
@@ -12,75 +13,80 @@ public class ConstruccionPobladoTest {
 
     @Test
     public void test01ConstruirPobladoConsumeRecursosCorrectos() {
-        Jugador jugador = new Jugador("Jugador 1");
         Tablero tablero = new Tablero();
+        Jugador jugador = new Jugador("Jugador 1");
+        Poblado poblado = new Poblado();
 
-        jugador.agregarRecurso(new Madera(), 1);
-        jugador.agregarRecurso(new Ladrillo(), 1);
-        jugador.agregarRecurso(new Lana(), 1);
-        jugador.agregarRecurso(new Grano(), 1);
+        jugador.agregarRecurso(new Madera(1));
+        jugador.agregarRecurso(new Ladrillo(1));
+        jugador.agregarRecurso(new Lana(1));
+        jugador.agregarRecurso(new Grano(1));
 
-        Coordenadas coordenadaOK = new Coordenadas(0, 0);
+        Coordenadas coordenadasOK = new Coordenadas(2, 4);
 
-        boolean construido = tablero.construirPoblado(jugador, coordenadaOK);
+        tablero.colocarEn(coordenadasOK, poblado, jugador);
 
-        assertTrue(construido);
-        assertEquals(0, jugador.cantidadRecurso(new Madera()));
-        assertEquals(0, jugador.cantidadRecurso(new Ladrillo()));
-        assertEquals(0, jugador.cantidadRecurso(new Lana()));
-        assertEquals(0, jugador.cantidadRecurso(new Grano()));
+        assertTrue(tablero.hayPobladoEn(coordenadasOK, jugador));
+        assertEquals(0, jugador.obtenerCantidadRecurso(new Madera(0)));
+        assertEquals(0, jugador.obtenerCantidadRecurso(new Ladrillo(0)));
+        assertEquals(0, jugador.obtenerCantidadRecurso(new Lana(0)));
+        assertEquals(0, jugador.obtenerCantidadRecurso(new Grano(0)));
     }
 
     @Test
     public void test02ConstruirPobladoSinRecursosEsInvalido() {
         Jugador jugador = new Jugador("Jugador 1");
         Tablero tablero = new Tablero();
+        Poblado poblado = new Poblado();
 
-        Coordenadas coordenadaOK = new Coordenadas(0, 0);
+        Coordenadas coordenadasOK = new Coordenadas(2, 4);
 
-        boolean construido = tablero.construirPoblado(jugador, coordenadaOK);
+        tablero.colocarEn(coordenadasOK, poblado, jugador);
 
-        assertFalse(construido);
-        assertFalse(tablero.hayPobladoEn(coordenadaOK, jugador));
+        assertFalse(tablero.hayPobladoEn(coordenadasOK, jugador));
     }
 
     @Test
     public void test03ConstruirPobladoAdyacenteEsInvalido() {
         Jugador jugador = new Jugador("Jugador 1");
         Tablero tablero = new Tablero();
+        Poblado poblado1 = new Poblado();
+        Poblado poblado2 = new Poblado();
 
-        jugador.agregarRecurso(new Madera(), 2);
-        jugador.agregarRecurso(new Ladrillo(), 2);
-        jugador.agregarRecurso(new Lana(), 2);
-        jugador.agregarRecurso(new Grano(), 2);
+        jugador.agregarRecurso(new Madera(2));
+        jugador.agregarRecurso(new Ladrillo(2));
+        jugador.agregarRecurso(new Lana(2));
+        jugador.agregarRecurso(new Grano(2));
 
-        Coordenadas coordenadaPoblado1 = new Coordenadas(0, 0);
-        Coordenadas coordenadaPoblado2 = new Coordenadas(0, 1);
+        Coordenadas coordenadaPoblado1 = new Coordenadas(2, 4);
+        Coordenadas coordenadaPoblado2 = new Coordenadas(2, 5);
 
-        boolean primerPobladoConstruido = tablero.construirPoblado(jugador, coordenadaPoblado1);
-        boolean segundoPobladoConstruido = tablero.construirPoblado(jugador, coordenadaPoblado2);
-
-        assertTrue(primerPobladoConstruido);
-        assertFalse(segundoPobladoConstruido);
+        tablero.colocarEn(coordenadaPoblado1, poblado1, jugador);
+        tablero.colocarEn(coordenadaPoblado2, poblado2, jugador);
+        
+        assertTrue(tablero.hayPobladoEn(coordenadaPoblado1, jugador));
+        assertFalse(tablero.hayPobladoEn(coordenadaPoblado2, jugador));
     }
 
     @Test
     public void test04ConstruirPobladoNoAdyacenteEsValido() {
         Jugador jugador = new Jugador("Jugador 1");
         Tablero tablero = new Tablero();
+        Poblado poblado1 = new Poblado();
+        Poblado poblado2 = new Poblado();
 
-        jugador.agregarRecurso(new Madera(), 2);
-        jugador.agregarRecurso(new Ladrillo(), 2);
-        jugador.agregarRecurso(new Lana(), 2);
-        jugador.agregarRecurso(new Grano(), 2);
+        jugador.agregarRecurso(new Madera(2));
+        jugador.agregarRecurso(new Ladrillo(2));
+        jugador.agregarRecurso(new Lana(2));
+        jugador.agregarRecurso(new Grano(2));
 
-        Coordenadas coordenadaPoblado1 = new Coordenadas(0, 0);
-        Coordenadas coordenadaPoblado2 = new Coordenadas(0, 4);
+        Coordenadas coordenadaPoblado1 = new Coordenadas(2, 4);
+        Coordenadas coordenadaPoblado2 = new Coordenadas(3, 4);
 
-        tablero.construirPoblado(jugador, coordenadaPoblado1);
-        boolean segundoPobladoConstruido = tablero.construirPoblado(jugador, coordenadaPoblado2);
+        tablero.colocarEn(coordenadaPoblado1, poblado1, jugador);
+        tablero.colocarEn(coordenadaPoblado2, poblado2, jugador);
 
-        assertTrue(segundoPobladoConstruido);
+        assertTrue(tablero.hayPobladoEn(coordenadaPoblado1, jugador));
         assertTrue(tablero.hayPobladoEn(coordenadaPoblado2, jugador));
     }
 

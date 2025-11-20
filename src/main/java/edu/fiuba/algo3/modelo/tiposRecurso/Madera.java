@@ -7,4 +7,8 @@ public class Madera extends Recurso {
     public Madera(int cantidad) {
         this.cantidad = cantidad;
     }
+
+    public Recurso obtenerCopia(int cantidad) {
+        return new Madera(cantidad);
+    }
 }

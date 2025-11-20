@@ -6,4 +6,8 @@ public class Nulo extends Recurso {
     public Nulo() {
         this.cantidad = 0;
     }
+
+    public Recurso obtenerCopia(int cantidad) {
+        return new Nulo();
+    }
 }

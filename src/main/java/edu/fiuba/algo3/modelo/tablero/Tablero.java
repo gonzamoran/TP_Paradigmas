@@ -21,6 +21,7 @@ import edu.fiuba.algo3.modelo.tablero.tiposHexagono.Montana;
 import edu.fiuba.algo3.modelo.tablero.tiposHexagono.Pastizal;
 
 import edu.fiuba.algo3.modelo.excepciones.PosInvalidaParaConstruirException;
+import edu.fiuba.algo3.modelo.excepciones.NoEsPosibleConstruirException;
 
 public class Tablero {
     private Ladron ladron;
@@ -312,6 +313,9 @@ public class Tablero {
     }
 
     public void colocarEn(Coordenadas coordenadas, Construccion construccion, Jugador jugador) {
+        if (!this.sePuedeConstruir(coordenadas, construccion, jugador)) {
+            throw new NoEsPosibleConstruirException();
+        }
         Vertice vertice = mapaVertices.get(coordenadas);
 
         if (vertice != null) {
@@ -331,20 +335,62 @@ public class Tablero {
         return produccionDelJugador;
     }
 
-    public boolean sePuedeConstruir(Coordenadas coordenadas, Construccion construccion) {
+
+    // Camino solo se puede construir si esta pegado a un camino propio o a un poblado
+    // Poblado solo se puede construir si cumple regla de la distancia y si esta pegado a un camino propio
+    // Ciudad solo si en el vertice donde se quiere construir hay un poblado propr
+    public boolean sePuedeConstruir(Coordenadas coordenadas, Construccion construccion, Jugador jugador) {
         if (construccion == null) {
             throw new IllegalArgumentException("Construccion nula"); // cambiar excepcion
         }
         if (!this.sonCoordenadasValidas(coordenadas)) {
-            throw new IllegalArgumentException("Coordenadas invalidas"); // cambiar excepcion
+            throw new PosInvalidaParaConstruirException(); // cambiar excepcion
         }
         Vertice vertice = mapaVertices.get(coordenadas);
-        return vertice.cumpleReglaDistancia() && !vertice.tieneConstruccion();
+
+        if (!jugador.poseeRecursosParaConstruir(construccion)){
+            return false;
+        }
+
+        if (!construccion.esCiudad() && !construccion.esPoblado()){
+            //es camino
+        }
+
+        if (vertice.cumpleReglaDistancia()){
+            return vertice.puedeConstruirse(construccion);
+        }
+        return false;
     }
 
-    public void moverLadronA(Hexagono hexagonoDestino, Jugador jugadorMovedor) {
-        var jugadorHacia = this.obtenerJugadoresAdyacentes(hexagonoDestino); //algo;
-        this.ladron.moverLadronA(hexagonoDestino, jugadorMovedor, jugadorHacia);
+    //devuelve una lista de jugadores afectados actualmente
+    public void moverLadronA(Coordenadas coordenadasHexagono) {
+        var jugadoresAfectados = this.obtenerJugadoresAdyacentes(coordenadasHexagono); //algo;
+        this.ladron.moverLadronA(this.obtenerHexagono(coordenadasHexagono), jugadoresAfectados);
+    }
+
+    public List <Jugador> obtenerJugadoresAdyacentes(Coordenadas coordenadasHexagono){
+        List<Jugador> jugadores = new ArrayList<>();
+
+        Coordenadas[] coordsVertices = this.obtenerVerticesDeHexagono(coordenadasHexagono);
+        
+        List<Vertice> vertices = new ArrayList<>();
+        for (Coordenadas coord : coordsVertices){
+            vertices.add(mapaVertices.get(coord));
+        }
+        
+        for ( Vertice vertice : vertices ){
+            if (vertice.tieneConstruccion()){
+                Jugador dueno = vertice.obtenerDueno();
+                //if (!jugadores.contains(dueno)){
+                jugadores.add(dueno);
+                //}
+            }
+        }
+        return jugadores;
+    }
+
+    public void ladronRobaRecurso(Jugador jugadorActual) {
+        ladron.robarRecurso(jugadorActual);
     }
 
     public Hexagono obtenerHexagono(Coordenadas coordenadas) {
@@ -364,43 +410,13 @@ public class Tablero {
         return null;
     }
 
-    public List <Jugador> obtenerJugadoresAdyacentes(Hexagono hexagono){
-        List<Jugador> jugadores = new ArrayList<>();
+    public boolean hayPobladoEn(Coordenadas coordenadas, Jugador jugador) {
+        Vertice vertice = mapaVertices.get(coordenadas);
+        return vertice.esPoblado();
+    }
 
-        List<Coordenadas> coordsVertices = Arrays.asList(this.obtenerVerticesDeHexagono(this.obtenerCoordenadasHexagono(hexagono)));
-
-        List<Vertice> vertices = new ArrayList<>();
-        for (Coordenadas coord : coordsVertices){
-            vertices.add(mapaVertices.get(coord));
-        }
-        
-        for ( Vertice vertice : vertices ){
-            if (vertice.tieneConstruccion()){
-                Jugador dueno = vertice.obtenerDueno();
-                if (!jugadores.contains(dueno)){
-                    jugadores.add(dueno);
-                }
-            }
-        }
-        return jugadores;
+    public boolean hayCiudadEn(Coordenadas coordenadas, Jugador jugador) {
+        Vertice vertice = mapaVertices.get(coordenadas);
+        return vertice.esCiudad();
     }
 }
-/*
- * NUEVA ESTRUCTURA DE TABLERO:
- * TABLERO CONOCE HEXAGONOS Y VERTICES Y SUS COORDENADAS JUNTO CON UNA
- * REFERENCIA AL LADRON
- * CALCULA ADYACENTES A VERTICES Y SE LOS ASIGNA
- * HEXAGONOS NO CONOCEN SUS VERTICES, SOLO DEVUELVEN SU RECURSO
- * LOS CALCULOS DE COORDENADAS LOS HACE TABLERO
- * COMO HAGO PARA QUE CADA JUGADOR SEPA DE SUS CONSTRUCCIONES? LAS ALMACENA
- * JUEGO? TABLERO?
- * 
- * INICIALIZACION:
- * TABLERO INICIALIZA HEXAGONOS CON SUS COORDENADAS Y TIPOS
- * TABLERO CALCULA COORDENADAS DE VERTICES CON SUS RESPECTIVOS HEXAGONOS
- * ADYACENTES
- * TABLERO CALCULA ADYACENTES DE CADA VERTICE Y SE LOS ASIGNA
- * LOS VERTICES NO SABEN SUS COORDENADAS, SOLO EL TABLERO
- * TABLERO INICIALIZA LADRON EN HEXAGONO DESIERTO
- * 
- */

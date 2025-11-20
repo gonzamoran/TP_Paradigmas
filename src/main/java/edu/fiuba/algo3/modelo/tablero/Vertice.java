@@ -8,7 +8,7 @@ import edu.fiuba.algo3.modelo.tablero.Produccion;
 import edu.fiuba.algo3.modelo.tablero.Hexagono;
 import edu.fiuba.algo3.modelo.Recurso;
 import edu.fiuba.algo3.modelo.Jugador;
-import edu.fiuba.algo3.modelo.excepciones.PosInvalidaParaConstruirException;
+import edu.fiuba.algo3.modelo.excepciones.*;
 import java.util.ArrayList;
 
 public class Vertice {
@@ -29,6 +29,16 @@ public class Vertice {
     }
 
     public void construir(Construccion construccion, Jugador jugador) {
+        var recursosNecesarios = construccion.obtenerRecursosNecesarios();
+        if (!jugador.poseeRecursosParaConstruir(construccion)) {
+            return;
+        }
+        for (Recurso recurso : recursosNecesarios) {
+            jugador.removerRecurso(recurso);
+        }
+        if (dueno != null){
+            dueno.removerConstruccion(this.construccion);
+        }
         this.construccion = construccion;
         this.dueno = jugador;
         this.estaConstruido = true;
@@ -69,6 +79,13 @@ public class Vertice {
         return true;
     }
 
+    public boolean puedeConstruirse(Construccion construccion) {
+        if (!construccion.puedeConstruirse(this.construccion)) {
+            return false;
+        }
+        return true;
+    }
+
     /*
      * private List<Construccion> conseguirConstruccionesAdyacentes() {
      * for (Vertice vertice : verticesAdyacentes) {
@@ -94,7 +111,11 @@ public class Vertice {
                 throw new PosInvalidaParaConstruirException();
             }
         }
-        this.construir(construccion, jugador);
+        this.construccion = construccion;
+        this.dueno = jugador;
+        this.estaConstruido = true;
+        construccion.asignarJugador(jugador);
+        
         var recursos = new ArrayList<Recurso>();
         for (Hexagono hexagono : hexagonosAdyacentes) {
             int cantidad = this.construccion.obtenerPuntosDeVictoria();
@@ -122,6 +143,26 @@ public class Vertice {
         if (!tieneConstruccion())
             return false;
         return this.construccion.esDueno(jugador);
+    }
+
+    public boolean esPoblado() {
+        if (!tieneConstruccion())
+            return false;
+        return this.construccion.esPoblado();
+    }
+
+    public boolean esCiudad() {
+        if (!tieneConstruccion())
+            return false;
+        return this.construccion.esCiudad();
+    }
+
+    public void mejorarACiudad(Coordenadas coordenadas, Jugador jugador) {
+        if(!this.esDueno(jugador) || !this.esPoblado()) {
+            throw new ErrorAlMejorarConstruccionException();
+        }
+        // implementar el colocar la ciudad, chequear recursos, etc
+        
     }
 
     /*

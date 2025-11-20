@@ -6,6 +6,7 @@ import edu.fiuba.algo3.modelo.tiposRecurso.Ladrillo;
 import edu.fiuba.algo3.modelo.tiposRecurso.Lana;
 import edu.fiuba.algo3.modelo.tiposRecurso.Madera;
 import edu.fiuba.algo3.modelo.tiposRecurso.Piedra;
+import edu.fiuba.algo3.modelo.cartas.tiposDeCartaDesarrollo.CartasDesarrollo;
 
 import java.util.HashMap;
 import java.util.List;
@@ -15,7 +16,7 @@ import java.util.Random;
 import java.util.Map;
 
 public class CartasJugador {
-
+    private List<CartasDesarrollo> cartasDesarrollo;
     private Map<Class<? extends Recurso>, Recurso> recursos;
 
     // private List<cartasDeDesarrollo> desarrollo;
@@ -54,9 +55,6 @@ public class CartasJugador {
     }
 
     public Map.Entry<Class<? extends Recurso>, Recurso> conseguirRecursoAleatorio() {
-        if (recursos.isEmpty()) {
-            return null;
-        }
         List<Map.Entry<Class<? extends Recurso>, Recurso>> entries = new ArrayList<>(recursos.entrySet());
         Random random = new Random();
         for (int i = 0; i < entries.size(); i++) {
@@ -67,6 +65,14 @@ public class CartasJugador {
             }
         }
         return null;
+    }
+
+    public Recurso removerRecursoAleatorio() {
+        Map.Entry<Class<? extends Recurso>, Recurso> entrada = conseguirRecursoAleatorio();
+        Recurso recurso = entrada.getValue();
+        recurso.restar(1);
+        Recurso robado = recurso.obtenerCopia(1);
+        return robado;
     }
 
     // Solo se llama cuando el jugador tiene 7 cartas o más.
@@ -92,6 +98,11 @@ public class CartasJugador {
 
     public boolean puedeDescartarse() {
         return this.cantidadTotalCartasRecurso() >= 7;
+    }
+
+    public void removerRecurso(Recurso recurso) {
+        Recurso actual = this.recursos.get(recurso.getClass());
+        actual.restar(recurso.obtenerCantidad());
     }
     // verificar si un jugador puede construir. Hay que verlo.
     // public boolean tieneRecursos() {

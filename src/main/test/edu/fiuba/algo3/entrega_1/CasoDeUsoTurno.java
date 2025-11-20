@@ -40,6 +40,7 @@ public class CasoDeUsoTurno {
 
         CasoDeUsoDadoCargado caso = new CasoDeUsoDadoCargado(tablero, jugador);
         caso.colocarEn(new Coordenadas(2, 7), new Poblado());
+        caso.colocarEn(new Coordenadas(2, 9), new Poblado());
         caso.colocarEn(new Coordenadas(2, 9), new Ciudad());
         
         ArrayList<Recurso> recursosObtenidos = caso.lanzarDados(new DadoCargado(8));
@@ -61,6 +62,7 @@ public class CasoDeUsoTurno {
         Jugador jugador = new Jugador("Azul");
         CasoDeUsoDadoCargado caso = new CasoDeUsoDadoCargado(tablero,jugador);
         caso.colocarEn(new Coordenadas(2, 4), new Poblado());
+        caso.colocarEn(new Coordenadas(3, 3), new Poblado());
         caso.colocarEn(new Coordenadas(3, 3), new Ciudad());
 
         ArrayList<Recurso> recursosObtenidos = caso.lanzarDados(new DadoCargado(6));
