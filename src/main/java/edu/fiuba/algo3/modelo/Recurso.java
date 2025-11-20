@@ -51,11 +51,12 @@ public abstract class Recurso {
         if (obj == null || getClass() != obj.getClass())
             return false;
         Recurso recurso = (Recurso) obj;
-        return this.tipo == recurso.tipo;
+        return this.tipo == recurso.tipo &&
+               this.cantidad == recurso.cantidad;
     }
 
     public void sumar(Recurso recurso) {
-        if (this != recurso) {
+        if (this.tipo != recurso.tipo) {
             throw new SumaDeRecursosDistintosException();
         }
         ;

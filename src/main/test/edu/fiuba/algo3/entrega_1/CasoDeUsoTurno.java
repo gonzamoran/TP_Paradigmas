@@ -1,11 +1,8 @@
 package edu.fiuba.algo3.entrega_1;
 
 import edu.fiuba.algo3.modelo.tablero.Tablero;
-import edu.fiuba.algo3.modelo.tablero.Hexagono;
 import edu.fiuba.algo3.modelo.tablero.Coordenadas;
 import edu.fiuba.algo3.modelo.construcciones.*;
-import edu.fiuba.algo3.modelo.tablero.tiposHexagono.*;
-import edu.fiuba.algo3.modelo.tablero.Produccion;
 import edu.fiuba.algo3.modelo.Dados;
 import edu.fiuba.algo3.modelo.Recurso;
 import edu.fiuba.algo3.entrega_1.casosDeUso.CasoDeUsoDadoCargado;
@@ -14,16 +11,13 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
 public class CasoDeUsoTurno {
-    private ArrayList<Hexagono> listaDeHexagonos;
-    private ArrayList<Produccion> listaDeNumeros;
-    private String jugador;
-
     @Test
     public void test01LanzarDadosGeneraNumeroValido() {
         // Arrange
@@ -40,22 +34,22 @@ public class CasoDeUsoTurno {
         Tablero tablero = new Tablero();
 
         CasoDeUsoDadoCargado caso = new CasoDeUsoDadoCargado(tablero, "Azul");
-        caso.colocarEn(new Coordenadas(2, 3), new Poblado("Azul"), "Azul");
-        caso.colocarEn(new Coordenadas(2, 9), new Ciudad("Azul"), "Azul");
+        caso.colocarEn(new Coordenadas(2, 4), new Poblado("Azul"), "Azul");
+        caso.colocarEn(new Coordenadas(3, 3), new Ciudad("Azul"), "Azul");
 
         int resultado = caso.lanzarDados();
 
         var recursosObtenidos = caso.producirRecursos(6);
         var produccionEsperada = List.of(
-                // Recurso.generarRecurso("Lana", 1), // Poblado esta entre dos pastizales tiene
-                // que devolver 2 y esta devolviendo 1
-                Recurso.generarRecurso("Madera", 1),
-                Recurso.generarRecurso("Lana", 1));
-        // Recurso.generarRecurso("Lana", 2)); // ciudad esta entre el mar y un pastizal
-        // tiene que devolver 2 y
-        // esta devolviendo 2
+        
+                Recurso.generarRecurso("Madera", 2),
+                Recurso.generarRecurso("Lana", 1),
+                Recurso.generarRecurso("Lana", 2));
 
-        assertEquals(produccionEsperada, recursosObtenidos);
+
+        //sirven para que no importe el orden de los recursos en la lista
+        assertTrue(recursosObtenidos.containsAll(produccionEsperada));
+        assertTrue(produccionEsperada.containsAll(recursosObtenidos));
 
     }
 

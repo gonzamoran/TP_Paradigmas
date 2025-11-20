@@ -91,9 +91,7 @@ public class Vertice {
                 throw new PosInvalidaParaConstruirException();
             }
         }
-        this.construccion = construccion;
-        this.dueño = jugador;
-        this.estaConstruido = true;
+        this.construir(construccion, jugador);
         var recursos = new ArrayList<Recurso>();
         for (Hexagono hexagono : hexagonosAdyacentes) {
             int cantidad = this.construccion.obtenerPuntosDeVictoria();
