@@ -63,52 +63,6 @@ public class Tablero {
         this.inicializarLadron();
     }
 
-    // public boolean construirCarretera(Jugador jugador, Coordenadas coordenadas) {
-    // if(!jugador.puedeConstruirCarretera()) {
-    // return false;
-    // }
-    // if(!esAdyacenteAConstruccionExistente(jugador, coordenadas)) {
-    // return false;
-    // }
-    // if(carreteras.containsKey(coordenadas)) {
-    // return false;
-    // }
-    // jugador.construirCarretera();
-    // carreteras.put(coordenadas, new Carretera(jugador, coordenadas));
-    // return true;
-    // }
-
-    // private boolean esAdyacenteAConstruccionExistente(Jugador jugador,
-    // Coordenadas coordenadas) {
-    // // verificar adyacencia a carreteras del mismo jugador
-    // for(Coordenadas coordVecinas : coordenadas.getVecinas()) {
-    // Carretera carreteraVecina = carreteras.get(coordVecinas);
-    // if(carreteraVecina != null && carreteraVecina.getJugador().equals(jugador)) {
-    // return true;
-    // }
-    // // verificar adyacencia a poblados del mismo jugador
-    // for(Coordenadas coordVecinas : coordenadas.getVecinas()) {
-    // Poblado pobladoVecino = poblados.get(coordVecinas);
-    // if(pobladoVecino != null && pobladoVecino.getJugador().equals(jugador)) {
-    // return true;
-    // }
-    // }
-    // return false;
-    // }
-
-    // public boolean hayCarreteraEn(Coordenadas coordenadas, Jugador jugador) {
-    // Carretera carretera = carreteras.get(coordenadas);
-    // return (carretera != null && carretera.getJugador().equals(jugador));
-    // }
-
-    // public void construirPoblado(Jugador jugador, Coordenadas coordenadas) {
-    // if(poblados.containsKey(coordenadas)) {
-    // throw new IllegalArgumentException("Ya existe un poblado en esas
-    // coordenadas.\n"); //cambiar excepcion
-    // }
-    // jugador.construirPoblado();
-    // poblados.put(coordenadas, new Poblado(jugador, coordenadas));
-    // }
 
     public List<Hexagono> obtenerHexagonos() {
         return new ArrayList<>(mapaHexagonos.values());

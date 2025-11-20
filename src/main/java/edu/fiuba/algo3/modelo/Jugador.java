@@ -3,15 +3,16 @@ package edu.fiuba.algo3.modelo;
 import java.util.*;
 import edu.fiuba.algo3.modelo.tablero.Coordenadas;
 import edu.fiuba.algo3.modelo.construcciones.Poblado;
+import edu.fiuba.algo3.modelo.excepciones.IntercambioInvalidoException;
 import edu.fiuba.algo3.modelo.tiposRecurso.*;
 import edu.fiuba.algo3.modelo.construcciones.Construccion;
 import edu.fiuba.algo3.modelo.cartas.CartasJugador;
-
+import edu.fiuba.algo3.modelo.cartas.tiposDeCartaDesarrollo.CartasDesarrollo;
 public class Jugador {
     private final String color;
     private CartasJugador mazos;
     private ArrayList<Construccion> construccionesJugador; 
-    // private final List<CartaDesarrollo> cartasDeDesarrollo;
+    // private List<CartaDesarrollo> cartasDeDesarrollo;
     private int puntosDeVictoria;
 
     public Jugador(String color) {
@@ -28,6 +29,20 @@ public class Jugador {
 
     public Recurso removerRecursoAleatorio() {
         return mazos.removerRecursoAleatorio();
+    }
+
+    public void intercambiar(ArrayList<Recurso> recursosAEntregar, ArrayList<Recurso> recursosARecibir, Jugador jugador2) {
+        if (!this.poseeRecursosParaIntercambiar(recursosAEntregar) || !jugador2.poseeRecursosParaIntercambiar(recursosARecibir)) {
+            throw new IntercambioInvalidoException();
+        }
+        for (Recurso recurso : recursosAEntregar) {
+            this.removerRecurso(recurso);
+            jugador2.agregarRecurso(recurso);
+        }
+        for (Recurso recurso : recursosARecibir) {
+            jugador2.removerRecurso(recurso);
+            this.agregarRecurso(recurso);
+        }
     }
 
     public void removerRecurso(Recurso recurso) {
@@ -60,6 +75,7 @@ public class Jugador {
             sumaTotal += c.obtenerPuntosDeVictoria();
         }
         this.puntosDeVictoria = sumaTotal;
+        this.sumarPuntoVictoria();
         return puntosDeVictoria;
     }
 
@@ -85,6 +101,20 @@ public class Jugador {
         return true;
     }
 
+
+    public boolean poseeRecursosParaIntercambiar(ArrayList<Recurso> recursosAEntregar) {
+        for (Recurso recurso : recursosAEntregar) {
+            if (this.obtenerCantidadRecurso(recurso) < recurso.obtenerCantidad()) {
+                return false;
+            }
+        }
+        return true;
+    }
+    
+    public void sumarPuntoVictoria(){
+        this.puntosDeVictoria += 1;
+    }
+
     public boolean equals(Object obj) {
         if (this == obj)
             return true;
@@ -93,17 +123,4 @@ public class Jugador {
         Jugador jugador = (Jugador) obj;
         return this.color == jugador.color;
     }
-    // OJOOO chequear el Map
-    // public boolean puedeConstruirCarretera() {
-    //     return recursos.get(Madera.class) >= 1 && recursos.get(Ladrillo.class) >= 1;
-    // }
-
-    // // OJOOO chequear el Map
-    // public void construirCarretera() {
-    //     if (puedeConstruirCarretera()) {
-    //         recursos.put(Madera.class, (recursos.get(Madera.class) - 1));
-    //         recursos.put(Recurso.Ladrillo, recursos.get(Recurso.Ladrillo) - 1);
-    //     }
-    // }
-
 }

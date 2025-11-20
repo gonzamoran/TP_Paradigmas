@@ -16,15 +16,16 @@ import java.util.Random;
 import java.util.Map;
 
 public class CartasJugador {
+
     private List<CartasDesarrollo> cartasDesarrollo;
     private Map<Class<? extends Recurso>, Recurso> recursos;
 
-    // private List<cartasDeDesarrollo> desarrollo;
 
     // Crear constructor.
     public CartasJugador() {
         this.recursos = new HashMap<Class<? extends Recurso>, Recurso>();
         inicializarRecursos();
+        this.cartasDesarrollo = new ArrayList<>();
     }
 
     public void inicializarRecursos() {
@@ -38,6 +39,10 @@ public class CartasJugador {
     public void agregarRecursos(Recurso recurso) {
         Recurso actual = this.recursos.get(recurso.getClass());
         actual.sumar(recurso);
+    }
+
+    public void agregarCartaDesarrollo(CartasDesarrollo carta){
+        this.cartasDesarrollo.add(carta);
     }
 
     public int obtenerCantidadCartasRecurso(Recurso recurso) {
@@ -103,6 +108,25 @@ public class CartasJugador {
     public void removerRecurso(Recurso recurso) {
         Recurso actual = this.recursos.get(recurso.getClass());
         actual.restar(recurso.obtenerCantidad());
+    }
+
+    public boolean poseeRecursosParaCartaDesarrollo(){
+        return recursos.get(Lana.class).obtenerCantidad() >= 1 &&  recursos.get(Piedra.class).obtenerCantidad() >= 1 &&  recursos.get(Grano.class).obtenerCantidad() >= 1;
+    }
+
+    public void pagarCartaDesarrollo(){
+        if (this.poseeRecursosParaCartaDesarrollo()){
+            recursos.get(Lana.class).restar(1);
+            recursos.get(Piedra.class).restar(1);
+            recursos.get(Grano.class).restar(1);
+        }
+        else{
+            throw new IllegalStateException("No cumple con los recursos necesarios");
+        }
+    }
+
+    public List<CartasDesarrollo> obtenerCartasDesarrollos(){
+        return cartasDesarrollo;
     }
     // verificar si un jugador puede construir. Hay que verlo.
     // public boolean tieneRecursos() {

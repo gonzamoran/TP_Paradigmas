@@ -1,6 +1,5 @@
-package edu.fiuba.algo3.vistas;
+/*package edu.fiuba.algo3.vistas;
 
-import edu.fiuba.algo3.modelo.Inventario;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.layout.HBox;
@@ -12,7 +11,7 @@ import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 
 /** Comienzo de panel para mostrar recursoss del jugador
- */
+ 
 
 public class PanelRecursos extends VBox {
     private Inventario inventario;
@@ -38,3 +37,4 @@ public class PanelRecursos extends VBox {
         inicializarComponentes();
     }
     }
+*/

@@ -86,16 +86,7 @@ public class Vertice {
         return true;
     }
 
-    /*
-     * private List<Construccion> conseguirConstruccionesAdyacentes() {
-     * for (Vertice vertice : verticesAdyacentes) {
-     * if (vertice.estaConstruido()) {
-     * construccionesAdyacentes.add(vertice.construccion);
-     * }
-     * }
-     * return construccionesAdyacentes;
-     * }
-     */
+
     public boolean cumpleReglaDistancia() {
         for (Vertice vertice : verticesAdyacentes) {
             if (vertice.tieneConstruccion()) {
@@ -165,23 +156,6 @@ public class Vertice {
         
     }
 
-    /*
-     * Construccion nuevaConstruccion =
-     * Construccion.crearConstruccion(tipoConstruccion, jugador);
-     * 
-     * List<Construccion> construccionesAdyacentes =
-     * conseguirConstruccionesAdyacentes();
-     * 
-     * if (nuevaConstruccion.puedeConstruirse(jugador, this, verticesAdyacentes,
-     * construccionesAdyacentes)) {
-     * this.construccion = nuevaConstruccion;
-     * this.dueño = jugador;
-     * this.estaConstruido = true;
-     * return true;
-     * }
-     * 
-     * return false;
-     */
 
 }
 
