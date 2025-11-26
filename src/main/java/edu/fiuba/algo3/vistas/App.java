@@ -4,6 +4,7 @@ import edu.fiuba.algo3.SystemInfo;
 import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
+import edu.fiuba.algo3.vista.MenuInicial;
 import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
 
@@ -12,15 +13,21 @@ import javafx.stage.Stage;
  */
 public class App extends Application {
 
+    private static final int ANCHO = 800;
+    private static final int ALTO = 550;
+
     @Override
     public void start(Stage stage) {
-        var javaVersion = SystemInfo.javaVersion();
-        var javafxVersion = SystemInfo.javafxVersion();
 
-        var label = new Label("Hello, JavaFX " + javafxVersion + ", running on Java " + javaVersion + ".");
-        var scene = new Scene(new StackPane(label), 640, 480);
-        stage.setScene(scene);
+        //sonido
+
+        MenuInicial menuInicial = new MenuInicial(stage);
+        Scene presentacion = new Scene(menuInicial, ANCHO, ALTO);
+
+        stage.setScene(presentacion);
+        stage.setTitle("C.A.T.A.N.");
         stage.show();
+
     }
 
     public static void main(String[] args) {
