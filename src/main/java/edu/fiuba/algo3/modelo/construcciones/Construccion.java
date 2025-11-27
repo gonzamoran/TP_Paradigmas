@@ -3,6 +3,7 @@ package edu.fiuba.algo3.modelo.construcciones;
 
 import edu.fiuba.algo3.modelo.Jugador;
 import edu.fiuba.algo3.modelo.excepciones.*;
+import edu.fiuba.algo3.modelo.tablero.Hexagono;
 import edu.fiuba.algo3.modelo.tablero.Vertice;
 import edu.fiuba.algo3.modelo.Recurso;
 import java.util.List;
@@ -21,10 +22,6 @@ public abstract class Construccion {
         jugador.agregarConstruccion(this);
     }
 
-    public abstract boolean esPoblado();
-
-    public abstract boolean esCiudad();
-
     public abstract boolean puedeConstruirse(Construccion construccionPrevia);
 
     public boolean esDueno(Jugador jugador){
@@ -33,6 +30,15 @@ public abstract class Construccion {
 
     public abstract List<Recurso> obtenerRecursosNecesarios();
     
+
+
+    public boolean equals(Object obj) {
+        if (this == obj)
+            return true;
+        if (obj == null || this.getClass() != obj.getClass())
+            return false;
+        return this.puntosVictoria == ((Construccion) obj).puntosVictoria;
+    }
 }
 
 

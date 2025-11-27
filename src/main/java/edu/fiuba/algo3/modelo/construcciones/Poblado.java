@@ -15,13 +15,6 @@ public class Poblado extends Construccion {
         this.puntosVictoria = 1;
     }
 
-    public boolean esPoblado() {
-        return true;
-    }
-
-    public boolean esCiudad() {
-        return false;
-    }
     
     public boolean puedeConstruirse(Construccion construccionPrevia){
         if (construccionPrevia != null){

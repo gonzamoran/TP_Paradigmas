@@ -2,6 +2,7 @@ package edu.fiuba.algo3.modelo.tablero;
 
 import java.util.List;
 
+import edu.fiuba.algo3.modelo.construcciones.Carretera;
 import edu.fiuba.algo3.modelo.construcciones.Construccion;
 import edu.fiuba.algo3.modelo.tablero.Vertice;
 import edu.fiuba.algo3.modelo.tablero.Produccion;
@@ -17,14 +18,13 @@ public class Vertice {
     private Construccion construccion;
     private boolean estaConstruido;
     private List<Vertice> verticesAdyacentes;
-    private List<List<Vertice>> caminosIngresantes;
+    private List<Construccion> carreterasIngresantes;
 
-    // deberia tener referencia al jugador dueño de la construccion?
 
     public Vertice() {
         this.hexagonosAdyacentes = new ArrayList<>();
         this.verticesAdyacentes = new ArrayList<>();
-        this.caminosIngresantes = new ArrayList<>();
+        this.carreterasIngresantes = new ArrayList<>();
         this.estaConstruido = false;
     }
 
@@ -80,6 +80,11 @@ public class Vertice {
     }
 
     public boolean puedeConstruirse(Construccion construccion) {
+        if (construccion.equals(new Carretera())){
+            if (this.carreterasIngresantes.size() > 0){
+                return true;
+            }
+        }
         if (!construccion.puedeConstruirse(this.construccion)) {
             return false;
         }
@@ -136,26 +141,34 @@ public class Vertice {
         return this.construccion.esDueno(jugador);
     }
 
-    public boolean esPoblado() {
-        if (!tieneConstruccion())
-            return false;
-        return this.construccion.esPoblado();
-    }
+    public boolean estaConstruidoCon(Construccion construccion, Jugador jugador) {
 
-    public boolean esCiudad() {
-        if (!tieneConstruccion())
-            return false;
-        return this.construccion.esCiudad();
-    }
-
-    public void mejorarACiudad(Coordenadas coordenadas, Jugador jugador) {
-        if(!this.esDueno(jugador) || !this.esPoblado()) {
-            throw new ErrorAlMejorarConstruccionException();
+        if (this.tieneConstruccion() && this.construccion.equals(construccion) && this.esDueno(jugador)) {
+            return true;
         }
-        // implementar el colocar la ciudad, chequear recursos, etc
+
+        for (Construccion carretera : carreterasIngresantes) {
+            if (carretera.equals(construccion) && carretera.esDueno(jugador)) {
+                return true;
+            }
+        }
         
+        return false;
     }
 
+    public boolean esAdyacente(Vertice vertice) {
+        return verticesAdyacentes.contains(vertice);
+    }
+
+    public void construirCarretera(Construccion carretera, Jugador jugador) {
+        carretera.asignarJugador(jugador);
+        this.carreterasIngresantes.add(carretera);
+    }
+
+    public boolean poseeCarreterasDe(Jugador jugador) {
+        return !carreterasIngresantes.isEmpty() && 
+               carreterasIngresantes.stream().anyMatch(c -> c.esDueno(jugador));
+    }
 
 }
 

@@ -104,8 +104,6 @@ public class CasoDeUsoTocaUn7Test {
     }
 
 
-    //Hay que crear la clase jugador para hacer este test?
-    //Seguro que si, hay que robar una carta aleatoria de otro jugador
     @Test
     public void test05JugadorMueveLadronYRobaUnRecursoAleatorioDeOtroJugador(){
         Tablero tablero = new Tablero();

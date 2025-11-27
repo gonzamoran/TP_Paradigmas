@@ -5,20 +5,12 @@ import java.lang.reflect.Constructor;
 import java.util.*;
 
 import edu.fiuba.algo3.modelo.Recurso;
-import edu.fiuba.algo3.modelo.tablero.Hexagono;
-import edu.fiuba.algo3.modelo.tablero.Vertice;
-import edu.fiuba.algo3.modelo.tablero.Ladron;
-import edu.fiuba.algo3.modelo.tablero.Coordenadas;
-import edu.fiuba.algo3.modelo.tablero.Produccion;
+import edu.fiuba.algo3.modelo.tablero.*;
+import edu.fiuba.algo3.modelo.construcciones.*;
 import edu.fiuba.algo3.modelo.construcciones.Construccion;
 import edu.fiuba.algo3.modelo.Jugador;
 
-import edu.fiuba.algo3.modelo.tablero.tiposHexagono.Desierto;
-import edu.fiuba.algo3.modelo.tablero.tiposHexagono.Bosque;
-import edu.fiuba.algo3.modelo.tablero.tiposHexagono.Campo;
-import edu.fiuba.algo3.modelo.tablero.tiposHexagono.Colina;
-import edu.fiuba.algo3.modelo.tablero.tiposHexagono.Montana;
-import edu.fiuba.algo3.modelo.tablero.tiposHexagono.Pastizal;
+import edu.fiuba.algo3.modelo.tablero.tiposHexagono.*;
 
 import edu.fiuba.algo3.modelo.excepciones.PosInvalidaParaConstruirException;
 import edu.fiuba.algo3.modelo.excepciones.NoEsPosibleConstruirException;
@@ -217,7 +209,7 @@ public class Tablero {
         if (construccion == null) {
             return false;
         }
-        if (!construccion.esPoblado()) {
+        if (!construccion.equals(new Poblado())) {
             return false;
         }
 
@@ -295,19 +287,15 @@ public class Tablero {
     // Ciudad solo si en el vertice donde se quiere construir hay un poblado propr
     public boolean sePuedeConstruir(Coordenadas coordenadas, Construccion construccion, Jugador jugador) {
         if (construccion == null) {
-            throw new IllegalArgumentException("Construccion nula"); // cambiar excepcion
+            throw new IllegalArgumentException("Construccion nula"); //cambiar excepcion
         }
         if (!this.sonCoordenadasValidas(coordenadas)) {
-            throw new PosInvalidaParaConstruirException(); // cambiar excepcion
+            throw new PosInvalidaParaConstruirException();
         }
         Vertice vertice = mapaVertices.get(coordenadas);
 
         if (!jugador.poseeRecursosParaConstruir(construccion)){
             return false;
-        }
-
-        if (!construccion.esCiudad() && !construccion.esPoblado()){
-            //es camino
         }
 
         if (vertice.cumpleReglaDistancia()){
@@ -364,13 +352,38 @@ public class Tablero {
         return null;
     }
 
-    public boolean hayPobladoEn(Coordenadas coordenadas, Jugador jugador) {
+    public boolean estaConstruidoCon(Construccion construccion, Coordenadas coordenadas, Jugador jugador) {
         Vertice vertice = mapaVertices.get(coordenadas);
-        return vertice.esPoblado();
+        return vertice.estaConstruidoCon(construccion, jugador);
     }
 
-    public boolean hayCiudadEn(Coordenadas coordenadas, Jugador jugador) {
-        Vertice vertice = mapaVertices.get(coordenadas);
-        return vertice.esCiudad();
+    public void construirCarretera(Coordenadas coordenadaExtremo1, Coordenadas coordenadaExtremo2, Jugador jugador) {
+        if (!this.sonCoordenadasValidas(coordenadaExtremo1) || !this.sonCoordenadasValidas(coordenadaExtremo2)) {
+            throw new PosInvalidaParaConstruirException();
+        }
+
+        Vertice vertice1 = mapaVertices.get(coordenadaExtremo1);
+        Vertice vertice2 = mapaVertices.get(coordenadaExtremo2);
+
+        if (!vertice1.esAdyacente(vertice2)) {
+            throw new PosInvalidaParaConstruirException();
+        }
+        
+
+        if (!vertice1.poseeCarreterasDe(jugador) && !vertice2.poseeCarreterasDe(jugador) && !(vertice1.esDueno(jugador) || vertice2.esDueno(jugador))) {
+            throw new NoEsPosibleConstruirException();
+        }
+
+        var carretera = new Carretera();
+        if (!vertice1.puedeConstruirse(carretera) && !vertice2.puedeConstruirse(carretera)) {
+            throw new NoEsPosibleConstruirException();
+        }
+
+        if (!jugador.poseeRecursosParaConstruir(carretera)){
+            throw new NoEsPosibleConstruirException();
+        }
+
+        vertice1.construirCarretera(carretera, jugador);
+        vertice2.construirCarretera(carretera, jugador);
     }
 }

@@ -4,7 +4,7 @@ import edu.fiuba.algo3.SystemInfo;
 import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
-import edu.fiuba.algo3.vista.MenuInicial;
+import edu.fiuba.algo3.vistas.MenuInicial;
 import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
 

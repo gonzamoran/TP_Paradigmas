@@ -8,6 +8,9 @@ public abstract class CartasDesarrollo {
     protected boolean fueUsada;
     protected Jugador jugador;
 
+    public CartasDesarrollo(){
+        this.fueUsada = false;
+    }
     public CartasDesarrollo(Jugador jugador, int turnoActual){
         this.jugador = jugador;
         this.turnoDeCompra = turnoActual;

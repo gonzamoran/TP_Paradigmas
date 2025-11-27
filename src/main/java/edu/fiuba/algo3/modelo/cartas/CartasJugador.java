@@ -6,6 +6,7 @@ import edu.fiuba.algo3.modelo.tiposRecurso.Ladrillo;
 import edu.fiuba.algo3.modelo.tiposRecurso.Lana;
 import edu.fiuba.algo3.modelo.tiposRecurso.Madera;
 import edu.fiuba.algo3.modelo.tiposRecurso.Piedra;
+import edu.fiuba.algo3.modelo.cartas.tiposDeCartaDesarrollo.CartaPuntoVictoria;
 import edu.fiuba.algo3.modelo.cartas.tiposDeCartaDesarrollo.CartasDesarrollo;
 
 import java.util.HashMap;
@@ -14,6 +15,7 @@ import java.security.KeyStore.Entry;
 import java.util.ArrayList;
 import java.util.Random;
 import java.util.Map;
+import java.util.Collections;
 
 public class CartasJugador {
 
@@ -62,10 +64,10 @@ public class CartasJugador {
     public Map.Entry<Class<? extends Recurso>, Recurso> conseguirRecursoAleatorio() {
         List<Map.Entry<Class<? extends Recurso>, Recurso>> entries = new ArrayList<>(recursos.entrySet());
         Random random = new Random();
-        for (int i = 0; i < entries.size(); i++) {
-            var entrada = entries.get(random.nextInt(entries.size()));
-            Recurso recurso = (Recurso) entrada.getValue();
-            if (recurso.obtenerCantidad() > 0){
+        Collections.shuffle(entries, random);
+        for (Map.Entry<Class<? extends Recurso>, Recurso> entrada : entries) {
+            Recurso recurso = entrada.getValue();
+            if (recurso.obtenerCantidad() > 0) {
                 return entrada;
             }
         }
@@ -127,6 +129,20 @@ public class CartasJugador {
 
     public List<CartasDesarrollo> obtenerCartasDesarrollos(){
         return cartasDesarrollo;
+    }
+
+    public int contarCartasDePuntosDeVictoria(){
+        int cartasConPuntos = 0;
+        for (CartasDesarrollo carta : cartasDesarrollo) {
+            if (carta instanceof CartaPuntoVictoria){ //cambiar por un metodo bien hecho
+                cartasConPuntos += 1;
+            }
+        }
+        return cartasConPuntos;
+    }
+
+    public int obtenerCantidadCartasDesarrollo() {
+        return cartasDesarrollo.size();
     }
     // verificar si un jugador puede construir. Hay que verlo.
     // public boolean tieneRecursos() {

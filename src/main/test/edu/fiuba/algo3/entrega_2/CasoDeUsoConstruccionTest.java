@@ -38,7 +38,7 @@ public class CasoDeUsoConstruccionTest {
         CasoDeUsoConstruccion caso = new CasoDeUsoConstruccion(tablero, jugador, recursos);
         caso.construirEn(new Coordenadas(2,2), new Poblado());
 
-        assertTrue(tablero.hayPobladoEn( new Coordenadas(2,2), jugador));
+        assertTrue(tablero.estaConstruidoCon(new Poblado(), new Coordenadas(2,2), jugador));
         assertEquals(0, jugador.obtenerCantidadRecurso(new Madera(0)));
         assertEquals(0, jugador.obtenerCantidadRecurso(new Ladrillo(0)));
         assertEquals(0, jugador.obtenerCantidadRecurso(new Lana(0)));
@@ -62,8 +62,8 @@ public class CasoDeUsoConstruccionTest {
         caso.construirEn(new Coordenadas(2,2), new Poblado());
         caso.construirEn(new Coordenadas(2,2), new Ciudad());
 
-        assertTrue(tablero.hayCiudadEn( new Coordenadas(2,2), jugador));
-        assertFalse(tablero.hayPobladoEn( new Coordenadas(2,2), jugador));
+        assertTrue(tablero.estaConstruidoCon(new Ciudad(), new Coordenadas(2,2), jugador));
+        assertFalse(tablero.estaConstruidoCon(new Poblado(), new Coordenadas(2,2), jugador));
         assertEquals(0, jugador.obtenerCantidadRecurso(new Grano(0)));
         assertEquals(0, jugador.obtenerCantidadRecurso(new Piedra(0)));
         assertEquals(0, jugador.obtenerCantidadRecurso(new Madera(0)));

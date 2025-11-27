@@ -19,16 +19,11 @@ public class Carretera extends Construccion {
         return jugador;
     }
 
-    public boolean esPoblado(){
-        return false;
-    }
-
-    public boolean esCiudad(){
-        return false;
-    }
-
     public boolean puedeConstruirse(Construccion construccionVertice){
-        if (!construccionVertice.esPoblado() && !construccionVertice.esCiudad()){
+        if (construccionVertice == null) {
+            return false;
+        }
+        if (!construccionVertice.equals(new Poblado()) && !construccionVertice.equals(new Ciudad())) {
             return false;
         }
         return true;

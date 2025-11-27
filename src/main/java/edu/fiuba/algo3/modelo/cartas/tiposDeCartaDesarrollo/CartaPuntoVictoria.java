@@ -6,7 +6,10 @@ import edu.fiuba.algo3.modelo.tablero.Ladron;
 
 public class CartaPuntoVictoria extends CartasDesarrollo{
     
-
+    public CartaPuntoVictoria(){
+        super();
+    }
+    
     public CartaPuntoVictoria(Jugador jugador, int turnoDeCompra){
         super(jugador, turnoDeCompra);
     }

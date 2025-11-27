@@ -14,19 +14,11 @@ public class Ciudad extends Construccion {
         this.puntosVictoria = 2;
     }
 
-    public boolean esPoblado() {
-        return false;
-    }
-
-    public boolean esCiudad() {
-        return true;
-    }
-
     public boolean puedeConstruirse(Construccion construccionPrevia){
         if (construccionPrevia == null){
             return false;
         }
-        return construccionPrevia.esPoblado();
+        return construccionPrevia.equals(new Poblado());
     }
 
     public List<Recurso> obtenerRecursosNecesarios() {

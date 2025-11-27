@@ -74,8 +74,8 @@ public class Jugador {
         for (Construccion c : construccionesJugador) {
             sumaTotal += c.obtenerPuntosDeVictoria();
         }
+        sumaTotal += mazos.contarCartasDePuntosDeVictoria();
         this.puntosDeVictoria = sumaTotal;
-        this.sumarPuntoVictoria();
         return puntosDeVictoria;
     }
 
@@ -110,10 +110,6 @@ public class Jugador {
         }
         return true;
     }
-    
-    public void sumarPuntoVictoria(){
-        this.puntosDeVictoria += 1;
-    }
 
     public boolean equals(Object obj) {
         if (this == obj)
@@ -122,5 +118,9 @@ public class Jugador {
             return false;
         Jugador jugador = (Jugador) obj;
         return this.color == jugador.color;
+    }
+
+    public int contarCartasDeDesarrollo() {
+        return mazos.obtenerCantidadCartasDesarrollo();
     }
 }
