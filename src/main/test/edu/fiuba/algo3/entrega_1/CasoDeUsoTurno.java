@@ -8,7 +8,7 @@ import edu.fiuba.algo3.modelo.Dados;
 import edu.fiuba.algo3.modelo.Recurso;
 import edu.fiuba.algo3.modelo.Jugador;
 import edu.fiuba.algo3.entrega_1.casosDeUso.CasoDeUsoDadoCargado;
-import edu.fiuba.algo3.entrega_1.casosDeUso.DadoCargado;
+import edu.fiuba.algo3.entrega_1.DadoCargado;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -42,7 +42,7 @@ public class CasoDeUsoTurno {
         caso.colocarEn(new Coordenadas(2, 7), new Poblado());
         caso.colocarEn(new Coordenadas(2, 9), new Poblado());
         caso.colocarEn(new Coordenadas(2, 9), new Ciudad());
-        
+
         ArrayList<Recurso> recursosObtenidos = caso.lanzarDados(new DadoCargado(8));
 
         var produccionEsperada = List.of(
@@ -50,7 +50,7 @@ public class CasoDeUsoTurno {
                 new Lana(1),
                 new Lana(2));
 
-        //sirven para que no importe el orden de los recursos en la lista
+        // sirven para que no importe el orden de los recursos en la lista
         assertTrue(recursosObtenidos.containsAll(produccionEsperada));
         assertTrue(produccionEsperada.containsAll(recursosObtenidos));
     }
@@ -60,7 +60,7 @@ public class CasoDeUsoTurno {
 
         Tablero tablero = new Tablero();
         Jugador jugador = new Jugador("Azul");
-        CasoDeUsoDadoCargado caso = new CasoDeUsoDadoCargado(tablero,jugador);
+        CasoDeUsoDadoCargado caso = new CasoDeUsoDadoCargado(tablero, jugador);
         caso.colocarEn(new Coordenadas(2, 4), new Poblado());
         caso.colocarEn(new Coordenadas(3, 3), new Poblado());
         caso.colocarEn(new Coordenadas(3, 3), new Ciudad());
@@ -71,7 +71,6 @@ public class CasoDeUsoTurno {
                 new Madera(4),
                 new Lana(5),
                 new Lana(6));
-
 
         assertFalse(recursosObtenidos.containsAll(produccionIncorrecta));
         assertFalse(produccionIncorrecta.containsAll(recursosObtenidos));

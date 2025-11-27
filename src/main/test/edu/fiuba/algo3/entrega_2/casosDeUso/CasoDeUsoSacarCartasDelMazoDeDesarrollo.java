@@ -1,24 +1,36 @@
 package edu.fiuba.algo3.entrega_2.casosDeUso;
 
-
 import edu.fiuba.algo3.modelo.Jugador;
 import edu.fiuba.algo3.modelo.cartas.tiposDeCartaDesarrollo.*;
 import edu.fiuba.algo3.modelo.cartas.CartasJugador;
+import edu.fiuba.algo3.modelo.cartas.MazoCartasDesarrollo;
 
+import java.util.ArrayList;
 
-public class CasoDeUsoSacarCartasDelMazoDeDesarrollo{
+public class CasoDeUsoSacarCartasDelMazoDeDesarrollo {
     private Jugador jugador;
-    private CartasJugador cartas;
+    private ArrayList<CartasDesarrollo> cartas;
 
-    //hacer constructores e implementaciones segun los tests
+    // hacer constructores e implementaciones segun los tests
 
-    //implementar despues
+    public CasoDeUsoSacarCartasDelMazoDeDesarrollo(ArrayList<CartasDesarrollo> cartas) {
+        this.cartas = cartas;
+    }
 
-    //MazoCartasDesarrollo va en modelo/cartas
+    public CasoDeUsoSacarCartasDelMazoDeDesarrollo(Jugador jugador) {
+        this.jugador = jugador;
+    }
 
-    public void comprarCartaDesarrollo(){
-        var carta = new CartaPuntoVictoria();
-        jugador.agregarCartaDesarrollo(carta);
+    public MazoCartasDesarrollo inicializarMazoDeCartasDeDesarrollo() {
+        return new MazoCartasDesarrollo(cartas);
+    }
+    // implementar despues
+
+    // MazoCartasDesarrollo va en modelo/cartas
+
+    public void comprarCartaDesarrollo(MazoCartasDesarrollo mazo) {
+        var carta = mazo.sacarCarta();
+        jugador.comprarCartaDesarrollo(carta);
     }
     // DIEGO: implementar el check de las cartas de PV
 }

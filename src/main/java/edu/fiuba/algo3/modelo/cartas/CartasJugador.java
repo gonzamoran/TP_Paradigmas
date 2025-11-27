@@ -22,7 +22,6 @@ public class CartasJugador {
     private List<CartasDesarrollo> cartasDesarrollo;
     private Map<Class<? extends Recurso>, Recurso> recursos;
 
-
     // Crear constructor.
     public CartasJugador() {
         this.recursos = new HashMap<Class<? extends Recurso>, Recurso>();
@@ -43,7 +42,7 @@ public class CartasJugador {
         actual.sumar(recurso);
     }
 
-    public void agregarCartaDesarrollo(CartasDesarrollo carta){
+    public void agregarCartaDesarrollo(CartasDesarrollo carta) {
         this.cartasDesarrollo.add(carta);
     }
 
@@ -88,7 +87,7 @@ public class CartasJugador {
         int cantCartasDescarte = (int) Math.floor(this.cantidadTotalCartasRecurso() / 2.0);
         for (int i = 0; i < cantCartasDescarte; i++) {
             Map.Entry<Class<? extends Recurso>, Recurso> entrada = conseguirRecursoAleatorio();
-            if (entrada == null){
+            if (entrada == null) {
                 break;
             }
 
@@ -100,7 +99,7 @@ public class CartasJugador {
 
             recurso.restar(1);
         }
-        return descarte; //podria devolver o no, por ahora no lo necesitamos
+        return descarte; // podria devolver o no, por ahora no lo necesitamos
     }
 
     public boolean puedeDescartarse() {
@@ -112,29 +111,29 @@ public class CartasJugador {
         actual.restar(recurso.obtenerCantidad());
     }
 
-    public boolean poseeRecursosParaCartaDesarrollo(){
-        return recursos.get(Lana.class).obtenerCantidad() >= 1 &&  recursos.get(Piedra.class).obtenerCantidad() >= 1 &&  recursos.get(Grano.class).obtenerCantidad() >= 1;
+    public boolean poseeRecursosParaCartaDesarrollo() {
+        return recursos.get(Lana.class).obtenerCantidad() >= 1 && recursos.get(Piedra.class).obtenerCantidad() >= 1
+                && recursos.get(Grano.class).obtenerCantidad() >= 1;
     }
 
-    public void pagarCartaDesarrollo(){
-        if (this.poseeRecursosParaCartaDesarrollo()){
+    public void pagarCartaDesarrollo() {
+        if (this.poseeRecursosParaCartaDesarrollo()) {
             recursos.get(Lana.class).restar(1);
             recursos.get(Piedra.class).restar(1);
             recursos.get(Grano.class).restar(1);
-        }
-        else{
+        } else {
             throw new IllegalStateException("No cumple con los recursos necesarios");
         }
     }
 
-    public List<CartasDesarrollo> obtenerCartasDesarrollos(){
+    public List<CartasDesarrollo> obtenerCartasDesarrollos() {
         return cartasDesarrollo;
     }
 
-    public int contarCartasDePuntosDeVictoria(){
+    public int contarCartasDePuntosDeVictoria() {
         int cartasConPuntos = 0;
         for (CartasDesarrollo carta : cartasDesarrollo) {
-            if (carta instanceof CartaPuntoVictoria){ //cambiar por un metodo bien hecho
+            if (carta instanceof CartaPuntoVictoria) { // cambiar por un metodo bien hecho
                 cartasConPuntos += 1;
             }
         }
@@ -144,19 +143,5 @@ public class CartasJugador {
     public int obtenerCantidadCartasDesarrollo() {
         return cartasDesarrollo.size();
     }
-    // verificar si un jugador puede construir. Hay que verlo.
-    // public boolean tieneRecursos() {
 
-    // }
-
-    // Sacar recursos del jugador.
-    // public void gastarRecurso(Recurso recurso, int cantidad);
-
-    // {
-    //     // for
-    //     Recurso actual = recursos.getKey(recurso);
-    //     int cantidadAGastar = entry.getValue();
-
-    //     recursos.add(recurso, obtenerCantidadCartasRecurso(recurso) - cantidadAGastar);
-    // }
 }

@@ -4,19 +4,19 @@ import edu.fiuba.algo3.modelo.tablero.Tablero;
 import edu.fiuba.algo3.modelo.Jugador;
 import edu.fiuba.algo3.modelo.tablero.Ladron;
 
-public class CartaPuntoVictoria extends CartasDesarrollo{
-    
-    public CartaPuntoVictoria(){
+public class CartaPuntoVictoria extends CartasDesarrollo {
+
+    public CartaPuntoVictoria() {
         super();
     }
-    
-    public CartaPuntoVictoria(Jugador jugador, int turnoDeCompra){
-        super(jugador, turnoDeCompra);
+
+    public CartaPuntoVictoria(int turnoDeCompra) {
+        super(turnoDeCompra);
     }
 
     @Override
-    public void usar(Jugador jugador, int turnoActual){
-        if (!esJugable(turnoActual)){
+    public void usar(Jugador jugador, int turnoActual) {
+        if (!this.esJugable()) {
             throw new IllegalStateException("No se puede usar esta carta todavia");
         }
         this.fueUsada = true;

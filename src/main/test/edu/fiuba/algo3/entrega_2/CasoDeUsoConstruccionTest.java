@@ -22,23 +22,23 @@ import org.junit.Test;
 import edu.fiuba.algo3.entrega_2.casosDeUso.CasoDeUsoConstruccion;
 
 public class CasoDeUsoConstruccionTest {
-    
+
     @Test
     public void test01ConstruyoUnPobladoYSeConsumenLosRecursosCorrectamente() {
         Tablero tablero = new Tablero();
         Jugador jugador = new Jugador("Jugador 1");
         var recursos = new Recurso[] {
-            new Madera(1),
-            new Ladrillo(1),
-            new Lana(1),
-            new Grano(1),
-            new Piedra(1)
+                new Madera(1),
+                new Ladrillo(1),
+                new Lana(1),
+                new Grano(1),
+                new Piedra(1)
         };
 
         CasoDeUsoConstruccion caso = new CasoDeUsoConstruccion(tablero, jugador, recursos);
-        caso.construirEn(new Coordenadas(2,2), new Poblado());
+        caso.construirEn(new Coordenadas(2, 2), new Poblado());
 
-        assertTrue(tablero.estaConstruidoCon(new Poblado(), new Coordenadas(2,2), jugador));
+        assertTrue(tablero.estaConstruidoCon(new Poblado(), new Coordenadas(2, 2), jugador));
         assertEquals(0, jugador.obtenerCantidadRecurso(new Madera(0)));
         assertEquals(0, jugador.obtenerCantidadRecurso(new Ladrillo(0)));
         assertEquals(0, jugador.obtenerCantidadRecurso(new Lana(0)));
@@ -51,19 +51,19 @@ public class CasoDeUsoConstruccionTest {
         Tablero tablero = new Tablero();
         Jugador jugador = new Jugador("Jugador 1");
         var recursos = new Recurso[] {
-            new Grano(3),
-            new Piedra(3),
-            new Madera(1),
-            new Ladrillo(1),
-            new Lana(1)
+                new Grano(3),
+                new Piedra(3),
+                new Madera(1),
+                new Ladrillo(1),
+                new Lana(1)
         };
 
         CasoDeUsoConstruccion caso = new CasoDeUsoConstruccion(tablero, jugador, recursos);
-        caso.construirEn(new Coordenadas(2,2), new Poblado());
-        caso.construirEn(new Coordenadas(2,2), new Ciudad());
+        caso.construirEn(new Coordenadas(2, 2), new Poblado());
+        caso.construirEn(new Coordenadas(2, 2), new Ciudad());
 
-        assertTrue(tablero.estaConstruidoCon(new Ciudad(), new Coordenadas(2,2), jugador));
-        assertFalse(tablero.estaConstruidoCon(new Poblado(), new Coordenadas(2,2), jugador));
+        assertTrue(tablero.estaConstruidoCon(new Ciudad(), new Coordenadas(2, 2), jugador));
+        assertFalse(tablero.estaConstruidoCon(new Poblado(), new Coordenadas(2, 2), jugador));
         assertEquals(0, jugador.obtenerCantidadRecurso(new Grano(0)));
         assertEquals(0, jugador.obtenerCantidadRecurso(new Piedra(0)));
         assertEquals(0, jugador.obtenerCantidadRecurso(new Madera(0)));
@@ -76,12 +76,12 @@ public class CasoDeUsoConstruccionTest {
         Tablero tablero = new Tablero();
         Jugador jugador = new Jugador("Jugador 1");
         var recursos = new Recurso[] {
-            new Grano(2),
-            new Piedra(3)
+                new Grano(2),
+                new Piedra(3)
         };
         CasoDeUsoConstruccion caso = new CasoDeUsoConstruccion(tablero, jugador, recursos);
 
-        assertThrows(NoEsPosibleConstruirException.class, () -> caso.construirEn(new Coordenadas(2,5), new Ciudad()));
+        assertThrows(NoEsPosibleConstruirException.class, () -> caso.construirEn(new Coordenadas(2, 5), new Ciudad()));
     }
 
     @Test
@@ -89,12 +89,12 @@ public class CasoDeUsoConstruccionTest {
         Tablero tablero = new Tablero();
         Jugador jugador = new Jugador("Jugador 1");
         var recursos = new Recurso[] {
-            new Madera(1),
-            new Ladrillo(1),
-            new Lana(1)
+                new Madera(1),
+                new Ladrillo(1),
+                new Lana(1)
         };
         CasoDeUsoConstruccion caso = new CasoDeUsoConstruccion(tablero, jugador, recursos);
-        assertThrows(NoEsPosibleConstruirException.class, () -> caso.construirEn(new Coordenadas(2,2), new Poblado()));
+        assertThrows(NoEsPosibleConstruirException.class, () -> caso.construirEn(new Coordenadas(2, 2), new Poblado()));
     }
 
     @Test
@@ -102,17 +102,17 @@ public class CasoDeUsoConstruccionTest {
         Tablero tablero = new Tablero();
         Jugador jugador = new Jugador("Jugador 1");
         var recursos = new Recurso[] {
-            new Madera(1),
-            new Ladrillo(1),
-            new Lana(1),
-            new Grano(3),
-            new Piedra(3)
+                new Madera(1),
+                new Ladrillo(1),
+                new Lana(1),
+                new Grano(3),
+                new Piedra(3)
         };
         CasoDeUsoConstruccion caso = new CasoDeUsoConstruccion(tablero, jugador, recursos);
-        caso.construirEn(new Coordenadas(2,2), new Poblado());
+        caso.construirEn(new Coordenadas(2, 2), new Poblado());
 
         assertEquals(1, jugador.calculoPuntosVictoria());
-        caso.construirEn(new Coordenadas(2,2), new Ciudad());
+        caso.construirEn(new Coordenadas(2, 2), new Ciudad());
         assertEquals(2, jugador.calculoPuntosVictoria());
     }
 

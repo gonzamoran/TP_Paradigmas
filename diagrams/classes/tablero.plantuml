@@ -1,0 +1,117 @@
+@startuml DiagramaTablero
+
+package "Clases del Tablero" {
+    class Tablero {
+    - ladron: Ladron
+    - listaHexagonos: ArrayList<Hexagono>
+    - listaNumeros: ArrayList<Produccion>
+    - mapaHexagonos: Map<Coordenadas, Hexagono>
+    - mapaVertices: Map<Coordenadas, Vertice>
+
+    + Tablero()
+    + Tablero()
+    + inicializarTablero()
+    + obtenerHexagonos(): ArrayList<Hexagono>
+    + inicializarHexagonosDefault()
+    + inicializarNumerosDefault()
+    + asignarCoordenadasHexagonos()
+    + crearListaDeCoordenadasHexagonos(): ArrayList<Coordenadas>
+    + asignarNumeroALosHexagonos()
+    + inicializarVertices()
+    + obtenerVerticesDeHexagono()
+    + asignarAdyacentesAVertices()
+    + calcularCoordenadasAdyacentesDeVertice()
+    + inicializarLadron()
+    + sePuedeConstruirInicial()
+    + colocarConstruccionInicial()
+    + mezclarHexagonos()
+    + mezclarNumeros()
+    + sonCoordenadasValidas()
+    + equals()
+    + colocarEn()
+    + producirRecurso()
+    + sePuedeConstruir()
+    + moverLadronA()
+    + obtenerJugadoresAdyacentes()
+    + ladronRobaRecurso()
+    + obtenerHexagono()
+    + obtenerHexagonoLadron()
+    + obtenerCoordenadasHexagono()
+    + estaConstruidoCon()
+    + construirCarretera()
+    }    
+
+    class Coordenadas {
+        - x: int
+        - y: int
+
+        + Coordenadas(x: int, y: int)
+        + getVecinas(): ArrayList<Coordenadas>
+        + obtenerCoordenadaX(): int
+        + obtenerCoordenadaY(): int
+        + equals(): boolean
+        + hashCode(): int
+    }
+
+    class Hexagono {
+        - tieneLadron: boolean
+        - produccion: Produccion
+
+        + Hexagono()
+        + esDesierto(): boolean
+        + colocarLadron()
+        + sacarLadron()
+        + puedeGenerarRecurso(): boolean
+        + asignarProduccion()
+        + compararProduccion(): boolean
+        + generarRecurso()
+        + equals(): boolean
+    }
+
+    class Vertice{
+        - dueno: Jugador
+        - hexagonosAdyacentes: List<Hexagono>
+        - construccion: Construccion
+        - estaConstruido: boolean
+        - verticesAdyacentes: List<Vertice>
+        - carreterasIngresantes: List<Construccion>
+
+        + Vertice()
+        + construir()
+        + agregarHexagono()
+        + obtenerDueno(): Jugador
+        + obtenerHexagonosPorProduccion()
+        + agregarAdyacente()
+        + tieneConstruccion(): boolean
+        + puedeConstruirse(): boolean
+        + cumpleReglaDistancia
+        + construirInicial()
+        + producirRecursos()
+        + esDueno()
+        + estaConstruidoCon()
+        + esAdyacente()
+        + construirCarretera()
+        + poseeCarreterasDe()
+    }
+
+    class Produccion {
+        - numero: int
+
+        + Produccion(numero: int): int
+        + equals(): boolean
+    }
+
+    class Ladron {
+        - hexagonoActual: Hexagono
+        - jugadoresAfectados: List<Jugador>
+
+        + Ladron()
+        + moverLadronA()
+        + robarRecurso()
+        + obtenerHexagonoActual(): Hexagono
+    }
+}   
+
+
+
+@enduml

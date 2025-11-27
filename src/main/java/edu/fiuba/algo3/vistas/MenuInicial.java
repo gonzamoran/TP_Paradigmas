@@ -1,70 +1,70 @@
-package edu.fiuba.algo3.vistas;
-import javafx.geometry.Pos;
-import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.image.Image;
-import javafx.scene.layout.HBox;
-import javafx.scene.layout.VBox;
-import javafx.stage.Stage;
+// package edu.fiuba.algo3.vistas;
 
-public class MenuInicial extends VBox {
+// import javafx.geometry.Pos;
+// import javafx.scene.Scene;
+// import javafx.scene.control.Button;
+// import javafx.scene.control.Label;
+// import javafx.scene.image.Image;
+// import javafx.scene.layout.HBox;
+// import javafx.scene.layout.VBox;
+// import javafx.stage.Stage;
 
-    private final Stage stage;
-    private static final int ANCHO = 800;
-    private static final int ALTO = 550;
+// public class MenuInicial extends VBox {
 
-    public MenuInicial(Stage stage) {
-        this.stage = stage;
-        this.stage.getIcons().add(new Image("Catan.png"));
+// private final Stage stage;
+// private static final int ANCHO = 800;
+// private static final int ALTO = 550;
 
-        this.setAlignment(Pos.CENTER);
-        this.setSpacing(20);
-        stage.centerOnScreen();
+// public MenuInicial(Stage stage) {
+// this.stage = stage;
+// this.stage.getIcons().add(new Image("Catan.png"));
 
-        this.getStylesheets().add("styles.css");
-        this.getStyleClass().add("body");
+// this.setAlignment(Pos.CENTER);
+// this.setSpacing(20);
+// stage.centerOnScreen();
 
-        Label etiqueta = this.crearEtiquetaDeBienvenida();
-        Button startButton = crearStartButton();
-        Button exitButton = crearExitButton();
-        HBox botonera = this.crearBotoneraHorizontal(startButton, exitButton);
+// // estilo en css
 
-        this.getChildren().addAll(etiqueta, botonera);
-    }
+// Label etiqueta = this.crearEtiquetaDeBienvenida();
+// Button startButton = crearStartButton();
+// Button exitButton = crearExitButton();
+// HBox botonera = this.crearBotoneraHorizontal(startButton, exitButton);
 
-    private HBox crearBotoneraHorizontal(Button startButton, Button exitButton) {
-        HBox botonera = new HBox(startButton, exitButton);
-        botonera.setAlignment(Pos.CENTER);
-        botonera.setSpacing(20);
-        return botonera;
-    }
+// this.getChildren().addAll(etiqueta, botonera);
+// }
 
-    private Button crearExitButton() {
-        Button exitButton = new Button();
-        exitButton.setText("Salir");
-        exitButton.getStyleClass().add("exitButton");
-        exitButton.setOnAction(e -> {
-            ReproductorDeSonido.getInstance().playClick();
-            Platform.exit();
-        });
-        return exitButton;
-    }
+// private HBox crearBotoneraHorizontal(Button startButton, Button exitButton) {
+// HBox botonera = new HBox(startButton, exitButton);
+// botonera.setAlignment(Pos.CENTER);
+// botonera.setSpacing(20);
+// return botonera;
+// }
 
-    private Button crearStartButton() {
-        Button startButton = new Button();
-        startButton.setText("Jugar");
-        startButton.getStyleClass().add("startButton");
-        startButton.setOnAction(e -> {
-            ReproductorDeSonido.getInstance().playClick();
-            Scene nuevaEscena = new Scene(new SeleccionCantidadJugadores(stage), ANCHO, ALTO);
-            stage.setScene(nuevaEscena);
-        });
-        return startButton;
-    }
-      private Label crearEtiquetaDeBienvenida() {
-        Label etiqueta = new Label("Bienvenidos a C.A.T.A.N.!");
-        etiqueta.getStyleClass().add("title");
-        return etiqueta;
-    }
-}
+// private Button crearExitButton() {
+// Button exitButton = new Button();
+// exitButton.setText("Salir");
+// exitButton.getStyleClass().add("exitButton");
+// exitButton.setOnAction(e -> {
+// // Platform.exit();
+// });
+// return exitButton;
+// }
+
+// private Button crearStartButton() {
+// Button startButton = new Button();
+// startButton.setText("Jugar");
+// startButton.getStyleClass().add("startButton");
+// startButton.setOnAction(e -> {
+// Scene nuevaEscena = new Scene(new SeleccionCantidadDeJugadores(stage), ANCHO,
+// ALTO);
+// stage.setScene(nuevaEscena);
+// });
+// return startButton;
+// }
+
+// private Label crearEtiquetaDeBienvenida() {
+// Label etiqueta = new Label("Bienvenidos a C.A.T.A.N.!");
+// etiqueta.getStyleClass().add("title");
+// return etiqueta;
+// }
+// }

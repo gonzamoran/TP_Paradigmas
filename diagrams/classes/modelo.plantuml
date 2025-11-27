@@ -1,0 +1,87 @@
+@startuml DiagramaTablero
+    class cartas{
+
+    }
+
+    class construcciones{
+
+    }
+
+    class excepciones{
+
+    }
+
+    class tablero{
+
+    }
+
+    class tiposRecurso{
+
+    }
+
+    class Dados{
+        - random: Random
+
+        + Dados()
+        + lanzarDados(): int
+    }
+
+    class Juego{
+        - jugadores: List<Jugador>
+        - tablero: Tablero
+        - dados: Dados
+        - mazo: Mazo
+        - jugadorActual: Jugador
+
+        + Juego()
+        + lanzarDados()
+        + construirEnCoordenadas()
+        + colocacionInicial()
+        + colocarConstruccionInicial()
+    }
+
+    class Jugador{
+        - color: String
+        - mazos: CartasJugador
+        - construccionesJugador: ArrayList<Construccion>
+        - cartasDeDesarrollo: ArrayList<CartaDesarrollo>
+        - puntosDeVictoria: int
+
+        + Jugador()
+        + agregarRecurso()
+        + removerRecursoAleatorio()
+        + intercambiar()
+        + removerRecurso()
+        + obtenerCantidadRecurso()
+        + obtenerCantidadCartasRecurso()
+        + getColor()
+        + agregarConstruccion()
+        + removerConstruccion()
+        + sumarPuntoVictoria()
+        + calculoPuntosVictoria()
+        + puedeDescartarse()
+        + descartarse()
+        + tieneRecursos()
+        + poseeRecursosParaConstruir()
+        + poseeRecursosParaIntercambiar()
+        + equals()
+        + contarCartasDeDesarrollo()
+        + comprarCartaDesarrollo()
+    }
+
+    class Recurso{
+        - cantidad: int
+
+        + getCantidad(): int
+        + equals()
+        + sumar()
+        + hashCode()
+        + restar()
+        + obtenerCantidad()
+    }
+
+    class Turno{
+
+    }
+
+@enduml

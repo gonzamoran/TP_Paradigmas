@@ -1,90 +1,90 @@
-package edu.fiuba.algo3.vistas;
+// package edu.fiuba.algo3.vistas;
 
-import edu.fiuba.algo3.modelo.Jugador;
-import javafx.animation.Animation;
-import javafx.animation.ScaleTransition;
-import javafx.application.Platform;
-import javafx.event.EventHandler;
+// import edu.fiuba.algo3.modelo.Jugador;
+// import javafx.animation.Animation;
+// import javafx.animation.ScaleTransition;
+// import javafx.application.Platform;
+// import javafx.event.EventHandler;
 
-import javafx.scene.control.Label;
-import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
-import javafx.scene.layout.VBox;
-import javafx.stage.Modality;
-import javafx.geometry.Insets;
-import javafx.geometry.Pos;
-import javafx.scene.Scene;
-import javafx.scene.control.Button;
+// import javafx.scene.control.Label;
+// import javafx.scene.image.Image;
+// import javafx.scene.image.ImageView;
+// import javafx.scene.layout.VBox;
+// import javafx.stage.Modality;
+// import javafx.geometry.Insets;
+// import javafx.geometry.Pos;
+// import javafx.scene.Scene;
+// import javafx.scene.control.Button;
 
-import javafx.stage.Stage;
-import javafx.stage.WindowEvent;
-import javafx.util.Duration;
+// import javafx.stage.Stage;
+// import javafx.stage.WindowEvent;
+// import javafx.util.Duration;
 
-public class VentanaVictoria {
+// public class VentanaVictoria {
 
-    private final Label labelGanador;
-    private final Stage ventanaDeLaVictoria;
+// private final Label labelGanador;
+// private final Stage ventanaDeLaVictoria;
 
-    public VentanaVictoria() {
+// public VentanaVictoria() {
 
-        this.ventanaDeLaVictoria = new Stage();
-        this.ventanaDeLaVictoria.initModality(Modality.APPLICATION_MODAL);
-        this.ventanaDeLaVictoria.setTitle("Juego Finalizado");
-        this.ventanaDeLaVictoria.setMinWidth(200);
+// this.ventanaDeLaVictoria = new Stage();
+// this.ventanaDeLaVictoria.initModality(Modality.APPLICATION_MODAL);
+// this.ventanaDeLaVictoria.setTitle("Juego Finalizado");
+// this.ventanaDeLaVictoria.setMinWidth(200);
 
-        this.labelGanador = new Label();
-        labelGanador.getStyleClass().add("labelGanador");
-        labelGanador.setPadding(new Insets(10, 0, 0, 0));
+// this.labelGanador = new Label();
+// labelGanador.getStyleClass().add("labelGanador");
+// labelGanador.setPadding(new Insets(10, 0, 0, 0));
 
-        Image img = new Image("ganador.png");
-        ImageView view = new ImageView(img);
+// Image img = new Image("ganador.png");
+// ImageView view = new ImageView(img);
 
-        ScaleTransition anim = new ScaleTransition();
-        anim.setDuration(Duration.seconds(2));
-        anim.setNode(view);
-        anim.setByX(1.5);
-        anim.setByY(1.5);
-        anim.setCycleCount(Animation.INDEFINITE);
-        anim.setAutoReverse(true);
-        anim.play();
+// ScaleTransition anim = new ScaleTransition();
+// anim.setDuration(Duration.seconds(2));
+// anim.setNode(view);
+// anim.setByX(1.5);
+// anim.setByY(1.5);
+// anim.setCycleCount(Animation.INDEFINITE);
+// anim.setAutoReverse(true);
+// anim.play();
 
-        view.setPreserveRatio(true);
-        view.setFitWidth(this.ventanaDeLaVictoria.getWidth());
-        view.setFitHeight(this.ventanaDeLaVictoria.getHeight());
+// view.setPreserveRatio(true);
+// view.setFitWidth(this.ventanaDeLaVictoria.getWidth());
+// view.setFitHeight(this.ventanaDeLaVictoria.getHeight());
 
-        VBox vBox = new VBox();
-        // estilo en css
-        vBox.setAlignment(Pos.CENTER);
-        vBox.setSpacing(30);
+// VBox vBox = new VBox();
+// // estilo en css
+// vBox.setAlignment(Pos.CENTER);
+// vBox.setSpacing(30);
 
-        Button exitButton = new Button();
-        exitButton.setText("Salir");
-        exitButton.getStyleClass().add("exitButton");
-        exitButton.setOnAction(e -> {
-            //sonido de ganador
-            Platform.exit();
-        });
+// Button exitButton = new Button();
+// exitButton.setText("Salir");
+// exitButton.getStyleClass().add("exitButton");
+// exitButton.setOnAction(e -> {
+// //sonido de ganador
+// Platform.exit();
+// });
 
-        vBox.getChildren().addAll(view, labelGanador, exitButton);
-        Scene scene = new Scene(vBox, 800, 800);
+// vBox.getChildren().addAll(view, labelGanador, exitButton);
+// Scene scene = new Scene(vBox, 800, 800);
 
-        this.ventanaDeLaVictoria.setScene(scene);
+// this.ventanaDeLaVictoria.setScene(scene);
 
-        this.ventanaDeLaVictoria.setOnCloseRequest(new EventHandler<WindowEvent>() {
-            @Override
-            public void handle(WindowEvent event) {
-                event.consume();
-            }
-        });
+// this.ventanaDeLaVictoria.setOnCloseRequest(new EventHandler<WindowEvent>() {
+// @Override
+// public void handle(WindowEvent event) {
+// event.consume();
+// }
+// });
 
-    }
+// }
 
-    public void setGanador(Jugador jugador) {
-        this.labelGanador.setText(jugador.getNombre() + " Ganó!!");
-    }
+// public void setGanador(Jugador jugador) {
+// this.labelGanador.setText(jugador.getNombre() + " Ganó!!");
+// }
 
-    public void mostrar() {
-        this.ventanaDeLaVictoria.show();
-    }
+// public void mostrar() {
+// this.ventanaDeLaVictoria.show();
+// }
 
-}
+// }

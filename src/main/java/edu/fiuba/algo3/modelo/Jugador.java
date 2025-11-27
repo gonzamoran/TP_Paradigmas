@@ -8,10 +8,13 @@ import edu.fiuba.algo3.modelo.tiposRecurso.*;
 import edu.fiuba.algo3.modelo.construcciones.Construccion;
 import edu.fiuba.algo3.modelo.cartas.CartasJugador;
 import edu.fiuba.algo3.modelo.cartas.tiposDeCartaDesarrollo.CartasDesarrollo;
+
+import edu.fiuba.algo3.modelo.excepciones.RecursosInsuficientesException;
+
 public class Jugador {
     private final String color;
     private CartasJugador mazos;
-    private ArrayList<Construccion> construccionesJugador; 
+    private ArrayList<Construccion> construccionesJugador;
     // private List<CartaDesarrollo> cartasDeDesarrollo;
     private int puntosDeVictoria;
 
@@ -31,8 +34,10 @@ public class Jugador {
         return mazos.removerRecursoAleatorio();
     }
 
-    public void intercambiar(ArrayList<Recurso> recursosAEntregar, ArrayList<Recurso> recursosARecibir, Jugador jugador2) {
-        if (!this.poseeRecursosParaIntercambiar(recursosAEntregar) || !jugador2.poseeRecursosParaIntercambiar(recursosARecibir)) {
+    public void intercambiar(ArrayList<Recurso> recursosAEntregar, ArrayList<Recurso> recursosARecibir,
+            Jugador jugador2) {
+        if (!this.poseeRecursosParaIntercambiar(recursosAEntregar)
+                || !jugador2.poseeRecursosParaIntercambiar(recursosARecibir)) {
             throw new IntercambioInvalidoException();
         }
         for (Recurso recurso : recursosAEntregar) {
@@ -69,7 +74,11 @@ public class Jugador {
         construccionesJugador.remove(construccion);
     }
 
-    public int calculoPuntosVictoria(){
+    public void sumarPuntoVictoria() {
+        this.puntosDeVictoria += 1;
+    }
+
+    public int calculoPuntosVictoria() {
         int sumaTotal = 0;
         for (Construccion c : construccionesJugador) {
             sumaTotal += c.obtenerPuntosDeVictoria();
@@ -83,7 +92,7 @@ public class Jugador {
         return mazos.puedeDescartarse();
     }
 
-    public void descartarse(){
+    public void descartarse() {
         mazos.descarteCartas();
     }
 
@@ -100,7 +109,6 @@ public class Jugador {
         }
         return true;
     }
-
 
     public boolean poseeRecursosParaIntercambiar(ArrayList<Recurso> recursosAEntregar) {
         for (Recurso recurso : recursosAEntregar) {
@@ -123,4 +131,13 @@ public class Jugador {
     public int contarCartasDeDesarrollo() {
         return mazos.obtenerCantidadCartasDesarrollo();
     }
+
+    public void comprarCartaDesarrollo(CartasDesarrollo carta) {
+        if (!mazos.poseeRecursosParaCartaDesarrollo()) {
+            throw new RecursosInsuficientesException();
+        }
+        mazos.pagarCartaDesarrollo();
+        mazos.agregarCartaDesarrollo(carta);
+    }
+
 }
