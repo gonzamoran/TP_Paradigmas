@@ -27,7 +27,6 @@ public class CasoDeUsoSacarCartasDelMazoDeDesarrollo {
     // implementar despues
 
     // MazoCartasDesarrollo va en modelo/cartas
-
     public void comprarCartaDesarrollo(MazoCartasDesarrollo mazo) {
         var carta = mazo.sacarCarta();
         jugador.comprarCartaDesarrollo(carta);

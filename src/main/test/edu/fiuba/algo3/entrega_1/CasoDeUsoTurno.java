@@ -67,7 +67,6 @@ public class CasoDeUsoTurno {
 
         ArrayList<Recurso> recursosObtenidos = caso.lanzarDados(new DadoCargado(6));
         var produccionIncorrecta = List.of(
-
                 new Madera(4),
                 new Lana(5),
                 new Lana(6));
