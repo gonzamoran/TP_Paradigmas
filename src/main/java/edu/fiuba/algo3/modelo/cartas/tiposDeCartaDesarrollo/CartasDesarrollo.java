@@ -5,17 +5,15 @@ import edu.fiuba.algo3.modelo.tiposRecurso.*;
 
 public abstract class CartasDesarrollo {
 
-    protected int turnosRestantes;
     protected int turnoDeCompra;
     protected boolean fueUsada;
-    protected Jugador jugador;
 
     public CartasDesarrollo() {
-        this.fueUsada = false;
+        int turnoDeCompra = 1;
     }
 
-    public CartasDesarrollo(int turnoActual) {
-        this.turnoDeCompra = turnoActual;
+    public CartasDesarrollo(int turnoDeCompra) {
+        this.turnoDeCompra = turnoDeCompra;
         this.fueUsada = false;
     }
 
@@ -24,10 +22,10 @@ public abstract class CartasDesarrollo {
      * return !fueUsada && turnoActual > turnoDeCompra;
      * }
      */
-    public boolean esJugable() {
-        return turnosRestantes == 0;
+    public int conseguirPV() {
+        return 0;
     }
-
+    
     public boolean equals(Object otraCarta) {
         if (otraCarta == null) {
             return false;
@@ -37,7 +35,9 @@ public abstract class CartasDesarrollo {
         }
         return true;
     }
+    public abstract boolean esJugable(ContextoCartaDesarrollo contexto);
 
-    public abstract void usar(Jugador jugador, int turnoActual);
+    public abstract void usar(ContextoCartaDesarrollo contexto);
 
+    public abstract CartasDesarrollo comprarCarta(int turnoActual);
 }

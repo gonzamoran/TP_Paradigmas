@@ -14,12 +14,19 @@ public class CartaPuntoVictoria extends CartasDesarrollo {
         super(turnoDeCompra);
     }
 
-    @Override
-    public void usar(Jugador jugador, int turnoActual) {
-        if (!this.esJugable()) {
-            throw new IllegalStateException("No se puede usar esta carta todavia");
-        }
-        this.fueUsada = true;
-        jugador.sumarPuntoVictoria();
+    public boolean esJugable(ContextoCartaDesarrollo contexto) {
+        return false;
+    }
+
+    public int conseguirPV() {
+        return 1;
+    }
+
+    public void usar(ContextoCartaDesarrollo contexto) {
+        return;
+    }
+
+    public CartasDesarrollo comprarCarta(int turnoActual) {
+        return new CartaPuntoVictoria(turnoActual);
     }
 }

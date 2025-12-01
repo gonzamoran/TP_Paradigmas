@@ -8,6 +8,8 @@ import edu.fiuba.algo3.modelo.tiposRecurso.Madera;
 import edu.fiuba.algo3.modelo.tiposRecurso.Piedra;
 import edu.fiuba.algo3.modelo.cartas.tiposDeCartaDesarrollo.CartaPuntoVictoria;
 import edu.fiuba.algo3.modelo.cartas.tiposDeCartaDesarrollo.CartasDesarrollo;
+import edu.fiuba.algo3.modelo.cartas.tiposDeCartaDesarrollo.ContextoCartaDesarrollo;
+import edu.fiuba.algo3.modelo.excepciones.NoSePuedeJugarEstaCartaException;
 
 import java.util.HashMap;
 import java.util.List;
@@ -30,7 +32,7 @@ public class CartasJugador {
     /*
      * Metodo que busca un recurso en la lista de recursos.
      */
-    private Recurso buscarRecuso(Recurso recursoBuscado) {
+    private Recurso buscarRecurso(Recurso recursoBuscado) {
         for (Recurso recurso : this.recursos) {
             if (recurso.getClass().equals(recursoBuscado.getClass())) {
                 return recurso;
@@ -59,7 +61,7 @@ public class CartasJugador {
     }
 
     public int obtenerCantidadCartasRecurso(Recurso recurso) {
-        Recurso actual = this.buscarRecuso(recurso);
+        Recurso actual = this.buscarRecurso(recurso);
         if (actual != null) {
             return actual.obtenerCantidad();
         }
@@ -127,7 +129,7 @@ public class CartasJugador {
     }
 
     public void removerRecurso(Recurso recurso) {
-        Recurso actual = this.buscarRecuso(recurso);
+        Recurso actual = this.buscarRecurso(recurso);
         if (actual != null) {
             actual.restar(recurso.obtenerCantidad());
         }
@@ -137,7 +139,7 @@ public class CartasJugador {
         var costoCartaDesarrollo = new ArrayList<Recurso>(List.of(new Lana(1), new Piedra(1), new Grano(1)));
 
         for (Recurso requisito : costoCartaDesarrollo) {
-            Recurso recursoJugador = this.buscarRecuso(requisito);
+            Recurso recursoJugador = this.buscarRecurso(requisito);
             if (recursoJugador == null || recursoJugador.obtenerCantidad() < requisito.obtenerCantidad()) {
                 return false;
             }
@@ -149,21 +151,49 @@ public class CartasJugador {
         var costoCartaDesarrollo = new ArrayList<Recurso>(List.of(new Lana(1), new Piedra(1), new Grano(1)));
 
         for (Recurso requisito : costoCartaDesarrollo) {
-            Recurso recursoJugador = this.buscarRecuso(requisito);
+            Recurso recursoJugador = this.buscarRecurso(requisito);
             recursoJugador.restar(requisito.obtenerCantidad());
         }
+
     }
 
     public List<CartasDesarrollo> obtenerCartasDesarrollos() {
         return cartasDesarrollo;
     }
 
+    public Recurso vaciarRecurso(Recurso recurso) {
+        Recurso actual = this.buscarRecurso(recurso);
+        if (actual == null) {
+            return null;
+        }
+        int cantidad = actual.obtenerCantidad();
+        actual.restar(cantidad);
+        return recurso.obtenerCopia(cantidad);
+    }
+
+
+    public void usarCartaDesarrollo(CartasDesarrollo carta, ContextoCartaDesarrollo contexto) {
+        if (!cartasDesarrollo.contains(carta)) {
+            throw new NoSePuedeJugarEstaCartaException();
+        }
+        CartasDesarrollo cartaAUsar = null;
+        for (CartasDesarrollo cartaDesarrollo : cartasDesarrollo) {
+            if (cartaDesarrollo.equals(carta)) {
+                cartaAUsar = cartaDesarrollo;
+                break;
+            }
+        }
+        if (!cartaAUsar.esJugable(contexto)) {
+            throw new NoSePuedeJugarEstaCartaException();
+        }
+        cartasDesarrollo.remove(cartaAUsar);
+        cartaAUsar.usar(contexto);
+    }
+
     public int contarCartasDePuntosDeVictoria() {
         int cartasConPuntos = 0;
         for (CartasDesarrollo carta : cartasDesarrollo) {
-            if (carta instanceof CartaPuntoVictoria) { // cambiar por un metodo bien hecho
-                cartasConPuntos += 1;
-            }
+            cartasConPuntos += carta.conseguirPV();
         }
         return cartasConPuntos;
     }

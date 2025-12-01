@@ -76,8 +76,8 @@ public class CasoDeUsoIntercambioTest {
             new Ladrillo(1)
         };
         // DIEGO: agregar un "ManoDelJugador"
-        assertEquals(recursosFinalesJugador1[0].getCantidad(), jugador1.obtenerCantidadRecurso(new Lana(0)));
-        assertEquals(recursosFinalesJugador2[0].getCantidad(), jugador2.obtenerCantidadRecurso(new Ladrillo(0)));
+        assertEquals(recursosFinalesJugador1[0].getCantidad(), jugador1.obtenerCantidadRecurso(new Lana()));
+        assertEquals(recursosFinalesJugador2[0].getCantidad(), jugador2.obtenerCantidadRecurso(new Ladrillo()));
     }
 
     @Test

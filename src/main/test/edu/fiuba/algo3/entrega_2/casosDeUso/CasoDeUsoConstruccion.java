@@ -11,12 +11,9 @@ public class CasoDeUsoConstruccion {
     private Tablero tablero;
     private Jugador jugador;
     
-    public CasoDeUsoConstruccion(Tablero tablero, Jugador jugador, Recurso[] recursos) {
+    public CasoDeUsoConstruccion(Tablero tablero, Jugador jugador) {
         this.tablero = tablero;
         this.jugador = jugador;
-        for (Recurso recurso : recursos) {
-            jugador.agregarRecurso(recurso);
-        }
     }
 
     public void construirEn(Coordenadas coordenadas, Construccion construccion) {

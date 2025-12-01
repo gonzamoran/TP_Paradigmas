@@ -7,11 +7,6 @@ public class MazoTrucado extends MazoCartasDesarrollo {
     private CartasDesarrollo cartaTrucada;
 
     public MazoTrucado(CartasDesarrollo cartaTrucada) {
-        super();
-        this.cartaTrucada = cartaTrucada;
-    }
-
-    public CartasDesarrollo obtenerCarta() {
-        return this.cartaTrucada;
+        super(new java.util.ArrayList<>(java.util.List.of(cartaTrucada)));
     }
 }

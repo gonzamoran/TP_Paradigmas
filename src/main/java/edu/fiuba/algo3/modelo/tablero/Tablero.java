@@ -1,5 +1,6 @@
 package edu.fiuba.algo3.modelo.tablero;
 
+import java.lang.reflect.Array;
 import java.lang.reflect.Constructor;
 // import java.system.out;
 import java.util.*;
@@ -331,8 +332,13 @@ public class Tablero {
         return jugadores;
     }
 
-    public void ladronRobaRecurso(Jugador jugadorActual) {
-        ladron.robarRecurso(jugadorActual);
+    //esto lo podria hacer ladron directamente o proxima clase JUEGO
+    public ArrayList<Recurso> ladronRobaRecurso(Jugador jugadorActual) {
+        ArrayList<Recurso> recursoRobado = ladron.robarRecurso(jugadorActual);
+        if (!recursoRobado.isEmpty()){
+            jugadorActual.agregarRecurso(recursoRobado.get(0)); 
+        }
+        return recursoRobado;
     }
 
     public Hexagono obtenerHexagono(Coordenadas coordenadas) {

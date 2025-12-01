@@ -13,6 +13,14 @@ public abstract class Recurso {
 
     protected int cantidad;
 
+    public Recurso() {
+        this.cantidad = 0;
+    }
+
+    public Recurso(int cantidad) {
+        this.cantidad = cantidad;
+    }
+
     public int getCantidad() {
         return cantidad;
     }

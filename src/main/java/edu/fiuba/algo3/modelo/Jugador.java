@@ -8,7 +8,7 @@ import edu.fiuba.algo3.modelo.tiposRecurso.*;
 import edu.fiuba.algo3.modelo.construcciones.Construccion;
 import edu.fiuba.algo3.modelo.cartas.CartasJugador;
 import edu.fiuba.algo3.modelo.cartas.tiposDeCartaDesarrollo.CartasDesarrollo;
-
+import edu.fiuba.algo3.modelo.cartas.tiposDeCartaDesarrollo.ContextoCartaDesarrollo;
 import edu.fiuba.algo3.modelo.excepciones.RecursosInsuficientesException;
 
 public class Jugador {
@@ -93,6 +93,9 @@ public class Jugador {
     }
 
     public void descartarse() {
+        if (!this.puedeDescartarse()) {
+            return;
+        }
         mazos.descarteCartas();
     }
 
@@ -119,6 +122,10 @@ public class Jugador {
         return true;
     }
 
+    public Recurso vaciarRecurso(Recurso recurso) {
+        return mazos.vaciarRecurso(recurso);
+    }
+
     public boolean equals(Object obj) {
         if (this == obj)
             return true;
@@ -132,12 +139,17 @@ public class Jugador {
         return mazos.obtenerCantidadCartasDesarrollo();
     }
 
-    public void comprarCartaDesarrollo(CartasDesarrollo carta) {
+    public void comprarCartaDesarrollo(CartasDesarrollo carta, int turnoActual) {
         if (!mazos.poseeRecursosParaCartaDesarrollo()) {
             throw new RecursosInsuficientesException();
         }
         mazos.pagarCartaDesarrollo();
-        mazos.agregarCartaDesarrollo(carta);
+        CartasDesarrollo cartaComprada = carta.comprarCarta(turnoActual);
+        mazos.agregarCartaDesarrollo(cartaComprada);
+    }
+
+    public void usarCartaDesarrollo(CartasDesarrollo carta, ContextoCartaDesarrollo contexto) {
+        mazos.usarCartaDesarrollo(carta, contexto);
     }
 
 }
