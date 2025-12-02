@@ -1,12 +1,13 @@
 package edu.fiuba.algo3.modelo.cartas.tiposDeCartaDesarrollo;
 
 import edu.fiuba.algo3.modelo.cartas.tiposDeCartaDesarrollo.CartasDesarrollo;
-
 import edu.fiuba.algo3.modelo.tablero.Tablero;
+import edu.fiuba.algo3.modelo.excepciones.NoSePuedeJugarEstaCartaException;
 
 import java.util.ArrayList;
 
 import edu.fiuba.algo3.modelo.Jugador;
+import edu.fiuba.algo3.modelo.ProveedorDeDatos;
 import edu.fiuba.algo3.modelo.tablero.Ladron;
 import edu.fiuba.algo3.modelo.Recurso;
 
@@ -25,15 +26,19 @@ public class CartaMonopolio extends CartasDesarrollo {
         super(turnoDeCompra);
     }
 
-    public void usar(ContextoCartaDesarrollo contexto) {
-        this.fueUsada = true;
-        Recurso recursoSolicitado = contexto.obtenerRecursoSolicitado();
+    @Override
+    public void usar(ContextoCartaDesarrollo contexto, ProveedorDeDatos proveedor) {
+        Recurso recursoElegido = proveedor.pedirRecursoAlUsuario();
+        Jugador jugadorActual = contexto.conseguirJugadorQueUsaLaCarta();
+        
         for (Jugador jugador : contexto.conseguirJugadoresAfectados()) {
-            int cantidad = jugador.obtenerCantidadRecurso(recursoSolicitado);
-            Recurso recursoEntregado = jugador.vaciarRecurso(recursoSolicitado);
-            contexto.conseguirJugadorQueUsaLaCarta().agregarRecurso(recursoEntregado);
-        }
+            if (!jugador.equals(jugadorActual)){
+                Recurso recursoMonopolizado = jugador.vaciarRecurso(recursoElegido);
 
+                jugadorActual.agregarRecurso(recursoMonopolizado);
+            }
+        }
+        this.fueUsada = true;
     }
 
     public boolean esJugable(ContextoCartaDesarrollo contexto) {

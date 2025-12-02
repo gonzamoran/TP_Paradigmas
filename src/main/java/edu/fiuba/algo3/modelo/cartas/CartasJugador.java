@@ -1,5 +1,6 @@
 package edu.fiuba.algo3.modelo.cartas;
 
+import edu.fiuba.algo3.modelo.ProveedorDeDatos;
 import edu.fiuba.algo3.modelo.Recurso;
 import edu.fiuba.algo3.modelo.tiposRecurso.Grano;
 import edu.fiuba.algo3.modelo.tiposRecurso.Ladrillo;
@@ -44,6 +45,9 @@ public class CartasJugador {
     }
 
     public void agregarRecursos(Recurso recurso) {
+        if (recurso == null) {
+            return;
+        }
         var agregado = false;
         for (Recurso recursoActual : this.recursos) {
             if (recursoActual.getClass().equals(recurso.getClass())) {
@@ -158,7 +162,6 @@ public class CartasJugador {
 
     }
 
-
     public Recurso vaciarRecurso(Recurso recurso) {
         Recurso actual = this.buscarRecurso(recurso);
         if (actual == null) {
@@ -170,7 +173,7 @@ public class CartasJugador {
     }
 
 
-    public void usarCartaDesarrollo(CartasDesarrollo carta, ContextoCartaDesarrollo contexto) {
+    public void usarCartaDesarrollo(CartasDesarrollo carta, ContextoCartaDesarrollo contexto, ProveedorDeDatos proveedor) {
         if (!cartasDesarrollo.contains(carta)) {
             throw new NoSePuedeJugarEstaCartaException();
         }
@@ -185,7 +188,7 @@ public class CartasJugador {
             throw new NoSePuedeJugarEstaCartaException();
         }
         cartasDesarrollo.remove(cartaAUsar);
-        cartaAUsar.usar(contexto);
+        cartaAUsar.usar(contexto, proveedor);
     }
 
     public int obtenerPVdeCartas() {
@@ -202,5 +205,13 @@ public class CartasJugador {
     public int obtenerCantidadCartasDesarrollo() {
         return cartasDesarrollo.size();
     }
-    
+
+    public void otorgarGranCaballeria() {
+        this.tieneLaGranCaballeria = true;
+    }
+
+    public void pierdeGranCaballeria(){
+        this.tieneLaGranCaballeria = false;
+    }
+
 }

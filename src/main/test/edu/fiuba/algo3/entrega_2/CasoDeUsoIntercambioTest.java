@@ -1,6 +1,6 @@
 package edu.fiuba.algo3.entrega_2;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import edu.fiuba.algo3.modelo.Jugador;
 import edu.fiuba.algo3.modelo.Recurso;
@@ -10,7 +10,6 @@ import edu.fiuba.algo3.modelo.acciones.CasoDeUsoIntercambio;
 
 import edu.fiuba.algo3.modelo.excepciones.IntercambioInvalidoException;
 
-import org.junit.Test;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;

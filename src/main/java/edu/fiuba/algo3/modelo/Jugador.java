@@ -83,6 +83,8 @@ public class Jugador {
     public int obtenerCantidadCaballerosUsados(){
         return this.caballerosJugador;
     }
+
+
     public int calculoPuntosVictoria() {
         int sumaTotal = 0;
         for (Construccion c : construccionesJugador) {
@@ -153,10 +155,22 @@ public class Jugador {
         mazos.agregarCartaDesarrollo(cartaComprada);
     }
 
-    public void usarCartaDesarrollo(CartasDesarrollo carta, ContextoCartaDesarrollo contexto) {
-        mazos.usarCartaDesarrollo(carta, contexto);
+    public void usarCartaDesarrollo(CartasDesarrollo carta, ContextoCartaDesarrollo contexto, ProveedorDeDatos proveedor) {
+        mazos.usarCartaDesarrollo(carta, contexto, proveedor);
     }
 
+    public void otorgarGranCaballeria(ArrayList<Jugador> jugadores) {
+        for (Jugador jugador : jugadores) {
+            if (jugador != this) {
+                jugador.pierdeGranCaballeria();
+            }
+        }
+        mazos.otorgarGranCaballeria();
+    }
+
+    public void pierdeGranCaballeria(){
+        mazos.pierdeGranCaballeria();
+    }
     // public ArrayList<CartasDesarrollo> obtenerCartasDesarrollo(){
     //     return mazos.obtenerCartasDesarrollo();
     // }

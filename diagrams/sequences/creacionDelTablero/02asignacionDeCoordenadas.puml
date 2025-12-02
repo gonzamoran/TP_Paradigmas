@@ -1,0 +1,62 @@
+@startuml asignacionDeCoordenadas
+
+title Asignacion de Coordenadas a Hexagonos
+
+participant Tablero
+participant "Coordenadas:List<Coordenadas>" as ListaCoords
+participant "Coordenada" as Coord
+participant "Hexagonos:Map<Coordenadas, Hexagono>" as MapaHexagonos
+
+Tablero -> Tablero: asignarCoordenadasHexagonos()
+activate Tablero
+
+Note over Tablero: **Crear coordenadas**
+Tablero -> Tablero: crearListaDeCoordenadasHexagonos()
+create ListaCoords
+activate Tablero
+
+Tablero -> ListaCoords: new ArrayList<>()
+activate ListaCoords
+ListaCoords --> Tablero: listaCoords
+deactivate ListaCoords
+
+loop para cada fila
+
+    loop para cada columna
+        
+        create Coord
+        Tablero -> Coord: new Coordenadas(fila, col)
+        activate Coord
+        Coord --> Tablero: nuevaCoordenada
+        deactivate Coord
+        
+        Tablero -> ListaCoords: add(nuevaCoordenada)
+        activate ListaCoords
+        ListaCoords --> Tablero: ok
+        deactivate ListaCoords
+    end
+end
+
+Tablero --> Tablero: coords (lista de coordenadas)
+deactivate Tablero
+
+Note over Tablero: **Asignar coordenadas a cada hexágono**
+
+loop para i = 0 a listaHexagonos.size()-1
+    Tablero -> ListaCoords: get(i)
+    activate ListaCoords
+    ListaCoords --> Tablero: coord
+    deactivate ListaCoords
+    
+    Tablero -> Tablero: listaHexagonos.get(i)
+    
+    Tablero -> MapaHexagonos: put(coord, hexagono)
+    activate MapaHexagonos
+    MapaHexagonos --> Tablero: hexagono mapeado
+    deactivate MapaHexagonos
+end
+
+Tablero --> Tablero: mapaHexagonos completado
+deactivate Tablero
+
+@enduml

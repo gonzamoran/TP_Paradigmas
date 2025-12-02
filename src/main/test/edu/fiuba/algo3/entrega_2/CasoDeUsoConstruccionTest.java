@@ -17,7 +17,7 @@ import edu.fiuba.algo3.modelo.excepciones.NoEsPosibleConstruirException;
 
 import java.lang.invoke.CallSite;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import edu.fiuba.algo3.modelo.acciones.CasoDeUsoConstruccion;
 

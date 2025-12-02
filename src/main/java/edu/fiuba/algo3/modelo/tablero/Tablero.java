@@ -91,12 +91,11 @@ public class Tablero {
 
     private void asignarCoordenadasHexagonos() {
 
-        List<Coordenadas> coord = this.crearListaDeCoordenadasHexagonos(); // mismo len que hexagonos (19)
+        List<Coordenadas> coords = this.crearListaDeCoordenadasHexagonos(); // mismo len que hexagonos (19)
 
-        int i = 0;
-        for (; i < listaHexagonos.size(); i++) {
-            Coordenadas coords = coord.get(i);
-            mapaHexagonos.put(coords, listaHexagonos.get(i));
+        for (int i = 0; i < listaHexagonos.size(); i++) {
+            Coordenadas coord = coords.get(i);
+            mapaHexagonos.put(coord, listaHexagonos.get(i));
         }
     }
 
@@ -123,6 +122,7 @@ public class Tablero {
         int indiceNumeros = 0;
         for (; indiceHexagonos < listaHexagonos.size() && indiceNumeros < listaNumeros.size();) {
             Hexagono hexagono = listaHexagonos.get(indiceHexagonos);
+            // !! sacar esDesierto y sobreescribir asignarProduccion en Desierto
             if (!hexagono.esDesierto()) {
                 Produccion produccion = (Produccion) listaNumeros.get(indiceNumeros);
                 hexagono.asignarProduccion(produccion);
