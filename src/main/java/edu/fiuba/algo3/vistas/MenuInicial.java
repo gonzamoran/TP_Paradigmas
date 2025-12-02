@@ -1,70 +1,45 @@
-// package edu.fiuba.algo3.vistas;
 
-// import javafx.geometry.Pos;
-// import javafx.scene.Scene;
-// import javafx.scene.control.Button;
-// import javafx.scene.control.Label;
-// import javafx.scene.image.Image;
-// import javafx.scene.layout.HBox;
-// import javafx.scene.layout.VBox;
-// import javafx.stage.Stage;
+import javafx.application.Application;
+import javafx.geometry.Pos;
+import javafx.scene.Scene;
+import javafx.scene.control.Button;
+import javafx.scene.control.Label;
+import javafx.scene.layout.VBox;
+import javafx.stage.Stage;
 
-// public class MenuInicial extends VBox {
+public class MenuInicial extends Application {
 
-// private final Stage stage;
-// private static final int ANCHO = 800;
-// private static final int ALTO = 550;
+    @Override
+    public void start(Stage primaryStage) {
+        
+        Label titleLabel = new Label("Bienvenido a C.A.T.A.N.!");
+        titleLabel.setStyle("-fx-font-size: 24px; -fx-font-weight: bold; -fx-text-fill: #333;");
 
-// public MenuInicial(Stage stage) {
-// this.stage = stage;
-// this.stage.getIcons().add(new Image("Catan.png"));
+        Button botonJugar = new Button("Jugar");
+        Button botonSalir = new Button("Salir");
 
-// this.setAlignment(Pos.CENTER);
-// this.setSpacing(20);
-// stage.centerOnScreen();
+        String buttonStyle = "-fx-font-size: 14px; -fx-min-width: 100px;";
+        botonJugar.setStyle(buttonStyle);
+        botonSalir.setStyle(buttonStyle);
 
-// // estilo en css
+        botonSalir.setOnAction(e -> {
+            System.out.println("Cerrando el juego...");
+            primaryStage.close();
+        });
 
-// Label etiqueta = this.crearEtiquetaDeBienvenida();
-// Button startButton = crearStartButton();
-// Button exitButton = crearExitButton();
-// HBox botonera = this.crearBotoneraHorizontal(startButton, exitButton);
+        botonJugar.setOnAction(e -> {
+            System.out.println("Cambiando a la vista del juego...");
+            ConfiguracionPartida.show(primaryStage);
+        });
 
-// this.getChildren().addAll(etiqueta, botonera);
-// }
+        VBox root = new VBox(20); 
+        root.setAlignment(Pos.CENTER); 
+        root.getChildren().addAll(titleLabel, botonJugar, botonSalir);
 
-// private HBox crearBotoneraHorizontal(Button startButton, Button exitButton) {
-// HBox botonera = new HBox(startButton, exitButton);
-// botonera.setAlignment(Pos.CENTER);
-// botonera.setSpacing(20);
-// return botonera;
-// }
-
-// private Button crearExitButton() {
-// Button exitButton = new Button();
-// exitButton.setText("Salir");
-// exitButton.getStyleClass().add("exitButton");
-// exitButton.setOnAction(e -> {
-// // Platform.exit();
-// });
-// return exitButton;
-// }
-
-// private Button crearStartButton() {
-// Button startButton = new Button();
-// startButton.setText("Jugar");
-// startButton.getStyleClass().add("startButton");
-// startButton.setOnAction(e -> {
-// Scene nuevaEscena = new Scene(new SeleccionCantidadDeJugadores(stage), ANCHO,
-// ALTO);
-// stage.setScene(nuevaEscena);
-// });
-// return startButton;
-// }
-
-// private Label crearEtiquetaDeBienvenida() {
-// Label etiqueta = new Label("Bienvenidos a C.A.T.A.N.!");
-// etiqueta.getStyleClass().add("title");
-// return etiqueta;
-// }
-// }
+        Scene scene = new Scene(root, 400, 300);
+        
+        primaryStage.setTitle("Menú Principal - Catan");
+        primaryStage.setScene(scene);
+        primaryStage.show();
+    }
+}

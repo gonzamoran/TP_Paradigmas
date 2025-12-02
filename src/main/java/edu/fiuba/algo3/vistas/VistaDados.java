@@ -1,24 +1,52 @@
-// package edu.fiuba.algo3.vistas;
+package edu.fiuba.algo3.vistas;
 
-// import edu.fiuba.algo3.modelo.Dados;
-// import javafx.scene.image.Image;
-// import javafx.scene.image.ImageView;
-// import javafx.scene.layout.HBox;
+import javafx.geometry.Pos;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.VBox;
+import javafx.scene.control.Label;
 
-// public class VistaDados extends HBox {
+import java.util.Objects;
 
-// public VistaDados(Dados dados) {
-// for (Dado dado : dados) this.getChildren().add(vistaDados(dado));
-// }this.setSpacing(10);
+public class VistaDados extends VBox {
 
-// }
 
-// private ImageView vistaDados(Dado dado) {
-// Image imagenDado1 = new Image("dado" + dado.obtenerValor() + ".png");
-// Image imagenDado2 = new Image("dado" + dado.obtenerValor() + ".png");
-// ImageView imageView = new ImageView(imagenDado1);
-// ImageView imageView = new ImageView(imagenDado2);
-// imageView.setPreserveRatio(true);
-// return imageView;
-// }
-// }
+    public VistaDados(int valor1, int valor2) {
+        this.setAlignment(Pos.CENTER);
+        this.setSpacing(20);
+        this.setStyle("-fx-padding: 20; -fx-background-color: white;");
+
+        Label titulo = new Label("Resultado:");
+        titulo.setStyle("-fx-font-size: 18px; -fx-font-weight: bold;");
+
+
+        HBox contenedorDados = new HBox(15);
+        contenedorDados.setAlignment(Pos.CENTER);
+
+
+        contenedorDados.getChildren().add(crearImagenDado(valor1));
+        contenedorDados.getChildren().add(crearImagenDado(valor2));
+
+        Label total = new Label("Total: " + (valor1 + valor2));
+        total.setStyle("-fx-font-size: 16px;");
+
+        this.getChildren().addAll(titulo, contenedorDados, total);
+    }
+
+    private ImageView crearImagenDado(int valor) {
+        try {
+
+            String ruta = "/hellofx/dado" + valor + ".png";
+            Image imagen = new Image(Objects.requireNonNull(getClass().getResourceAsStream(ruta)));
+            
+            ImageView imageView = new ImageView(imagen);
+            imageView.setPreserveRatio(true);
+            imageView.setFitHeight(100);
+            return imageView;
+        } catch (Exception e) {
+            System.out.println("No se encontró la imagen para el dado " + valor);
+            return new ImageView();
+        }
+    }
+}
