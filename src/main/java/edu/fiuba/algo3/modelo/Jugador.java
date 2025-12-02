@@ -17,11 +17,13 @@ public class Jugador {
     private ArrayList<Construccion> construccionesJugador;
     // private List<CartaDesarrollo> cartasDeDesarrollo;
     private int puntosDeVictoria;
+    private int caballerosJugador;
 
     public Jugador(String color) {
         this.color = color;
         // this.cartasDeDesarrollo = new List<CartaDesarrollo>();
         this.puntosDeVictoria = 0;
+        this.caballerosJugador = 0;
         this.construccionesJugador = new ArrayList<>();
         this.mazos = new CartasJugador();
     }
@@ -74,16 +76,19 @@ public class Jugador {
         construccionesJugador.remove(construccion);
     }
 
-    public void sumarPuntoVictoria() {
-        this.puntosDeVictoria += 1;
+    public void sumarCaballero() {
+        this.caballerosJugador += 1;
     }
 
+    public int obtenerCantidadCaballerosUsados(){
+        return this.caballerosJugador;
+    }
     public int calculoPuntosVictoria() {
         int sumaTotal = 0;
         for (Construccion c : construccionesJugador) {
             sumaTotal += c.obtenerPuntosDeVictoria();
         }
-        sumaTotal += mazos.contarCartasDePuntosDeVictoria();
+        sumaTotal += mazos.obtenerPVdeCartas();
         this.puntosDeVictoria = sumaTotal;
         return puntosDeVictoria;
     }
@@ -152,4 +157,7 @@ public class Jugador {
         mazos.usarCartaDesarrollo(carta, contexto);
     }
 
+    // public ArrayList<CartasDesarrollo> obtenerCartasDesarrollo(){
+    //     return mazos.obtenerCartasDesarrollo();
+    // }
 }

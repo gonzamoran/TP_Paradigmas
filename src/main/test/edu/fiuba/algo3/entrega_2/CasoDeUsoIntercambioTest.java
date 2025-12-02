@@ -6,7 +6,7 @@ import edu.fiuba.algo3.modelo.Jugador;
 import edu.fiuba.algo3.modelo.Recurso;
 import edu.fiuba.algo3.modelo.tiposRecurso.*;
 
-import edu.fiuba.algo3.entrega_2.casosDeUso.CasoDeUsoIntercambio;
+import edu.fiuba.algo3.modelo.acciones.CasoDeUsoIntercambio;
 
 import edu.fiuba.algo3.modelo.excepciones.IntercambioInvalidoException;
 

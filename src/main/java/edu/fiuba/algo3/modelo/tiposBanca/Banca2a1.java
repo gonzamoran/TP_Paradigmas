@@ -6,6 +6,7 @@ import edu.fiuba.algo3.modelo.Recurso;
 
 import java.util.ArrayList;
 
+import edu.fiuba.algo3.modelo.excepciones.ComercioInvalidoException;
 
 
 public class Banca2a1 extends Banca {
@@ -18,18 +19,18 @@ public class Banca2a1 extends Banca {
         int cantidadOfrecida = 0;
         for(Recurso recursoOfrecido : oferta){
             if(recursoOfrecido.getClass() != recurso.getClass()){
-                throw new IllegalArgumentException(); //recurso incorrecto
+                throw new ComercioInvalidoException();
             } else {
                 cantidadOfrecida += recursoOfrecido.obtenerCantidad();
             }
         }
 
         if (cantidadOfrecida != 2){
-            throw new IllegalArgumentException(); //proporcion incorrecta
+            throw new ComercioInvalidoException();
         }
 
         if (!jugador.poseeRecursosParaIntercambiar(oferta)){
-            throw new IllegalArgumentException(); //no posee recursos
+            throw new ComercioInvalidoException();
         }
 
         for (Recurso recursoOfrecido : oferta){

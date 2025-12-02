@@ -12,7 +12,7 @@ import edu.fiuba.algo3.modelo.excepciones.PosInvalidaParaConstruirException;
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
 
-import edu.fiuba.algo3.entrega_2.casosDeUso.CasoDeUsoConstruirCarretera;
+import edu.fiuba.algo3.modelo.acciones.CasoDeUsoConstruirCarretera;
 
 public class CasoDeUsoConstruirCarreteraTest {
 

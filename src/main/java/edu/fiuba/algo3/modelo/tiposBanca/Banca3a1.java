@@ -5,6 +5,7 @@ import edu.fiuba.algo3.modelo.Jugador;
 import edu.fiuba.algo3.modelo.Recurso;
 import java.util.ArrayList;
 
+import edu.fiuba.algo3.modelo.excepciones.ComercioInvalidoException;
 
 public class Banca3a1 extends Banca {
     public void comerciar(Jugador jugador, ArrayList<Recurso> oferta, Recurso demanda) {
@@ -14,11 +15,11 @@ public class Banca3a1 extends Banca {
         }
 
         if (cantidadTotalOfrecida != 3) {
-            throw new RuntimeException(); //cambiar excepcion
+            throw new ComercioInvalidoException();
         }
 
         if (!jugador.poseeRecursosParaIntercambiar(oferta)) {
-            throw new RuntimeException("El jugador no posee los recursos ofrecidos para comerciar con la banca 3:1"); //cambiar excepcion
+            throw new ComercioInvalidoException();
         }
 
         for (Recurso recurso : oferta) {

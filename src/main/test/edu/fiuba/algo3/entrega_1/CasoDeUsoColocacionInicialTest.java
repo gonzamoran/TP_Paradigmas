@@ -10,7 +10,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import edu.fiuba.algo3.modelo.tablero.Tablero;
 import edu.fiuba.algo3.modelo.construcciones.Poblado;
 import edu.fiuba.algo3.modelo.tablero.Coordenadas;
-import edu.fiuba.algo3.entrega_1.casosDeUso.CasoDeUsoColocacionInicial;
+import edu.fiuba.algo3.modelo.acciones.CasoDeUsoColocacionInicial;
 import edu.fiuba.algo3.modelo.Recurso;
 import edu.fiuba.algo3.modelo.tiposRecurso.*;
 import edu.fiuba.algo3.modelo.Jugador;

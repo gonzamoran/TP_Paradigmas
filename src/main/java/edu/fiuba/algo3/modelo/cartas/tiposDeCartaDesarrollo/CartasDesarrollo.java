@@ -17,11 +17,6 @@ public abstract class CartasDesarrollo {
         this.fueUsada = false;
     }
 
-    /*
-     * public boolean esJugable(int turnoActual) {
-     * return !fueUsada && turnoActual > turnoDeCompra;
-     * }
-     */
     public int conseguirPV() {
         return 0;
     }

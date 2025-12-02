@@ -14,7 +14,7 @@ public abstract class Hexagono {
     public Hexagono() {
         this.tieneLadron = false;
     }
-
+ 
     public boolean esDesierto() {
         return false;
     }

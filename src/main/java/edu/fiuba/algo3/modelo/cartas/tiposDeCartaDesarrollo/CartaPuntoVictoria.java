@@ -18,12 +18,14 @@ public class CartaPuntoVictoria extends CartasDesarrollo {
         return false;
     }
 
+    @Override
     public int conseguirPV() {
         return 1;
     }
 
+    @Override
     public void usar(ContextoCartaDesarrollo contexto) {
-        return;
+       return;
     }
 
     public CartasDesarrollo comprarCarta(int turnoActual) {

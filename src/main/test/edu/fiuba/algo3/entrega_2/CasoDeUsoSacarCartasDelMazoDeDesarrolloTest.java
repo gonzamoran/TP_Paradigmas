@@ -10,7 +10,7 @@ import edu.fiuba.algo3.modelo.Recurso;
 import edu.fiuba.algo3.modelo.cartas.*;
 import edu.fiuba.algo3.modelo.cartas.tiposDeCartaDesarrollo.*;
 
-import edu.fiuba.algo3.entrega_2.casosDeUso.CasoDeUsoSacarCartasDelMazoDeDesarrollo;
+import edu.fiuba.algo3.modelo.acciones.CasoDeUsoSacarCartasDelMazoDeDesarrollo;
 
 import edu.fiuba.algo3.modelo.excepciones.RecursosInsuficientesException;
 import edu.fiuba.algo3.modelo.excepciones.NoSePuedeJugarEstaCartaException;
@@ -42,13 +42,13 @@ public class CasoDeUsoSacarCartasDelMazoDeDesarrolloTest {
         new CartaPuntoVictoria(), new CartaPuntoVictoria(), new CartaPuntoVictoria(),
         new CartaPuntoVictoria(),
         new CartaPuntoVictoria(),
-        new CartaMonopolio(), new CartaMonopolio()
-        // new CartaConstruccionCarretera(), new CartaConstruccionCarretera(),
+        new CartaMonopolio(), new CartaMonopolio(),
+        //new CartaConstruccionCarretera(), new CartaConstruccionCarretera(),
         // new CartaDescubrimiento(), new CartaDescubrimiento(),
-        // new CartaCaballero(), new CartaCaballero(), new CartaCaballero(), new CartaCaballero(),
-        // new CartaCaballero(), new CartaCaballero(), new CartaCaballero(), new CartaCaballero(), 
-        // new CartaCaballero(), new CartaCaballero(), new CartaCaballero(), new CartaCaballero(), 
-        // new CartaCaballero(), new CartaCaballero()
+        new CartaCaballero(), new CartaCaballero(), new CartaCaballero(),
+        new CartaCaballero(), new CartaCaballero(), new CartaCaballero(), new CartaCaballero(), 
+        new CartaCaballero(), new CartaCaballero(), new CartaCaballero(), new CartaCaballero(), 
+        new CartaCaballero(), new CartaCaballero()
         ));
     }
     @Test
@@ -262,4 +262,48 @@ public class CasoDeUsoSacarCartasDelMazoDeDesarrolloTest {
         assertTrue(recursosJugador2.containsAll(recursosEsperadosJugador2));
     }
 
+    /*
+    @Test
+    public void testCasoDeUsoCartaCaballero(){
+
+        setUp();
+        Tablero tablero = new Tablero();
+        Jugador jugador1 = new Jugador("Azul");
+        Jugador victima = new Jugador("Rojo");
+
+        jugador1.agregarRecurso(new Lana(1));
+        jugador1.agregarRecurso(new Piedra(1));
+        jugador1.agregarRecurso(new Grano(1));        
+
+        victima.agregarRecurso(new Madera(1));
+
+        ArrayList<Jugador> jugadoresAfectados = new ArrayList<Jugador>(List.of(victima));
+
+        Coordenadas destinoLadron = new Coordenadas(2,2);
+        var caso = new CasoDeUsoSacarCartasDelMazoDeDesarrollo(cartas);
+        MazoCartasDesarrollo mazo = new MazoTrucado(new CartaCaballero());
+        
+        //turno 1
+        caso.comprarCartaDesarrollo(mazo, jugador1, turnoActual);
+
+        //turno 2
+        ArrayList<CartasDesarrollo> disponibles = jugador1.obtenerCartasDesarrollo();
+        CartasDesarrollo cartaElegida = disponibles.get(0);
+        
+        new ContextoCartaDesarrollo(jugador1, turnoActual + 1, tablero);
+
+
+        contexto.agregarDestinoLadron(destinoLadron);
+
+        
+        ContextoCartaDesarrollo contextoNuevo = new ContextoCartaDesarrollo(jugador1, jugadoresAfectados, turnoActual + 1, null, tablero); //incluyendo destinoLadron
+        
+        caso.usarCartaDesarrollo(cartaElegida, jugador1, contextoNuevo);
+
+        assertEquals(1, jugador1.obtenerCantidadCartasRecurso());
+        assertEquals(0, victima.obtenerCantidadCartasRecurso());
+
+        assertEquals(1, jugador1.obtenerCantidadCaballerosUsados());
+    }
+    */
 }

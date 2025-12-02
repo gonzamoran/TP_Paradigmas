@@ -7,7 +7,7 @@ import edu.fiuba.algo3.modelo.construcciones.*;
 import edu.fiuba.algo3.modelo.Dados;
 import edu.fiuba.algo3.modelo.Recurso;
 import edu.fiuba.algo3.modelo.Jugador;
-import edu.fiuba.algo3.entrega_1.casosDeUso.CasoDeUsoGirarElDado;
+import edu.fiuba.algo3.modelo.acciones.CasoDeUsoGirarElDado;
 import edu.fiuba.algo3.entrega_1.DadoCargado;
 
 import org.junit.jupiter.api.BeforeEach;

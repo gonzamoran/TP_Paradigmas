@@ -5,7 +5,7 @@ import edu.fiuba.algo3.modelo.tablero.tiposHexagono.*;
 import edu.fiuba.algo3.modelo.tablero.Hexagono;
 import edu.fiuba.algo3.modelo.tablero.Produccion;
 
-import edu.fiuba.algo3.entrega_1.casosDeUso.CasoDeUsoArmarTablero;
+import edu.fiuba.algo3.modelo.acciones.CasoDeUsoArmarTablero;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;

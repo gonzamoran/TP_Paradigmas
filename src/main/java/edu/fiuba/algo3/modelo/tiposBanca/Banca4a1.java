@@ -5,6 +5,8 @@ import edu.fiuba.algo3.modelo.Jugador;
 import edu.fiuba.algo3.modelo.Recurso;
 import java.util.ArrayList;
 
+import edu.fiuba.algo3.modelo.excepciones.ComercioInvalidoException;
+
 public class Banca4a1 extends Banca {
     public void comerciar(Jugador jugador, ArrayList<Recurso> oferta, Recurso demanda) {
         int cantidadOfrecida = 0;
@@ -14,16 +16,16 @@ public class Banca4a1 extends Banca {
             if (claseRecurso == null) {
                 claseRecurso = recurso.getClass();
             } else if (!claseRecurso.equals(recurso.getClass())) {
-                throw new IllegalArgumentException("Todos los recursos ofrecidos deben ser del mismo tipo para comerciar con la banca 4:1"); //cambiar excepcion
+                throw new ComercioInvalidoException();
             }
             cantidadOfrecida += recurso.obtenerCantidad();
         }
         if (!jugador.poseeRecursosParaIntercambiar(oferta)) {
-            throw new IllegalArgumentException("El jugador no posee los recursos ofrecidos para comerciar con la banca 4:1"); //cambiar excepcion
+            throw new ComercioInvalidoException();
         }
 
         if (cantidadOfrecida != 4){
-            throw new IllegalArgumentException("La cantidad ofrecida debe ser exactamente 4 para comerciar con la banca 4:1"); //cambiar excepcion
+            throw new ComercioInvalidoException();
         }
 
         for (edu.fiuba.algo3.modelo.Recurso recurso : oferta) {

@@ -21,8 +21,9 @@ import java.util.Collections;
 
 public class CartasJugador {
 
-    private List<CartasDesarrollo> cartasDesarrollo;
+    private ArrayList<CartasDesarrollo> cartasDesarrollo;
     private List<Recurso> recursos;
+    private boolean tieneLaGranCaballeria = false; // hacerlo de otra forma
 
     public CartasJugador() {
         this.cartasDesarrollo = new ArrayList<>();
@@ -157,9 +158,6 @@ public class CartasJugador {
 
     }
 
-    public List<CartasDesarrollo> obtenerCartasDesarrollos() {
-        return cartasDesarrollo;
-    }
 
     public Recurso vaciarRecurso(Recurso recurso) {
         Recurso actual = this.buscarRecurso(recurso);
@@ -190,10 +188,13 @@ public class CartasJugador {
         cartaAUsar.usar(contexto);
     }
 
-    public int contarCartasDePuntosDeVictoria() {
+    public int obtenerPVdeCartas() {
         int cartasConPuntos = 0;
         for (CartasDesarrollo carta : cartasDesarrollo) {
             cartasConPuntos += carta.conseguirPV();
+        }
+        if (this.tieneLaGranCaballeria) {
+            cartasConPuntos += 2;
         }
         return cartasConPuntos;
     }
@@ -201,5 +202,5 @@ public class CartasJugador {
     public int obtenerCantidadCartasDesarrollo() {
         return cartasDesarrollo.size();
     }
-
+    
 }

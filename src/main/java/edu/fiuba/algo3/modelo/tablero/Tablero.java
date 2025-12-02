@@ -10,14 +10,17 @@ import edu.fiuba.algo3.modelo.tablero.*;
 import edu.fiuba.algo3.modelo.construcciones.*;
 import edu.fiuba.algo3.modelo.construcciones.Construccion;
 import edu.fiuba.algo3.modelo.Jugador;
+import edu.fiuba.algo3.modelo.Banca;
 
 import edu.fiuba.algo3.modelo.tablero.tiposHexagono.*;
+import edu.fiuba.algo3.modelo.tiposBanca.*;
+import edu.fiuba.algo3.modelo.tiposRecurso.*;
 
 import edu.fiuba.algo3.modelo.excepciones.PosInvalidaParaConstruirException;
 import edu.fiuba.algo3.modelo.excepciones.NoEsPosibleConstruirException;
 
 public class Tablero {
-    private Ladron ladron;
+    private Ladron ladron; //sacar
     // private Map<Coordenadas, Carretera> carreteras;
     // private Map<Coordenadas, Poblado> poblados;
     private ArrayList<Hexagono> listaHexagonos;
@@ -130,6 +133,7 @@ public class Tablero {
     }
 
     private void inicializarVertices() {
+        Map<Coordenadas, Banca> mapaBancas = this.inicializarBancas();
         // recorrer hexagonos y obtener vertices
         for (Map.Entry<Coordenadas, Hexagono> entrada : mapaHexagonos.entrySet()) {
             Hexagono hexagono = entrada.getValue();
@@ -139,6 +143,7 @@ public class Tablero {
                 if (!mapaVertices.containsKey(coordVertice)) {
                     Vertice vertice = new Vertice();
                     vertice.agregarHexagono(hexagono);
+                    vertice.agregarBanca(mapaBancas.get(coordVertice));
                     mapaVertices.put(coordVertice, vertice);
                 } else {
                     // el vertice ya existe:
@@ -147,6 +152,36 @@ public class Tablero {
                 }
             }
         }
+    }
+
+    private Map<Coordenadas, Banca> inicializarBancas() {
+        Map<Coordenadas, Banca> mapaBancas = new HashMap<>();
+        List<Coordenadas> coordenadasPuertos = new ArrayList<>(List.of(
+                new Coordenadas(0, 1), new Coordenadas(0, 2), 
+                new Coordenadas(1, 0), new Coordenadas(2, 0),
+                new Coordenadas(3, 0), new Coordenadas(4, 0), 
+                new Coordenadas(5, 1), new Coordenadas(5, 2), 
+                new Coordenadas(5, 4), new Coordenadas(5, 5),
+                new Coordenadas(4, 7), new Coordenadas(4, 8), 
+                new Coordenadas(3, 9), new Coordenadas(2, 9), 
+                new Coordenadas(1, 8), new Coordenadas(1, 7),
+                new Coordenadas(0, 4), new Coordenadas(0, 5)
+        ));
+
+        List<Banca> bancas = new ArrayList<>(List.of(
+                new Banca3a1(), new Banca3a1(),
+                new Banca2a1(new Madera()), new Banca2a1(new Grano()),
+                new Banca3a1(), new Banca2a1(new Piedra()),
+                new Banca3a1(), new Banca2a1(new Lana()),
+                new Banca2a1(new Ladrillo())
+        ));
+        int indiceBancas = 0;
+        for (int i = 0; i < coordenadasPuertos.size()-2; i+=2) {
+            mapaBancas.put(coordenadasPuertos.get(i), bancas.get(indiceBancas));
+            mapaBancas.put(coordenadasPuertos.get(i+1), bancas.get(indiceBancas));
+            indiceBancas++;
+        }
+        return mapaBancas;
     }
 
     private Coordenadas[] obtenerVerticesDeHexagono(Coordenadas coordenadas) {
@@ -391,5 +426,17 @@ public class Tablero {
 
         vertice1.construirCarretera(carretera, jugador);
         vertice2.construirCarretera(carretera, jugador);
+    }
+
+    public List<Banca> obtenerBancasDisponibles(Jugador jugador){
+        List<Banca> bancasDisponibles = new ArrayList<>();
+        for (Vertice vertice : mapaVertices.values()){
+            if (vertice.tieneConstruccion() && vertice.esDueno(jugador)){
+                List<Banca> disponibles = vertice.obtenerBancasDisponibles();
+                bancasDisponibles.addAll(disponibles);
+            }
+        }
+        bancasDisponibles.add(new Banca4a1());
+        return bancasDisponibles;
     }
 }

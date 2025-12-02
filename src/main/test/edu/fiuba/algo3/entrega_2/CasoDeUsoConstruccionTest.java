@@ -19,7 +19,7 @@ import java.lang.invoke.CallSite;
 
 import org.junit.Test;
 
-import edu.fiuba.algo3.entrega_2.casosDeUso.CasoDeUsoConstruccion;
+import edu.fiuba.algo3.modelo.acciones.CasoDeUsoConstruccion;
 
 public class CasoDeUsoConstruccionTest {
 

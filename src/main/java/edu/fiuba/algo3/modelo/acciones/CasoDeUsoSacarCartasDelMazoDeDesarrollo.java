@@ -1,4 +1,4 @@
-package edu.fiuba.algo3.entrega_2.casosDeUso;
+package edu.fiuba.algo3.modelo.acciones;
 
 import edu.fiuba.algo3.modelo.Jugador;
 import edu.fiuba.algo3.modelo.cartas.tiposDeCartaDesarrollo.*;
