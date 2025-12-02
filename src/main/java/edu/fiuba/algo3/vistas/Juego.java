@@ -39,7 +39,7 @@ public class Juego {
                     BackgroundRepeat.NO_REPEAT,
                     BackgroundRepeat.NO_REPEAT,
                     BackgroundPosition.CENTER,
-                    new BackgroundSize(100, 100, true, true, true, true)
+                    new BackgroundSize(180, 180, true, true, true, true)
             );
             root.setBackground(new Background(backgroundImage));
 
@@ -122,13 +122,21 @@ public class Juego {
         HBox bottomBar = new HBox();
         bottomBar.setPadding(new Insets(20));
         bottomBar.setAlignment(Pos.CENTER);
+        bottomBar.setSpacing(20);
         bottomBar.setStyle("-fx-background-color: linear-gradient(to top, rgba(0,0,0,0.6), transparent);");
 
         Button botonDados = new Button("Tirar Dados");
         botonDados.setStyle("-fx-font-size: 16px; -fx-padding: 10 20; -fx-base: #ffcc00; -fx-cursor: hand; -fx-font-weight: bold;");
         botonDados.setOnAction(e -> abrirVentanaDados());
 
-        bottomBar.getChildren().add(botonDados);
+        Button botonBaraja = new Button("Ver Baraja");
+        botonBaraja.setStyle("-fx-font-size: 16px; -fx-padding: 10 20; -fx-base: #3498db; -fx-cursor: hand; -fx-font-weight: bold;");
+        botonBaraja.setOnAction(e -> abrirVentanaBaraja());
+
+        //agrego botones
+        bottomBar.getChildren().addAll(botonBaraja, botonDados);
+
+        root.setBottom(bottomBar);
         root.setBottom(bottomBar);
 
         Scene scene = new Scene(root, 1000, 800);
@@ -174,14 +182,14 @@ public class Juego {
         panel.setStyle("-fx-background-color: rgba(20, 20, 20, 0.85); -fx-background-radius: 10; -fx-border-color: #7f8c8d; -fx-border-radius: 10;");
         panel.setMinWidth(160);
 
-        // Titulo Inventario
+        // Inventario
         labelTituloInventario = new Label("Inventario (" + nombreJugador + ")");
         labelTituloInventario.setTextFill(Color.WHITE);
         labelTituloInventario.setFont(Font.font("Arial", FontWeight.BOLD, 14));
         labelTituloInventario.setWrapText(true);
         labelTituloInventario.setMaxWidth(140);
 
-        // Separador visual
+        
         Label separador = new Label("________________");
         separador.setTextFill(Color.GRAY);
 
@@ -231,6 +239,18 @@ public class Juego {
 
         fila.getChildren().addAll(info, spacer, lblCantidad);
         return fila;
+    }
+
+    private static void abrirVentanaBaraja(){
+        Stage stageBaraja = new Stage();
+        String nombreJugador = (labelNombreTurno != null) ? labelNombreTurno.getText() : "Jugador";
+        VentanaBaraja ventanaBaraja = new VentanaBaraja(stageBaraja, nombreJugador);
+
+        Scene scene = new Scene(ventanaBaraja, 600, 500);
+
+        stageBaraja.setTitle("Baraja de Cartas");
+        stageBaraja.setScene(scene);
+        stageBaraja.show();
     }
 
     private static void abrirVentanaDados() {
