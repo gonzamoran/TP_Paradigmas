@@ -7,11 +7,20 @@ import edu.fiuba.algo3.modelo.tiposRecurso.Lana;
 import edu.fiuba.algo3.modelo.tiposRecurso.Grano;
 import edu.fiuba.algo3.modelo.tiposRecurso.Ladrillo;
 import edu.fiuba.algo3.modelo.tiposRecurso.Nulo;
+import edu.fiuba.algo3.modelo.tiposRecurso.*;
 
 public abstract class Recurso {
 
     protected int cantidad;
-    
+
+    public Recurso() {
+        this.cantidad = 0;
+    }
+
+    public Recurso(int cantidad) {
+        this.cantidad = cantidad;
+    }
+
     public int getCantidad() {
         return cantidad;
     }
@@ -27,9 +36,8 @@ public abstract class Recurso {
 
     public void sumar(Recurso recurso) {
         if (this.getClass() != recurso.getClass()) {
-            throw new SumaDeRecursosDistintosException();
+            return;
         }
-        ;
         this.cantidad += recurso.cantidad;
     }
 

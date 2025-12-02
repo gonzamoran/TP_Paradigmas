@@ -17,9 +17,9 @@ import edu.fiuba.algo3.modelo.excepciones.NoEsPosibleConstruirException;
 
 import java.lang.invoke.CallSite;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
-import edu.fiuba.algo3.entrega_2.casosDeUso.CasoDeUsoConstruccion;
+import edu.fiuba.algo3.modelo.acciones.CasoDeUsoConstruccion;
 
 public class CasoDeUsoConstruccionTest {
 
@@ -27,59 +27,54 @@ public class CasoDeUsoConstruccionTest {
     public void test01ConstruyoUnPobladoYSeConsumenLosRecursosCorrectamente() {
         Tablero tablero = new Tablero();
         Jugador jugador = new Jugador("Jugador 1");
-        var recursos = new Recurso[] {
-                new Madera(1),
-                new Ladrillo(1),
-                new Lana(1),
-                new Grano(1),
-                new Piedra(1)
-        };
+        jugador.agregarRecurso(new Madera(1));
+        jugador.agregarRecurso(new Ladrillo(1));
+        jugador.agregarRecurso(new Lana(1));
+        jugador.agregarRecurso(new Grano(1));
+        jugador.agregarRecurso(new Piedra(1));
 
-        CasoDeUsoConstruccion caso = new CasoDeUsoConstruccion(tablero, jugador, recursos);
+        CasoDeUsoConstruccion caso = new CasoDeUsoConstruccion(tablero, jugador);
         caso.construirEn(new Coordenadas(2, 2), new Poblado());
 
         assertTrue(tablero.estaConstruidoCon(new Poblado(), new Coordenadas(2, 2), jugador));
-        assertEquals(0, jugador.obtenerCantidadRecurso(new Madera(0)));
-        assertEquals(0, jugador.obtenerCantidadRecurso(new Ladrillo(0)));
-        assertEquals(0, jugador.obtenerCantidadRecurso(new Lana(0)));
-        assertEquals(0, jugador.obtenerCantidadRecurso(new Grano(0)));
-        assertEquals(1, jugador.obtenerCantidadRecurso(new Piedra(0)));
+        assertEquals(0, jugador.obtenerCantidadRecurso(new Madera()));
+        assertEquals(0, jugador.obtenerCantidadRecurso(new Ladrillo()));
+        assertEquals(0, jugador.obtenerCantidadRecurso(new Lana()));
+        assertEquals(0, jugador.obtenerCantidadRecurso(new Grano()));
+        assertEquals(1, jugador.obtenerCantidadRecurso(new Piedra()));
     }
 
     @Test
     public void test02ConstruyoUnaCiudadYSeConsumenLosRecursosCorrectamente() {
         Tablero tablero = new Tablero();
         Jugador jugador = new Jugador("Jugador 1");
-        var recursos = new Recurso[] {
-                new Grano(3),
-                new Piedra(3),
-                new Madera(1),
-                new Ladrillo(1),
-                new Lana(1)
-        };
+        jugador.agregarRecurso(new Grano(3));
+        jugador.agregarRecurso(new Piedra(3));
+        jugador.agregarRecurso(new Madera(1));
+        jugador.agregarRecurso(new Ladrillo(1));
+        jugador.agregarRecurso(new Lana(1));
 
-        CasoDeUsoConstruccion caso = new CasoDeUsoConstruccion(tablero, jugador, recursos);
+        CasoDeUsoConstruccion caso = new CasoDeUsoConstruccion(tablero, jugador);
         caso.construirEn(new Coordenadas(2, 2), new Poblado());
         caso.construirEn(new Coordenadas(2, 2), new Ciudad());
 
         assertTrue(tablero.estaConstruidoCon(new Ciudad(), new Coordenadas(2, 2), jugador));
         assertFalse(tablero.estaConstruidoCon(new Poblado(), new Coordenadas(2, 2), jugador));
-        assertEquals(0, jugador.obtenerCantidadRecurso(new Grano(0)));
-        assertEquals(0, jugador.obtenerCantidadRecurso(new Piedra(0)));
-        assertEquals(0, jugador.obtenerCantidadRecurso(new Madera(0)));
-        assertEquals(0, jugador.obtenerCantidadRecurso(new Ladrillo(0)));
-        assertEquals(0, jugador.obtenerCantidadRecurso(new Lana(0)));
+        assertEquals(0, jugador.obtenerCantidadRecurso(new Grano()));
+        assertEquals(0, jugador.obtenerCantidadRecurso(new Piedra()));
+        assertEquals(0, jugador.obtenerCantidadRecurso(new Madera()));
+        assertEquals(0, jugador.obtenerCantidadRecurso(new Ladrillo()));
+        assertEquals(0, jugador.obtenerCantidadRecurso(new Lana()));
     }
 
     @Test
     public void test03NoSePuedeConstruirUnaCiudadSiNoHayPobladoPrevio() {
         Tablero tablero = new Tablero();
         Jugador jugador = new Jugador("Jugador 1");
-        var recursos = new Recurso[] {
-                new Grano(2),
-                new Piedra(3)
-        };
-        CasoDeUsoConstruccion caso = new CasoDeUsoConstruccion(tablero, jugador, recursos);
+        jugador.agregarRecurso(new Grano(2));
+        jugador.agregarRecurso(new Piedra(3));
+
+        CasoDeUsoConstruccion caso = new CasoDeUsoConstruccion(tablero, jugador);
 
         assertThrows(NoEsPosibleConstruirException.class, () -> caso.construirEn(new Coordenadas(2, 5), new Ciudad()));
     }
@@ -88,12 +83,11 @@ public class CasoDeUsoConstruccionTest {
     public void test04NoSePuedeConstruirUnPobladoSinRecursosSuficientes() {
         Tablero tablero = new Tablero();
         Jugador jugador = new Jugador("Jugador 1");
-        var recursos = new Recurso[] {
-                new Madera(1),
-                new Ladrillo(1),
-                new Lana(1)
-        };
-        CasoDeUsoConstruccion caso = new CasoDeUsoConstruccion(tablero, jugador, recursos);
+        jugador.agregarRecurso(new Madera(1));
+        jugador.agregarRecurso(new Ladrillo(1));
+        jugador.agregarRecurso(new Lana(1));
+
+        CasoDeUsoConstruccion caso = new CasoDeUsoConstruccion(tablero, jugador);
         assertThrows(NoEsPosibleConstruirException.class, () -> caso.construirEn(new Coordenadas(2, 2), new Poblado()));
     }
 
@@ -101,14 +95,13 @@ public class CasoDeUsoConstruccionTest {
     public void test05MejorarPobladoACiudadAumentaLosPVsDeLaConstruccion() {
         Tablero tablero = new Tablero();
         Jugador jugador = new Jugador("Jugador 1");
-        var recursos = new Recurso[] {
-                new Madera(1),
-                new Ladrillo(1),
-                new Lana(1),
-                new Grano(3),
-                new Piedra(3)
-        };
-        CasoDeUsoConstruccion caso = new CasoDeUsoConstruccion(tablero, jugador, recursos);
+        jugador.agregarRecurso(new Madera(1));
+        jugador.agregarRecurso(new Ladrillo(1));
+        jugador.agregarRecurso(new Lana(1));
+        jugador.agregarRecurso(new Grano(3));
+        jugador.agregarRecurso(new Piedra(3));
+
+        CasoDeUsoConstruccion caso = new CasoDeUsoConstruccion(tablero, jugador);
         caso.construirEn(new Coordenadas(2, 2), new Poblado());
 
         assertEquals(1, jugador.calculoPuntosVictoria());

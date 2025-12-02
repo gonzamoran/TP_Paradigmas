@@ -10,25 +10,8 @@ public class MazoCartasDesarrollo {
     private final ArrayList<CartasDesarrollo> cartas;
     private int indiceCartaActual = 0;
 
-    public MazoCartasDesarrollo() {
-        this.cartas = new ArrayList<CartasDesarrollo>(List.of(
-                new CartaPuntoVictoria(), new CartaPuntoVictoria(), new CartaPuntoVictoria(), new CartaPuntoVictoria(),
-                new CartaPuntoVictoria()));
-        // new CartaMonopolio(), new CartaMonopolio(),
-        // new CartaConstruccionCarretera(), new CartaConstruccionCarretera(),
-        // new CartaDescubrimiento(), new CartaDescubrimiento(),
-        // new CartaCaballero(), new CartaCaballero(), new CartaCaballero(), new
-        // CartaCaballero(),
-        // new CartaCaballero(),
-        // new CartaCaballero(), new CartaCaballero(), new CartaCaballero(), new
-        // CartaCaballero(),
-        // new CartaCaballero(),
-        // new CartaCaballero(), new CartaCaballero(), new CartaCaballero(), new
-        // CartaCaballero()));
-    }
-
-    public MazoCartasDesarrollo(ArrayList<CartasDesarrollo> cartasPersonalizadas) {
-        this.cartas = cartasPersonalizadas;
+    public MazoCartasDesarrollo(ArrayList<CartasDesarrollo> cartas) {
+        this.cartas = cartas;
     }
 
     public CartasDesarrollo sacarCarta() {
@@ -42,5 +25,16 @@ public class MazoCartasDesarrollo {
 
     public boolean estaVacio() {
         return indiceCartaActual >= cartas.size();
+    }
+
+    public boolean equals(Object otroMazo) {
+        if (otroMazo == null) {
+            return false;
+        }
+        if (this.getClass() != otroMazo.getClass()) {
+            return false;
+        }
+        MazoCartasDesarrollo mazoComparado = (MazoCartasDesarrollo) otroMazo;
+        return this.cartas.equals(mazoComparado.cartas);
     }
 }

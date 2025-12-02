@@ -1,4 +1,4 @@
-package edu.fiuba.algo3.entrega_1.casosDeUso;
+package edu.fiuba.algo3.modelo.acciones;
 
 import edu.fiuba.algo3.modelo.tablero.Tablero;
 import edu.fiuba.algo3.modelo.tablero.Hexagono;

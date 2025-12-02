@@ -2,6 +2,7 @@ package edu.fiuba.algo3.modelo.cartas.tiposDeCartaDesarrollo;
 
 import edu.fiuba.algo3.modelo.tablero.Tablero;
 import edu.fiuba.algo3.modelo.Jugador;
+import edu.fiuba.algo3.modelo.ProveedorDeDatos;
 import edu.fiuba.algo3.modelo.tablero.Ladron;
 
 public class CartaPuntoVictoria extends CartasDesarrollo {
@@ -14,12 +15,21 @@ public class CartaPuntoVictoria extends CartasDesarrollo {
         super(turnoDeCompra);
     }
 
+    public boolean esJugable(ContextoCartaDesarrollo contexto) {
+        return false;
+    }
+
     @Override
-    public void usar(Jugador jugador, int turnoActual) {
-        if (!this.esJugable()) {
-            throw new IllegalStateException("No se puede usar esta carta todavia");
-        }
-        this.fueUsada = true;
-        jugador.sumarPuntoVictoria();
+    public int conseguirPV() {
+        return 1;
+    }
+
+    @Override
+    public void usar(ContextoCartaDesarrollo contexto, ProveedorDeDatos proveedor) {
+       return;
+    }
+
+    public CartasDesarrollo comprarCarta(int turnoActual) {
+        return new CartaPuntoVictoria(turnoActual);
     }
 }

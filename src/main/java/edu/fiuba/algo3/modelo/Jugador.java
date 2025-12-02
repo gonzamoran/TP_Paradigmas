@@ -8,7 +8,7 @@ import edu.fiuba.algo3.modelo.tiposRecurso.*;
 import edu.fiuba.algo3.modelo.construcciones.Construccion;
 import edu.fiuba.algo3.modelo.cartas.CartasJugador;
 import edu.fiuba.algo3.modelo.cartas.tiposDeCartaDesarrollo.CartasDesarrollo;
-
+import edu.fiuba.algo3.modelo.cartas.tiposDeCartaDesarrollo.ContextoCartaDesarrollo;
 import edu.fiuba.algo3.modelo.excepciones.RecursosInsuficientesException;
 
 public class Jugador {
@@ -17,11 +17,13 @@ public class Jugador {
     private ArrayList<Construccion> construccionesJugador;
     // private List<CartaDesarrollo> cartasDeDesarrollo;
     private int puntosDeVictoria;
+    private int caballerosJugador;
 
     public Jugador(String color) {
         this.color = color;
         // this.cartasDeDesarrollo = new List<CartaDesarrollo>();
         this.puntosDeVictoria = 0;
+        this.caballerosJugador = 0;
         this.construccionesJugador = new ArrayList<>();
         this.mazos = new CartasJugador();
     }
@@ -74,16 +76,21 @@ public class Jugador {
         construccionesJugador.remove(construccion);
     }
 
-    public void sumarPuntoVictoria() {
-        this.puntosDeVictoria += 1;
+    public void sumarCaballero() {
+        this.caballerosJugador += 1;
     }
+
+    public int obtenerCantidadCaballerosUsados(){
+        return this.caballerosJugador;
+    }
+
 
     public int calculoPuntosVictoria() {
         int sumaTotal = 0;
         for (Construccion c : construccionesJugador) {
             sumaTotal += c.obtenerPuntosDeVictoria();
         }
-        sumaTotal += mazos.contarCartasDePuntosDeVictoria();
+        sumaTotal += mazos.obtenerPVdeCartas();
         this.puntosDeVictoria = sumaTotal;
         return puntosDeVictoria;
     }
@@ -93,6 +100,9 @@ public class Jugador {
     }
 
     public void descartarse() {
+        if (!this.puedeDescartarse()) {
+            return;
+        }
         mazos.descarteCartas();
     }
 
@@ -119,6 +129,10 @@ public class Jugador {
         return true;
     }
 
+    public Recurso vaciarRecurso(Recurso recurso) {
+        return mazos.vaciarRecurso(recurso);
+    }
+
     public boolean equals(Object obj) {
         if (this == obj)
             return true;
@@ -132,12 +146,32 @@ public class Jugador {
         return mazos.obtenerCantidadCartasDesarrollo();
     }
 
-    public void comprarCartaDesarrollo(CartasDesarrollo carta) {
+    public void comprarCartaDesarrollo(CartasDesarrollo carta, int turnoActual) {
         if (!mazos.poseeRecursosParaCartaDesarrollo()) {
             throw new RecursosInsuficientesException();
         }
         mazos.pagarCartaDesarrollo();
-        mazos.agregarCartaDesarrollo(carta);
+        CartasDesarrollo cartaComprada = carta.comprarCarta(turnoActual);
+        mazos.agregarCartaDesarrollo(cartaComprada);
     }
 
+    public void usarCartaDesarrollo(CartasDesarrollo carta, ContextoCartaDesarrollo contexto, ProveedorDeDatos proveedor) {
+        mazos.usarCartaDesarrollo(carta, contexto, proveedor);
+    }
+
+    public void otorgarGranCaballeria(ArrayList<Jugador> jugadores) {
+        for (Jugador jugador : jugadores) {
+            if (jugador != this) {
+                jugador.pierdeGranCaballeria();
+            }
+        }
+        mazos.otorgarGranCaballeria();
+    }
+
+    public void pierdeGranCaballeria(){
+        mazos.pierdeGranCaballeria();
+    }
+    // public ArrayList<CartasDesarrollo> obtenerCartasDesarrollo(){
+    //     return mazos.obtenerCartasDesarrollo();
+    // }
 }

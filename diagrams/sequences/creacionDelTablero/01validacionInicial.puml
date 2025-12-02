@@ -1,0 +1,26 @@
+@startuml validacionInicial
+
+title validacionInicial
+
+actor Usuario
+participant Tablero
+participant IllegalArgumentException
+
+Usuario -> Tablero: new Tablero(listaHexagonos, listaNumeros)
+activate Tablero
+
+Tablero -> Tablero: validarCantidadHexagonosYNumeros()
+alt Cantidades válidas
+    Tablero -> Tablero: asignarCoordenadasHexagonos()
+    Tablero -> Tablero: asignarNumeroALosHexagonos()
+    Tablero -> Tablero: inicializarVertices()
+    Tablero -> Tablero: asignarAdyacentesAVertices()
+else Cantidades inválidas
+    Tablero -> IllegalArgumentException: new IllegalArgumentException()
+    activate IllegalArgumentException
+    deactivate IllegalArgumentException 
+end
+
+deactivate Tablero
+@enduml
+

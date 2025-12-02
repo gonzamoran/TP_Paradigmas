@@ -8,6 +8,7 @@ import edu.fiuba.algo3.modelo.tablero.Vertice;
 import edu.fiuba.algo3.modelo.tablero.Produccion;
 import edu.fiuba.algo3.modelo.tablero.Hexagono;
 import edu.fiuba.algo3.modelo.Recurso;
+import edu.fiuba.algo3.modelo.Banca;
 import edu.fiuba.algo3.modelo.Jugador;
 import edu.fiuba.algo3.modelo.excepciones.*;
 import java.util.ArrayList;
@@ -19,12 +20,14 @@ public class Vertice {
     private boolean estaConstruido;
     private List<Vertice> verticesAdyacentes;
     private List<Construccion> carreterasIngresantes;
+    private List<Banca> bancasDisponibles;
 
 
     public Vertice() {
         this.hexagonosAdyacentes = new ArrayList<>();
         this.verticesAdyacentes = new ArrayList<>();
         this.carreterasIngresantes = new ArrayList<>();
+        this.bancasDisponibles = new ArrayList<>();
         this.estaConstruido = false;
     }
 
@@ -170,6 +173,13 @@ public class Vertice {
                carreterasIngresantes.stream().anyMatch(c -> c.esDueno(jugador));
     }
 
+    public void agregarBanca(Banca banca) {
+        this.bancasDisponibles.add(banca);
+    }
+
+    public List<Banca> obtenerBancasDisponibles() {
+        return this.bancasDisponibles;
+    }
 }
 
 /*

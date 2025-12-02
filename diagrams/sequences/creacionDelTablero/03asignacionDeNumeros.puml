@@ -1,0 +1,25 @@
+@startuml asignacionDeNumeros
+
+title Asignacion de numeros a los hexágonos
+
+participant Tablero
+' participant "Hexagonos:List<>" as ListHexagonos
+participant "H:Hexagono" as Hexagono 
+participant "listaNumeros:List<Producciones>" as ListaProducciones
+
+Tablero -> Tablero: asignarNumeroALosHexagonos()
+activate Tablero
+
+loop para cada hexágono en el tablero
+
+    Tablero -> ListaProducciones: get()
+    activate ListaProducciones
+    ListaProducciones --> Tablero: produccion
+    deactivate ListaProducciones
+
+    Tablero -> Hexagono: asignarProduccion(produccion)
+    activate Hexagono
+    deactivate Hexagono
+end
+
+@enduml

@@ -1,16 +1,15 @@
 package edu.fiuba.algo3.entrega_2;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import edu.fiuba.algo3.modelo.Jugador;
 import edu.fiuba.algo3.modelo.Recurso;
 import edu.fiuba.algo3.modelo.tiposRecurso.*;
 
-import edu.fiuba.algo3.entrega_2.casosDeUso.CasoDeUsoIntercambio;
+import edu.fiuba.algo3.modelo.acciones.CasoDeUsoIntercambio;
 
 import edu.fiuba.algo3.modelo.excepciones.IntercambioInvalidoException;
 
-import org.junit.Test;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -76,8 +75,8 @@ public class CasoDeUsoIntercambioTest {
             new Ladrillo(1)
         };
         // DIEGO: agregar un "ManoDelJugador"
-        assertEquals(recursosFinalesJugador1[0].getCantidad(), jugador1.obtenerCantidadRecurso(new Lana(0)));
-        assertEquals(recursosFinalesJugador2[0].getCantidad(), jugador2.obtenerCantidadRecurso(new Ladrillo(0)));
+        assertEquals(recursosFinalesJugador1[0].getCantidad(), jugador1.obtenerCantidadRecurso(new Lana()));
+        assertEquals(recursosFinalesJugador2[0].getCantidad(), jugador2.obtenerCantidadRecurso(new Ladrillo()));
     }
 
     @Test
