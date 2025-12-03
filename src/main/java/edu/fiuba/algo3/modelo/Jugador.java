@@ -5,6 +5,7 @@ import edu.fiuba.algo3.modelo.tablero.Coordenadas;
 import edu.fiuba.algo3.modelo.construcciones.Poblado;
 import edu.fiuba.algo3.modelo.excepciones.IntercambioInvalidoException;
 import edu.fiuba.algo3.modelo.tiposRecurso.*;
+import edu.fiuba.algo3.modelo.construcciones.Carretera;
 import edu.fiuba.algo3.modelo.construcciones.Construccion;
 import edu.fiuba.algo3.modelo.cartas.CartasJugador;
 import edu.fiuba.algo3.modelo.cartas.tiposDeCartaDesarrollo.CartasDesarrollo;
@@ -19,14 +20,16 @@ public class Jugador {
     private int puntosDeVictoria;
     private int caballerosJugador;
 
-    /// Constructor de Jugador.
+    private int caminoMasLargo;
+
     public Jugador(String color) {
         this.color = color;
-        // this.cartasDeDesarrollo = new List<CartaDesarrollo>();
         this.puntosDeVictoria = 0;
         this.caballerosJugador = 0;
         this.construccionesJugador = new ArrayList<>();
         this.mazos = new CartasJugador();
+    
+        this.caminoMasLargo = 0;
     }
 
     /*
@@ -149,7 +152,21 @@ public class Jugador {
     public void pierdeGranCaballeria(){
         mazos.pierdeGranCaballeria();
     }
+    
+    public int obtenerCaminoMasLargoDelJugador(){
+        return this.caminoMasLargo;
+    }
 
+    public void actualizarCaminoMasLargoDelJugador(int valor){
+        this.caminoMasLargo = valor;
+    }
+
+    public void otorgarGranRutaComercial(){
+        mazos.otorgarGranRutaComercial();
+    }
+    public void quitarCartaGranRutaComercial(){
+        mazos.quitarCartaGranRutaComercial();
+    }
 
     ///  Metodos que verifican.
     /// Quizas esto vuela si agregamos el refactor de costo.
@@ -172,8 +189,6 @@ public class Jugador {
         return true;
     }
 
-
-    ///  Metodo para comparar.
     public boolean equals(Object obj) {
         if (this == obj)
             return true;
@@ -182,17 +197,5 @@ public class Jugador {
         Jugador jugador = (Jugador) obj;
         return this.color == jugador.color;
     }
-    // public void otorgarGranRutaComercial(){
-    //     mazos.otorgarGranRutaComercial();
-    // }
-    // public ArrayList<CartasDesarrollo> obtenerCartasDesarrollo(){
-    //     return mazos.obtenerCartasDesarrollo();
-    // }
 
-        ///  No se usa.
-        /*
-        public String getColor() {
-            return this.color;
-        }
-        */
 }

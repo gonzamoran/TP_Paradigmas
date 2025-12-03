@@ -29,7 +29,4 @@ public class ProveedorDeDatos {
         return jugadores.get(0);
     }
 
-    //cada metodo se comunica con el usuario mediante la interfaz grafica o consola
-    //se tiene que parsear la respuesta y devolver lo que corresponda
-
 }

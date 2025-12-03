@@ -12,6 +12,7 @@ import edu.fiuba.algo3.modelo.Banca;
 import edu.fiuba.algo3.modelo.Jugador;
 import edu.fiuba.algo3.modelo.excepciones.*;
 import java.util.ArrayList;
+import java.util.Set;
 
 public class Vertice {
     private Jugador dueno;
@@ -19,7 +20,7 @@ public class Vertice {
     private Construccion construccion;
     private boolean estaConstruido;
     private List<Vertice> verticesAdyacentes;
-    private List<Construccion> carreterasIngresantes;
+    private List<Carretera> carreterasIngresantes;
     private List<Banca> bancasDisponibles;
 
 
@@ -31,8 +32,7 @@ public class Vertice {
         this.estaConstruido = false;
     }
 
-
-    //REVISAR
+    
     public void construir(Construccion construccion, Jugador jugador) {
         var recursosNecesarios = construccion.obtenerRecursosNecesarios();
         if (!jugador.poseeRecursosParaConstruir(construccion)) {
@@ -166,14 +166,10 @@ public class Vertice {
     }
 
     public void construirCarretera(Construccion carretera, Jugador jugador) {
-        carretera.asignarJugador(jugador);
-        //sacar recursos
-        this.carreterasIngresantes.add(carretera);
-    }
-
-    public boolean poseeCarreterasDe(Jugador jugador) {
-        return !carreterasIngresantes.isEmpty() && 
-               carreterasIngresantes.stream().anyMatch(c -> c.esDueno(jugador));
+        Carretera carreteraCast = (Carretera) carretera;
+        carreteraCast.asignarJugador(jugador);
+        carreteraCast.asignarVertice(this);
+        this.carreterasIngresantes.add(carreteraCast);
     }
 
     public void agregarBanca(Banca banca) {
@@ -183,26 +179,38 @@ public class Vertice {
     public List<Banca> obtenerBancasDisponibles() {
         return this.bancasDisponibles;
     }
-    
-        /*
-        public List<Construccion> obtenerCarreterasVecinasDe(Jugador jugador, Construccion carreteraDeDondeVengo) {
-            
-            List<Construccion> vecinas = new ArrayList<>();
-    
-            if (this.construccion != null && !this.construccion.esDueno(jugador)) {
-                return vecinas;
-            }
-    
-            // Si no hay bloqueo, busco mis otras carreteras
-            for (Construccion carretera : this.carreterasIngresantes) {
-                if (carretera.esDueno(jugador) && !carretera.equals(carreteraDeDondeVengo)) {
-                    vecinas.add(carretera);
+
+
+    public boolean poseeCarreterasDe(Jugador jugador) {
+        for (Carretera c : this.carreterasIngresantes) {
+            if (c.esDueno(jugador)) return true;
+        }
+        return false;
+    }
+
+    public List<Vertice> verticesConCarreterasAdyacentes(Jugador jugador) {
+        List<Vertice> list = new ArrayList<>();
+
+        for (Vertice v : verticesAdyacentes) {
+            if (!v.poseeCarreterasDe(jugador)) continue;
+
+            for (Carretera carretera : carreterasIngresantes) {
+                if (carretera.conecta(this, v) && carretera.esDueno(jugador)) {
+                    list.add(v);
+                    break;
                 }
             }
-    
-            return vecinas;
-        }*/
-    
+        }
+        return list;
+    }
+
+    public int gradoJugador(Jugador jugador) {
+        return verticesConCarreterasAdyacentes(jugador).size();
+    }
+
+    public boolean esExtremoReal(Jugador jugador) {
+        return gradoJugador(jugador) == 1;
+    }
 }
 
 /*

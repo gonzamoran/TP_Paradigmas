@@ -25,6 +25,7 @@ public class CartasJugador {
     private ArrayList<CartasDesarrollo> cartasDesarrollo;
     private List<Recurso> recursos;
     private boolean tieneLaGranCaballeria = false; // hacerlo de otra forma
+    private boolean tieneLaGranRutaComercial = false;
 
     public CartasJugador() {
         this.cartasDesarrollo = new ArrayList<>();
@@ -174,7 +175,7 @@ public class CartasJugador {
 
     public void usarCartaDesarrollo(CartasDesarrollo carta, ContextoCartaDesarrollo contexto,
             ProveedorDeDatos proveedor) {
-        if (!cartasDesarrollo.contains(carta)) {
+        if (this.cartasDesarrollo.isEmpty() || !cartasDesarrollo.contains(carta)) {
             throw new NoSePuedeJugarEstaCartaException();
         }
         CartasDesarrollo cartaAUsar = null;
@@ -200,6 +201,9 @@ public class CartasJugador {
         if (this.tieneLaGranCaballeria) {
             cartasConPuntos += 2;
         }
+        if (this.tieneLaGranRutaComercial){
+            cartasConPuntos += 2;
+        }
         return cartasConPuntos;
     }
 
@@ -215,4 +219,11 @@ public class CartasJugador {
         this.tieneLaGranCaballeria = false;
     }
 
+    public void otorgarGranRutaComercial(){
+        this.tieneLaGranRutaComercial = true;
+    }
+
+    public void quitarCartaGranRutaComercial(){
+        this.tieneLaGranRutaComercial = false;
+    }
 }

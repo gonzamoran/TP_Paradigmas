@@ -30,8 +30,7 @@ public class CartaCaballero extends CartasDesarrollo {
 
     public void usar(ContextoCartaDesarrollo contexto, ProveedorDeDatos proveedor) {
         this.fueUsada = true;
-        Coordenadas coordDestino = proveedor.pedirCoordenadasAlUsuario(); // dentro tiene que validad que sean
-                                                                          // coordenadas validas
+        Coordenadas coordDestino = proveedor.pedirCoordenadasAlUsuario();
 
         Tablero tablero = contexto.obtenerTablero();
         if (!tablero.sonCoordenadasValidas(coordDestino)) {
@@ -40,8 +39,9 @@ public class CartaCaballero extends CartasDesarrollo {
 
         tablero.moverLadronA(coordDestino);
         Jugador jugador = contexto.conseguirJugadorQueUsaLaCarta();
+        //conseguirJugadoresAfectados es la lista de jugadores entera, no los del hexagono donde se mueve el ladron
         Jugador victima = proveedor.pedirJugadorARobar(contexto.conseguirJugadoresAfectados());
-        tablero.ladronRobaRecurso(jugador); // tablero.ladronRobaRecurso(victima) PARA QUE ROBE A ALGUIEN EN ESPECIFICO
+        tablero.ladronRobaRecurso(jugador, proveedor);
 
         jugador.sumarCaballero();
         if (jugador.obtenerCantidadCaballerosUsados() >= 3) {

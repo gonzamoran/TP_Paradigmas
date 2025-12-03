@@ -7,6 +7,8 @@ import edu.fiuba.algo3.modelo.construcciones.*;
 import edu.fiuba.algo3.modelo.Dados;
 import edu.fiuba.algo3.modelo.Recurso;
 import edu.fiuba.algo3.modelo.Jugador;
+import edu.fiuba.algo3.modelo.ProveedorDeDatos;
+
 import edu.fiuba.algo3.modelo.acciones.CasoDeUsoGirarElDado;
 import edu.fiuba.algo3.entrega_1.DadoCargado;
 
@@ -20,6 +22,8 @@ import static org.junit.jupiter.api.Assertions.assertFalse;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+
+import static org.mockito.Mockito.*;
 
 public class CasoDeUsoGirarElDadoTest {
     @Test
@@ -48,8 +52,9 @@ public class CasoDeUsoGirarElDadoTest {
         caso.colocarEn(new Coordenadas(2, 7), new Poblado(), jugador);
         caso.colocarEn(new Coordenadas(2, 9), new Poblado(), jugador);
         caso.colocarEn(new Coordenadas(2, 9), new Ciudad(), jugador);
+        
 
-        ArrayList<Recurso> recursosObtenidos = caso.lanzarDado(new DadoCargado(8));
+        ArrayList<Recurso> recursosObtenidos = caso.lanzarDado(new DadoCargado(8), null);
 
         var produccionEsperada = List.of(
                 new Lana(1),
@@ -78,7 +83,7 @@ public class CasoDeUsoGirarElDadoTest {
         caso.colocarEn(new Coordenadas(3, 3), new Poblado(), jugador);
         caso.colocarEn(new Coordenadas(3, 3), new Ciudad(), jugador);
 
-        ArrayList<Recurso> recursosObtenidos = caso.lanzarDado(new DadoCargado(6));
+        ArrayList<Recurso> recursosObtenidos = caso.lanzarDado(new DadoCargado(6), null);
         var produccionIncorrecta = List.of(
                 new Madera(4),
                 new Lana(5),
@@ -99,7 +104,7 @@ public class CasoDeUsoGirarElDadoTest {
         caso.configurarDestino(destino);
 
         // act
-        caso.lanzarDado(new DadoCargado(7));
+        caso.lanzarDado(new DadoCargado(7), null);
 
         // assert
         assertEquals(tablero.obtenerHexagono(destino), tablero.obtenerHexagonoLadron());
@@ -117,7 +122,7 @@ public class CasoDeUsoGirarElDadoTest {
         caso.configurarDestino(destino);
 
         // act
-        caso.lanzarDado(new DadoCargado(7));
+        caso.lanzarDado(new DadoCargado(7), null);
 
         // assert
         assertTrue(tablero.obtenerHexagono(origen).puedeGenerarRecursos());
@@ -139,7 +144,7 @@ public class CasoDeUsoGirarElDadoTest {
         caso.configurarDestino(new Coordenadas(0, 6));
 
         // act
-        caso.lanzarDado(new DadoCargado(7));
+        caso.lanzarDado(new DadoCargado(7), null);
 
         int totalRecursosDespuesDeRobar = jugador.obtenerCantidadCartasRecurso();
 
@@ -160,7 +165,7 @@ public class CasoDeUsoGirarElDadoTest {
         CasoDeUsoGirarElDado caso = new CasoDeUsoGirarElDado(tablero, jugador, origen);
         caso.configurarDestino(new Coordenadas(0, 6));
         // act
-        caso.lanzarDado(new DadoCargado(7));
+        caso.lanzarDado(new DadoCargado(7), null);
         int totalRecursosDespuesDeRobar = jugador.obtenerCantidadCartasRecurso();
 
         // assert
@@ -179,6 +184,10 @@ public class CasoDeUsoGirarElDadoTest {
         jugador1.agregarRecurso(new Lana(1));
         jugador1.agregarRecurso(new Grano(1));
 
+        var candidatos = new ArrayList<Jugador>();
+
+        candidatos.add(jugador1);
+        candidatos.add(jugador2);
         Coordenadas origen = new Coordenadas(2, 2);
         CasoDeUsoGirarElDado caso = new CasoDeUsoGirarElDado(tablero, jugador2, origen);
         caso.colocarEn(new Coordenadas(0, 6), new Poblado(), jugador1);
@@ -186,7 +195,10 @@ public class CasoDeUsoGirarElDadoTest {
         Coordenadas destino = new Coordenadas(0, 6);
         caso.configurarDestino(destino);
 
-        caso.lanzarDado(new DadoCargado(7));
+        ProveedorDeDatos proveedorMockeado = mock(ProveedorDeDatos.class);
+        when(proveedorMockeado.pedirJugadorARobar(any(ArrayList.class))).thenReturn(jugador1);
+
+        caso.lanzarDado(new DadoCargado(7), proveedorMockeado);
         // Jugador2 sin cartas roba 1 carta a jugador1 y queda con 1 carta.
         assertEquals(1, jugador2.obtenerCantidadCartasRecurso());
         // jugador2 mueve al ladron al hexagono donde esta el poblado de jugador1

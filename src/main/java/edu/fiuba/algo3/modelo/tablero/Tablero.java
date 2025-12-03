@@ -8,8 +8,8 @@ import java.util.*;
 import edu.fiuba.algo3.modelo.Recurso;
 import edu.fiuba.algo3.modelo.tablero.*;
 import edu.fiuba.algo3.modelo.construcciones.*;
-import edu.fiuba.algo3.modelo.construcciones.Construccion;
 import edu.fiuba.algo3.modelo.Jugador;
+import edu.fiuba.algo3.modelo.ProveedorDeDatos;
 import edu.fiuba.algo3.modelo.Banca;
 
 import edu.fiuba.algo3.modelo.tablero.tiposHexagono.*;
@@ -21,18 +21,20 @@ import edu.fiuba.algo3.modelo.excepciones.NoEsPosibleConstruirException;
 
 public class Tablero {
     private Ladron ladron; // sacar
-    // private Map<Coordenadas, Carretera> carreteras;
-    // private Map<Coordenadas, Poblado> poblados;
+    private ArrayList<Carretera> listaCarreteras;
     private ArrayList<Hexagono> listaHexagonos;
     private ArrayList<Produccion> listaNumeros;
     private Map<Coordenadas, Hexagono> mapaHexagonos;
     private Map<Coordenadas, Vertice> mapaVertices;
+
+    private Jugador propietarioCarreteraMasLarga = null;
 
     public Tablero() {
         this.listaHexagonos = new ArrayList<Hexagono>();
         this.listaNumeros = new ArrayList<Produccion>();
         this.mapaHexagonos = new HashMap<>();
         this.mapaVertices = new HashMap<>();
+        this.listaCarreteras = new ArrayList<>();
         this.inicializarHexagonosDefault();
         this.inicializarNumerosDefault();
         this.asignarCoordenadasHexagonos();
@@ -50,6 +52,7 @@ public class Tablero {
         this.listaNumeros = listaNumeros;
         this.mapaHexagonos = new HashMap<>();
         this.mapaVertices = new HashMap<>();
+        this.listaCarreteras = new ArrayList<>();
         this.asignarCoordenadasHexagonos();
         this.asignarNumeroALosHexagonos();
         this.inicializarVertices();
@@ -280,12 +283,12 @@ public class Tablero {
             throw new NoEsPosibleConstruirException();
         }
         Vertice vertice = mapaVertices.get(coordenadas);
-
         if (vertice != null) {
             vertice.construir(construccion, jugador);
         } else {
             throw new IllegalArgumentException("Coordenadas invalidas"); // cambiar excepcion
         }
+
     }
 
     public ArrayList<Recurso> producirRecurso(int produccionDado, Jugador jugador) {
@@ -298,11 +301,7 @@ public class Tablero {
         return produccionDelJugador;
     }
 
-    // Camino solo se puede construir si esta pegado a un camino propio o a un
-    // poblado
-    // Poblado solo se puede construir si cumple regla de la distancia y si esta
-    // pegado a un camino propio
-    // Ciudad solo si en el vertice donde se quiere construir hay un poblado propio.
+
     public boolean sePuedeConstruir(Coordenadas coordenadas, Construccion construccion, Jugador jugador) {
         if (construccion == null) {
             throw new IllegalArgumentException("Construccion nula"); // cambiar excepcion
@@ -322,9 +321,8 @@ public class Tablero {
         return false;
     }
 
-    // devuelve una lista de jugadores afectados actualmente
     public void moverLadronA(Coordenadas coordenadasHexagono) {
-        var jugadoresAfectados = this.obtenerJugadoresAdyacentes(coordenadasHexagono); // algo;
+        var jugadoresAfectados = this.obtenerJugadoresAdyacentes(coordenadasHexagono);
         this.ladron.moverLadronA(this.obtenerHexagono(coordenadasHexagono), jugadoresAfectados);
     }
 
@@ -347,9 +345,8 @@ public class Tablero {
         return jugadores;
     }
 
-    // esto lo podria hacer ladron directamente o proxima clase JUEGO
-    public ArrayList<Recurso> ladronRobaRecurso(Jugador jugadorActual) {
-        ArrayList<Recurso> recursoRobado = ladron.robarRecurso(jugadorActual);
+    public ArrayList<Recurso> ladronRobaRecurso(Jugador jugadorActual, ProveedorDeDatos proveedor) {
+        ArrayList<Recurso> recursoRobado = ladron.robarRecurso(jugadorActual, proveedor);
         if (!recursoRobado.isEmpty()) {
             jugadorActual.agregarRecurso(recursoRobado.get(0));
         }
@@ -373,7 +370,6 @@ public class Tablero {
         if (!this.sonCoordenadasValidas(coordenadaExtremo1) || !this.sonCoordenadasValidas(coordenadaExtremo2)) {
             throw new PosInvalidaParaConstruirException();
         }
-
         Vertice vertice1 = mapaVertices.get(coordenadaExtremo1);
         Vertice vertice2 = mapaVertices.get(coordenadaExtremo2);
 
@@ -403,6 +399,8 @@ public class Tablero {
 
         vertice1.construirCarretera(carretera, jugador);
         vertice2.construirCarretera(carretera, jugador);
+        jugador.agregarConstruccion(carretera);
+        this.listaCarreteras.add(carretera);
     }
 
     public List<Banca> obtenerBancasDisponibles(Jugador jugador) {
@@ -442,7 +440,128 @@ public class Tablero {
 
         vertice1.construirCarretera(carretera, jugador);
         vertice2.construirCarretera(carretera, jugador);
+        jugador.agregarConstruccion(carretera);
+        this.listaCarreteras.add(carretera);
     }
+
+    public int obtenerCarreteraMasLarga(Jugador jugador) {
+        Set<Vertice> visitadosComponentes = new HashSet<>();
+        int mejor = 0;
+
+        for (Carretera carretera : listaCarreteras) {
+            if (!carretera.esDueno(jugador)){ 
+                continue;
+            }
+
+            List<Vertice> vertices = carretera.conseguirVertices();
+            Vertice v1 = vertices.get(0);
+            Vertice v2 = vertices.get(1);
+
+            if (v2.tieneConstruccion() && !v2.esDueno(jugador)) {
+                if (mejor < 1) {
+                    mejor = 1;
+                }
+                continue;
+            }
+
+            if (visitadosComponentes.contains(v1) || visitadosComponentes.contains(v2)) {
+                continue;
+            }
+
+            Set<Vertice> visitados = new HashSet<>();
+            Vertice extremo1 = dfsBuscarExtremo(v1, jugador, visitados);
+            Vertice extremo2 = dfsBuscarExtremo(v2, jugador, visitados);
+
+            visitadosComponentes.addAll(visitados);
+
+            int largo;
+
+            if (extremo1 == null) {
+                largo = dfsLongitud(v1, null,  jugador);
+            } else {
+                largo = dfsLongitud(extremo1, null, jugador);
+            }
+            if (largo > mejor) {
+                mejor = largo;
+            }
+            if (extremo2 == null) {
+                largo = dfsLongitud(v2, null,  jugador);
+            } else {
+                largo = dfsLongitud(extremo2, null, jugador);
+            }
+            if (largo > mejor) {
+                mejor = largo;
+            }
+        }
+        return mejor;
+    }
+
+    private Vertice dfsBuscarExtremo(Vertice actual, Jugador jugador, Set<Vertice> visitados) {
+        visitados.add(actual);
+
+        if (actual.esExtremoReal(jugador)) {
+            return actual;
+        }
+
+        for (Vertice ady : actual.verticesConCarreterasAdyacentes(jugador)) {
+            if (!visitados.contains(ady)) {
+                Vertice res = dfsBuscarExtremo(ady, jugador, visitados);
+                if (res != null) {
+                    return res;
+                }
+            }
+        }
+        return null;
+    }
+
+    private int dfsLongitud(Vertice actual, Vertice padre, Jugador jugador) {
+        int mejor = 0;
+
+        for (Vertice ady : actual.verticesConCarreterasAdyacentes(jugador)) {
+            if (ady.tieneConstruccion() && !ady.esDueno(jugador)) {
+                mejor = Math.max(mejor, 1);
+                continue;
+            }
+
+            if (ady != padre) {
+                mejor = Math.max(mejor, 1 + dfsLongitud(ady, actual, jugador));
+            }
+        }
+        return mejor;
+    }
+    public void gestionarCaminoMasLargo(Jugador nuevoCandidato){
+        int nuevaLongitud = nuevoCandidato.obtenerCaminoMasLargoDelJugador();
+
+        if(propietarioCarreteraMasLarga != null && propietarioCarreteraMasLarga.equals(nuevoCandidato)){
+            if (nuevaLongitud < 5){
+                propietarioCarreteraMasLarga.quitarCartaGranRutaComercial();
+                propietarioCarreteraMasLarga = null;
+            }
+            return;
+        }
+
+        if (propietarioCarreteraMasLarga == null){
+            if (nuevaLongitud >= 5){
+                nuevoPoseedorGranRutaComercial(nuevoCandidato);
+                nuevoCandidato.otorgarGranRutaComercial();
+            } 
+            return;
+        }
+
+        int recordDelPropietario = propietarioCarreteraMasLarga.obtenerCaminoMasLargoDelJugador();
+
+        if (nuevaLongitud > recordDelPropietario){
+            propietarioCarreteraMasLarga.quitarCartaGranRutaComercial();
+            nuevoCandidato.otorgarGranRutaComercial();
+            nuevoPoseedorGranRutaComercial(nuevoCandidato);
+        }
+    }
+
+    private void nuevoPoseedorGranRutaComercial(Jugador jugador){
+        this.propietarioCarreteraMasLarga = jugador;
+    }
+
+    
 
     public boolean equals(Object obj) {
         if (this == obj)
@@ -452,4 +571,5 @@ public class Tablero {
         Tablero otro = (Tablero) obj;
         return listaHexagonos.equals(otro.listaHexagonos) && listaNumeros.equals(otro.listaNumeros);
     }
+
 }

@@ -3,9 +3,23 @@
 title Establecer Adyacencias entre Vértices
 
 participant Tablero
+participant Vertice
 
 activate Tablero
 Tablero -> Tablero: asignarAdyacentesAVertices()
 
+loop para cada vertice
+    Tablero -> Tablero: calcularCordenadasAdyacentes(coordVertice):coordAdyacentes
+    loop para cada coordAdyacente
+        alt existe la coordenada en el tablero
+            Tablero -> Vertice: agregarAdyacente(coordAdyacente)
+            activate Vertice
+            deactivate Vertice       
+        else no existe la coordenada en el tablero
+            continue
+    end
+end
+
+deactivate Tablero
 
 @enduml

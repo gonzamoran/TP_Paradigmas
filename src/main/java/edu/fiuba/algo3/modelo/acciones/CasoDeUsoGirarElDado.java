@@ -10,6 +10,8 @@ import edu.fiuba.algo3.modelo.cartas.CartasJugador;
 import edu.fiuba.algo3.modelo.construcciones.Construccion;
 import edu.fiuba.algo3.modelo.tablero.Coordenadas;
 
+import edu.fiuba.algo3.modelo.ProveedorDeDatos;
+
 import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.List;
@@ -31,13 +33,13 @@ public class CasoDeUsoGirarElDado {
         this.hexagonoDestino = hexagonoDestino;
     }
 
-    public ArrayList<Recurso> lanzarDado(Dados dado) {
+    public ArrayList<Recurso> lanzarDado(Dados dado, ProveedorDeDatos proveedor) {
         int resultado = dado.lanzarDados();
         if (resultado == 7) {
             jugador.descartarse();
             tablero.moverLadronA(hexagonoDestino);
             this.hexagonoActual = hexagonoDestino;
-            return tablero.ladronRobaRecurso(jugador);
+            return tablero.ladronRobaRecurso(jugador, proveedor);
         } else {
             return tablero.producirRecurso(resultado, jugador);
         }

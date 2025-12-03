@@ -137,8 +137,12 @@ public class Juego {
         botonDesarrollo.setStyle("-fx-font-size: 16px; -fx-padding: 10 20; -fx-base: #3498db; -fx-cursor: hand; -fx-font-weight: bold;");
         botonDesarrollo.setOnAction(e -> abrirVentanaDesarrollo());
 
+        Button botonSalir = new Button("Salir");
+        botonSalir.setStyle("-fx-font-size: 16px; -fx-padding: 10 20; -fx-base: #e74c3c; -fx-cursor: hand; -fx-font-weight: bold;");
+        botonSalir.setOnAction(e -> stage.close());
+
         //agrego botones
-        bottomBar.getChildren().addAll(botonBaraja, botonDados, botonDesarrollo);
+        bottomBar.getChildren().addAll(botonBaraja, botonDados, botonDesarrollo, botonSalir);
 
         root.setBottom(bottomBar);
         root.setBottom(bottomBar);
