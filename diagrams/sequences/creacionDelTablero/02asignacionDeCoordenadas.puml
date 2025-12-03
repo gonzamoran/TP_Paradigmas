@@ -7,8 +7,8 @@ participant "Coordenadas:List<Coordenadas>" as ListaCoords
 participant "Coordenada" as Coord
 participant "Hexagonos:Map<Coordenadas, Hexagono>" as MapaHexagonos
 
-Tablero -> Tablero: asignarCoordenadasHexagonos()
 activate Tablero
+Tablero -> Tablero: asignarCoordenadasHexagonos()
 
 Note over Tablero: **Crear coordenadas**
 Tablero -> Tablero: crearListaDeCoordenadasHexagonos()
@@ -57,6 +57,5 @@ loop para i = 0 a listaHexagonos.size()-1
 end
 
 Tablero --> Tablero: mapaHexagonos completado
-deactivate Tablero
 
 @enduml

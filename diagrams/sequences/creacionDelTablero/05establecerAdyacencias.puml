@@ -1,5 +1,11 @@
 @startuml establerAdyacencias
 
-' a terminar
+title Establecer Adyacencias entre Vértices
+
+participant Tablero
+
+activate Tablero
+Tablero -> Tablero: asignarAdyacentesAVertices()
+
 
 @enduml

@@ -167,10 +167,13 @@ public class Jugador {
         }
         mazos.otorgarGranCaballeria();
     }
-
     public void pierdeGranCaballeria(){
         mazos.pierdeGranCaballeria();
     }
+    
+    // public void otorgarGranRutaComercial(){
+    //     mazos.otorgarGranRutaComercial();
+    // }
     // public ArrayList<CartasDesarrollo> obtenerCartasDesarrollo(){
     //     return mazos.obtenerCartasDesarrollo();
     // }

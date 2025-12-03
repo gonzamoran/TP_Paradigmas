@@ -29,8 +29,6 @@ public class Tablero {
     private Map<Coordenadas, Vertice> mapaVertices;
 
     public Tablero() {
-        // this.carreteras = new HashMap<>();
-        // this.poblados = new HashMap<>(); 
         this.listaHexagonos = new ArrayList<Hexagono>();
         this.listaNumeros = new ArrayList<Produccion>();
         this.mapaHexagonos = new HashMap<>();
@@ -64,7 +62,6 @@ public class Tablero {
         return new ArrayList<>(mapaHexagonos.values());
     }
 
-    // crea una lista con 19 hexagonos por default
     private void inicializarHexagonosDefault() {
         listaHexagonos = new ArrayList<Hexagono>(List.of(
                 new Desierto(),
@@ -198,6 +195,7 @@ public class Tablero {
         };
         return coordenadasVertices;
     }
+
 
     private void asignarAdyacentesAVertices() {
         for (Map.Entry<Coordenadas, Vertice> entrada : mapaVertices.entrySet()) {
@@ -424,6 +422,12 @@ public class Tablero {
             throw new NoEsPosibleConstruirException();
         }
 
+        //consumir recursos
+        List<Recurso> recursosNecesarios = carretera.obtenerRecursosNecesarios();
+        for (Recurso recurso : recursosNecesarios) {
+            jugador.removerRecurso(recurso);
+        }
+
         vertice1.construirCarretera(carretera, jugador);
         vertice2.construirCarretera(carretera, jugador);
     }
@@ -438,5 +442,31 @@ public class Tablero {
         }
         bancasDisponibles.add(new Banca4a1());
         return bancasDisponibles;
+    }
+
+    public void construirCarreteraGratis(Coordenadas coordenadaExtremo1, Coordenadas coordenadaExtremo2, Jugador jugador) {
+        if (!this.sonCoordenadasValidas(coordenadaExtremo1) || !this.sonCoordenadasValidas(coordenadaExtremo2)) {
+            throw new PosInvalidaParaConstruirException();
+        }
+
+        Vertice vertice1 = mapaVertices.get(coordenadaExtremo1);
+        Vertice vertice2 = mapaVertices.get(coordenadaExtremo2);
+
+        if (!vertice1.esAdyacente(vertice2)) {
+            throw new PosInvalidaParaConstruirException();
+        }
+        
+
+        if (!vertice1.poseeCarreterasDe(jugador) && !vertice2.poseeCarreterasDe(jugador) && !(vertice1.esDueno(jugador) || vertice2.esDueno(jugador))) {
+            throw new NoEsPosibleConstruirException();
+        }
+
+        var carretera = new Carretera();
+        if (!vertice1.puedeConstruirse(carretera) && !vertice2.puedeConstruirse(carretera)) {
+            throw new NoEsPosibleConstruirException();
+        }
+        
+        vertice1.construirCarretera(carretera, jugador);
+        vertice2.construirCarretera(carretera, jugador);
     }
 }

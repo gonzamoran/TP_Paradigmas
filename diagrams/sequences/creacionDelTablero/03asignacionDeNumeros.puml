@@ -7,8 +7,8 @@ participant Tablero
 participant "H:Hexagono" as Hexagono 
 participant "listaNumeros:List<Producciones>" as ListaProducciones
 
-Tablero -> Tablero: asignarNumeroALosHexagonos()
 activate Tablero
+Tablero -> Tablero: asignarNumeroALosHexagonos()
 
 loop para cada hexágono en el tablero
 

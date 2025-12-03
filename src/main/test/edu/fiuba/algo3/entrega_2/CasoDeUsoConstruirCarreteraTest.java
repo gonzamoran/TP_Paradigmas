@@ -92,8 +92,14 @@ public class CasoDeUsoConstruirCarreteraTest {
         caso.construirEn(coordenadaExtremo1, new Poblado());
         caso.construirCarretera(coordenadaExtremo1, coordenadaExtremo2);
 
-        assertEquals(9, jugador.obtenerCantidadRecurso(new Madera(0)));
-        assertEquals(9, jugador.obtenerCantidadRecurso(new Ladrillo(0)));
+        assertEquals(8, jugador.obtenerCantidadRecurso(new Madera()));
+        assertEquals(8, jugador.obtenerCantidadRecurso(new Ladrillo()));
+        
+        /*
+        Poblado; 1 madera, 1 ladrillo, 1 lana, 1 grano
+        Camino; 1 madera, 1 ladrillo
+        Recursos gastados: 2 madera, 2 ladrillo, 1 lana, 1 grano
+        */ 
     }
 
     @Test
@@ -173,5 +179,28 @@ public class CasoDeUsoConstruirCarreteraTest {
 
         assertTrue(tablero.estaConstruidoCon(new Carretera(), coordenadaExtremo2, jugador));
         assertTrue(tablero.estaConstruidoCon(new Carretera(), coordenadaExtremo3, jugador));
+    }
+
+    @Test
+    public void test09ConstruirCarreteraNoEliminaConstruccionAnterior(){
+        Jugador jugador = new Jugador("Jugador 1");
+        Tablero tablero = new Tablero();
+        jugador.agregarRecurso(new Madera(10));
+        jugador.agregarRecurso(new Ladrillo(10));
+        jugador.agregarRecurso(new Piedra(10));
+        jugador.agregarRecurso(new Lana(10));
+        jugador.agregarRecurso(new Grano(10));
+
+        Coordenadas coordenadaExtremo1 = new Coordenadas(3, 4);
+        Coordenadas coordenadaExtremo2 = new Coordenadas(3, 5);
+
+        CasoDeUsoConstruirCarretera caso = new CasoDeUsoConstruirCarretera(tablero, jugador);
+        caso.construirEn(coordenadaExtremo1, new Poblado());
+        caso.construirCarretera(coordenadaExtremo1, coordenadaExtremo2);
+
+        assertTrue(tablero.estaConstruidoCon(new Poblado(), coordenadaExtremo1, jugador));
+        assertTrue(tablero.estaConstruidoCon(new Carretera(), coordenadaExtremo1, jugador));
+        assertTrue(tablero.estaConstruidoCon(new Carretera(), coordenadaExtremo2, jugador));
+
     }
 }

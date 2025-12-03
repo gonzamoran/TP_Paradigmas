@@ -1,4 +1,4 @@
-package hellofx;
+package edu.fiuba.algo3.vistas;
 
 import javafx.application.Platform;
 import javafx.geometry.Pos;

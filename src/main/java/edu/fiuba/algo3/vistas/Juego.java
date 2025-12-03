@@ -133,8 +133,12 @@ public class Juego {
         botonBaraja.setStyle("-fx-font-size: 16px; -fx-padding: 10 20; -fx-base: #3498db; -fx-cursor: hand; -fx-font-weight: bold;");
         botonBaraja.setOnAction(e -> abrirVentanaBaraja());
 
+        Button botonDesarrollo = new Button("Ver Cartas Desarrollo");
+        botonDesarrollo.setStyle("-fx-font-size: 16px; -fx-padding: 10 20; -fx-base: #3498db; -fx-cursor: hand; -fx-font-weight: bold;");
+        botonDesarrollo.setOnAction(e -> abrirVentanaDesarrollo());
+
         //agrego botones
-        bottomBar.getChildren().addAll(botonBaraja, botonDados);
+        bottomBar.getChildren().addAll(botonBaraja, botonDados, botonDesarrollo);
 
         root.setBottom(bottomBar);
         root.setBottom(bottomBar);
@@ -252,6 +256,18 @@ public class Juego {
         stageBaraja.setScene(scene);
         stageBaraja.show();
     }
+
+    private static void abrirVentanaDesarrollo(){
+        Stage stageDesarrollo = new Stage();
+        String nombreJugador = (labelNombreTurno != null) ? labelNombreTurno.getText() : "Jugador";
+        VentanaCartasDesarrollos ventanaDesarrollos = new VentanaCartasDesarrollos(stageDesarrollo, nombreJugador);
+
+        Scene scene = new Scene(ventanaDesarrollos, 600, 500);
+
+        stageDesarrollo.setTitle("Cartas Desarrollo");
+        stageDesarrollo.setScene(scene);
+        stageDesarrollo.show();
+            }
 
     private static void abrirVentanaDados() {
         Stage stageDados = new Stage();

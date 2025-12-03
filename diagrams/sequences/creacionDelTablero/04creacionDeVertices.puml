@@ -1,5 +1,43 @@
 @startuml creacionDeVertices
 
-' a terminar
+title Creación de Vértices en el Tablero
+
+participant "T:Tablero" as Tablero
+participant "Bancas:Map<>" as Bancas
+participant Vertice
+participant "verticeExistente:Vertice" as verticeExistente
+
+activate Tablero
+Tablero -> Tablero: inicializarVertices()
+
+create Bancas
+Tablero -> Bancas: inicializarBancas()
+
+loop para cada par <coordenada, hexagono> en hexagonosDelTablero
+    
+    Tablero -> Tablero: obtenerVerticesDeHexagono(coordenada):listaDeVertices
+    
+    loop para cada vertice en listaDeVertices
+        
+        alt si vertice NO EXISTE en Tablero.vertices
+            create Vertice
+            Tablero -> Vertice: new Vertice()
+            Tablero -> Vertice: agregarHexagono(hexagono)
+            activate Vertice
+            Tablero -> Bancas: get(coordenada):banca
+            activate Bancas
+            Bancas --> Tablero: banca
+            deactivate Bancas
+            Tablero -> Vertice: agregarBanca(banca)
+            deactivate Vertice
+        
+        else si vertice EXISTE en Tablero.vertices
+            Tablero -> Tablero: get(vertice):verticeExistente
+            Tablero -> verticeExistente: agregarHexagono(hexagono)
+            activate verticeExistente
+            deactivate verticeExistente
+        end
+    end
+end
 
 @enduml

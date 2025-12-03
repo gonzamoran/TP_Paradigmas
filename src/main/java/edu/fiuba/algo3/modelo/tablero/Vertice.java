@@ -31,6 +31,8 @@ public class Vertice {
         this.estaConstruido = false;
     }
 
+
+    //REVISAR
     public void construir(Construccion construccion, Jugador jugador) {
         var recursosNecesarios = construccion.obtenerRecursosNecesarios();
         if (!jugador.poseeRecursosParaConstruir(construccion)) {
@@ -165,6 +167,7 @@ public class Vertice {
 
     public void construirCarretera(Construccion carretera, Jugador jugador) {
         carretera.asignarJugador(jugador);
+        //sacar recursos
         this.carreterasIngresantes.add(carretera);
     }
 
@@ -180,6 +183,26 @@ public class Vertice {
     public List<Banca> obtenerBancasDisponibles() {
         return this.bancasDisponibles;
     }
+    
+        /*
+        public List<Construccion> obtenerCarreterasVecinasDe(Jugador jugador, Construccion carreteraDeDondeVengo) {
+            
+            List<Construccion> vecinas = new ArrayList<>();
+    
+            if (this.construccion != null && !this.construccion.esDueno(jugador)) {
+                return vecinas;
+            }
+    
+            // Si no hay bloqueo, busco mis otras carreteras
+            for (Construccion carretera : this.carreterasIngresantes) {
+                if (carretera.esDueno(jugador) && !carretera.equals(carreteraDeDondeVengo)) {
+                    vecinas.add(carretera);
+                }
+            }
+    
+            return vecinas;
+        }*/
+    
 }
 
 /*
