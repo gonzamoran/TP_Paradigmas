@@ -15,11 +15,16 @@ public class CartaPuntoVictoria extends CartasDesarrollo {
         super(turnoDeCompra);
     }
 
+    @Override
     public boolean esJugable(ContextoCartaDesarrollo contexto) {
         return false;
     }
 
-    @Override
+    public CartasDesarrollo comprarCarta(int turnoActual) {
+        return new CartaPuntoVictoria(turnoActual);
+    }
+
+
     public int conseguirPV() {
         return 1;
     }
@@ -27,9 +32,5 @@ public class CartaPuntoVictoria extends CartasDesarrollo {
     @Override
     public void usar(ContextoCartaDesarrollo contexto, ProveedorDeDatos proveedor) {
        return;
-    }
-
-    public CartasDesarrollo comprarCarta(int turnoActual) {
-        return new CartaPuntoVictoria(turnoActual);
     }
 }

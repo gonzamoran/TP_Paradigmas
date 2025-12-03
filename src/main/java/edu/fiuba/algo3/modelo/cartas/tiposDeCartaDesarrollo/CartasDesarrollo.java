@@ -21,7 +21,7 @@ public abstract class CartasDesarrollo {
     public int conseguirPV() {
         return 0;
     }
-    
+
     public boolean equals(Object otraCarta) {
         if (otraCarta == null) {
             return false;
@@ -31,8 +31,10 @@ public abstract class CartasDesarrollo {
         }
         return true;
     }
-    
-    public abstract boolean esJugable(ContextoCartaDesarrollo contexto);
+
+    public boolean esJugable(ContextoCartaDesarrollo contexto) {
+        return contexto.sePuedeJugarCarta(this.turnoDeCompra);
+    }
 
     public abstract void usar(ContextoCartaDesarrollo contexto, ProveedorDeDatos proveedor);
 

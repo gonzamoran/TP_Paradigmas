@@ -9,6 +9,7 @@ import edu.fiuba.algo3.modelo.tablero.Coordenadas;
 import edu.fiuba.algo3.modelo.ProveedorDeDatos;
 
 import edu.fiuba.algo3.modelo.excepciones.*;
+
 /*
  * Permite construir 2 Carreteras gratuitamente (debe
  * cumplir reglas de colocación)
@@ -16,16 +17,13 @@ import edu.fiuba.algo3.modelo.excepciones.*;
  */
 public class CartaConstruccionCarretera extends CartasDesarrollo {
 
-    public CartaConstruccionCarretera(){
+    public CartaConstruccionCarretera() {
         super();
     }
 
-    public CartaConstruccionCarretera(int turnoActual){
+    public CartaConstruccionCarretera(int turnoActual) {
         super(turnoActual);
 
-    }
-    public boolean esJugable(ContextoCartaDesarrollo contexto) {
-        return contexto.sePuedeJugarCarta(this.turnoDeCompra);
     }
 
     public CartasDesarrollo comprarCarta(int turnoActual) {
@@ -36,7 +34,7 @@ public class CartaConstruccionCarretera extends CartasDesarrollo {
     public void usar(ContextoCartaDesarrollo contexto, ProveedorDeDatos proveedor) {
         this.fueUsada = true;
 
-        if(!contexto.sePuedeJugarCarta(this.turnoDeCompra)){
+        if (!contexto.sePuedeJugarCarta(this.turnoDeCompra)) {
             throw new NoSePuedeJugarEstaCartaException();
         }
 
@@ -45,15 +43,14 @@ public class CartaConstruccionCarretera extends CartasDesarrollo {
 
         int caminosColocados = 0;
 
-        
-        while(caminosColocados < 2){
+        while (caminosColocados < 2) {
             Coordenadas origen = proveedor.pedirCoordenadasAlUsuario();
             Coordenadas destino = proveedor.pedirCoordenadasAlUsuario();
             if (!tablero.sonCoordenadasValidas(origen) || !tablero.sonCoordenadasValidas(destino)) {
                 throw new CoordenadasInvalidasException();
-                //continue;
+                // continue;
             }
-            
+
             tablero.construirCarreteraGratis(origen, destino, jugador);
             caminosColocados++;
         }

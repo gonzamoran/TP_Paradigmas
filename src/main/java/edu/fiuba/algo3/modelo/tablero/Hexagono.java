@@ -2,10 +2,7 @@ package edu.fiuba.algo3.modelo.tablero;
 
 import edu.fiuba.algo3.modelo.tablero.Produccion;
 import edu.fiuba.algo3.modelo.Recurso;
-
 import edu.fiuba.algo3.modelo.excepciones.*;
-import java.util.List;
-import java.util.ArrayList;
 
 public abstract class Hexagono {
     private boolean tieneLadron;
@@ -44,6 +41,8 @@ public abstract class Hexagono {
 
     public abstract Recurso generarRecurso(int cantidad);
 
+
+    /// Metodo para poder comparar Hexagonos.
     public boolean equals(Object obj) {
         if (this == obj)
             return true;

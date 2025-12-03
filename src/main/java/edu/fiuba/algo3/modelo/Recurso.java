@@ -13,6 +13,9 @@ public abstract class Recurso {
 
     protected int cantidad;
 
+    /*
+    * Constructores de recurso. Si no recibe nada por parametro se setea a 0.
+    */
     public Recurso() {
         this.cantidad = 0;
     }
@@ -21,10 +24,28 @@ public abstract class Recurso {
         this.cantidad = cantidad;
     }
 
-    public int getCantidad() {
+    ///  Devuelve la cantidad de un recurso.
+    public int obtenerCantidad() {
         return cantidad;
     }
 
+    ///  Devuelve una copia del recurso.
+    public abstract Recurso obtenerCopia(int cantidad);
+
+    /// Suma una cantidad.
+    public void sumar(Recurso recurso) {
+        if (this.getClass() != recurso.getClass()) {
+            return;
+        }
+        this.cantidad += recurso.cantidad;
+    }
+    ///  Resta una cantidad que recibe por parametro.
+    public void restar(int cantidad) {
+        this.cantidad -= cantidad;
+    }
+
+
+    /// Metodo para comparar 2 coordenadas.
     public boolean equals(Object obj) {
         if (this == obj)
             return true;
@@ -34,25 +55,8 @@ public abstract class Recurso {
         return this.cantidad == recurso.cantidad;
     }
 
-    public void sumar(Recurso recurso) {
-        if (this.getClass() != recurso.getClass()) {
-            return;
-        }
-        this.cantidad += recurso.cantidad;
-    }
-
-    public abstract Recurso obtenerCopia(int cantidad);
-
     public int hashCode() {
         return getClass().hashCode();
-    }
-
-    public void restar(int cantidad) {
-        this.cantidad -= cantidad;
-    }
-
-    public int obtenerCantidad() {
-        return cantidad;
     }
 
 }

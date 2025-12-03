@@ -172,8 +172,8 @@ public class CartasJugador {
         return recurso.obtenerCopia(cantidad);
     }
 
-
-    public void usarCartaDesarrollo(CartasDesarrollo carta, ContextoCartaDesarrollo contexto, ProveedorDeDatos proveedor) {
+    public void usarCartaDesarrollo(CartasDesarrollo carta, ContextoCartaDesarrollo contexto,
+            ProveedorDeDatos proveedor) {
         if (!cartasDesarrollo.contains(carta)) {
             throw new NoSePuedeJugarEstaCartaException();
         }
@@ -184,6 +184,7 @@ public class CartasJugador {
                 break;
             }
         }
+
         if (!cartaAUsar.esJugable(contexto)) {
             throw new NoSePuedeJugarEstaCartaException();
         }
@@ -210,7 +211,7 @@ public class CartasJugador {
         this.tieneLaGranCaballeria = true;
     }
 
-    public void pierdeGranCaballeria(){
+    public void pierdeGranCaballeria() {
         this.tieneLaGranCaballeria = false;
     }
 

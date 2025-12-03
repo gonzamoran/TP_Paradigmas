@@ -5,7 +5,6 @@ import java.util.Random;
 import edu.fiuba.algo3.modelo.Jugador;
 import edu.fiuba.algo3.modelo.Recurso;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.List;
 

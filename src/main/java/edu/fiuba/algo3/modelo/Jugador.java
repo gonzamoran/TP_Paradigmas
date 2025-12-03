@@ -19,6 +19,7 @@ public class Jugador {
     private int puntosDeVictoria;
     private int caballerosJugador;
 
+    /// Constructor de Jugador.
     public Jugador(String color) {
         this.color = color;
         // this.cartasDeDesarrollo = new List<CartaDesarrollo>();
@@ -28,13 +29,48 @@ public class Jugador {
         this.mazos = new CartasJugador();
     }
 
+    /*
+     * Metodos de manejo recursos y mazo de cartas en la mano.
+     */
     public void agregarRecurso(Recurso recurso) {
         mazos.agregarRecursos(recurso);
+    }
+
+    public void removerRecurso(Recurso recurso) {
+        mazos.removerRecurso(recurso);
     }
 
     public Recurso removerRecursoAleatorio() {
         return mazos.removerRecursoAleatorio();
     }
+
+    public int obtenerCantidadRecurso(Recurso recurso) {
+        return mazos.obtenerCantidadCartasRecurso(recurso);
+    }
+
+    public int obtenerCantidadCartasRecurso() {
+        return mazos.cantidadTotalCartasRecurso();
+    }
+
+    public boolean tieneRecursos() {
+        return this.obtenerCantidadCartasRecurso() > 0;
+    }
+
+    public boolean puedeDescartarse() {
+        return mazos.puedeDescartarse();
+    }
+
+    public Recurso vaciarRecurso(Recurso recurso) {
+        return mazos.vaciarRecurso(recurso);
+    }
+
+    public void descartarse() {
+        if (!this.puedeDescartarse()) {
+            return;
+        }
+        mazos.descarteCartas();
+    }
+
 
     public void intercambiar(ArrayList<Recurso> recursosAEntregar, ArrayList<Recurso> recursosARecibir,
             Jugador jugador2) {
@@ -52,22 +88,8 @@ public class Jugador {
         }
     }
 
-    public void removerRecurso(Recurso recurso) {
-        mazos.removerRecurso(recurso);
-    }
 
-    public int obtenerCantidadRecurso(Recurso recurso) {
-        return mazos.obtenerCantidadCartasRecurso(recurso);
-    }
-
-    public int obtenerCantidadCartasRecurso() {
-        return mazos.cantidadTotalCartasRecurso();
-    }
-
-    public String getColor() {
-        return this.color;
-    }
-
+    /// Metodos de construccion.
     public void agregarConstruccion(Construccion construccion) {
         construccionesJugador.add(construccion);
     }
@@ -76,14 +98,8 @@ public class Jugador {
         construccionesJugador.remove(construccion);
     }
 
-    public void sumarCaballero() {
-        this.caballerosJugador += 1;
-    }
 
-    public int obtenerCantidadCaballerosUsados(){
-        return this.caballerosJugador;
-    }
-
+    /// Metodos para las cartas de desarrollo
 
     public int calculoPuntosVictoria() {
         int sumaTotal = 0;
@@ -95,21 +111,48 @@ public class Jugador {
         return puntosDeVictoria;
     }
 
-    public boolean puedeDescartarse() {
-        return mazos.puedeDescartarse();
-    }
-
-    public void descartarse() {
-        if (!this.puedeDescartarse()) {
-            return;
+    public void comprarCartaDesarrollo(CartasDesarrollo carta, int turnoActual) {
+        if (!mazos.poseeRecursosParaCartaDesarrollo()) {
+            throw new RecursosInsuficientesException();
         }
-        mazos.descarteCartas();
+        mazos.pagarCartaDesarrollo();
+        CartasDesarrollo cartaComprada = carta.comprarCarta(turnoActual);
+        mazos.agregarCartaDesarrollo(cartaComprada);
     }
 
-    public boolean tieneRecursos() {
-        return this.obtenerCantidadCartasRecurso() > 0;
+    public int contarCartasDeDesarrollo() {
+        return mazos.obtenerCantidadCartasDesarrollo();
     }
 
+    public void usarCartaDesarrollo(CartasDesarrollo carta, ContextoCartaDesarrollo contexto, ProveedorDeDatos proveedor) {
+        mazos.usarCartaDesarrollo(carta, contexto, proveedor);
+    }
+
+    /// Metodos para los caballeros y la gran caballeria.
+    public int obtenerCantidadCaballerosUsados(){
+        return this.caballerosJugador;
+    }
+
+    public void sumarCaballero() {
+        this.caballerosJugador += 1;
+    }
+
+    public void otorgarGranCaballeria(ArrayList<Jugador> jugadores) {
+        for (Jugador jugador : jugadores) {
+            if (jugador != this) {
+                jugador.pierdeGranCaballeria();
+            }
+        }
+        mazos.otorgarGranCaballeria();
+    }
+
+    public void pierdeGranCaballeria(){
+        mazos.pierdeGranCaballeria();
+    }
+
+
+    ///  Metodos que verifican.
+    /// Quizas esto vuela si agregamos el refactor de costo.
     public boolean poseeRecursosParaConstruir(Construccion construccion) {
         var recursosNecesarios = construccion.obtenerRecursosNecesarios();
         for (Recurso recurso : recursosNecesarios) {
@@ -129,10 +172,8 @@ public class Jugador {
         return true;
     }
 
-    public Recurso vaciarRecurso(Recurso recurso) {
-        return mazos.vaciarRecurso(recurso);
-    }
 
+    ///  Metodo para comparar.
     public boolean equals(Object obj) {
         if (this == obj)
             return true;
@@ -141,40 +182,17 @@ public class Jugador {
         Jugador jugador = (Jugador) obj;
         return this.color == jugador.color;
     }
-
-    public int contarCartasDeDesarrollo() {
-        return mazos.obtenerCantidadCartasDesarrollo();
-    }
-
-    public void comprarCartaDesarrollo(CartasDesarrollo carta, int turnoActual) {
-        if (!mazos.poseeRecursosParaCartaDesarrollo()) {
-            throw new RecursosInsuficientesException();
-        }
-        mazos.pagarCartaDesarrollo();
-        CartasDesarrollo cartaComprada = carta.comprarCarta(turnoActual);
-        mazos.agregarCartaDesarrollo(cartaComprada);
-    }
-
-    public void usarCartaDesarrollo(CartasDesarrollo carta, ContextoCartaDesarrollo contexto, ProveedorDeDatos proveedor) {
-        mazos.usarCartaDesarrollo(carta, contexto, proveedor);
-    }
-
-    public void otorgarGranCaballeria(ArrayList<Jugador> jugadores) {
-        for (Jugador jugador : jugadores) {
-            if (jugador != this) {
-                jugador.pierdeGranCaballeria();
-            }
-        }
-        mazos.otorgarGranCaballeria();
-    }
-    public void pierdeGranCaballeria(){
-        mazos.pierdeGranCaballeria();
-    }
-    
     // public void otorgarGranRutaComercial(){
     //     mazos.otorgarGranRutaComercial();
     // }
     // public ArrayList<CartasDesarrollo> obtenerCartasDesarrollo(){
     //     return mazos.obtenerCartasDesarrollo();
     // }
+
+        ///  No se usa.
+        /*
+        public String getColor() {
+            return this.color;
+        }
+        */
 }

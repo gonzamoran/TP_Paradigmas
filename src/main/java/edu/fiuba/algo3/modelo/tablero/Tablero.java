@@ -20,7 +20,7 @@ import edu.fiuba.algo3.modelo.excepciones.PosInvalidaParaConstruirException;
 import edu.fiuba.algo3.modelo.excepciones.NoEsPosibleConstruirException;
 
 public class Tablero {
-    private Ladron ladron; //sacar
+    private Ladron ladron; // sacar
     // private Map<Coordenadas, Carretera> carreteras;
     // private Map<Coordenadas, Poblado> poblados;
     private ArrayList<Hexagono> listaHexagonos;
@@ -55,11 +55,6 @@ public class Tablero {
         this.inicializarVertices();
         this.asignarAdyacentesAVertices();
         this.inicializarLadron();
-    }
-
-
-    public List<Hexagono> obtenerHexagonos() {
-        return new ArrayList<>(mapaHexagonos.values());
     }
 
     private void inicializarHexagonosDefault() {
@@ -154,28 +149,26 @@ public class Tablero {
     private Map<Coordenadas, Banca> inicializarBancas() {
         Map<Coordenadas, Banca> mapaBancas = new HashMap<>();
         List<Coordenadas> coordenadasPuertos = new ArrayList<>(List.of(
-                new Coordenadas(0, 1), new Coordenadas(0, 2), 
+                new Coordenadas(0, 1), new Coordenadas(0, 2),
                 new Coordenadas(1, 0), new Coordenadas(2, 0),
-                new Coordenadas(3, 0), new Coordenadas(4, 0), 
-                new Coordenadas(5, 1), new Coordenadas(5, 2), 
+                new Coordenadas(3, 0), new Coordenadas(4, 0),
+                new Coordenadas(5, 1), new Coordenadas(5, 2),
                 new Coordenadas(5, 4), new Coordenadas(5, 5),
-                new Coordenadas(4, 7), new Coordenadas(4, 8), 
-                new Coordenadas(3, 9), new Coordenadas(2, 9), 
+                new Coordenadas(4, 7), new Coordenadas(4, 8),
+                new Coordenadas(3, 9), new Coordenadas(2, 9),
                 new Coordenadas(1, 8), new Coordenadas(1, 7),
-                new Coordenadas(0, 4), new Coordenadas(0, 5)
-        ));
+                new Coordenadas(0, 4), new Coordenadas(0, 5)));
 
         List<Banca> bancas = new ArrayList<>(List.of(
                 new Banca3a1(), new Banca3a1(),
                 new Banca2a1(new Madera()), new Banca2a1(new Grano()),
                 new Banca3a1(), new Banca2a1(new Piedra()),
                 new Banca3a1(), new Banca2a1(new Lana()),
-                new Banca2a1(new Ladrillo())
-        ));
+                new Banca2a1(new Ladrillo())));
         int indiceBancas = 0;
-        for (int i = 0; i < coordenadasPuertos.size()-2; i+=2) {
+        for (int i = 0; i < coordenadasPuertos.size() - 2; i += 2) {
             mapaBancas.put(coordenadasPuertos.get(i), bancas.get(indiceBancas));
-            mapaBancas.put(coordenadasPuertos.get(i+1), bancas.get(indiceBancas));
+            mapaBancas.put(coordenadasPuertos.get(i + 1), bancas.get(indiceBancas));
             indiceBancas++;
         }
         return mapaBancas;
@@ -195,7 +188,6 @@ public class Tablero {
         };
         return coordenadasVertices;
     }
-
 
     private void asignarAdyacentesAVertices() {
         for (Map.Entry<Coordenadas, Vertice> entrada : mapaVertices.entrySet()) {
@@ -253,9 +245,10 @@ public class Tablero {
 
         Vertice vertice = mapaVertices.get(coordenadas);
         return vertice.cumpleReglaDistancia() && !vertice.tieneConstruccion();
-    }  
-    
-    public ArrayList<Recurso> colocarConstruccionInicial(Construccion construccion, Coordenadas coordenadas, Jugador jugador) {
+    }
+
+    public ArrayList<Recurso> colocarConstruccionInicial(Construccion construccion, Coordenadas coordenadas,
+            Jugador jugador) {
         if (!this.sePuedeConstruirInicial(coordenadas, construccion)) {
             throw new PosInvalidaParaConstruirException();
         }
@@ -282,16 +275,6 @@ public class Tablero {
         return mapaVertices.containsKey(coordenadas);
     }
 
-    public boolean equals(Object obj) {
-        if (this == obj)
-            return true;
-        if (obj == null || getClass() != obj.getClass())
-            return false;
-        Tablero otro = (Tablero) obj;
-        return listaHexagonos.equals(otro.listaHexagonos) &&
-                listaNumeros.equals(otro.listaNumeros);
-    }
-
     public void colocarEn(Coordenadas coordenadas, Construccion construccion, Jugador jugador) {
         if (!this.sePuedeConstruir(coordenadas, construccion, jugador)) {
             throw new NoEsPosibleConstruirException();
@@ -315,61 +298,60 @@ public class Tablero {
         return produccionDelJugador;
     }
 
-
-    // Camino solo se puede construir si esta pegado a un camino propio o a un poblado
-    // Poblado solo se puede construir si cumple regla de la distancia y si esta pegado a un camino propio
-    // Ciudad solo si en el vertice donde se quiere construir hay un poblado propr
+    // Camino solo se puede construir si esta pegado a un camino propio o a un
+    // poblado
+    // Poblado solo se puede construir si cumple regla de la distancia y si esta
+    // pegado a un camino propio
+    // Ciudad solo si en el vertice donde se quiere construir hay un poblado propio.
     public boolean sePuedeConstruir(Coordenadas coordenadas, Construccion construccion, Jugador jugador) {
         if (construccion == null) {
-            throw new IllegalArgumentException("Construccion nula"); //cambiar excepcion
+            throw new IllegalArgumentException("Construccion nula"); // cambiar excepcion
         }
         if (!this.sonCoordenadasValidas(coordenadas)) {
             throw new PosInvalidaParaConstruirException();
         }
         Vertice vertice = mapaVertices.get(coordenadas);
 
-        if (!jugador.poseeRecursosParaConstruir(construccion)){
+        if (!jugador.poseeRecursosParaConstruir(construccion)) {
             return false;
         }
 
-        if (vertice.cumpleReglaDistancia()){
+        if (vertice.cumpleReglaDistancia()) {
             return vertice.puedeConstruirse(construccion);
         }
         return false;
     }
 
-    //devuelve una lista de jugadores afectados actualmente
+    // devuelve una lista de jugadores afectados actualmente
     public void moverLadronA(Coordenadas coordenadasHexagono) {
-        var jugadoresAfectados = this.obtenerJugadoresAdyacentes(coordenadasHexagono); //algo;
+        var jugadoresAfectados = this.obtenerJugadoresAdyacentes(coordenadasHexagono); // algo;
         this.ladron.moverLadronA(this.obtenerHexagono(coordenadasHexagono), jugadoresAfectados);
     }
 
-    public List <Jugador> obtenerJugadoresAdyacentes(Coordenadas coordenadasHexagono){
+    public List<Jugador> obtenerJugadoresAdyacentes(Coordenadas coordenadasHexagono) {
         List<Jugador> jugadores = new ArrayList<>();
 
         Coordenadas[] coordsVertices = this.obtenerVerticesDeHexagono(coordenadasHexagono);
-        
+
         List<Vertice> vertices = new ArrayList<>();
-        for (Coordenadas coord : coordsVertices){
+        for (Coordenadas coord : coordsVertices) {
             vertices.add(mapaVertices.get(coord));
         }
-        
-        for ( Vertice vertice : vertices ){
-            if (vertice.tieneConstruccion()){
+
+        for (Vertice vertice : vertices) {
+            if (vertice.tieneConstruccion()) {
                 Jugador dueno = vertice.obtenerDueno();
-                //if (!jugadores.contains(dueno)){
                 jugadores.add(dueno);
-                //}
             }
         }
         return jugadores;
     }
 
-    //esto lo podria hacer ladron directamente o proxima clase JUEGO
+    // esto lo podria hacer ladron directamente o proxima clase JUEGO
     public ArrayList<Recurso> ladronRobaRecurso(Jugador jugadorActual) {
         ArrayList<Recurso> recursoRobado = ladron.robarRecurso(jugadorActual);
-        if (!recursoRobado.isEmpty()){
-            jugadorActual.agregarRecurso(recursoRobado.get(0)); 
+        if (!recursoRobado.isEmpty()) {
+            jugadorActual.agregarRecurso(recursoRobado.get(0));
         }
         return recursoRobado;
     }
@@ -380,15 +362,6 @@ public class Tablero {
 
     public Hexagono obtenerHexagonoLadron() {
         return ladron.obtenerHexagonoActual();
-    }
-
-    public Coordenadas obtenerCoordenadasHexagono(Hexagono hexagono){
-        for (Map.Entry<Coordenadas, Hexagono> entrada : mapaHexagonos.entrySet()) {
-            if (entrada.getValue().equals(hexagono)){
-                return entrada.getKey();
-            }
-        }
-        return null;
     }
 
     public boolean estaConstruidoCon(Construccion construccion, Coordenadas coordenadas, Jugador jugador) {
@@ -407,9 +380,9 @@ public class Tablero {
         if (!vertice1.esAdyacente(vertice2)) {
             throw new PosInvalidaParaConstruirException();
         }
-        
 
-        if (!vertice1.poseeCarreterasDe(jugador) && !vertice2.poseeCarreterasDe(jugador) && !(vertice1.esDueno(jugador) || vertice2.esDueno(jugador))) {
+        if (!vertice1.poseeCarreterasDe(jugador) && !vertice2.poseeCarreterasDe(jugador)
+                && !(vertice1.esDueno(jugador) || vertice2.esDueno(jugador))) {
             throw new NoEsPosibleConstruirException();
         }
 
@@ -418,11 +391,11 @@ public class Tablero {
             throw new NoEsPosibleConstruirException();
         }
 
-        if (!jugador.poseeRecursosParaConstruir(carretera)){
+        if (!jugador.poseeRecursosParaConstruir(carretera)) {
             throw new NoEsPosibleConstruirException();
         }
 
-        //consumir recursos
+        // consumir recursos
         List<Recurso> recursosNecesarios = carretera.obtenerRecursosNecesarios();
         for (Recurso recurso : recursosNecesarios) {
             jugador.removerRecurso(recurso);
@@ -432,10 +405,10 @@ public class Tablero {
         vertice2.construirCarretera(carretera, jugador);
     }
 
-    public List<Banca> obtenerBancasDisponibles(Jugador jugador){
+    public List<Banca> obtenerBancasDisponibles(Jugador jugador) {
         List<Banca> bancasDisponibles = new ArrayList<>();
-        for (Vertice vertice : mapaVertices.values()){
-            if (vertice.tieneConstruccion() && vertice.esDueno(jugador)){
+        for (Vertice vertice : mapaVertices.values()) {
+            if (vertice.tieneConstruccion() && vertice.esDueno(jugador)) {
                 List<Banca> disponibles = vertice.obtenerBancasDisponibles();
                 bancasDisponibles.addAll(disponibles);
             }
@@ -444,7 +417,8 @@ public class Tablero {
         return bancasDisponibles;
     }
 
-    public void construirCarreteraGratis(Coordenadas coordenadaExtremo1, Coordenadas coordenadaExtremo2, Jugador jugador) {
+    public void construirCarreteraGratis(Coordenadas coordenadaExtremo1, Coordenadas coordenadaExtremo2,
+            Jugador jugador) {
         if (!this.sonCoordenadasValidas(coordenadaExtremo1) || !this.sonCoordenadasValidas(coordenadaExtremo2)) {
             throw new PosInvalidaParaConstruirException();
         }
@@ -455,9 +429,9 @@ public class Tablero {
         if (!vertice1.esAdyacente(vertice2)) {
             throw new PosInvalidaParaConstruirException();
         }
-        
 
-        if (!vertice1.poseeCarreterasDe(jugador) && !vertice2.poseeCarreterasDe(jugador) && !(vertice1.esDueno(jugador) || vertice2.esDueno(jugador))) {
+        if (!vertice1.poseeCarreterasDe(jugador) && !vertice2.poseeCarreterasDe(jugador)
+                && !(vertice1.esDueno(jugador) || vertice2.esDueno(jugador))) {
             throw new NoEsPosibleConstruirException();
         }
 
@@ -465,8 +439,17 @@ public class Tablero {
         if (!vertice1.puedeConstruirse(carretera) && !vertice2.puedeConstruirse(carretera)) {
             throw new NoEsPosibleConstruirException();
         }
-        
+
         vertice1.construirCarretera(carretera, jugador);
         vertice2.construirCarretera(carretera, jugador);
+    }
+
+    public boolean equals(Object obj) {
+        if (this == obj)
+            return true;
+        if (obj == null || getClass() != obj.getClass())
+            return false;
+        Tablero otro = (Tablero) obj;
+        return listaHexagonos.equals(otro.listaHexagonos) && listaNumeros.equals(otro.listaNumeros);
     }
 }
