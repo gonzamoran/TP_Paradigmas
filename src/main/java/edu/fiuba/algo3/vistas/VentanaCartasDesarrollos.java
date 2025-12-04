@@ -1,5 +1,11 @@
 package edu.fiuba.algo3.vistas;
 
+import edu.fiuba.algo3.modelo.cartas.CartasJugador;
+import edu.fiuba.algo3.modelo.cartas.tiposDeCartaDesarrollo.CartasDesarrollo;
+import edu.fiuba.algo3.modelo.cartas.tiposDeCartaDesarrollo.CartaPuntoVictoria;
+import edu.fiuba.algo3.modelo.cartas.tiposDeCartaDesarrollo.ContextoCartaDesarrollo;
+import edu.fiuba.algo3.modelo.ProveedorDeDatos;
+
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
@@ -18,6 +24,8 @@ import java.util.Random;
 
 
 public class VentanaCartasDesarrollos extends VBox {
+
+    private ArrayList<CartasDesarrollo> cartasDesarrollo;
 
     public VentanaCartasDesarrollos(Stage stage, String nombreJugador) {
         this.setAlignment(Pos.CENTER);
@@ -38,12 +46,14 @@ public class VentanaCartasDesarrollos extends VBox {
 
         List<String> cartas = generarManoAleatoria();
 
+
         if (cartas.isEmpty()) {
             Label vacio = new Label("No tienes recursos.");
             vacio.setStyle("-fx-text-fill: #bdc3c7; -fx-font-size: 16px;");
             panelCartas.getChildren().add(vacio);
         } else {
             for (String nombreCarta : cartas) {
+                //agregarCartaDesarrollo(CartasDesarrollo cartas)
                 panelCartas.getChildren().add(crearCartaVisual(nombreCarta));
             }
         }

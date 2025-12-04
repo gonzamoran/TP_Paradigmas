@@ -38,6 +38,9 @@ public class VentanaComerciar extends VBox {
         Button btnInterior = new Button("Comercio Interior");
         estilarBoton(btnInterior, "#27ae60"); 
         btnInterior.setOnAction(e -> {
+
+             //intercambiar(ArrayList<Recurso> recursosAEntregar, ArrayList<Recurso> recursosARecibir,Jugador jugador2)
+
             System.out.println("Iniciando Comercio Interior para " + nombreJugador);
             stage.close();
         });
@@ -69,6 +72,9 @@ public class VentanaComerciar extends VBox {
         Button btnEstandar = new Button("Tasa Estándar (4:1)");
         estilarBoton(btnEstandar, "#f39c12"); 
         btnEstandar.setOnAction(e -> {
+
+            //comerciar(Jugador jugador, ArrayList<Recurso> oferta, Recurso demanda)
+
             System.out.println("Comercio 4:1 realizado por " + nombreJugador);
             stage.close();
         });
@@ -76,6 +82,9 @@ public class VentanaComerciar extends VBox {
         Button btnGenerico = new Button("Puerto Genérico (3:1)");
         estilarBoton(btnGenerico, "#f39c12");
         btnGenerico.setOnAction(e -> {
+
+             //comerciar(Jugador jugador, ArrayList<Recurso> oferta, Recurso demanda)
+
             System.out.println("Comercio 3:1 realizado por " + nombreJugador);
             stage.close();
         });
@@ -83,6 +92,9 @@ public class VentanaComerciar extends VBox {
         Button btnEspecifico = new Button("Puerto Específico (2:1)");
         estilarBoton(btnEspecifico, "#f39c12");
         btnEspecifico.setOnAction(e -> {
+
+             //comerciar(Jugador jugador, ArrayList<Recurso> oferta, Recurso demanda)
+
             System.out.println("Comercio 2:1 realizado por " + nombreJugador);
             stage.close();
         });

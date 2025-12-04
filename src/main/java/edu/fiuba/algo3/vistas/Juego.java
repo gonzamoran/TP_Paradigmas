@@ -1,7 +1,6 @@
 
 package edu.fiuba.algo3.vistas;
 
-
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
@@ -33,7 +32,7 @@ public class Juego {
 
     public static void show(Stage stage, List<String> playerNames) {
         BorderPane root = new BorderPane();
-        Image fondo = new Image("/hellofx/catan2.png");
+        Image fondo = new Image("algo3/imagenes/catan2.png");
         BackgroundImage backgroundImage = new BackgroundImage(
                     fondo,
                     BackgroundRepeat.NO_REPEAT,
@@ -53,9 +52,9 @@ public class Juego {
         listaJugadores.setAlignment(Pos.CENTER_LEFT);
         if (playerNames != null && !playerNames.isEmpty()) {
             for (String nombre : playerNames) {
-                Button p = new Button(nombre);
-                p.setStyle("-fx-font-size: 12px; -fx-background-color: #ecf0f1; -fx-text-fill: #2c3e50;");
-                listaJugadores.getChildren().add(p);
+                Button nombres = new Button(nombre);
+                nombres.setStyle("-fx-font-size: 12px; -fx-background-color: #ecf0f1; -fx-text-fill: #2c3e50;");
+                listaJugadores.getChildren().add(nombres);
             }
         }
 
@@ -289,6 +288,9 @@ public class Juego {
         //para actualizar indicadores desde la lógica del juego
 
     public static void actualizarInventario(String nombreJugador, int madera, int ladrillo, int lana, int grano, int mineral) {
+
+        //pedirRecursoAlUsuario();
+
         if (labelTituloInventario != null) labelTituloInventario.setText("Inventario (" + nombreJugador + ")");
         if (lblMadera != null) lblMadera.setText(String.valueOf(madera));
         if (lblLadrillo != null) lblLadrillo.setText(String.valueOf(ladrillo));

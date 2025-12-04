@@ -48,14 +48,12 @@ loop para i = 0 a listaHexagonos.size()-1
     ListaCoords --> Tablero: coord
     deactivate ListaCoords
     
-    Tablero -> Tablero: listaHexagonos.get(i)
+    Tablero -> Tablero: listaHexagonos.get(i):hexagono
     
     Tablero -> MapaHexagonos: put(coord, hexagono)
     activate MapaHexagonos
     MapaHexagonos --> Tablero: hexagono mapeado
     deactivate MapaHexagonos
 end
-
-Tablero --> Tablero: mapaHexagonos completado
 
 @enduml

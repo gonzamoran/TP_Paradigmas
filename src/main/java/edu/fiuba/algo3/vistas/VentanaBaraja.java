@@ -1,5 +1,12 @@
 package edu.fiuba.algo3.vistas;
 
+import edu.fiuba.algo3.modelo.cartas.CartasJugador;
+import edu.fiuba.algo3.modelo.Recurso;
+import edu.fiuba.algo3.modelo.tiposRecurso.Grano;
+import edu.fiuba.algo3.modelo.tiposRecurso.Ladrillo;
+import edu.fiuba.algo3.modelo.tiposRecurso.Lana;
+import edu.fiuba.algo3.modelo.tiposRecurso.Madera;
+import edu.fiuba.algo3.modelo.tiposRecurso.Piedra;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
@@ -19,7 +26,10 @@ import java.util.Random;
 
 public class VentanaBaraja extends VBox {
 
+    private List<Recurso> recursos;
+
     public VentanaBaraja(Stage stage, String nombreJugador) {
+
         this.setAlignment(Pos.CENTER);
         this.setSpacing(20); 
         this.setPadding(new Insets(30)); 
@@ -44,6 +54,10 @@ public class VentanaBaraja extends VBox {
             panelCartas.getChildren().add(vacio);
         } else {
             for (String nombreCarta : cartas) {
+                        //this.recursos = new ArrayList<>();
+                        //buscarRecurso(Recurso recursoBuscado)
+                        //agregarRecursos(Recurso recurso)
+                        //obtenerCantidadCartasRecurso(Recurso recurso)
                 panelCartas.getChildren().add(crearCartaVisual(nombreCarta));
             }
         }
@@ -70,11 +84,11 @@ public class VentanaBaraja extends VBox {
         carta.setPrefSize(150, 220); 
 
         String ruta = "/hellofx/" + nombreRecurso + ".png";
-        InputStream is = getClass().getResourceAsStream(ruta);
+        InputStream dato = getClass().getResourceAsStream(ruta);
         
-        if (is != null) {
+        if (dato != null) {
             try {
-                Image img = new Image(is);
+                Image img = new Image(dato);
                 ImageView view = new ImageView(img);
                 
                 

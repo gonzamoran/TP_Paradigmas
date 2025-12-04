@@ -1,5 +1,5 @@
 package edu.fiuba.algo3.vistas;
-
+import edu.fiuba.algo3.modelo.Dados;
 import javafx.geometry.Pos;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -11,6 +11,7 @@ import java.util.Objects;
 
 public class VistaDados extends VBox {
 
+    //private final Dados dados;
 
     public VistaDados(int valor1, int valor2) {
         this.setAlignment(Pos.CENTER);
@@ -28,7 +29,7 @@ public class VistaDados extends VBox {
         contenedorDados.getChildren().add(crearImagenDado(valor1));
         contenedorDados.getChildren().add(crearImagenDado(valor2));
 
-        Label total = new Label("Total: " + (valor1 + valor2));
+        Label total = new Label("Total: " + (valor1 + valor2)); //lanzarDados()
         total.setStyle("-fx-font-size: 16px;");
 
         this.getChildren().addAll(titulo, contenedorDados, total);
@@ -37,7 +38,7 @@ public class VistaDados extends VBox {
     private ImageView crearImagenDado(int valor) {
         try {
 
-            String ruta = "/hellofx/dado" + valor + ".png";
+            String ruta = "algo3/imagenes/dado" + valor + ".png";
             Image imagen = new Image(Objects.requireNonNull(getClass().getResourceAsStream(ruta)));
             
             ImageView imageView = new ImageView(imagen);

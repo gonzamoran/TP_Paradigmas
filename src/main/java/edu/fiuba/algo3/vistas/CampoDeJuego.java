@@ -2,6 +2,11 @@ package edu.fiuba.algo3.vistas;
 
 import edu.fiuba.algo3.modelo.tablero.Tablero;
 import edu.fiuba.algo3.modelo.tablero.Hexagono;
+import edu.fiuba.algo3.modelo.ProveedorDeDatos;
+import edu.fiuba.algo3.modelo.tablero.Tablero;
+import edu.fiuba.algo3.modelo.tablero.Hexagono;
+import edu.fiuba.algo3.modelo.tablero.Produccion;
+
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
@@ -21,9 +26,11 @@ public class CampoDeJuego extends BorderPane {
     public CampoDeJuego(Stage stage, Tablero tablero) {
         this.tablero = tablero;
         //this.menuLateralDerecho = new MenuLateralDerecho(this, juego);
-        crearTablero();
-        //this.setRight(this.menuLateralDerecho);
 
+        crearTablero();
+
+        //this.setRight(this.menuLateralDerecho);
+        
         //this.mostrarMenuLateralDerecho();
         stage.setScene(new Scene(this, 1500, 900));
         stage.centerOnScreen();
@@ -32,6 +39,12 @@ public class CampoDeJuego extends BorderPane {
     private void crearTablero() {
         Pane pane = new Pane();
         pane.getChildren().add(crearVistaImagen());
+
+        //inicializarVertices();
+
+        //asignarCoordenadasHexagonos();
+        
+        //asignarNumeroALosHexagonos();
 
         HBox anHbox = new HBox(pane);
         anHbox.setAlignment(Pos.CENTER);
@@ -42,8 +55,10 @@ public class CampoDeJuego extends BorderPane {
         this.setCenter(aVbox);
     }
 
+
+
     private ImageView crearVistaImagen() {
-        Image imagen = new Image("tablero.png");
+        Image imagen = new Image("catan2.png");
         ImageView imageView = new ImageView(imagen);
         imageView.setPreserveRatio(true);
         imageView.setFitWidth(1000);

@@ -56,7 +56,8 @@ public class ConfiguracionPartida extends VBox {
         ComboBox<String> comboBox = new ComboBox<>();
         comboBox.getItems().addAll("3 Jugadores", "4 Jugadores", "5 Jugadores", "6 Jugadores");
         comboBox.setPromptText("Seleccionar...");
-        comboBox.getStyleClass().add("comboBox"); // 
+        //pedirCantidadDeJugadoresAlUsuario()
+        comboBox.getStyleClass().add("comboBox"); 
 
         comboBox.setOnAction(e -> {
             this.cantidadJugadores = comboBox.getSelectionModel().getSelectedIndex() + 3; 
@@ -74,10 +75,12 @@ public class ConfiguracionPartida extends VBox {
         for (int i = 0; i < cantidad; i++) {
             
             Label labelNombre = new Label("Nombre Jugador " + (i + 1) + ":");
+
+            //pedirNombreJugadorAlUsuario(int cantidadDeJugadores)
+
             labelNombre.getStyleClass().add("labelText"); 
 
             TextField input = new TextField();
-            input.setPromptText("Ej. Jugador " + (i+1));
             input.getStyleClass().add("textField");
             
             listaDeInputs.add(input);
@@ -90,7 +93,7 @@ public class ConfiguracionPartida extends VBox {
     }
 
     private Button crearBotonJugar() {
-        Button btn = new Button("¡Jugar Catan!");
+        Button btn = new Button("Jugar Catan!");
         btn.getStyleClass().add("startButton"); 
         btn.setStyle("-fx-font-size: 14px; -fx-base: #4CAF50; -fx-cursor: hand;");
         
@@ -111,7 +114,7 @@ public class ConfiguracionPartida extends VBox {
 
     private boolean validarDatos() {
         if (cantidadJugadores == 0) {
-            errorLabel.setText("¡Seleccione la cantidad de jugadores primero!");
+            errorLabel.setText("Seleccione la cantidad de jugadores primero!");
             errorLabel.setVisible(true);
             return false;
         }

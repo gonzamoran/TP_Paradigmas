@@ -10,6 +10,7 @@ import edu.fiuba.algo3.modelo.acciones.CasoDeUsoIntercambio;
 
 import edu.fiuba.algo3.modelo.excepciones.IntercambioInvalidoException;
 
+import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -26,79 +27,61 @@ public class CasoDeUsoIntercambioTest {
         Jugador jugador1 = new Jugador("Azul");
         Jugador jugador2 = new Jugador("Rojo");
 
-        Recurso[] recursosJugador1 = {
-            new Ladrillo(1)
-            };
-        Recurso[] recursosJugador2 = {
-            new Lana(1)
-        };
+        jugador1.agregarRecurso(new Ladrillo(1));
+        jugador2.agregarRecurso(new Lana(1));
 
-        CasoDeUsoIntercambio caso = new CasoDeUsoIntercambio(jugador1, jugador2, recursosJugador1, recursosJugador2);
 
-        ArrayList<Recurso> recursosDispuestoACederJugador1 = new ArrayList<Recurso>() {{
+        CasoDeUsoIntercambio caso = new CasoDeUsoIntercambio(jugador1, jugador2);
+
+        ArrayList<Recurso> ofertaJugador1 = new ArrayList<Recurso>() {{
             add(new Ladrillo(1));
         }};
-        ArrayList<Recurso> recursosEsperadosJugador1 = new ArrayList<Recurso>() {{
+        ArrayList<Recurso> demandaJugador1 = new ArrayList<Recurso>() {{
             add(new Lana(1));
         }};
 
-        assertTrue(caso.puedeHacerseElIntercambio(recursosDispuestoACederJugador1, recursosEsperadosJugador1));
+        assertDoesNotThrow(() -> caso.ejecutarIntercambio(ofertaJugador1, demandaJugador1));
     }
 
     @Test
     public void test02AmbosJugadoresAceptanElIntercambio() {
         Jugador jugador1 = new Jugador("Azul");
         Jugador jugador2 = new Jugador("Rojo");
-        Recurso[] recursosJugador1 = {
-            new Ladrillo(1)
-            };
-        Recurso[] recursosJugador2 = {
-            new Lana(1)
-        };
-        CasoDeUsoIntercambio caso = new CasoDeUsoIntercambio(jugador1, jugador2, recursosJugador1, recursosJugador2);
+        jugador1.agregarRecurso(new Ladrillo(1));
+        jugador2.agregarRecurso(new Lana(1));
 
-        ArrayList<Recurso> recursosDispuestoACederJugador1 = new ArrayList<Recurso>() {{
+        CasoDeUsoIntercambio caso = new CasoDeUsoIntercambio(jugador1, jugador2);
+
+        ArrayList<Recurso> ofertaJugador1 = new ArrayList<Recurso>() {{
             add(new Ladrillo(1));
         }};
 
-        ArrayList<Recurso> recursosEsperadosJugador1 = new ArrayList<Recurso>() {{
+        ArrayList<Recurso> demandaJugador1 = new ArrayList<Recurso>() {{
             add(new Lana(1));
         }};
 
-        caso.ejecutarIntercambio(recursosDispuestoACederJugador1, recursosEsperadosJugador1);
+        caso.ejecutarIntercambio(ofertaJugador1, demandaJugador1);
 
-        Recurso[] recursosFinalesJugador1 = new Recurso[] {
-            new Lana(1)
-        };
-        
-        Recurso[] recursosFinalesJugador2 = new Recurso[] {
-            new Ladrillo(1)
-        };
-        // DIEGO: agregar un "ManoDelJugador"
-        assertEquals(recursosFinalesJugador1[0].obtenerCantidad(), jugador1.obtenerCantidadRecurso(new Lana()));
-        assertEquals(recursosFinalesJugador2[0].obtenerCantidad(), jugador2.obtenerCantidadRecurso(new Ladrillo()));
+        assertEquals(1, jugador1.obtenerCantidadRecurso(new Lana()));
+        assertEquals(1, jugador2.obtenerCantidadRecurso(new Ladrillo()));
     }
 
     @Test
     public void test02UnJugadorNoPoseeRecursosSuficientesParaIntercambiar() {
         Jugador jugador1 = new Jugador("Azul");
         Jugador jugador2 = new Jugador("Rojo");
-        Recurso[] recursosJugador1 = {
-            new Ladrillo(1)
-            };
-        Recurso[] recursosJugador2 = {
-            new Lana(1)
-        };
-        CasoDeUsoIntercambio caso = new CasoDeUsoIntercambio(jugador1, jugador2, recursosJugador1, recursosJugador2);
+        jugador1.agregarRecurso(new Ladrillo(1));
+        jugador2.agregarRecurso(new Lana(1));
 
-        ArrayList<Recurso> recursosDispuestoACederJugador1 = new ArrayList<Recurso>() {{
+        CasoDeUsoIntercambio caso = new CasoDeUsoIntercambio(jugador1, jugador2);
+        ArrayList<Recurso> ofertaJugador1 = new ArrayList<Recurso>() {{
             add(new Ladrillo(2));
         }};
 
-        ArrayList<Recurso> recursosEsperadosJugador1 = new ArrayList<Recurso>() {{
+        ArrayList<Recurso> demandaJugador1 = new ArrayList<Recurso>() {{
             add(new Lana(1));
         }};
 
-        assertThrows(IntercambioInvalidoException.class, () -> caso.ejecutarIntercambio(recursosDispuestoACederJugador1, recursosEsperadosJugador1));
+        assertThrows(IntercambioInvalidoException.class, () -> caso.ejecutarIntercambio(ofertaJugador1, demandaJugador1));
     }
 }

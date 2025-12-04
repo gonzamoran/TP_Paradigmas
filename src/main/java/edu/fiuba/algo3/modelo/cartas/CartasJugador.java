@@ -211,6 +211,10 @@ public class CartasJugador {
         return cartasDesarrollo.size();
     }
 
+    public ArrayList<CartasDesarrollo> obtenerCartasDesarrollo() {
+        return this.cartasDesarrollo;
+    }
+
     public void otorgarGranCaballeria() {
         this.tieneLaGranCaballeria = true;
     }

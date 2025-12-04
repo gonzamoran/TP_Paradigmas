@@ -18,6 +18,7 @@ import edu.fiuba.algo3.modelo.tiposRecurso.*;
 
 import edu.fiuba.algo3.modelo.excepciones.PosInvalidaParaConstruirException;
 import edu.fiuba.algo3.modelo.excepciones.NoEsPosibleConstruirException;
+import edu.fiuba.algo3.modelo.excepciones.CantidadInvalidaDeHexagonosONumerosException;
 
 public class Tablero {
     private Ladron ladron; // sacar
@@ -46,7 +47,7 @@ public class Tablero {
 
     public Tablero(ArrayList<Hexagono> listaHexagonos, ArrayList<Produccion> listaNumeros) {
         if (listaHexagonos.size() != 19 || listaNumeros.size() != 18) {
-            throw new IllegalArgumentException("Cantidad de hexagonos o numeros invalida para el tablero");
+            throw new CantidadInvalidaDeHexagonosONumerosException();
         }
         this.listaHexagonos = listaHexagonos;
         this.listaNumeros = listaNumeros;
@@ -286,25 +287,42 @@ public class Tablero {
         if (vertice != null) {
             vertice.construir(construccion, jugador);
         } else {
-            throw new IllegalArgumentException("Coordenadas invalidas"); // cambiar excepcion
+            throw new PosInvalidaParaConstruirException();
         }
 
     }
 
-    public ArrayList<Recurso> producirRecurso(int produccionDado, Jugador jugador) {
-        ArrayList<Recurso> produccionDelJugador = new ArrayList<>();
-        for (Vertice vertice : mapaVertices.values()) {
-            if (vertice.tieneConstruccion() && vertice.esDueno(jugador)) {
-                produccionDelJugador.addAll(vertice.producirRecursos(produccionDado));
+    // public ArrayList<Recurso> producirRecurso(int produccionDado, Jugador jugador) {
+    //     ArrayList<Recurso> produccionDelJugador = new ArrayList<>();
+    //     for (Vertice vertice : mapaVertices.values()) {
+    //         if (vertice.tieneConstruccion() && vertice.esDueno(jugador)) {
+    //             produccionDelJugador.addAll(vertice.producirRecursos(produccionDado));
+    //         }
+    //     }
+    //     return produccionDelJugador;
+    // }
+
+    public void producirRecurso(int produccionDado){
+        for(Vertice vertice : mapaVertices.values()){
+            if (vertice.tieneConstruccion()){
+                ArrayList<Recurso> recursos = vertice.producirRecursos(produccionDado);
+
+                if(!recursos.isEmpty()){
+                    Jugador dueno = vertice.obtenerDueno();
+                    for(Recurso recurso : recursos){
+                        dueno.agregarRecurso(recurso);
+                    }
+                }
             }
         }
-        return produccionDelJugador;
     }
+
+
 
 
     public boolean sePuedeConstruir(Coordenadas coordenadas, Construccion construccion, Jugador jugador) {
         if (construccion == null) {
-            throw new IllegalArgumentException("Construccion nula"); // cambiar excepcion
+            throw new NoEsPosibleConstruirException();
         }
         if (!this.sonCoordenadasValidas(coordenadas)) {
             throw new PosInvalidaParaConstruirException();
@@ -345,12 +363,12 @@ public class Tablero {
         return jugadores;
     }
 
-    public ArrayList<Recurso> ladronRobaRecurso(Jugador jugadorActual, ProveedorDeDatos proveedor) {
+    public void ladronRobaRecurso(Jugador jugadorActual, ProveedorDeDatos proveedor) {
         ArrayList<Recurso> recursoRobado = ladron.robarRecurso(jugadorActual, proveedor);
         if (!recursoRobado.isEmpty()) {
             jugadorActual.agregarRecurso(recursoRobado.get(0));
         }
-        return recursoRobado;
+        //return recursoRobado;
     }
 
     public Hexagono obtenerHexagono(Coordenadas coordenadas) {
@@ -484,6 +502,7 @@ public class Tablero {
             if (largo > mejor) {
                 mejor = largo;
             }
+            //REFACTOR: evitar repetir codigo
             if (extremo2 == null) {
                 largo = dfsLongitud(v2, null,  jugador);
             } else {

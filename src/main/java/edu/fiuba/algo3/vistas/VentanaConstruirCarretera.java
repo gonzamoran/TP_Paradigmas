@@ -1,4 +1,6 @@
 package edu.fiuba.algo3.vistas;
+import edu.fiuba.algo3.modelo.ProveedorDeDatos;
+
 
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
@@ -71,7 +73,8 @@ public class VentanaConstruirCarretera extends VBox {
                 int x = Integer.parseInt(xStr);
                 int y = Integer.parseInt(yStr);
 
-    
+                //pedirCoordenadasAlUsuario();
+                
                 System.out.println("Construyendo poblado para " + nombreJugador + 
                                    " en Hex[" + x + "," + y + "]");
                 

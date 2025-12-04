@@ -17,36 +17,31 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class CasoDeUsoGirarElDado {
-    private Tablero tablero;
-    private Jugador jugador;
-    private Coordenadas hexagonoActual;
-    private Coordenadas hexagonoDestino;
+    private final Tablero tablero;
 
-    public CasoDeUsoGirarElDado(Tablero tablero, Jugador jugador, Coordenadas hexagonoInicio) {
+   public CasoDeUsoGirarElDado(Tablero tablero){
         this.tablero = tablero;
-        this.jugador = jugador;
-        this.hexagonoActual = hexagonoInicio;
-        tablero.moverLadronA(hexagonoInicio);
-    }
+   }
 
-    public void configurarDestino(Coordenadas hexagonoDestino) {
-        this.hexagonoDestino = hexagonoDestino;
-    }
+   public int tirarDado(Dados dados){
+        return dados.lanzarDados();
+   }
 
-    public ArrayList<Recurso> lanzarDado(Dados dado, ProveedorDeDatos proveedor) {
-        int resultado = dado.lanzarDados();
-        if (resultado == 7) {
+   public void resolverResultado(int resultado, Jugador jugador, ProveedorDeDatos proveedor){
+        if (resultado == 7){
+
             jugador.descartarse();
-            tablero.moverLadronA(hexagonoDestino);
-            this.hexagonoActual = hexagonoDestino;
-            return tablero.ladronRobaRecurso(jugador, proveedor);
-        } else {
-            return tablero.producirRecurso(resultado, jugador);
-        }
-    }
 
-    public void colocarEn(Coordenadas coordenadas, Construccion construccion, Jugador jugadorConstructor){
-        tablero.colocarEn(coordenadas,construccion, jugadorConstructor);
-    }
+            // Aca la unica distincion seria que las coordenadas son de un hexagono no de un vertice.
+            Coordenadas destinoLadron = proveedor.pedirCoordenadasAlUsuario();
+            //Hexagono destino = tablero.obtenerHexagono(destinoLadron); //para despues -> ladron.moverLadronA(destino);
+
+            tablero.moverLadronA(destinoLadron);
+            
+            tablero.ladronRobaRecurso(jugador, proveedor);
+        } 
+        tablero.producirRecurso(resultado);
+   }
+
 
 }

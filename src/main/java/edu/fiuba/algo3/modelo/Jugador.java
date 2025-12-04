@@ -1,5 +1,6 @@
 package edu.fiuba.algo3.modelo;
 
+import java.lang.reflect.Array;
 import java.util.*;
 import edu.fiuba.algo3.modelo.tablero.Coordenadas;
 import edu.fiuba.algo3.modelo.construcciones.Poblado;
@@ -16,7 +17,6 @@ public class Jugador {
     private final String color;
     private CartasJugador mazos;
     private ArrayList<Construccion> construccionesJugador;
-    // private List<CartaDesarrollo> cartasDeDesarrollo;
     private int puntosDeVictoria;
     private int caballerosJugador;
 
@@ -131,6 +131,9 @@ public class Jugador {
         mazos.usarCartaDesarrollo(carta, contexto, proveedor);
     }
 
+    public ArrayList<CartasDesarrollo> obtenerCartasDeDesarrollo() {
+        return mazos.obtenerCartasDesarrollo();
+    }
     /// Metodos para los caballeros y la gran caballeria.
     public int obtenerCantidadCaballerosUsados(){
         return this.caballerosJugador;

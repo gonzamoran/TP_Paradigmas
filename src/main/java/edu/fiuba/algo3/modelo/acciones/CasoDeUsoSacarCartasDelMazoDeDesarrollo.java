@@ -12,20 +12,7 @@ import java.lang.reflect.Array;
 import java.util.ArrayList;
 
 public class CasoDeUsoSacarCartasDelMazoDeDesarrollo {
-    private ArrayList<CartasDesarrollo> cartas;
 
-    // hacer constructores e implementaciones segun los tests
-
-    public CasoDeUsoSacarCartasDelMazoDeDesarrollo(ArrayList<CartasDesarrollo> cartas) {
-        this.cartas = cartas;
-    }
-
-    public MazoCartasDesarrollo inicializarMazoDeCartasDeDesarrollo() {
-        return new MazoCartasDesarrollo(cartas);
-    }
-    // implementar despues
-
-    // MazoCartasDesarrollo va en modelo/cartas
     public void comprarCartaDesarrollo(MazoCartasDesarrollo mazo, Jugador jugador, int turnoActual) {
         var carta = mazo.sacarCarta();
         jugador.comprarCartaDesarrollo(carta, turnoActual);
@@ -34,5 +21,4 @@ public class CasoDeUsoSacarCartasDelMazoDeDesarrollo {
     public void usarCartaDesarrollo(CartasDesarrollo carta, Jugador jugador, ContextoCartaDesarrollo contexto, ProveedorDeDatos proveedor) {
         jugador.usarCartaDesarrollo(carta, contexto, proveedor);
     }
-    // DIEGO: implementar el check de las cartas de PV
 }

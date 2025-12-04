@@ -19,4 +19,9 @@ public class CasoDeUsoColocacionInicial {
         var recursos = tablero.colocarConstruccionInicial(construccion, coordenadas, jugador);
         return recursos;
     }
+
+    public void colocarCarreteraInicial(Coordenadas coordenada1, Coordenadas coordenada2, Jugador jugador) {
+
+        tablero.construirCarreteraGratis(coordenada1, coordenada2, jugador);
+    }
 }

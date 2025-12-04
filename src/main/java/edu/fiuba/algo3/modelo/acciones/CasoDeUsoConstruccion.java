@@ -18,10 +18,12 @@ public class CasoDeUsoConstruccion {
 
     public void construirEn(Coordenadas coordenadas, Construccion construccion, Jugador jugador) {
         tablero.colocarEn(coordenadas, construccion, jugador);
+        
         for (Jugador unJugador : jugadores) {
             int longitud = tablero.obtenerCarreteraMasLarga(unJugador);
             unJugador.actualizarCaminoMasLargoDelJugador(longitud);
         }
+
         for (Jugador otroJugador : jugadores) {
             tablero.gestionarCaminoMasLargo(otroJugador);
         }

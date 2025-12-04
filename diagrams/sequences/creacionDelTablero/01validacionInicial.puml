@@ -16,9 +16,8 @@ alt Cantidades válidas
     Tablero -> Tablero: inicializarVertices()
     Tablero -> Tablero: asignarAdyacentesAVertices()
 else Cantidades inválidas
+    create IllegalArgumentException
     Tablero -> IllegalArgumentException: new IllegalArgumentException()
-    activate IllegalArgumentException
-    deactivate IllegalArgumentException 
 end
 
 deactivate Tablero
