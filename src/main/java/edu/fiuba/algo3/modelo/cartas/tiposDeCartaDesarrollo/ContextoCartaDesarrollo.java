@@ -1,11 +1,8 @@
 package edu.fiuba.algo3.modelo.cartas.tiposDeCartaDesarrollo;
 
 import edu.fiuba.algo3.modelo.Jugador;
-import edu.fiuba.algo3.modelo.tiposRecurso.*;
-import edu.fiuba.algo3.modelo.tablero.Tablero;
-import edu.fiuba.algo3.modelo.Recurso;
-import edu.fiuba.algo3.modelo.tablero.Coordenadas;
 import edu.fiuba.algo3.modelo.tablero.Ladron;
+import edu.fiuba.algo3.modelo.tablero.Tablero;
 
 import java.util.ArrayList;
 

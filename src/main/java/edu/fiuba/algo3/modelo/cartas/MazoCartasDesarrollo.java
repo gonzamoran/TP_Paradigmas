@@ -1,10 +1,9 @@
 package edu.fiuba.algo3.modelo.cartas;
 
-import edu.fiuba.algo3.modelo.cartas.tiposDeCartaDesarrollo.*;
-import java.util.ArrayList;
-import java.util.List;
-
+import edu.fiuba.algo3.modelo.cartas.tiposDeCartaDesarrollo.CartasDesarrollo;
 import edu.fiuba.algo3.modelo.excepciones.MazoVacioException;
+
+import java.util.ArrayList;
 
 public class MazoCartasDesarrollo {
     private final ArrayList<CartasDesarrollo> cartas;

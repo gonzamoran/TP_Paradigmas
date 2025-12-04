@@ -1,8 +1,8 @@
 package edu.fiuba.algo3.modelo.tablero.tiposHexagono;
 
 import edu.fiuba.algo3.modelo.Recurso;
-import edu.fiuba.algo3.modelo.tiposRecurso.Piedra;
 import edu.fiuba.algo3.modelo.tablero.Hexagono;
+import edu.fiuba.algo3.modelo.tiposRecurso.Piedra;
 
 public class Montana extends Hexagono {
     

@@ -1,8 +1,6 @@
 package edu.fiuba.algo3.modelo.tablero;
 
-import edu.fiuba.algo3.modelo.tablero.Produccion;
 import edu.fiuba.algo3.modelo.Recurso;
-import edu.fiuba.algo3.modelo.excepciones.*;
 
 public abstract class Hexagono {
     private boolean tieneLadron;

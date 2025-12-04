@@ -1,27 +1,25 @@
 package edu.fiuba.algo3.entrega_2;
 
 
-import edu.fiuba.algo3.modelo.cartas.*;
+import edu.fiuba.algo3.modelo.Banca;
+import edu.fiuba.algo3.modelo.Jugador;
 import edu.fiuba.algo3.modelo.Recurso;
-import edu.fiuba.algo3.modelo.tiposRecurso.*;
-import edu.fiuba.algo3.modelo.tablero.Tablero;
-import edu.fiuba.algo3.modelo.tablero.Coordenadas;
+import edu.fiuba.algo3.modelo.acciones.CasoDeUsoComercioConLaBanca;
 import edu.fiuba.algo3.modelo.construcciones.Poblado;
 import edu.fiuba.algo3.modelo.excepciones.ComercioInvalidoException;
-
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
-import static org.junit.jupiter.api.Assertions.assertThrows;
-
-import java.util.List;
-import java.util.ArrayList;
-
+import edu.fiuba.algo3.modelo.tablero.Coordenadas;
+import edu.fiuba.algo3.modelo.tablero.Tablero;
+import edu.fiuba.algo3.modelo.tiposBanca.Banca2a1;
+import edu.fiuba.algo3.modelo.tiposBanca.Banca3a1;
+import edu.fiuba.algo3.modelo.tiposBanca.Banca4a1;
+import edu.fiuba.algo3.modelo.tiposRecurso.*;
 import org.junit.jupiter.api.Test;
 
-import edu.fiuba.algo3.modelo.Jugador;
-import edu.fiuba.algo3.modelo.Banca;
-import edu.fiuba.algo3.modelo.tiposBanca.*;
-import edu.fiuba.algo3.modelo.acciones.CasoDeUsoComercioConLaBanca;
+import java.util.ArrayList;
+import java.util.List;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 
 public class CasoDeUsoComercioConLaBancaTest {

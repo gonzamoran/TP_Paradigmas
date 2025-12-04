@@ -1,16 +1,13 @@
 package edu.fiuba.algo3.modelo;
 
+import edu.fiuba.algo3.modelo.cartas.tiposDeCartaDesarrollo.CartaCaballero;
+import edu.fiuba.algo3.modelo.cartas.tiposDeCartaDesarrollo.CartasDesarrollo;
+import edu.fiuba.algo3.modelo.construcciones.Construccion;
+import edu.fiuba.algo3.modelo.construcciones.Poblado;
 import edu.fiuba.algo3.modelo.tablero.Coordenadas;
-import edu.fiuba.algo3.modelo.construcciones.*;
-import edu.fiuba.algo3.modelo.Banca;
-import edu.fiuba.algo3.modelo.tiposBanca.*;
-import edu.fiuba.algo3.modelo.tablero.Coordenadas;
-import edu.fiuba.algo3.modelo.cartas.*;
-import edu.fiuba.algo3.modelo.cartas.tiposDeCartaDesarrollo.*;
+import edu.fiuba.algo3.modelo.tiposBanca.Banca4a1;
 
 import java.util.ArrayList;
-import java.util.concurrent.CompletableFuture;
-import java.util.function.Supplier;
 
 public class ProveedorDeDatos {
     

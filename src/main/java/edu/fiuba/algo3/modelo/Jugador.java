@@ -1,17 +1,13 @@
 package edu.fiuba.algo3.modelo;
 
-import java.lang.reflect.Array;
-import java.util.*;
-import edu.fiuba.algo3.modelo.tablero.Coordenadas;
-import edu.fiuba.algo3.modelo.construcciones.Poblado;
-import edu.fiuba.algo3.modelo.excepciones.IntercambioInvalidoException;
-import edu.fiuba.algo3.modelo.tiposRecurso.*;
-import edu.fiuba.algo3.modelo.construcciones.Carretera;
-import edu.fiuba.algo3.modelo.construcciones.Construccion;
 import edu.fiuba.algo3.modelo.cartas.CartasJugador;
 import edu.fiuba.algo3.modelo.cartas.tiposDeCartaDesarrollo.CartasDesarrollo;
 import edu.fiuba.algo3.modelo.cartas.tiposDeCartaDesarrollo.ContextoCartaDesarrollo;
+import edu.fiuba.algo3.modelo.construcciones.Construccion;
+import edu.fiuba.algo3.modelo.excepciones.IntercambioInvalidoException;
 import edu.fiuba.algo3.modelo.excepciones.RecursosInsuficientesException;
+
+import java.util.ArrayList;
 
 public class Jugador {
     private final String color;

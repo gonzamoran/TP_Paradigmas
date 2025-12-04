@@ -1,15 +1,10 @@
 package edu.fiuba.algo3.modelo.acciones;
 
 import edu.fiuba.algo3.modelo.Jugador;
-import edu.fiuba.algo3.modelo.cartas.tiposDeCartaDesarrollo.*;
-import edu.fiuba.algo3.modelo.cartas.CartasJugador;
-import edu.fiuba.algo3.modelo.cartas.MazoCartasDesarrollo;
-import edu.fiuba.algo3.modelo.tiposRecurso.*;
-import edu.fiuba.algo3.modelo.Recurso;
 import edu.fiuba.algo3.modelo.ProveedorDeDatos;
-
-import java.lang.reflect.Array;
-import java.util.ArrayList;
+import edu.fiuba.algo3.modelo.cartas.MazoCartasDesarrollo;
+import edu.fiuba.algo3.modelo.cartas.tiposDeCartaDesarrollo.CartasDesarrollo;
+import edu.fiuba.algo3.modelo.cartas.tiposDeCartaDesarrollo.ContextoCartaDesarrollo;
 
 public class CasoDeUsoSacarCartasDelMazoDeDesarrollo {
 

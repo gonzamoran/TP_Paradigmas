@@ -1,16 +1,16 @@
 package edu.fiuba.algo3.modelo.construcciones;
 
 import edu.fiuba.algo3.modelo.Jugador;
-import edu.fiuba.algo3.modelo.tablero.Coordenadas;
-import edu.fiuba.algo3.modelo.tablero.Vertice;
 import edu.fiuba.algo3.modelo.Recurso;
-import edu.fiuba.algo3.modelo.tiposRecurso.Madera;
+import edu.fiuba.algo3.modelo.reglas.ReglaAdyacencia;
+import edu.fiuba.algo3.modelo.reglas.ReglaRecursos;
+import edu.fiuba.algo3.modelo.reglas.ReglasCompuestas;
+import edu.fiuba.algo3.modelo.tablero.Vertice;
 import edu.fiuba.algo3.modelo.tiposRecurso.Ladrillo;
-import edu.fiuba.algo3.modelo.reglas.*;
+import edu.fiuba.algo3.modelo.tiposRecurso.Madera;
 
-
-import java.util.List;
 import java.util.ArrayList;
+import java.util.List;
 
 public class Carretera extends Construccion {
     private Vertice vertice1;
@@ -31,15 +31,6 @@ public class Carretera extends Construccion {
         return jugador;
     }
 
-    public boolean puedeConstruirse(Construccion construccionVertice){
-        if (construccionVertice == null) {
-            return false;
-        }
-        if (!construccionVertice.equals(new Poblado()) && !construccionVertice.equals(new Ciudad())) {
-            return false;
-        }
-        return true;
-    }
 
     public void asignarVertice(Vertice vertice) {
         if (this.vertice1 == null) {

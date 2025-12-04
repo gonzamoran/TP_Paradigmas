@@ -1,12 +1,12 @@
 package edu.fiuba.algo3.modelo.acciones;
 
-import java.util.ArrayList;
-
-import edu.fiuba.algo3.modelo.tablero.Tablero;
-import edu.fiuba.algo3.modelo.construcciones.Construccion;
-import edu.fiuba.algo3.modelo.tablero.Coordenadas;
 import edu.fiuba.algo3.modelo.Jugador;
 import edu.fiuba.algo3.modelo.Recurso;
+import edu.fiuba.algo3.modelo.construcciones.Construccion;
+import edu.fiuba.algo3.modelo.tablero.Coordenadas;
+import edu.fiuba.algo3.modelo.tablero.Tablero;
+
+import java.util.ArrayList;
 
 public class CasoDeUsoColocacionInicial {
     private Tablero tablero;

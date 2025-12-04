@@ -1,12 +1,10 @@
 package edu.fiuba.algo3.modelo.tablero;
 
-import java.util.Random;
-
 import edu.fiuba.algo3.modelo.Jugador;
-import edu.fiuba.algo3.modelo.Recurso;
 import edu.fiuba.algo3.modelo.ProveedorDeDatos;
+import edu.fiuba.algo3.modelo.Recurso;
+
 import java.util.ArrayList;
-import java.util.List;
 
 public class Ladron {
     private Hexagono hexagonoActual;

@@ -1,14 +1,5 @@
 package edu.fiuba.algo3.modelo;
 
-import edu.fiuba.algo3.modelo.excepciones.SumaDeRecursosDistintosException;
-import edu.fiuba.algo3.modelo.tiposRecurso.Madera;
-import edu.fiuba.algo3.modelo.tiposRecurso.Piedra;
-import edu.fiuba.algo3.modelo.tiposRecurso.Lana;
-import edu.fiuba.algo3.modelo.tiposRecurso.Grano;
-import edu.fiuba.algo3.modelo.tiposRecurso.Ladrillo;
-import edu.fiuba.algo3.modelo.tiposRecurso.Nulo;
-import edu.fiuba.algo3.modelo.tiposRecurso.*;
-
 public abstract class Recurso {
 
     protected int cantidad;

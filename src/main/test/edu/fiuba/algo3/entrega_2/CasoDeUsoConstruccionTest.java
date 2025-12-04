@@ -1,30 +1,20 @@
 package edu.fiuba.algo3.entrega_2;
 
 import edu.fiuba.algo3.modelo.Jugador;
-import edu.fiuba.algo3.modelo.tablero.Tablero;
-import edu.fiuba.algo3.modelo.tablero.Coordenadas;
-import edu.fiuba.algo3.modelo.construcciones.Poblado;
+import edu.fiuba.algo3.modelo.acciones.CasoDeUsoConstruccion;
 import edu.fiuba.algo3.modelo.construcciones.Carretera;
 import edu.fiuba.algo3.modelo.construcciones.Ciudad;
-import edu.fiuba.algo3.modelo.tiposRecurso.*;
-import edu.fiuba.algo3.modelo.Recurso;
-
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
-import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertThrows;
-
+import edu.fiuba.algo3.modelo.construcciones.Poblado;
 import edu.fiuba.algo3.modelo.excepciones.NoEsPosibleConstruirException;
 import edu.fiuba.algo3.modelo.excepciones.PosInvalidaParaConstruirException;
-
-import java.lang.invoke.CallSite;
-import java.util.ArrayList;
-
+import edu.fiuba.algo3.modelo.tablero.Coordenadas;
+import edu.fiuba.algo3.modelo.tablero.Tablero;
+import edu.fiuba.algo3.modelo.tiposRecurso.*;
 import org.junit.jupiter.api.Test;
 
-import edu.fiuba.algo3.modelo.acciones.CasoDeUsoConstruccion;
-
 import java.util.ArrayList;
+
+import static org.junit.jupiter.api.Assertions.*;
 public class CasoDeUsoConstruccionTest {
 
     @Test

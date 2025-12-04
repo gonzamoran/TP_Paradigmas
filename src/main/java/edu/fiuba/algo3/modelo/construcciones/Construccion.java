@@ -2,11 +2,10 @@ package edu.fiuba.algo3.modelo.construcciones;
 
 
 import edu.fiuba.algo3.modelo.Jugador;
-import edu.fiuba.algo3.modelo.excepciones.*;
-import edu.fiuba.algo3.modelo.tablero.Hexagono;
-import edu.fiuba.algo3.modelo.tablero.Vertice;
 import edu.fiuba.algo3.modelo.Recurso;
-import edu.fiuba.algo3.modelo.reglas.*;
+import edu.fiuba.algo3.modelo.reglas.ReglasConstruccion;
+import edu.fiuba.algo3.modelo.tablero.Vertice;
+
 import java.util.ArrayList;
 
 
@@ -25,8 +24,6 @@ public abstract class Construccion {
         this.jugador = jugador;
         jugador.agregarConstruccion(this);
     }
-
-    public abstract boolean puedeConstruirse(Construccion construccionPrevia);
 
     public boolean esDueno(Jugador jugador){
         return this.jugador.equals(jugador);

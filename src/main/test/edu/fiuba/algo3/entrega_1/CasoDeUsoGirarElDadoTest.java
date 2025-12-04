@@ -1,31 +1,21 @@
 package edu.fiuba.algo3.entrega_1;
 
-import edu.fiuba.algo3.modelo.tablero.Tablero;
-import edu.fiuba.algo3.modelo.tablero.Ladron;
-import edu.fiuba.algo3.modelo.tablero.Hexagono;
-
-import edu.fiuba.algo3.modelo.tiposRecurso.*;
-import edu.fiuba.algo3.modelo.tablero.Coordenadas;
-import edu.fiuba.algo3.modelo.construcciones.*;
 import edu.fiuba.algo3.modelo.Dados;
-import edu.fiuba.algo3.modelo.Recurso;
 import edu.fiuba.algo3.modelo.Jugador;
 import edu.fiuba.algo3.modelo.ProveedorDeDatos;
-
 import edu.fiuba.algo3.modelo.acciones.CasoDeUsoGirarElDado;
-import edu.fiuba.algo3.entrega_1.DadoCargado;
-
-import org.junit.jupiter.api.BeforeEach;
+import edu.fiuba.algo3.modelo.construcciones.Ciudad;
+import edu.fiuba.algo3.modelo.construcciones.Poblado;
+import edu.fiuba.algo3.modelo.tablero.Coordenadas;
+import edu.fiuba.algo3.modelo.tablero.Hexagono;
+import edu.fiuba.algo3.modelo.tablero.Ladron;
+import edu.fiuba.algo3.modelo.tablero.Tablero;
+import edu.fiuba.algo3.modelo.tiposRecurso.*;
 import org.junit.jupiter.api.Test;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
-import static org.junit.jupiter.api.Assertions.assertFalse;
-
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
 
+import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
 public class CasoDeUsoGirarElDadoTest {

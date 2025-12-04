@@ -1,22 +1,16 @@
 package edu.fiuba.algo3.entrega_2;
 
-import org.junit.jupiter.api.Test;
-
 import edu.fiuba.algo3.modelo.Jugador;
 import edu.fiuba.algo3.modelo.Recurso;
-import edu.fiuba.algo3.modelo.tiposRecurso.*;
-
 import edu.fiuba.algo3.modelo.acciones.CasoDeUsoIntercambio;
-
 import edu.fiuba.algo3.modelo.excepciones.IntercambioInvalidoException;
+import edu.fiuba.algo3.modelo.tiposRecurso.Ladrillo;
+import edu.fiuba.algo3.modelo.tiposRecurso.Lana;
+import org.junit.jupiter.api.Test;
 
-import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.junit.jupiter.api.Assertions.assertTrue;
-
-import java.lang.reflect.Array;
 import java.util.ArrayList;
+
+import static org.junit.jupiter.api.Assertions.*;
 
 
 

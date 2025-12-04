@@ -2,23 +2,16 @@ package edu.fiuba.algo3.modelo.cartas;
 
 import edu.fiuba.algo3.modelo.ProveedorDeDatos;
 import edu.fiuba.algo3.modelo.Recurso;
-import edu.fiuba.algo3.modelo.tiposRecurso.Grano;
-import edu.fiuba.algo3.modelo.tiposRecurso.Ladrillo;
-import edu.fiuba.algo3.modelo.tiposRecurso.Lana;
-import edu.fiuba.algo3.modelo.tiposRecurso.Madera;
-import edu.fiuba.algo3.modelo.tiposRecurso.Piedra;
-import edu.fiuba.algo3.modelo.cartas.tiposDeCartaDesarrollo.CartaPuntoVictoria;
 import edu.fiuba.algo3.modelo.cartas.tiposDeCartaDesarrollo.CartasDesarrollo;
 import edu.fiuba.algo3.modelo.cartas.tiposDeCartaDesarrollo.ContextoCartaDesarrollo;
 import edu.fiuba.algo3.modelo.excepciones.NoSePuedeJugarEstaCartaException;
+import edu.fiuba.algo3.modelo.tiposRecurso.Grano;
+import edu.fiuba.algo3.modelo.tiposRecurso.Lana;
+import edu.fiuba.algo3.modelo.tiposRecurso.Piedra;
 
-import java.util.HashMap;
-import java.util.List;
-import java.security.KeyStore.Entry;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Random;
-import java.util.Map;
-import java.util.Collections;
 
 public class CartasJugador {
 
@@ -41,7 +34,6 @@ public class CartasJugador {
                 return recurso;
             }
         }
-        // no se esto pero no se que poner si no.
         return null;
     }
 
@@ -122,12 +114,12 @@ public class CartasJugador {
 
             Recurso cartaDescartada = recurso.obtenerCopia(1);
 
-            // Despues hay que ver si lo ponemos como re
+
             descarte.add(cartaDescartada);
 
             recurso.restar(1);
         }
-        return descarte; // podria devolver o no, por ahora no lo necesitamos
+        return descarte;
     }
 
     public boolean puedeDescartarse() {

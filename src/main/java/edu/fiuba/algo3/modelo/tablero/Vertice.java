@@ -1,18 +1,13 @@
 package edu.fiuba.algo3.modelo.tablero;
 
-import java.util.List;
-
-import edu.fiuba.algo3.modelo.construcciones.Carretera;
-import edu.fiuba.algo3.modelo.construcciones.Construccion;
-import edu.fiuba.algo3.modelo.tablero.Vertice;
-import edu.fiuba.algo3.modelo.tablero.Produccion;
-import edu.fiuba.algo3.modelo.tablero.Hexagono;
-import edu.fiuba.algo3.modelo.Recurso;
 import edu.fiuba.algo3.modelo.Banca;
 import edu.fiuba.algo3.modelo.Jugador;
-import edu.fiuba.algo3.modelo.excepciones.*;
+import edu.fiuba.algo3.modelo.Recurso;
+import edu.fiuba.algo3.modelo.construcciones.Carretera;
+import edu.fiuba.algo3.modelo.construcciones.Construccion;
+
 import java.util.ArrayList;
-import java.util.Set;
+import java.util.List;
 
 public class Vertice {
     private Jugador dueno;

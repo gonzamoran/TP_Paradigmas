@@ -1,12 +1,11 @@
 package edu.fiuba.algo3.modelo.acciones;
 
-import edu.fiuba.algo3.modelo.Jugador;
 import edu.fiuba.algo3.modelo.Banca;
-import edu.fiuba.algo3.modelo.tablero.Tablero;
+import edu.fiuba.algo3.modelo.Jugador;
 import edu.fiuba.algo3.modelo.Recurso;
+import edu.fiuba.algo3.modelo.tablero.Tablero;
 
 import java.util.ArrayList;
-import java.util.List;
 
 public class CasoDeUsoComercioConLaBanca {
     private Jugador jugador;

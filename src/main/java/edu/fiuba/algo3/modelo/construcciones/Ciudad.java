@@ -1,14 +1,14 @@
 package edu.fiuba.algo3.modelo.construcciones;
 
-import edu.fiuba.algo3.modelo.tablero.Vertice;
-import edu.fiuba.algo3.modelo.Jugador;
 import edu.fiuba.algo3.modelo.Recurso;
-import edu.fiuba.algo3.modelo.reglas.*;
+import edu.fiuba.algo3.modelo.reglas.ReglaRecursos;
+import edu.fiuba.algo3.modelo.reglas.ReglaVerticeOcupadoPorJugador;
+import edu.fiuba.algo3.modelo.reglas.ReglasCompuestas;
 import edu.fiuba.algo3.modelo.tiposRecurso.Grano;
 import edu.fiuba.algo3.modelo.tiposRecurso.Piedra;
 
-import java.util.List;
 import java.util.ArrayList;
+import java.util.List;
 
 public class Ciudad extends Construccion {
 
@@ -19,13 +19,6 @@ public class Ciudad extends Construccion {
             new ReglaRecursos(),
             new ReglaVerticeOcupadoPorJugador()
         );
-    }
-
-    public boolean puedeConstruirse(Construccion construccionPrevia){
-        if (construccionPrevia == null){
-            return false;
-        }
-        return construccionPrevia.equals(new Poblado());
     }
 
     public ArrayList<Recurso> obtenerRecursosNecesarios() {

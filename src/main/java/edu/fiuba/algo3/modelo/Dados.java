@@ -1,6 +1,6 @@
 package edu.fiuba.algo3.modelo;
+
 import java.util.Random;
-import edu.fiuba.algo3.modelo.tablero.Produccion;
 
 public class Dados {
     private final Random random;

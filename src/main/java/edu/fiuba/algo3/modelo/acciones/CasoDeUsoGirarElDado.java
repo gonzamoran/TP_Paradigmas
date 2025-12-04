@@ -1,21 +1,14 @@
 package edu.fiuba.algo3.modelo.acciones;
 
-import edu.fiuba.algo3.modelo.tablero.Tablero;
-import edu.fiuba.algo3.modelo.tablero.Ladron;
-import edu.fiuba.algo3.modelo.tablero.Hexagono;
-import edu.fiuba.algo3.modelo.Jugador;
-import edu.fiuba.algo3.modelo.tablero.tiposHexagono.*;
 import edu.fiuba.algo3.modelo.Dados;
-import edu.fiuba.algo3.modelo.Recurso;
-import edu.fiuba.algo3.modelo.cartas.CartasJugador;
-import edu.fiuba.algo3.modelo.construcciones.Construccion;
-import edu.fiuba.algo3.modelo.tablero.Coordenadas;
-
+import edu.fiuba.algo3.modelo.Jugador;
 import edu.fiuba.algo3.modelo.ProveedorDeDatos;
+import edu.fiuba.algo3.modelo.tablero.Coordenadas;
+import edu.fiuba.algo3.modelo.tablero.Hexagono;
+import edu.fiuba.algo3.modelo.tablero.Ladron;
+import edu.fiuba.algo3.modelo.tablero.Tablero;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
-import java.util.List;
 
 public class CasoDeUsoGirarElDado {
      private final Tablero tablero;

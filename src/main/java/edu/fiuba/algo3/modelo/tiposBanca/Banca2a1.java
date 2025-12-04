@@ -3,10 +3,9 @@ package edu.fiuba.algo3.modelo.tiposBanca;
 import edu.fiuba.algo3.modelo.Banca;
 import edu.fiuba.algo3.modelo.Jugador;
 import edu.fiuba.algo3.modelo.Recurso;
+import edu.fiuba.algo3.modelo.excepciones.ComercioInvalidoException;
 
 import java.util.ArrayList;
-
-import edu.fiuba.algo3.modelo.excepciones.ComercioInvalidoException;
 
 
 public class Banca2a1 extends Banca {

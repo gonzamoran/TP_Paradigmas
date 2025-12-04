@@ -1,25 +1,20 @@
 package edu.fiuba.algo3.modelo.tablero;
 
-import java.lang.reflect.Array;
-import java.lang.reflect.Constructor;
-import java.util.*;
-
-import edu.fiuba.algo3.modelo.Recurso;
-import edu.fiuba.algo3.modelo.tablero.*;
-import edu.fiuba.algo3.modelo.construcciones.*;
-import edu.fiuba.algo3.modelo.Jugador;
-import edu.fiuba.algo3.modelo.ProveedorDeDatos;
 import edu.fiuba.algo3.modelo.Banca;
-
+import edu.fiuba.algo3.modelo.Jugador;
+import edu.fiuba.algo3.modelo.Recurso;
+import edu.fiuba.algo3.modelo.construcciones.Carretera;
+import edu.fiuba.algo3.modelo.construcciones.Construccion;
+import edu.fiuba.algo3.modelo.excepciones.CantidadInvalidaDeHexagonosONumerosException;
+import edu.fiuba.algo3.modelo.excepciones.NoEsPosibleConstruirException;
+import edu.fiuba.algo3.modelo.excepciones.PosInvalidaParaConstruirException;
 import edu.fiuba.algo3.modelo.tablero.tiposHexagono.*;
-import edu.fiuba.algo3.modelo.tiposBanca.*;
+import edu.fiuba.algo3.modelo.tiposBanca.Banca2a1;
+import edu.fiuba.algo3.modelo.tiposBanca.Banca3a1;
+import edu.fiuba.algo3.modelo.tiposBanca.Banca4a1;
 import edu.fiuba.algo3.modelo.tiposRecurso.*;
 
-import edu.fiuba.algo3.modelo.reglas.*;
-
-import edu.fiuba.algo3.modelo.excepciones.PosInvalidaParaConstruirException;
-import edu.fiuba.algo3.modelo.excepciones.NoEsPosibleConstruirException;
-import edu.fiuba.algo3.modelo.excepciones.CantidadInvalidaDeHexagonosONumerosException;
+import java.util.*;
 
 public class Tablero {
     private ArrayList<Carretera> listaCarreteras;

@@ -1,26 +1,23 @@
 package edu.fiuba.algo3.entrega_1;
 
-import java.lang.reflect.Array;
+import edu.fiuba.algo3.modelo.Jugador;
+import edu.fiuba.algo3.modelo.Recurso;
+import edu.fiuba.algo3.modelo.acciones.CasoDeUsoColocacionInicial;
+import edu.fiuba.algo3.modelo.construcciones.Carretera;
+import edu.fiuba.algo3.modelo.construcciones.Poblado;
+import edu.fiuba.algo3.modelo.excepciones.NoEsPosibleConstruirException;
+import edu.fiuba.algo3.modelo.excepciones.PosInvalidaParaConstruirException;
+import edu.fiuba.algo3.modelo.tablero.Coordenadas;
+import edu.fiuba.algo3.modelo.tablero.Tablero;
+import edu.fiuba.algo3.modelo.tiposRecurso.Grano;
+import edu.fiuba.algo3.modelo.tiposRecurso.Madera;
+import org.junit.jupiter.api.Test;
+
 import java.util.ArrayList;
 import java.util.List;
 
-import org.junit.jupiter.api.Test;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-
-import edu.fiuba.algo3.modelo.tablero.Tablero;
-import edu.fiuba.algo3.modelo.construcciones.Carretera;
-import edu.fiuba.algo3.modelo.construcciones.Poblado;
-import edu.fiuba.algo3.modelo.tablero.Coordenadas;
-import edu.fiuba.algo3.modelo.acciones.CasoDeUsoColocacionInicial;
-import edu.fiuba.algo3.modelo.Recurso;
-import edu.fiuba.algo3.modelo.tiposRecurso.*;
-import edu.fiuba.algo3.modelo.Jugador;
-
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
-
-import edu.fiuba.algo3.modelo.excepciones.NoEsPosibleConstruirException;
-import edu.fiuba.algo3.modelo.excepciones.PosInvalidaParaConstruirException;
 
 public class CasoDeUsoColocacionInicialTest {
         // Regla de la distancia

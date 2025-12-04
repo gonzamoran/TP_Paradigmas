@@ -1,10 +1,9 @@
 package edu.fiuba.algo3.modelo.acciones;
 
-import java.lang.reflect.Array;
-import java.util.ArrayList;
-
 import edu.fiuba.algo3.modelo.Jugador;
 import edu.fiuba.algo3.modelo.Recurso;
+
+import java.util.ArrayList;
 
 public class CasoDeUsoIntercambio {
     private Jugador jugador1;

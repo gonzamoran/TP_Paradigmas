@@ -1,14 +1,11 @@
 package edu.fiuba.algo3.modelo.cartas.tiposDeCartaDesarrollo;
 
-import edu.fiuba.algo3.modelo.cartas.tiposDeCartaDesarrollo.CartasDesarrollo;
-import edu.fiuba.algo3.modelo.tablero.Tablero;
-import edu.fiuba.algo3.modelo.tablero.Coordenadas;
 import edu.fiuba.algo3.modelo.Jugador;
-import edu.fiuba.algo3.modelo.excepciones.NoEsPosibleConstruirException;
-import edu.fiuba.algo3.modelo.tablero.Coordenadas;
 import edu.fiuba.algo3.modelo.ProveedorDeDatos;
-
-import edu.fiuba.algo3.modelo.excepciones.*;
+import edu.fiuba.algo3.modelo.excepciones.CoordenadasInvalidasException;
+import edu.fiuba.algo3.modelo.excepciones.NoSePuedeJugarEstaCartaException;
+import edu.fiuba.algo3.modelo.tablero.Coordenadas;
+import edu.fiuba.algo3.modelo.tablero.Tablero;
 
 /*
  * Permite construir 2 Carreteras gratuitamente (debe
