@@ -53,11 +53,3 @@ public abstract class Hexagono {
         this.produccion.equals(hexagono.produccion);
     }
 }
-
-/*
- * NUEVA ESTRUCTURA DE HEXAGONO:
- * YA NO CONOCE SUS COORDENADAS
- * EL CALCULO DE ARISTAS SE HACE EN TABLERO
- * SOLO SABE SI TIENE LADRON, QUE RECURSO ES Y QUE NUMERO TIENE
- * ES LLAMADO SIEMPRE POR VERTICE (O TABLERO TAL VEZ)
- */

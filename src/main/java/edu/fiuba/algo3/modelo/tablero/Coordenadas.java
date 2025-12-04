@@ -33,19 +33,4 @@ public class Coordenadas {
     public int hashCode() {
         return 31 * x + y;
     }
-
-    /// No se usa.
-    /*
-    public List<Coordenadas> getVecinas(){
-        return Arrays.asList(
-                new Coordenadas(x + 1, y),      // derecha
-                new Coordenadas(x - 1, y),      // izquierda
-                new Coordenadas(x, y + 1),      // abajo
-                new Coordenadas(x, y - 1),      // arriba
-                new Coordenadas(x + 1, y - 1),  // arriba derecha
-                new Coordenadas(x - 1, y + 1)   // abajo izquierda
-        );
-    }
-
-     */
 }

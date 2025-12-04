@@ -28,9 +28,6 @@ public class CasoDeUsoColocacionInicialTest {
 
         @Test
         public void test01CasoDeUsoColocacionInicialDePoblados() {
-                // prueba colocar en dos coordenadas distintas y que respetan regla de distancia
-                // que se coloquen bien los poblados y que el segundo devuelva recursos
-                // correctamente
                 Tablero tablero = new Tablero();
                 Jugador jugador = new Jugador("Azul");
                 CasoDeUsoColocacionInicial caso = new CasoDeUsoColocacionInicial(tablero);
@@ -55,7 +52,7 @@ public class CasoDeUsoColocacionInicialTest {
 
                 caso.colocarConstruccionInicial(new Coordenadas(4, 3), new Poblado(), jugador);
 
-                assertThrows(PosInvalidaParaConstruirException.class,
+                assertThrows(NoEsPosibleConstruirException.class,
                                 () -> caso.colocarConstruccionInicial(new Coordenadas(4, 4), new Poblado(), jugador));
         }
 
@@ -77,7 +74,7 @@ public class CasoDeUsoColocacionInicialTest {
 
                 caso.colocarConstruccionInicial(new Coordenadas(4, 3), new Poblado(), jugador);
 
-                assertThrows(PosInvalidaParaConstruirException.class,
+                assertThrows(NoEsPosibleConstruirException.class,
                                 () -> caso.colocarConstruccionInicial(new Coordenadas(4, 3),new Poblado(), jugador));
         }
 
@@ -119,8 +116,8 @@ public class CasoDeUsoColocacionInicialTest {
                 Jugador jugador = new Jugador("Azul");
                 CasoDeUsoColocacionInicial caso = new CasoDeUsoColocacionInicial(tablero);
                 caso.colocarConstruccionInicial(new Coordenadas(4, 3), new Poblado(), jugador);
-                assertThrows(PosInvalidaParaConstruirException.class,
-                                () -> caso.colocarCarreteraInicial(new Coordenadas(6, 6), new Coordenadas(7, 7), jugador));
+                assertThrows(NoEsPosibleConstruirException.class,
+                                () -> caso.colocarCarreteraInicial(new Coordenadas(1, 1), new Coordenadas(1, 2), jugador));
         }
 
         @Test

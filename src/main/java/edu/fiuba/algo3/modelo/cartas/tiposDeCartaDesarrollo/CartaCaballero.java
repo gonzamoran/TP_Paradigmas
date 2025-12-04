@@ -9,6 +9,7 @@ import edu.fiuba.algo3.modelo.Jugador;
 import edu.fiuba.algo3.modelo.ProveedorDeDatos;
 import edu.fiuba.algo3.modelo.tablero.Tablero;
 import edu.fiuba.algo3.modelo.tablero.Coordenadas;
+import edu.fiuba.algo3.modelo.tablero.Ladron;
 
 import edu.fiuba.algo3.modelo.excepciones.CoordenadasInvalidasException;
 
@@ -37,11 +38,13 @@ public class CartaCaballero extends CartasDesarrollo {
             throw new CoordenadasInvalidasException();
         }
 
-        tablero.moverLadronA(coordDestino);
+        Ladron ladron = contexto.obtenerLadron();
+        ladron.moverLadronA(tablero.obtenerHexagono(coordDestino));
         Jugador jugador = contexto.conseguirJugadorQueUsaLaCarta();
         //conseguirJugadoresAfectados es la lista de jugadores entera, no los del hexagono donde se mueve el ladron
-        Jugador victima = proveedor.pedirJugadorARobar(contexto.conseguirJugadoresAfectados());
-        tablero.ladronRobaRecurso(jugador, proveedor);
+        ArrayList<Jugador> jugadoresAfectados = tablero.obtenerJugadoresAdyacentes(coordDestino);
+        
+        ladron.robarRecurso(jugador, jugadoresAfectados, proveedor);
 
         jugador.sumarCaballero();
         if (jugador.obtenerCantidadCaballerosUsados() >= 3) {

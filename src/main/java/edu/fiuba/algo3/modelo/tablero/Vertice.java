@@ -34,13 +34,6 @@ public class Vertice {
 
     
     public void construir(Construccion construccion, Jugador jugador) {
-        var recursosNecesarios = construccion.obtenerRecursosNecesarios();
-        if (!jugador.poseeRecursosParaConstruir(construccion)) {
-            return;
-        }
-        for (Recurso recurso : recursosNecesarios) {
-            jugador.removerRecurso(recurso);
-        }
         if (dueno != null){
             dueno.removerConstruccion(this.construccion);
         }
@@ -84,19 +77,6 @@ public class Vertice {
         return true;
     }
 
-    public boolean puedeConstruirse(Construccion construccion) {
-        if (construccion.equals(new Carretera())){
-            if (this.carreterasIngresantes.size() > 0){
-                return true;
-            }
-        }
-        if (!construccion.puedeConstruirse(this.construccion)) {
-            return false;
-        }
-        return true;
-    }
-
-
     public boolean cumpleReglaDistancia() {
         for (Vertice vertice : verticesAdyacentes) {
             if (vertice.tieneConstruccion()) {
@@ -107,15 +87,7 @@ public class Vertice {
     }
 
     public ArrayList<Recurso> construirInicial(Construccion construccion, Jugador jugador) {
-        for (Vertice vertice : verticesAdyacentes) {
-            if (vertice.tieneConstruccion()) {
-                throw new PosInvalidaParaConstruirException();
-            }
-        }
-        this.construccion = construccion;
-        this.dueno = jugador;
-        this.estaConstruido = true;
-        construccion.asignarJugador(jugador);
+        this.construir(construccion, jugador);
         
         var recursos = new ArrayList<Recurso>();
         for (Hexagono hexagono : hexagonosAdyacentes) {
@@ -212,18 +184,3 @@ public class Vertice {
         return gradoJugador(jugador) == 1;
     }
 }
-
-/*
- * NUEVA ESTRUCTURA DE VERTICE:
- * 
- * NO CONOCE SUS COORDENADAS
- * TIENE REFERENCIAS A QUE VERTICES SON ADYACENTES
- * EL CALCULO DE ADYACENTES SE HACE EN TABLERO
- * TIENE REFERENCIAS A QUE HEXAGONOS SON ADYACENTES
- * TIENE REFERENCIA A QUE CONSTRUCCION HAY EN EL VERTICE
- * TIENE REFERENCIA A QUE JUGADOR ES DUEÑO DE LA CONSTRUCCION
- * TIENE METODOS PARA COLOCAR CONSTRUCCION, CONSULTAR DUEÑO, CONSULTAR TIPO DE
- * CONSTRUCCION?
- * 
- * 
- */

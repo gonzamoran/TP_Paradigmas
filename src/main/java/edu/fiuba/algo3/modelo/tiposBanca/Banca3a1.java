@@ -23,7 +23,7 @@ public class Banca3a1 extends Banca {
             throw new ComercioInvalidoException();
         }
 
-        if (!jugador.poseeRecursosParaIntercambiar(oferta)) {
+        if (!jugador.poseeRecursos(oferta)) {
             throw new ComercioInvalidoException();
         }
 

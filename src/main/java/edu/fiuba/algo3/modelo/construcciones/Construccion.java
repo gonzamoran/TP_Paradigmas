@@ -6,12 +6,16 @@ import edu.fiuba.algo3.modelo.excepciones.*;
 import edu.fiuba.algo3.modelo.tablero.Hexagono;
 import edu.fiuba.algo3.modelo.tablero.Vertice;
 import edu.fiuba.algo3.modelo.Recurso;
-import java.util.List;
+import edu.fiuba.algo3.modelo.reglas.*;
+import java.util.ArrayList;
 
 
 public abstract class Construccion {
     protected int puntosVictoria;
     protected Jugador jugador;
+    protected ReglasConstruccion ReglasConstruccionNormal;
+    protected ReglasConstruccion ReglasConstruccionInicial;
+
 
     public int obtenerPuntosDeVictoria() {
         return this.puntosVictoria;
@@ -28,8 +32,15 @@ public abstract class Construccion {
         return this.jugador.equals(jugador);
     }
 
-    public abstract List<Recurso> obtenerRecursosNecesarios();
+    public abstract ArrayList<Recurso> obtenerRecursosNecesarios();
     
+    public boolean validarConstruccion(Vertice vertice, Jugador jugador){
+        return ReglasConstruccionNormal.validar(vertice, this, jugador);
+    }
+
+    public boolean validarConstruccionInicial(Vertice vertice, Jugador jugador){
+        return ReglasConstruccionInicial.validar(vertice, this, jugador);
+    }
 
 
     public boolean equals(Object obj) {
@@ -40,13 +51,3 @@ public abstract class Construccion {
         return this.puntosVictoria == ((Construccion) obj).puntosVictoria;
     }
 }
-
-
-/* 
- * NUEVA ESTRUCTURA DE CONSTRUCCION:
- * CONSTRUCCION ES ABSTRACTA
- * PARA CONSTRUIR: TIENE UN METODO PUEDECONSTRUIRSE() QUE RECIBE JUGADOR, VERTICE Y ADYACENTES (PENSANDO EN REGLA DE DISTANCIA)
- * DEVUELVE LA INSTANCIA DE LA CONSTRUCCION CORRESPONDIENTE (POBLADO, CIUDAD, CAMINO)
- * CADA SUBCLASE DE CONSTRUCCION SABE CUANTOS PUNTOS DE VICTORIA DA
- * CADA SUBCLASE DE CONSTRUCCION SABE QUE REQUISITOS TIENE PARA CONSTRUIRSE
- */

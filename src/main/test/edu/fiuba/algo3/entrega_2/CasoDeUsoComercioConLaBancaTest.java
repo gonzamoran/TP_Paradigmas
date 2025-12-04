@@ -208,12 +208,7 @@ public class CasoDeUsoComercioConLaBancaTest {
     public void test10ObtenerLasBancasDisponiblesDeUnJugadorConConstruccionEnPuertoDevuelveBancaCorrespondiente(){
         Tablero tablero = new Tablero();
         Jugador jugador = new Jugador("Jugador 1");
-        jugador.agregarRecurso(new Madera(1));
-        jugador.agregarRecurso(new Ladrillo(1));
-        jugador.agregarRecurso(new Lana(1));
-        jugador.agregarRecurso(new Grano(1));
-
-        tablero.colocarEn(new Coordenadas(0,1), new Poblado(), jugador);
+        tablero.colocarConstruccionInicial(new Poblado(), new Coordenadas(0,1), jugador);
         
         CasoDeUsoComercioConLaBanca caso = new CasoDeUsoComercioConLaBanca(jugador, tablero);
         
@@ -230,12 +225,8 @@ public class CasoDeUsoComercioConLaBancaTest {
     public void test11ObtenerLasBancasDisponiblesDeUnJugadorConConstruccionEnPuerto2a1DevuelveBancaCorrespondiente(){
         Tablero tablero = new Tablero();
         Jugador jugador = new Jugador("Jugador 1");
-        jugador.agregarRecurso(new Madera(1));
-        jugador.agregarRecurso(new Ladrillo(1));
-        jugador.agregarRecurso(new Lana(1));
-        jugador.agregarRecurso(new Grano(1));
 
-        tablero.colocarEn(new Coordenadas(3,0), new Poblado(), jugador);
+        tablero.colocarConstruccionInicial(new Poblado(), new Coordenadas(3,0), jugador);
         
         CasoDeUsoComercioConLaBanca caso = new CasoDeUsoComercioConLaBanca(jugador, tablero);
         
@@ -254,12 +245,8 @@ public class CasoDeUsoComercioConLaBancaTest {
     public void test12ObtenerBancasDisponiblesYComerciarConEl(){
         Tablero tablero = new Tablero();
         Jugador jugador = new Jugador("Jugador 1");
-        jugador.agregarRecurso(new Madera(3));
-        jugador.agregarRecurso(new Ladrillo(1));
-        jugador.agregarRecurso(new Lana(1));
-        jugador.agregarRecurso(new Grano(1));
-
-        tablero.colocarEn(new Coordenadas(3,0), new Poblado(), jugador);
+        jugador.agregarRecurso(new Madera(2));
+        tablero.colocarConstruccionInicial(new Poblado(), new Coordenadas(3,0), jugador);
         
         CasoDeUsoComercioConLaBanca caso = new CasoDeUsoComercioConLaBanca(jugador, tablero);
         
@@ -283,9 +270,3 @@ public class CasoDeUsoComercioConLaBancaTest {
         assertEquals(cantidadPiedraEsperada, jugador.obtenerCantidadRecurso(new Piedra()));
     }
 }
-
-//FALTA: 
-//HAY QUE IMPLEMENTAR LAS CARTAS DE DESARROLLO RESTANTES
-//HAY QUE IMPLEMENTAR LAS CARTAS DE PROGRESO(LAS QUE SE OTORGAN DINAMICAMENTE)
-//HAY QUE IMPLEMENTAR LAS CONDICIONES DE VICTORIA
-//HAY QUE IMPLEMENTAR EL SISTEMA DE TURNOS

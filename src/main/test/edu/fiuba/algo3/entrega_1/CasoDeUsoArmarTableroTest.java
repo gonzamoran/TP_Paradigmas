@@ -12,6 +12,7 @@ import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
@@ -64,29 +65,37 @@ public class CasoDeUsoArmarTableroTest {
 
     @Test
     public void test02CasoDeUsoArmarTableroYMezclarNumerosNoTieneMismaDisposicion() {
-        CasoDeUsoArmarTablero caso = new CasoDeUsoArmarTablero(listaDeHexagonos, listaDeNumeros);
-        var tableroObtenido = caso.armarTablero();
-        caso.mezclarNumeros();
-        Tablero tableroEsperado = new Tablero(listaDeHexagonos, listaDeNumeros);
+        Tablero tableroNoEsperado = new Tablero(listaDeHexagonos, listaDeNumeros);
 
-        assertNotEquals(tableroObtenido, tableroEsperado);
+        ArrayList<Produccion> listaDeNumerosMezclados = new ArrayList<>(listaDeNumeros);
+        Collections.shuffle(listaDeNumerosMezclados);
+        CasoDeUsoArmarTablero caso = new CasoDeUsoArmarTablero(listaDeHexagonos, listaDeNumerosMezclados);
+        var tableroObtenido = caso.armarTablero();
+
+        assertNotEquals(tableroObtenido, tableroNoEsperado);
     }
+
     @Test
     public void test03CasoDeUsoArmarTableroYMezclarHexagonosNoTieneMismaDisposicion() {
-        CasoDeUsoArmarTablero caso = new CasoDeUsoArmarTablero(listaDeHexagonos, listaDeNumeros);
+        Tablero tableroNoEsperado = new Tablero(listaDeHexagonos, listaDeNumeros);
+        ArrayList<Hexagono> listaHexagonosMezclados = new ArrayList<>(listaDeHexagonos);
+        Collections.shuffle(listaHexagonosMezclados);
+        CasoDeUsoArmarTablero caso = new CasoDeUsoArmarTablero(listaHexagonosMezclados, listaDeNumeros);
         var tableroObtenido = caso.armarTablero();
-        caso.mezclarHexagonos();
-        Tablero tableroEsperado = new Tablero(listaDeHexagonos, listaDeNumeros);
 
-        assertNotEquals(tableroObtenido, tableroEsperado);
+        assertNotEquals(tableroObtenido, tableroNoEsperado);
     }
 
     @Test
     public void test04CasoDeUsoArmarTableroYMezclarNumerosYHexagonosNoTieneMismaDisposicion() {
-        CasoDeUsoArmarTablero caso = new CasoDeUsoArmarTablero(listaDeHexagonos, listaDeNumeros);
+        Tablero tableroNoEsperado = new Tablero(listaDeHexagonos, listaDeNumeros);
+        ArrayList<Hexagono> listaHexagonosMezclados = new ArrayList<>(listaDeHexagonos);
+        ArrayList<Produccion> listaNumerosMezclados = new ArrayList<>(listaDeNumeros);
+        Collections.shuffle(listaHexagonosMezclados);
+        Collections.shuffle(listaNumerosMezclados);
+        CasoDeUsoArmarTablero caso = new CasoDeUsoArmarTablero(listaHexagonosMezclados, listaNumerosMezclados);
         var tableroObtenido = caso.armarTablero();
-        caso.mezclarTablero();
-        Tablero tableroEsperado = new Tablero(listaDeHexagonos, listaDeNumeros);
-        assertNotEquals(tableroObtenido, tableroEsperado);
+        assertNotEquals(tableroObtenido, tableroNoEsperado);
     }
+    
 }

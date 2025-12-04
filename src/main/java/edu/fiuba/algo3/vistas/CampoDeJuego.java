@@ -22,11 +22,17 @@ public class CampoDeJuego extends BorderPane {
 
     private final Tablero tablero;
     private Hexagono hexagonoSeleccionado;
+    private ProveedorDeDatos proveedor;
+    private AdaptadorVistaJavaFX adaptador;
 
-    public CampoDeJuego(Stage stage, Tablero tablero) {
+    public CampoDeJuego(Stage stage, Tablero tablero, ProveedorDeDatos proveedor) {
         this.tablero = tablero;
-        //this.menuLateralDerecho = new MenuLateralDerecho(this, juego);
-
+        this.proveedor = proveedor;
+        
+        // Crear el adaptador y registrarlo en el proveedor
+        this.adaptador = new AdaptadorVistaJavaFX(stage);
+        this.proveedor.setVista(adaptador);
+        
         crearTablero();
 
         //this.setRight(this.menuLateralDerecho);

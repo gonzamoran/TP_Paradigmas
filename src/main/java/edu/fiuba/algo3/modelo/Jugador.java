@@ -77,8 +77,12 @@ public class Jugador {
 
     public void intercambiar(ArrayList<Recurso> recursosAEntregar, ArrayList<Recurso> recursosARecibir,
             Jugador jugador2) {
-        if (!this.poseeRecursosParaIntercambiar(recursosAEntregar)
-                || !jugador2.poseeRecursosParaIntercambiar(recursosARecibir)) {
+        // if (!this.poseeRecursosParaIntercambiar(recursosAEntregar)
+        //         || !jugador2.poseeRecursosParaIntercambiar(recursosARecibir)) {
+        //     throw new IntercambioInvalidoException();
+        // }
+        if (!this.poseeRecursos(recursosAEntregar)
+                || !jugador2.poseeRecursos(recursosARecibir)) {
             throw new IntercambioInvalidoException();
         }
         for (Recurso recurso : recursosAEntregar) {
@@ -171,20 +175,8 @@ public class Jugador {
         mazos.quitarCartaGranRutaComercial();
     }
 
-    ///  Metodos que verifican.
-    /// Quizas esto vuela si agregamos el refactor de costo.
-    public boolean poseeRecursosParaConstruir(Construccion construccion) {
-        var recursosNecesarios = construccion.obtenerRecursosNecesarios();
-        for (Recurso recurso : recursosNecesarios) {
-            if (this.obtenerCantidadRecurso(recurso) < recurso.obtenerCantidad()) {
-                return false;
-            }
-        }
-        return true;
-    }
-
-    public boolean poseeRecursosParaIntercambiar(ArrayList<Recurso> recursosAEntregar) {
-        for (Recurso recurso : recursosAEntregar) {
+    public boolean poseeRecursos(ArrayList<Recurso> recursos) {
+        for (Recurso recurso : recursos) {
             if (this.obtenerCantidadRecurso(recurso) < recurso.obtenerCantidad()) {
                 return false;
             }

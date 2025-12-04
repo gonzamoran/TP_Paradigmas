@@ -10,39 +10,34 @@ import java.util.List;
 
 public class Ladron {
     private Hexagono hexagonoActual;
-    private List<Jugador> jugadoresAfectados;
 
     public Ladron(Hexagono hexagonoInicial) {
         this.hexagonoActual = hexagonoInicial;
-        this.jugadoresAfectados = null;
     }
 
-    public void moverLadronA(Hexagono hexagono, List<Jugador> jugadoresAfectados) {
+    public void moverLadronA(Hexagono hexagono) {
         this.hexagonoActual.sacarLadron();
         this.hexagonoActual = hexagono;
         this.hexagonoActual.colocarLadron();
-        this.jugadoresAfectados = jugadoresAfectados;
     }
     
-    //roba un recurso a UN jugadorAfectado SALVO el recibido por parametro.
-    public ArrayList<Recurso> robarRecurso(Jugador jugadorActual, ProveedorDeDatos proveedor) {
-        ArrayList<Recurso> recursoRobado = new ArrayList<Recurso>();
+    public void robarRecurso(Jugador jugadorActual, ArrayList<Jugador> jugadoresAfectados, ProveedorDeDatos proveedor) {
+        Recurso recursoRobado = null;
         if (jugadoresAfectados == null || jugadoresAfectados.isEmpty()) {
-            return recursoRobado;
+            return;
         }
 
         ArrayList<Jugador> candidatos = new ArrayList<>(jugadoresAfectados);
         candidatos.removeIf(j -> j.equals(jugadorActual));
         if (candidatos.isEmpty()) {
-            return recursoRobado;
+            return;
         }
         Jugador jugadorARobar = proveedor.pedirJugadorARobar(candidatos);
-        //Jugador jugadorARobar = candidatos.get(random.nextInt(candidatos.size()));
         if (jugadorARobar.tieneRecursos()) {
             Recurso robado = jugadorARobar.removerRecursoAleatorio();
-            recursoRobado.add(robado);
+            recursoRobado = robado;
         }
-        return recursoRobado;
+        jugadorActual.agregarRecurso(recursoRobado);
     }
 
     public Hexagono obtenerHexagonoActual() {

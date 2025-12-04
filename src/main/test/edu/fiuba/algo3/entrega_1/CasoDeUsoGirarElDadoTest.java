@@ -1,6 +1,9 @@
 package edu.fiuba.algo3.entrega_1;
 
 import edu.fiuba.algo3.modelo.tablero.Tablero;
+import edu.fiuba.algo3.modelo.tablero.Ladron;
+import edu.fiuba.algo3.modelo.tablero.Hexagono;
+
 import edu.fiuba.algo3.modelo.tiposRecurso.*;
 import edu.fiuba.algo3.modelo.tablero.Coordenadas;
 import edu.fiuba.algo3.modelo.construcciones.*;
@@ -40,19 +43,21 @@ public class CasoDeUsoGirarElDadoTest {
     public void test02ProduccionCorrectaPorConstruccion() {
 
         Tablero tablero = new Tablero();
+        Hexagono desierto = tablero.obtenerDesierto();
+        Ladron ladron = new Ladron(desierto);
         Jugador jugador = new Jugador("Azul");
         Coordenadas origen = new Coordenadas(2, 4);
-        jugador.agregarRecurso(new Lana(10));
-        jugador.agregarRecurso(new Madera(10));
-        jugador.agregarRecurso(new Grano(10));
-        jugador.agregarRecurso(new Ladrillo(10));
-        jugador.agregarRecurso(new Piedra(10));
+        jugador.agregarRecurso(new Lana(8));
+        jugador.agregarRecurso(new Madera(8));
+        jugador.agregarRecurso(new Grano(8));
+        jugador.agregarRecurso(new Ladrillo(8));
+        jugador.agregarRecurso(new Piedra(8));
         
-        CasoDeUsoGirarElDado caso = new CasoDeUsoGirarElDado(tablero);
+        CasoDeUsoGirarElDado caso = new CasoDeUsoGirarElDado(tablero, ladron);
 
-        tablero.colocarEn(new Coordenadas(2, 7), new Poblado(), jugador);
-        tablero.colocarEn(new Coordenadas(2, 9), new Poblado(), jugador);
-        tablero.colocarEn(new Coordenadas(2, 9), new Ciudad(), jugador);
+        tablero.colocarConstruccionInicial(new Poblado(), new Coordenadas(2, 7), jugador);
+        tablero.colocarConstruccionInicial(new Poblado(), new Coordenadas(2, 9), jugador);
+        tablero.colocarEn(new Coordenadas(2, 9), new Ciudad(),jugador);
         
         var dado = new DadoCargado(8);
         int valorDado = caso.tirarDado(dado);
@@ -71,20 +76,11 @@ public class CasoDeUsoGirarElDadoTest {
         Jugador jugador = new Jugador("Azul");
         Jugador jugador2 = new Jugador("Rojo");
         
-        jugador.agregarRecurso(new Lana(1));
-        jugador.agregarRecurso(new Madera(1));
-        jugador.agregarRecurso(new Grano(1));
-        jugador.agregarRecurso(new Ladrillo(1));
-
-
-        jugador2.agregarRecurso(new Lana(1));
-        jugador2.agregarRecurso(new Madera(1));
-        jugador2.agregarRecurso(new Grano(1));
-        jugador2.agregarRecurso(new Ladrillo(1));
-        
-        CasoDeUsoGirarElDado caso = new CasoDeUsoGirarElDado(tablero);
-        tablero.colocarEn(new Coordenadas(2, 4), new Poblado(), jugador);
-        tablero.colocarEn(new Coordenadas(3, 3), new Poblado(), jugador2);
+        Hexagono desierto = tablero.obtenerDesierto();
+        Ladron ladron = new Ladron(desierto);
+        CasoDeUsoGirarElDado caso = new CasoDeUsoGirarElDado(tablero, ladron);
+        tablero.colocarConstruccionInicial(new Poblado(), new Coordenadas(2, 4), jugador);
+        tablero.colocarConstruccionInicial(new Poblado(), new Coordenadas(3, 3), jugador2);
 
         var dado = new DadoCargado(6);
         int resultadoDado = dado.lanzarDados();
@@ -105,7 +101,10 @@ public class CasoDeUsoGirarElDadoTest {
         Tablero tablero = new Tablero();
         Jugador jugador = new Jugador("Azul");
         Coordenadas origen = new Coordenadas(2, 2);
-        CasoDeUsoGirarElDado caso = new CasoDeUsoGirarElDado(tablero);
+    
+        Hexagono desierto = tablero.obtenerDesierto();
+        Ladron ladron = new Ladron(desierto);
+        CasoDeUsoGirarElDado caso = new CasoDeUsoGirarElDado(tablero, ladron);
        
         Coordenadas destino = new Coordenadas(3, 5);
         ProveedorDeDatos provedorMockeado = mock(ProveedorDeDatos.class);
@@ -116,10 +115,9 @@ public class CasoDeUsoGirarElDadoTest {
         var resultadoDado = dado.lanzarDados();
 
         caso.resolverResultado(resultadoDado, jugador, provedorMockeado);
-
  
         // assert
-        assertEquals(tablero.obtenerHexagono(destino), tablero.obtenerHexagonoLadron());
+        assertEquals(tablero.obtenerHexagono(destino), ladron.obtenerHexagonoActual());
     }
 
     @Test
@@ -127,9 +125,10 @@ public class CasoDeUsoGirarElDadoTest {
         // arrange
         Tablero tablero = new Tablero();
         Jugador jugador = new Jugador("Azul");
+        Ladron ladron = new Ladron(tablero.obtenerDesierto());
 
         Coordenadas origen = new Coordenadas(2, 2);
-        CasoDeUsoGirarElDado caso = new CasoDeUsoGirarElDado(tablero);
+        CasoDeUsoGirarElDado caso = new CasoDeUsoGirarElDado(tablero, ladron);
         
         Coordenadas destino = new Coordenadas(0, 6);
 
@@ -156,8 +155,9 @@ public class CasoDeUsoGirarElDadoTest {
         jugador.agregarRecurso(new Ladrillo(3));
         jugador.agregarRecurso(new Piedra(3));
         jugador.agregarRecurso(new Lana(6));
+        Ladron ladron = new Ladron(tablero.obtenerDesierto());
 
-        CasoDeUsoGirarElDado caso = new CasoDeUsoGirarElDado(tablero);
+        CasoDeUsoGirarElDado caso = new CasoDeUsoGirarElDado(tablero, ladron);
          
 
         var destino = new Coordenadas(0,6);
@@ -181,11 +181,12 @@ public class CasoDeUsoGirarElDadoTest {
         // arrange
         Tablero tablero = new Tablero();
         Jugador jugador = new Jugador("Azul");
+        Ladron ladron = new Ladron(tablero.obtenerDesierto());
         jugador.agregarRecurso(new Madera(2));
         jugador.agregarRecurso(new Ladrillo(2));
         jugador.agregarRecurso(new Piedra(2));
 
-        CasoDeUsoGirarElDado caso = new CasoDeUsoGirarElDado(tablero);
+        CasoDeUsoGirarElDado caso = new CasoDeUsoGirarElDado(tablero, ladron);
         
         var destino = new Coordenadas(0, 6);
         ProveedorDeDatos provedorMockeado = mock(ProveedorDeDatos.class);
@@ -207,20 +208,17 @@ public class CasoDeUsoGirarElDadoTest {
         Tablero tablero = new Tablero();
         Jugador jugador1 = new Jugador("Azul");
         Jugador jugador2 = new Jugador("Rojo");
+        Ladron ladron = new Ladron(tablero.obtenerDesierto());
 
         jugador1.agregarRecurso(new Madera(1));
-        jugador1.agregarRecurso(new Ladrillo(1));
-        jugador1.agregarRecurso(new Piedra(1));
-        jugador1.agregarRecurso(new Lana(1));
-        jugador1.agregarRecurso(new Grano(1));
 
         var candidatos = new ArrayList<Jugador>();
 
         candidatos.add(jugador1);
         candidatos.add(jugador2);
         Coordenadas origen = new Coordenadas(2, 2);
-        CasoDeUsoGirarElDado caso = new CasoDeUsoGirarElDado(tablero);
-        tablero.colocarEn(new Coordenadas(0, 6), new Poblado(), jugador1);
+        CasoDeUsoGirarElDado caso = new CasoDeUsoGirarElDado(tablero, ladron);
+        tablero.colocarConstruccionInicial(new Poblado(), new Coordenadas(0, 6), jugador1);
 
         Coordenadas destino = new Coordenadas(0, 6);
 
@@ -233,9 +231,8 @@ public class CasoDeUsoGirarElDadoTest {
         
         caso.resolverResultado(resultadoDado, jugador2, proveedorMockeado);
         
-        // Jugador2 sin cartas roba 1 carta a jugador1 y queda con 1 carta.
         assertEquals(1, jugador2.obtenerCantidadCartasRecurso());
-        // jugador2 mueve al ladron al hexagono donde esta el poblado de jugador1
+
         assertEquals(0, jugador1.obtenerCantidadCartasRecurso());
     }
 

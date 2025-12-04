@@ -19,17 +19,4 @@ public class CasoDeUsoArmarTablero {
         this.tablero = new Tablero(listaHexagonos, listaNumeros);
         return this.tablero;
     }
-
-    public void mezclarNumeros() {
-        tablero.mezclarNumeros();
-    }
-
-    public void mezclarHexagonos() {
-        tablero.mezclarHexagonos();
-    }
-
-    public void mezclarTablero() {
-        this.mezclarHexagonos();
-        this.mezclarNumeros();
-    }
 }

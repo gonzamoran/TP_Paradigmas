@@ -8,6 +8,7 @@ import java.util.List;
 import edu.fiuba.algo3.modelo.tablero.Hexagono;
 import edu.fiuba.algo3.modelo.tablero.Coordenadas;
 import edu.fiuba.algo3.modelo.tablero.Tablero;
+import edu.fiuba.algo3.modelo.tablero.Ladron;
 import edu.fiuba.algo3.modelo.tablero.tiposHexagono.*;
 import edu.fiuba.algo3.modelo.tablero.Produccion;
 import edu.fiuba.algo3.modelo.acciones.*;
@@ -29,10 +30,12 @@ public class GestorDeTurnos {
     private ProveedorDeDatos proveedor;
     private Dados dados;
     private MazoCartasDesarrollo mazo;
+    private Ladron ladron;
 
-    public GestorDeTurnos() {
+    public GestorDeTurnos(ProveedorDeDatos proveedor) {
         this.turnoActual = 0;
         this.indiceJugadorActual = 0;
+        this.proveedor = proveedor;
     }
 
     public void avanzarTurno() {
@@ -89,7 +92,6 @@ public class GestorDeTurnos {
         CasoDeUsoArmarTablero casoTablero = new CasoDeUsoArmarTablero(hexagonos, numeros);
         Tablero tablero = casoTablero.armarTablero();
         this.tablero = tablero;
-        this.proveedor = new ProveedorDeDatos();
         int cantidadDeJugadores = proveedor.pedirCantidadDeJugadoresAlUsuario();
         this.jugadores = new ArrayList<Jugador>();
         for (int i = 0; i < cantidadDeJugadores; i++) {
@@ -113,24 +115,9 @@ public class GestorDeTurnos {
 
         MazoCartasDesarrollo mazoCartasDesarrollo = new MazoCartasDesarrollo(cartas);
         this.mazo = mazoCartasDesarrollo;
-    }
-    public void jugar(){
-        this.inicializarJuego(); 
-        this.comenzarFaseInicial(); 
-        while(!this.terminoElJuego()){ 
-            var jugadorActual = jugadores.get(indiceJugadorActual); 
-            this.iniciarFaseLanzamientoDeDados(jugadorActual); 
-            this.iniciarFaseConstruccionYComercio(jugadorActual); 
-            if (this.terminoElJuego()){ 
-                terminoElJuego = true; 
-                break; 
-            }
-            this.iniciarFaseUsoDeCartasDesarrollo(jugadorActual); 
-            
 
-            this.avanzarTurno();
-        }
-        this.finalizarJuego(); 
+        Hexagono desierto = tablero.obtenerDesierto();
+        this.ladron = new Ladron(desierto);
     }
 
     private void comenzarFaseInicial(){
@@ -157,8 +144,7 @@ public class GestorDeTurnos {
     }
 
     private void iniciarFaseLanzamientoDeDados(Jugador jugadorActual){
-        /// Constructor de GirarElDado recibe un hexagono para posicionar al ladron.
-        CasoDeUsoGirarElDado casoDado = new CasoDeUsoGirarElDado(tablero);
+        CasoDeUsoGirarElDado casoDado = new CasoDeUsoGirarElDado(tablero, ladron);
         var resultado = casoDado.tirarDado(dados);
         casoDado.resolverResultado(resultado, jugadorActual, proveedor);
     }
@@ -233,9 +219,9 @@ public class GestorDeTurnos {
         while(proveedor.quiereUsarCartaDesarrollo(jugador)){
             ArrayList<CartasDesarrollo> cartasDelJugador = jugador.obtenerCartasDeDesarrollo();
             ArrayList<CartasDesarrollo> cartasJugables = new ArrayList<CartasDesarrollo>();
-            ContextoCartaDesarrollo contexto = new ContextoCartaDesarrollo(jugador, jugadores, turnoActual, tablero);
+            ContextoCartaDesarrollo contexto = new ContextoCartaDesarrollo(jugador, jugadores, turnoActual, tablero, ladron);
             for (CartasDesarrollo carta : cartasDelJugador){
-                if(carta.esJugable(new ContextoCartaDesarrollo(jugador, jugadores, turnoActual, tablero))){
+                if(carta.esJugable(new ContextoCartaDesarrollo(jugador, jugadores, turnoActual, tablero, ladron))){
                     cartasJugables.add(carta);
                 }
             }
@@ -258,5 +244,23 @@ public class GestorDeTurnos {
                 return;
             }
         }
+    }
+    public void jugar(){
+        this.inicializarJuego(); 
+        this.comenzarFaseInicial(); 
+        while(!this.terminoElJuego()){ 
+            var jugadorActual = jugadores.get(indiceJugadorActual); 
+            this.iniciarFaseLanzamientoDeDados(jugadorActual); 
+            this.iniciarFaseConstruccionYComercio(jugadorActual); 
+            if (this.terminoElJuego()){ 
+                terminoElJuego = true; 
+                break; 
+            }
+            this.iniciarFaseUsoDeCartasDesarrollo(jugadorActual); 
+            
+
+            this.avanzarTurno();
+        }
+        this.finalizarJuego(); 
     }
 }

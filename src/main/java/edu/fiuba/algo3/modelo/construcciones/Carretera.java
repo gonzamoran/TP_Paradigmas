@@ -6,6 +6,8 @@ import edu.fiuba.algo3.modelo.tablero.Vertice;
 import edu.fiuba.algo3.modelo.Recurso;
 import edu.fiuba.algo3.modelo.tiposRecurso.Madera;
 import edu.fiuba.algo3.modelo.tiposRecurso.Ladrillo;
+import edu.fiuba.algo3.modelo.reglas.*;
+
 
 import java.util.List;
 import java.util.ArrayList;
@@ -16,6 +18,13 @@ public class Carretera extends Construccion {
 
     public Carretera() {
         this.puntosVictoria = 0;
+        this.ReglasConstruccionInicial = new ReglasCompuestas(
+            new ReglaAdyacencia()
+        );
+        this.ReglasConstruccionNormal = new ReglasCompuestas(
+            new ReglaRecursos(),
+            new ReglaAdyacencia()
+        );
     }
 
     public Jugador getJugador() {
@@ -49,8 +58,8 @@ public class Carretera extends Construccion {
                (this.vertice1 == vertice2 && this.vertice2 == vertice1);
     }
 
-    public List<Recurso> obtenerRecursosNecesarios() {
-        List<Recurso> recursos = new ArrayList<>();
+    public ArrayList<Recurso> obtenerRecursosNecesarios() {
+        ArrayList<Recurso> recursos = new ArrayList<>();
         recursos.add(new Madera(1));
         recursos.add(new Ladrillo(1));
         return recursos;

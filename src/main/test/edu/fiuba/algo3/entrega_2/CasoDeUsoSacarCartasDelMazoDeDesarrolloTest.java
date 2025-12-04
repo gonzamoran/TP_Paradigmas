@@ -2,6 +2,7 @@ package edu.fiuba.algo3.entrega_2;
 
 import edu.fiuba.algo3.modelo.Jugador;
 import edu.fiuba.algo3.modelo.tablero.Tablero;
+import edu.fiuba.algo3.modelo.tablero.Ladron;
 import edu.fiuba.algo3.modelo.tablero.Coordenadas;
 import edu.fiuba.algo3.modelo.construcciones.Carretera;
 import edu.fiuba.algo3.modelo.construcciones.Poblado;
@@ -100,6 +101,8 @@ public class CasoDeUsoSacarCartasDelMazoDeDesarrolloTest {
     @Test
     public void test04CartaDesarrolloPuntosVictoriaNoEsJugable() {
         Jugador jugador = new Jugador("Azul");
+        Tablero tablero =  new Tablero();
+        Ladron ladron = new Ladron(tablero.obtenerDesierto());
 
         jugador.agregarRecurso(new Lana(1));
         jugador.agregarRecurso(new Piedra(1));
@@ -109,7 +112,7 @@ public class CasoDeUsoSacarCartasDelMazoDeDesarrolloTest {
         ArrayList<CartasDesarrollo> cartasTrucada = new ArrayList<>(List.of(new CartaPuntoVictoria()));
         caso.comprarCartaDesarrollo(new MazoTrucado(cartas), jugador, turnoActual);
 
-        ContextoCartaDesarrollo contexto = new ContextoCartaDesarrollo(jugador, new ArrayList<>(), turnoActual, new Tablero());
+        ContextoCartaDesarrollo contexto = new ContextoCartaDesarrollo(jugador, new ArrayList<>(), turnoActual, tablero, ladron);
 
         assertThrows(NoSePuedeJugarEstaCartaException.class, () -> {
             caso.usarCartaDesarrollo(new CartaPuntoVictoria(0), jugador, contexto, new ProveedorDeDatos());
@@ -138,6 +141,8 @@ public class CasoDeUsoSacarCartasDelMazoDeDesarrolloTest {
     
         var jugador = new Jugador("Azul");
         Tablero tablero = new Tablero();
+        Ladron ladron = new Ladron(tablero.obtenerDesierto());
+        
         var jugadores = new ArrayList<Jugador>();
         ProveedorDeDatos proveedor = new ProveedorDeDatos();
         jugadores.add(jugador); 
@@ -147,7 +152,7 @@ public class CasoDeUsoSacarCartasDelMazoDeDesarrolloTest {
 
         ArrayList<CartasDesarrollo> cartas = new ArrayList<>(List.of(new CartaMonopolio()));
 
-        ContextoCartaDesarrollo contexto = new ContextoCartaDesarrollo(jugador, jugadores, turnoActual,tablero);
+        ContextoCartaDesarrollo contexto = new ContextoCartaDesarrollo(jugador, jugadores, turnoActual,tablero, ladron);
 
         var caso = new CasoDeUsoSacarCartasDelMazoDeDesarrollo();
         caso.comprarCartaDesarrollo(new MazoTrucado(cartas), jugador, turnoActual);
@@ -162,24 +167,25 @@ public class CasoDeUsoSacarCartasDelMazoDeDesarrolloTest {
         
         var jugador = new Jugador("Azul");
         var jugador2 = new Jugador("Rojo");
+        Tablero tablero = new Tablero();
+        Ladron ladron = new Ladron(tablero.obtenerDesierto());
+
         ProveedorDeDatos proveedorMockeado = mock(ProveedorDeDatos.class);
         when(proveedorMockeado.pedirRecursoAlUsuario()).thenReturn(new Madera());
         var jugadores = new ArrayList<Jugador>();
         jugadores.add(jugador);
         jugadores.add(jugador2);
 
-        Tablero tablero = new Tablero();
-
         jugador.agregarRecurso(new Lana(1));
         jugador.agregarRecurso(new Piedra(1));
         jugador.agregarRecurso(new Grano(1));
         
         ArrayList<CartasDesarrollo> cartas = new ArrayList<>(List.of(new CartaMonopolio()));
-        ContextoCartaDesarrollo contextoAntiguo = new ContextoCartaDesarrollo(jugador, jugadores, turnoActual, tablero);
+        ContextoCartaDesarrollo contextoAntiguo = new ContextoCartaDesarrollo(jugador, jugadores, turnoActual, tablero, ladron);
         var caso = new CasoDeUsoSacarCartasDelMazoDeDesarrollo();
         caso.comprarCartaDesarrollo(new MazoTrucado(cartas), jugador, turnoActual);
 
-        ContextoCartaDesarrollo contextoNuevo = new ContextoCartaDesarrollo(jugador, jugadores, turnoActual + 1, tablero);
+        ContextoCartaDesarrollo contextoNuevo = new ContextoCartaDesarrollo(jugador, jugadores, turnoActual + 1, tablero, ladron);
 
         assertDoesNotThrow(() -> {
             caso.usarCartaDesarrollo(cartas.get(0), jugador, contextoNuevo, proveedorMockeado);
@@ -194,6 +200,8 @@ public class CasoDeUsoSacarCartasDelMazoDeDesarrolloTest {
         var jugador2 = new Jugador("Rojo");
         var jugador3 = new Jugador("Verde");
         Tablero tablero = new Tablero();
+        Ladron ladron = new Ladron(tablero.obtenerDesierto());
+
         jugador1.agregarRecurso(new Lana(1));
         jugador1.agregarRecurso(new Piedra(1));
         jugador1.agregarRecurso(new Grano(1));
@@ -209,12 +217,12 @@ public class CasoDeUsoSacarCartasDelMazoDeDesarrolloTest {
         ProveedorDeDatos proveedorMockeado = mock(ProveedorDeDatos.class);
         when(proveedorMockeado.pedirRecursoAlUsuario()).thenReturn(new Madera());
 
-        ContextoCartaDesarrollo contextoAntiguo = new ContextoCartaDesarrollo(jugador1, jugadores, turnoActual, tablero);
+        ContextoCartaDesarrollo contextoAntiguo = new ContextoCartaDesarrollo(jugador1, jugadores, turnoActual, tablero, ladron);
 
         var caso = new CasoDeUsoSacarCartasDelMazoDeDesarrollo();
         caso.comprarCartaDesarrollo(new MazoTrucado(new ArrayList<>(List.of(new CartaMonopolio()))), jugador1, turnoActual);
 
-        ContextoCartaDesarrollo contexto = new ContextoCartaDesarrollo(jugador1, jugadores, turnoActual + 1, tablero);
+        ContextoCartaDesarrollo contexto = new ContextoCartaDesarrollo(jugador1, jugadores, turnoActual + 1, tablero, ladron);
         caso.usarCartaDesarrollo(new CartaMonopolio(1), jugador1, contexto, proveedorMockeado);
 
         int cantidadEsperadaJugador1 = 5;
@@ -232,6 +240,8 @@ public class CasoDeUsoSacarCartasDelMazoDeDesarrolloTest {
         var jugador1 = new Jugador("Azul");
         var jugador2 = new Jugador("Rojo");
         Tablero tablero = new Tablero();
+        Ladron ladron = new Ladron(tablero.obtenerDesierto());
+        
         jugador1.agregarRecurso(new Lana(1));
         jugador1.agregarRecurso(new Piedra(1));
         jugador1.agregarRecurso(new Grano(1));
@@ -244,12 +254,12 @@ public class CasoDeUsoSacarCartasDelMazoDeDesarrolloTest {
         ProveedorDeDatos proveedorMockeado = mock(ProveedorDeDatos.class);
         
         when(proveedorMockeado.pedirRecursoAlUsuario()).thenReturn(new Madera(1));
-        ContextoCartaDesarrollo contextoAntiguo = new ContextoCartaDesarrollo(jugador1, jugadores, turnoActual, tablero);
+        ContextoCartaDesarrollo contextoAntiguo = new ContextoCartaDesarrollo(jugador1, jugadores, turnoActual, tablero, ladron);
 
         var caso = new CasoDeUsoSacarCartasDelMazoDeDesarrollo();
         caso.comprarCartaDesarrollo(new MazoTrucado(new ArrayList<>(List.of(new CartaMonopolio()))), jugador1, turnoActual);
 
-        ContextoCartaDesarrollo contextoNuevo = new ContextoCartaDesarrollo(jugador1, jugadores, turnoActual + 1, tablero);
+        ContextoCartaDesarrollo contextoNuevo = new ContextoCartaDesarrollo(jugador1, jugadores, turnoActual + 1, tablero, ladron);
         
         caso.usarCartaDesarrollo(new CartaMonopolio(1), jugador1, contextoNuevo, proveedorMockeado);
 
@@ -273,6 +283,7 @@ public class CasoDeUsoSacarCartasDelMazoDeDesarrolloTest {
     @Test
     public void test10CartaDeCaballeroRobaAUnJugadorCorrectamente(){
         Tablero tablero = new Tablero();
+        Ladron ladron = new Ladron(tablero.obtenerDesierto());
         Jugador jugador1 = new Jugador("Azul");
         Jugador victima = new Jugador("Rojo");
         CartasDesarrollo carta = new CartaCaballero();
@@ -281,15 +292,11 @@ public class CasoDeUsoSacarCartasDelMazoDeDesarrolloTest {
         jugador1.agregarRecurso(new Piedra(1));
         jugador1.agregarRecurso(new Grano(1));        
 
-        victima.agregarRecurso(new Madera(1));
-        victima.agregarRecurso(new Ladrillo(1));
-        victima.agregarRecurso(new Grano(1));
-        victima.agregarRecurso(new Lana(1));
         victima.agregarRecurso(new Piedra(1));
         
         var jugadores = new ArrayList<Jugador>(List.of(jugador1, victima));
         
-        tablero.colocarEn(new Coordenadas(2,2), new Poblado(), victima);
+        tablero.colocarConstruccionInicial(new Poblado(), new Coordenadas(2,2), victima);
         
         ProveedorDeDatos proveedorMockeado = mock(ProveedorDeDatos.class);
         when(proveedorMockeado.pedirCoordenadasAlUsuario()).thenReturn((new Coordenadas(2,2)));
@@ -302,7 +309,7 @@ public class CasoDeUsoSacarCartasDelMazoDeDesarrolloTest {
         caso.comprarCartaDesarrollo(mazo, jugador1, turnoActual);
 
         //turno 2
-        ContextoCartaDesarrollo contextoNuevo = new ContextoCartaDesarrollo(jugador1, jugadores, turnoActual + 1, tablero); //incluyendo destinoLadron
+        ContextoCartaDesarrollo contextoNuevo = new ContextoCartaDesarrollo(jugador1, jugadores, turnoActual + 1, tablero, ladron);
         
         caso.usarCartaDesarrollo(carta, jugador1 ,contextoNuevo, proveedorMockeado);
 
@@ -314,6 +321,7 @@ public class CasoDeUsoSacarCartasDelMazoDeDesarrolloTest {
     @Test
     public void test11CartaCaballeroCon2JugadoresRobaSoloAUno(){
         Tablero tablero = new Tablero();
+        Ladron ladron = new Ladron(tablero.obtenerDesierto());
         Jugador jugador1 = new Jugador("Azul");
         Jugador jugador2 = new Jugador("Verde");
         Jugador victima = new Jugador("Rojo");
@@ -323,21 +331,14 @@ public class CasoDeUsoSacarCartasDelMazoDeDesarrolloTest {
         jugador1.agregarRecurso(new Piedra(1));
         jugador1.agregarRecurso(new Grano(1));        
 
-        jugador2.agregarRecurso(new Lana(4));
-        jugador2.agregarRecurso(new Madera(1));
-        jugador2.agregarRecurso(new Ladrillo(1));
-        jugador2.agregarRecurso(new Grano(1));
+        jugador2.agregarRecurso(new Lana(3));
 
-        victima.agregarRecurso(new Madera(1));
-        victima.agregarRecurso(new Ladrillo(1));
-        victima.agregarRecurso(new Grano(1));
-        victima.agregarRecurso(new Lana(1));
         victima.agregarRecurso(new Piedra(1));
         
         var jugadores = new ArrayList<Jugador>(List.of(jugador1, jugador2 ,victima));
         
-        tablero.colocarEn(new Coordenadas(2,2), new Poblado(), victima);
-        tablero.colocarEn(new Coordenadas(3,3), new Poblado(), jugador2);
+        tablero.colocarConstruccionInicial( new Poblado(),new Coordenadas(2,2), victima);
+        tablero.colocarConstruccionInicial( new Poblado(),new Coordenadas(3,3), jugador2);
 
         ProveedorDeDatos proveedorMockeado = mock(ProveedorDeDatos.class);
         when(proveedorMockeado.pedirCoordenadasAlUsuario()).thenReturn((new Coordenadas(2,2)));
@@ -350,7 +351,7 @@ public class CasoDeUsoSacarCartasDelMazoDeDesarrolloTest {
         caso.comprarCartaDesarrollo(mazo, jugador1, turnoActual);
 
         //turno 2
-        ContextoCartaDesarrollo contextoNuevo = new ContextoCartaDesarrollo(jugador1, jugadores, turnoActual + 1, tablero); //incluyendo destinoLadron
+        ContextoCartaDesarrollo contextoNuevo = new ContextoCartaDesarrollo(jugador1, jugadores, turnoActual + 1, tablero, ladron);
         
         caso.usarCartaDesarrollo(carta, jugador1 ,contextoNuevo, proveedorMockeado);
 
@@ -363,6 +364,9 @@ public class CasoDeUsoSacarCartasDelMazoDeDesarrolloTest {
     @Test
     public void test12Usar3oMasCartasDeCaballeroOtorgaGranCaballeria(){
         Jugador jugador1 = new Jugador("Azul");
+        Tablero tablero = new Tablero();
+        Ladron ladron = new Ladron(tablero.obtenerDesierto());
+        
         jugador1.agregarRecurso(new Lana(3));
         jugador1.agregarRecurso(new Piedra(3));
         jugador1.agregarRecurso(new Grano(3));
@@ -376,7 +380,7 @@ public class CasoDeUsoSacarCartasDelMazoDeDesarrolloTest {
         caso.comprarCartaDesarrollo(mazo, jugador1, turnoActual);
         caso.comprarCartaDesarrollo(mazo, jugador1, turnoActual);
 
-        ContextoCartaDesarrollo contextoNuevo = new ContextoCartaDesarrollo(jugador1, new ArrayList<>(), turnoActual + 1, new Tablero());
+        ContextoCartaDesarrollo contextoNuevo = new ContextoCartaDesarrollo(jugador1, new ArrayList<>(), turnoActual + 1, tablero, ladron);
         caso.usarCartaDesarrollo(new CartaCaballero(), jugador1 ,contextoNuevo, proveedorMockeado);
         caso.usarCartaDesarrollo(new CartaCaballero(), jugador1 ,contextoNuevo, proveedorMockeado);
         caso.usarCartaDesarrollo(new CartaCaballero(), jugador1 ,contextoNuevo, proveedorMockeado);
@@ -388,6 +392,8 @@ public class CasoDeUsoSacarCartasDelMazoDeDesarrolloTest {
     public void test13ElJugadorConMasCaballerosLeRobaAlOtroLaGranCaballeria(){
         Jugador jugador1 = new Jugador("Azul");
         Jugador jugador2 = new Jugador("Rojo");
+        Tablero tablero = new Tablero();
+        Ladron ladron = new Ladron(tablero.obtenerDesierto());
         jugador1.agregarRecurso(new Lana(3));
         jugador1.agregarRecurso(new Piedra(3));
         jugador1.agregarRecurso(new Grano(3));
@@ -415,14 +421,14 @@ public class CasoDeUsoSacarCartasDelMazoDeDesarrolloTest {
         caso.comprarCartaDesarrollo(mazo, jugador2, turnoActual);
         caso.comprarCartaDesarrollo(mazo, jugador2, turnoActual);
 
-        ContextoCartaDesarrollo contextoNuevo = new ContextoCartaDesarrollo(jugador1, jugadores, turnoActual + 1, new Tablero());
+        ContextoCartaDesarrollo contextoNuevo = new ContextoCartaDesarrollo(jugador1, jugadores, turnoActual + 1, tablero, ladron);
         caso.usarCartaDesarrollo(new CartaCaballero(), jugador1 ,contextoNuevo, proveedorMockeado);
         caso.usarCartaDesarrollo(new CartaCaballero(), jugador1 ,contextoNuevo, proveedorMockeado);
         caso.usarCartaDesarrollo(new CartaCaballero(), jugador1 ,contextoNuevo, proveedorMockeado);
 
         assertEquals(2, jugador1.calculoPuntosVictoria());
         
-        contextoNuevo = new ContextoCartaDesarrollo(jugador2, jugadores, turnoActual + 1, new Tablero());
+        contextoNuevo = new ContextoCartaDesarrollo(jugador2, jugadores, turnoActual + 1, tablero, ladron);
         caso.usarCartaDesarrollo(new CartaCaballero(), jugador2 ,contextoNuevo, proveedorMockeado);
         caso.usarCartaDesarrollo(new CartaCaballero(), jugador2 ,contextoNuevo, proveedorMockeado);
         caso.usarCartaDesarrollo(new CartaCaballero(), jugador2 ,contextoNuevo, proveedorMockeado);
@@ -436,7 +442,7 @@ public class CasoDeUsoSacarCartasDelMazoDeDesarrolloTest {
     public void test15CartaDescubrimientoAgregaLosRecursosCorrectamente(){
         Jugador jugador = new Jugador("Azul");
         Tablero tablero = new Tablero();
-
+        Ladron ladron = new Ladron(tablero.obtenerDesierto());
         jugador.agregarRecurso(new Lana(1));
         jugador.agregarRecurso(new Piedra(1));
         jugador.agregarRecurso(new Grano(1)); 
@@ -459,7 +465,7 @@ public class CasoDeUsoSacarCartasDelMazoDeDesarrolloTest {
         caso.comprarCartaDesarrollo(mazo, jugador, turnoActual);
 
         //turno 2
-        ContextoCartaDesarrollo contexto = new ContextoCartaDesarrollo(jugador, jugadores, turnoActual + 1, tablero);
+        ContextoCartaDesarrollo contexto = new ContextoCartaDesarrollo(jugador, jugadores, turnoActual + 1, tablero, ladron);
 
         caso.usarCartaDesarrollo(carta, jugador, contexto, proveedorMockeado);
 
@@ -471,12 +477,16 @@ public class CasoDeUsoSacarCartasDelMazoDeDesarrolloTest {
     public void test16comprarCartaDescubrimientoYConstruir(){
         Jugador jugador = new Jugador("Azul");
         Tablero tablero = new Tablero();
-
+        Ladron ladron = new Ladron(tablero.obtenerDesierto());
         ArrayList<Jugador> jugadores = new ArrayList<>(List.of(jugador));
         jugador.agregarRecurso(new Lana(2));
         jugador.agregarRecurso(new Piedra(1));
         jugador.agregarRecurso(new Grano(2)); 
 
+        tablero.colocarConstruccionInicial(new Poblado(), new Coordenadas(2,0), jugador);
+        tablero.construirCarreteraGratis(new Coordenadas(2,0), new Coordenadas(2,1), jugador);
+        tablero.construirCarreteraGratis(new Coordenadas(2,1),new Coordenadas(2,2),jugador);
+        
         ProveedorDeDatos proveedorMockeado = mock(ProveedorDeDatos.class);
         
         ArrayList<Recurso> recursos = new ArrayList<>();
@@ -491,7 +501,7 @@ public class CasoDeUsoSacarCartasDelMazoDeDesarrolloTest {
         //turno 1
         caso.comprarCartaDesarrollo(mazo, jugador, turnoActual);
 
-        ContextoCartaDesarrollo contexto = new ContextoCartaDesarrollo(jugador, jugadores, turnoActual + 1, tablero);
+        ContextoCartaDesarrollo contexto = new ContextoCartaDesarrollo(jugador, jugadores, turnoActual + 1, tablero, ladron);
         CartaDescubrimiento carta = new CartaDescubrimiento(turnoActual);
 
         caso.usarCartaDesarrollo(carta, jugador, contexto, proveedorMockeado);
@@ -505,6 +515,7 @@ public class CasoDeUsoSacarCartasDelMazoDeDesarrolloTest {
     public void test17UsarCartaConstruccionCarreteraAgregaDosCarreterasValidas(){
         Jugador jugador = new Jugador("Azul");
         Tablero tablero = new Tablero();
+        Ladron ladron = new Ladron(tablero.obtenerDesierto());
 
         jugador.agregarRecurso(new Madera(1));
         jugador.agregarRecurso(new Ladrillo(1));
@@ -514,7 +525,7 @@ public class CasoDeUsoSacarCartasDelMazoDeDesarrolloTest {
 
         ArrayList<Jugador> jugadores = new ArrayList<>(List.of(jugador));
         ArrayList<CartasDesarrollo> cartas = new ArrayList<>(List.of(new CartaConstruccionCarretera()));
-        tablero.colocarEn(new Coordenadas(3,3), new Poblado(), jugador);
+        tablero.colocarConstruccionInicial(new Poblado(),new Coordenadas(3,3), jugador);
 
         Coordenadas origen1 = new Coordenadas(3,3);
         Coordenadas destino1 = new Coordenadas(3,4);
@@ -528,7 +539,7 @@ public class CasoDeUsoSacarCartasDelMazoDeDesarrolloTest {
 
         caso.comprarCartaDesarrollo(mazo, jugador, turnoActual);
         
-        ContextoCartaDesarrollo contextoNuevo = new ContextoCartaDesarrollo(jugador, jugadores, turnoActual + 1, tablero);
+        ContextoCartaDesarrollo contextoNuevo = new ContextoCartaDesarrollo(jugador, jugadores, turnoActual + 1, tablero, ladron);
         caso.usarCartaDesarrollo(new CartaConstruccionCarretera(), jugador ,contextoNuevo, proveedorMockeado);
         assertTrue(tablero.estaConstruidoCon(new Carretera(), origen1, jugador));
         assertTrue(tablero.estaConstruidoCon(new Carretera(), destino1, jugador));
@@ -541,6 +552,7 @@ public class CasoDeUsoSacarCartasDelMazoDeDesarrolloTest {
     public void test18UsarCartaConstruccionCarreteraConCoordenadasInvalidasLanzaExcepcion(){
         Jugador jugador = new Jugador("Azul");
         Tablero tablero = new Tablero();
+        Ladron ladron = new Ladron(tablero.obtenerDesierto());
 
         jugador.agregarRecurso(new Lana(1));
         jugador.agregarRecurso(new Piedra(1));
@@ -564,7 +576,7 @@ public class CasoDeUsoSacarCartasDelMazoDeDesarrolloTest {
         caso.comprarCartaDesarrollo(mazo, jugador, turnoActual);
 
         //turno 2
-        ContextoCartaDesarrollo contextoNuevo = new ContextoCartaDesarrollo(jugador, jugadores, turnoActual + 1, tablero); //incluyendo destinoLadron
+        ContextoCartaDesarrollo contextoNuevo = new ContextoCartaDesarrollo(jugador, jugadores, turnoActual + 1, tablero, ladron); //incluyendo destinoLadron
         
         assertThrows(CoordenadasInvalidasException.class, () -> {
             caso.usarCartaDesarrollo(new CartaConstruccionCarretera(), jugador ,contextoNuevo, proveedorMockeado);
@@ -575,6 +587,7 @@ public class CasoDeUsoSacarCartasDelMazoDeDesarrolloTest {
     public void test19UsarCartaConstruccionCarreteraSinPobladoCercaLanzaExcepcion(){
         Jugador jugador = new Jugador("Azul");
         Tablero tablero = new Tablero();
+        Ladron ladron = new Ladron(tablero.obtenerDesierto());
 
         jugador.agregarRecurso(new Lana(2));
         jugador.agregarRecurso(new Piedra(1));
@@ -586,7 +599,7 @@ public class CasoDeUsoSacarCartasDelMazoDeDesarrolloTest {
         ArrayList<Jugador> jugadores = new ArrayList<>(List.of(jugador));
         ArrayList<CartasDesarrollo> cartas = new ArrayList<>(List.of(new CartaConstruccionCarretera()));
 
-        tablero.colocarEn(new Coordenadas(1,1), new Poblado(), jugador);
+        tablero.colocarConstruccionInicial( new Poblado(), new Coordenadas(1,1), jugador);
         
         Coordenadas origen1 = new Coordenadas(3,3);
         Coordenadas destino1 = new Coordenadas(3,4);
@@ -602,7 +615,7 @@ public class CasoDeUsoSacarCartasDelMazoDeDesarrolloTest {
         caso.comprarCartaDesarrollo(mazo, jugador, turnoActual);
 
         //turno 2
-        ContextoCartaDesarrollo contextoNuevo = new ContextoCartaDesarrollo(jugador, jugadores, turnoActual + 1, tablero); //incluyendo destinoLadron
+        ContextoCartaDesarrollo contextoNuevo = new ContextoCartaDesarrollo(jugador, jugadores, turnoActual + 1, tablero, ladron); //incluyendo destinoLadron
         
         assertThrows(NoEsPosibleConstruirException.class, () -> {
             caso.usarCartaDesarrollo(new CartaConstruccionCarretera(), jugador ,contextoNuevo, proveedorMockeado);
@@ -614,6 +627,7 @@ public class CasoDeUsoSacarCartasDelMazoDeDesarrolloTest {
         Jugador jugador1 = new Jugador("Azul");
         Jugador jugador2 = new Jugador("Rojo");
         Tablero tablero = new Tablero();
+        Ladron ladron = new Ladron(tablero.obtenerDesierto());
 
         jugador1.agregarRecurso(new Lana(1));
         jugador1.agregarRecurso(new Piedra(1));
@@ -628,7 +642,7 @@ public class CasoDeUsoSacarCartasDelMazoDeDesarrolloTest {
         ArrayList<Jugador> jugadores = new ArrayList<>(List.of(jugador1, jugador2));
         ArrayList<CartasDesarrollo> cartas = new ArrayList<>(List.of(new CartaConstruccionCarretera()));
 
-        tablero.colocarEn(new Coordenadas(1,1), new Poblado(), jugador2);
+        tablero.colocarConstruccionInicial(new Poblado(), new Coordenadas(1,1), jugador2);
         
         Coordenadas origen1 = new Coordenadas(1,1);
         Coordenadas destino1 = new Coordenadas(1,2);
@@ -644,7 +658,7 @@ public class CasoDeUsoSacarCartasDelMazoDeDesarrolloTest {
         caso.comprarCartaDesarrollo(mazo, jugador1, turnoActual);
 
         //turno 2
-        ContextoCartaDesarrollo contextoNuevo = new ContextoCartaDesarrollo(jugador1, jugadores, turnoActual + 1, tablero); //incluyendo destinoLadron
+        ContextoCartaDesarrollo contextoNuevo = new ContextoCartaDesarrollo(jugador1, jugadores, turnoActual + 1, tablero, ladron); //incluyendo destinoLadron
         
         assertThrows(NoEsPosibleConstruirException.class, () -> {
             caso.usarCartaDesarrollo(new CartaConstruccionCarretera(), jugador1 ,contextoNuevo, proveedorMockeado);

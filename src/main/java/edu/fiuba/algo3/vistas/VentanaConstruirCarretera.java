@@ -1,7 +1,8 @@
 package edu.fiuba.algo3.vistas;
+import java.util.concurrent.CompletableFuture;
+
 import edu.fiuba.algo3.modelo.ProveedorDeDatos;
-
-
+import edu.fiuba.algo3.modelo.tablero.Coordenadas;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
@@ -16,8 +17,12 @@ import javafx.stage.Stage;
 
 
 public class VentanaConstruirCarretera extends VBox {
+    
+    private CompletableFuture<Coordenadas[]> resultadoFuturo;
+    private Stage stage;
 
     public VentanaConstruirCarretera(Stage stage, String nombreJugador) {
+        this.stage = stage;
         stage.setTitle("Construir Carretera");
 
         VBox root = new VBox(20);
@@ -73,7 +78,11 @@ public class VentanaConstruirCarretera extends VBox {
                 int x = Integer.parseInt(xStr);
                 int y = Integer.parseInt(yStr);
 
-                //pedirCoordenadasAlUsuario();
+                Coordenadas coord = new Coordenadas(x, y);
+                
+                if (resultadoFuturo != null) {
+                    resultadoFuturo.complete(new Coordenadas[]{coord, coord});
+                }
                 
                 System.out.println("Construyendo poblado para " + nombreJugador + 
                                    " en Hex[" + x + "," + y + "]");
@@ -98,7 +107,10 @@ public class VentanaConstruirCarretera extends VBox {
         Alert alert = new Alert(Alert.AlertType.WARNING);
         alert.setTitle(titulo);
         alert.setHeaderText(null);
-        alert.setContentText(mensaje);
-        alert.showAndWait();
+    }
+    public CompletableFuture<Coordenadas[]> solicitarCoordenadas() {
+        resultadoFuturo = new CompletableFuture<>();
+        stage.show();
+        return resultadoFuturo;
     }
 }

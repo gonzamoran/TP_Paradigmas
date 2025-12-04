@@ -41,7 +41,10 @@ public class CasoDeUsoConstruccionTest {
         jugadores.add(jugador);
 
         CasoDeUsoConstruccion caso = new CasoDeUsoConstruccion(tablero, jugadores);
-        caso.construirEn(new Coordenadas(2, 2), new Poblado(), jugador);
+        tablero.colocarConstruccionInicial(new Poblado(), new Coordenadas(2, 2), jugador);
+        tablero.construirCarreteraGratis(new Coordenadas(2,2),new Coordenadas(2,3), jugador);
+        tablero.construirCarreteraGratis(new Coordenadas(2,3),new Coordenadas(2,4), jugador);
+        caso.construirEn(new Coordenadas(2, 4), new Poblado(), jugador);
 
         assertTrue(tablero.estaConstruidoCon(new Poblado(), new Coordenadas(2, 2), jugador));
         assertEquals(0, jugador.obtenerCantidadRecurso(new Madera()));
@@ -55,17 +58,15 @@ public class CasoDeUsoConstruccionTest {
     public void test02ConstruyoUnaCiudadYSeConsumenLosRecursosCorrectamente() {
         Tablero tablero = new Tablero();
         Jugador jugador = new Jugador("Jugador 1");
-        jugador.agregarRecurso(new Grano(3));
+        jugador.agregarRecurso(new Grano(2));
         jugador.agregarRecurso(new Piedra(3));
-        jugador.agregarRecurso(new Madera(1));
-        jugador.agregarRecurso(new Ladrillo(1));
-        jugador.agregarRecurso(new Lana(1));
 
         var jugadores = new ArrayList<Jugador>();
         jugadores.add(jugador);
 
         CasoDeUsoConstruccion caso = new CasoDeUsoConstruccion(tablero, jugadores);
-        caso.construirEn(new Coordenadas(2, 2), new Poblado(), jugador);
+        
+        tablero.colocarConstruccionInicial(new Poblado(), new Coordenadas(2, 2), jugador);
         caso.construirEn(new Coordenadas(2, 2), new Ciudad(), jugador);
 
         assertTrue(tablero.estaConstruidoCon(new Ciudad(), new Coordenadas(2, 2), jugador));
@@ -121,7 +122,7 @@ public class CasoDeUsoConstruccionTest {
         jugadores.add(jugador);
 
         CasoDeUsoConstruccion caso = new CasoDeUsoConstruccion(tablero, jugadores);
-        caso.construirEn(new Coordenadas(2, 2), new Poblado(), jugador);
+        tablero.colocarConstruccionInicial(new Poblado(), new Coordenadas(2, 2),jugador);
 
         assertEquals(1, jugador.calculoPuntosVictoria());
         caso.construirEn(new Coordenadas(2, 2), new Ciudad(), jugador);
@@ -145,7 +146,7 @@ public class CasoDeUsoConstruccionTest {
         Coordenadas coordenadaExtremo2 = new Coordenadas(2, 2);
 
         CasoDeUsoConstruccion caso = new CasoDeUsoConstruccion(tablero, jugadores);
-        caso.construirEn(coordenadaExtremo1, new Poblado(), jugador);
+        tablero.colocarConstruccionInicial(new Poblado(), coordenadaExtremo1, jugador);
         caso.construirCarretera(coordenadaExtremo1, coordenadaExtremo2, jugador);
 
         assertTrue(tablero.estaConstruidoCon(new Carretera(), coordenadaExtremo1, jugador));
@@ -188,7 +189,7 @@ public class CasoDeUsoConstruccionTest {
         Coordenadas coordenadaExtremo2 = new Coordenadas(4, 5);
 
         CasoDeUsoConstruccion caso = new CasoDeUsoConstruccion(tablero, jugadores);
-        caso.construirEn(coordenadaExtremo1, new Poblado(), jugador);
+        tablero.colocarConstruccionInicial(new Poblado(), coordenadaExtremo1, jugador);
         caso.construirEn(coordenadaExtremo1, new Ciudad(), jugador);
         caso.construirCarretera(coordenadaExtremo1, coordenadaExtremo2, jugador);
 
@@ -213,27 +214,17 @@ public class CasoDeUsoConstruccionTest {
         Coordenadas coordenadaExtremo2 = new Coordenadas(3, 4);
 
         CasoDeUsoConstruccion caso = new CasoDeUsoConstruccion(tablero, jugadores);
-        caso.construirEn(coordenadaExtremo1, new Poblado(), jugador);
+        tablero.colocarConstruccionInicial(new Poblado(), coordenadaExtremo1,jugador);
         caso.construirCarretera(coordenadaExtremo1, coordenadaExtremo2, jugador);
 
-        assertEquals(8, jugador.obtenerCantidadRecurso(new Madera()));
-        assertEquals(8, jugador.obtenerCantidadRecurso(new Ladrillo()));
-        
-        /*
-        Poblado; 1 madera, 1 ladrillo, 1 lana, 1 grano
-        Camino; 1 madera, 1 ladrillo
-        Recursos gastados: 2 madera, 2 ladrillo, 1 lana, 1 grano
-        */ 
+        assertEquals(9, jugador.obtenerCantidadRecurso(new Madera()));
+        assertEquals(9, jugador.obtenerCantidadRecurso(new Ladrillo()));
     }
 
     @Test
     public void test10NoSePuedeConstruirUnaCarreteraSiNoHayRecursosSuficientes() {
         Jugador jugador = new Jugador("Jugador 1");
         Tablero tablero = new Tablero();
-        jugador.agregarRecurso(new Madera(1));
-        jugador.agregarRecurso(new Ladrillo(1));
-        jugador.agregarRecurso(new Lana(1));
-        jugador.agregarRecurso(new Grano(1));
 
         var jugadores = new ArrayList<Jugador>();
         jugadores.add(jugador);
@@ -241,7 +232,7 @@ public class CasoDeUsoConstruccionTest {
         Coordenadas coordenadaExtremo1 = new Coordenadas(5, 5);
         Coordenadas coordenadaExtremo2 = new Coordenadas(5, 6);
         CasoDeUsoConstruccion caso = new CasoDeUsoConstruccion(tablero, jugadores);
-        tablero.colocarEn(coordenadaExtremo1, new Poblado(), jugador);
+        tablero.colocarConstruccionInicial(new Poblado(), coordenadaExtremo1, jugador);
         assertThrows(NoEsPosibleConstruirException.class, () -> caso.construirCarretera(coordenadaExtremo1, coordenadaExtremo2, jugador));
     }
 
@@ -262,7 +253,7 @@ public class CasoDeUsoConstruccionTest {
         Coordenadas coordenadaExtremo2 = new Coordenadas(1, 1);
 
         CasoDeUsoConstruccion caso = new CasoDeUsoConstruccion(tablero, jugadores);
-        caso.construirEn(coordenadaExtremo1, new Poblado(), jugador);
+        tablero.colocarConstruccionInicial(new Poblado(), coordenadaExtremo1, jugador);
         assertThrows(PosInvalidaParaConstruirException.class, () -> caso.construirCarretera(coordenadaExtremo1, coordenadaExtremo2, jugador));
     }
 
@@ -289,7 +280,7 @@ public class CasoDeUsoConstruccionTest {
         Coordenadas coordenadaExtremo2 = new Coordenadas(2, 3);
         CasoDeUsoConstruccion caso = new CasoDeUsoConstruccion(tablero, jugadores);
 
-        caso.construirEn(coordenadaExtremo1, new Poblado(), jugador2);
+        tablero.colocarConstruccionInicial(new Poblado(), coordenadaExtremo1, jugador2);
 
         assertThrows(NoEsPosibleConstruirException.class, () -> caso.construirCarretera(coordenadaExtremo1, coordenadaExtremo2, jugador1));
     }
@@ -312,7 +303,7 @@ public class CasoDeUsoConstruccionTest {
         Coordenadas coordenadaExtremo3 = new Coordenadas(3, 3);
 
         CasoDeUsoConstruccion caso = new CasoDeUsoConstruccion(tablero, jugadores);
-        caso.construirEn(coordenadaExtremo1, new Poblado(), jugador);
+        tablero.colocarConstruccionInicial(new Poblado(),coordenadaExtremo1, jugador);
         caso.construirCarretera(coordenadaExtremo1, coordenadaExtremo2, jugador);
         caso.construirCarretera(coordenadaExtremo2, coordenadaExtremo3, jugador);
 
@@ -337,7 +328,7 @@ public class CasoDeUsoConstruccionTest {
         Coordenadas coordenadaExtremo2 = new Coordenadas(3, 5);
 
         CasoDeUsoConstruccion caso = new CasoDeUsoConstruccion(tablero, jugadores);
-        caso.construirEn(coordenadaExtremo1, new Poblado(), jugador);
+        tablero.colocarConstruccionInicial(new Poblado(),coordenadaExtremo1, jugador);
         caso.construirCarretera(coordenadaExtremo1, coordenadaExtremo2, jugador);
 
         assertTrue(tablero.estaConstruidoCon(new Poblado(), coordenadaExtremo1, jugador));
@@ -363,7 +354,7 @@ public class CasoDeUsoConstruccionTest {
         CasoDeUsoConstruccion caso = new CasoDeUsoConstruccion(tablero, jugadores);
 
         Coordenadas coordenadaPoblado = new Coordenadas(1, 0);
-        caso.construirEn(coordenadaPoblado, new Poblado(), jugador);
+        tablero.colocarConstruccionInicial(new Poblado(),coordenadaPoblado,jugador);
 
         for (int i = 0; i < 5; i++) {
             Coordenadas extremo1 = new Coordenadas(1, i);
@@ -385,20 +376,16 @@ public class CasoDeUsoConstruccionTest {
         Tablero tablero = new Tablero();
         jugador1.agregarRecurso(new Madera(7));
         jugador1.agregarRecurso(new Ladrillo(7));
-        jugador1.agregarRecurso(new Piedra(1));
-        jugador1.agregarRecurso(new Lana(1));
-        jugador1.agregarRecurso(new Grano(1));
 
         jugador2.agregarRecurso(new Madera(7));
         jugador2.agregarRecurso(new Ladrillo(7));
-        jugador2.agregarRecurso(new Lana(2));
-        jugador2.agregarRecurso(new Grano(2));
-
+        jugador2.agregarRecurso(new Lana(1));
+        jugador2.agregarRecurso(new Grano(1));
         CasoDeUsoConstruccion caso = new CasoDeUsoConstruccion(tablero, jugadores);
         Coordenadas coordenadaPoblado1 = new Coordenadas(1, 0);
         
 
-        caso.construirEn(coordenadaPoblado1, new Poblado(), jugador1);
+        tablero.colocarConstruccionInicial(new Poblado(),coordenadaPoblado1, jugador1);
         
         
         Coordenadas pobladoJugador2 = new Coordenadas(0, 4);
@@ -406,7 +393,7 @@ public class CasoDeUsoConstruccionTest {
         Coordenadas extremoB = new Coordenadas(0, 3);  
         Coordenadas extremoC = new Coordenadas(1, 3);
 
-        caso.construirEn(pobladoJugador2, new Poblado(), jugador2);
+        tablero.colocarConstruccionInicial( new Poblado(),pobladoJugador2, jugador2);
         caso.construirCarretera(extremoA, extremoB, jugador2);
         caso.construirCarretera(extremoB, extremoC, jugador2);
         
@@ -451,8 +438,8 @@ public class CasoDeUsoConstruccionTest {
         jugador2.agregarRecurso(new Grano(2));
 
         CasoDeUsoConstruccion caso = new CasoDeUsoConstruccion(tablero, jugadores);
-        caso.construirEn(new Coordenadas(0, 1), new Poblado(), jugador1);
-        caso.construirEn(new Coordenadas(1, 0), new Poblado(), jugador2);
+        tablero.colocarConstruccionInicial( new Poblado(), new Coordenadas(0, 1), jugador1);
+        tablero.colocarConstruccionInicial(new Poblado(), new Coordenadas(1, 0), jugador2);
 
         for (int i = 1; i < 6; i++) {
             Coordenadas extremo1 = new Coordenadas(0, i); 
@@ -499,8 +486,8 @@ public class CasoDeUsoConstruccionTest {
         jugador2.agregarRecurso(new Grano(2));
 
         CasoDeUsoConstruccion caso = new CasoDeUsoConstruccion(tablero, jugadores);
-        caso.construirEn(new Coordenadas(0, 1), new Poblado(), jugador1);
-        caso.construirEn(new Coordenadas(1, 0), new Poblado(), jugador2);
+        tablero.colocarConstruccionInicial(new Poblado(), new Coordenadas(0, 1), jugador1);
+        tablero.colocarConstruccionInicial(new Poblado(), new Coordenadas(1, 0), jugador2);
 
         for (int i = 1; i < 7; i++) {
             Coordenadas extremo1 = new Coordenadas(0, i); 
@@ -552,9 +539,9 @@ public class CasoDeUsoConstruccionTest {
         jugador3.agregarRecurso(new Grano(2));
 
         CasoDeUsoConstruccion caso = new CasoDeUsoConstruccion(tablero, jugadores);
-        caso.construirEn(new Coordenadas(0, 1), new Poblado(), jugador1);
-        caso.construirEn(new Coordenadas(1, 0), new Poblado(), jugador2);
-        caso.construirEn(new Coordenadas(2,3), new Poblado(), jugador3);
+        tablero.colocarConstruccionInicial(new Poblado(), new Coordenadas(0, 1),  jugador1);
+        tablero.colocarConstruccionInicial(new Poblado(), new Coordenadas(1, 0), jugador2);
+        tablero.colocarConstruccionInicial(new Poblado(), new Coordenadas(2,3), jugador3);
 
         for (int i = 1; i < 7; i++) {
             Coordenadas extremo1 = new Coordenadas(0, i); 

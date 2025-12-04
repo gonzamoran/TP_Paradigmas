@@ -2,7 +2,6 @@ package edu.fiuba.algo3.modelo.tablero;
 
 import java.lang.reflect.Array;
 import java.lang.reflect.Constructor;
-// import java.system.out;
 import java.util.*;
 
 import edu.fiuba.algo3.modelo.Recurso;
@@ -16,12 +15,13 @@ import edu.fiuba.algo3.modelo.tablero.tiposHexagono.*;
 import edu.fiuba.algo3.modelo.tiposBanca.*;
 import edu.fiuba.algo3.modelo.tiposRecurso.*;
 
+import edu.fiuba.algo3.modelo.reglas.*;
+
 import edu.fiuba.algo3.modelo.excepciones.PosInvalidaParaConstruirException;
 import edu.fiuba.algo3.modelo.excepciones.NoEsPosibleConstruirException;
 import edu.fiuba.algo3.modelo.excepciones.CantidadInvalidaDeHexagonosONumerosException;
 
 public class Tablero {
-    private Ladron ladron; // sacar
     private ArrayList<Carretera> listaCarreteras;
     private ArrayList<Hexagono> listaHexagonos;
     private ArrayList<Produccion> listaNumeros;
@@ -42,7 +42,6 @@ public class Tablero {
         this.asignarNumeroALosHexagonos();
         this.inicializarVertices();
         this.asignarAdyacentesAVertices();
-        this.inicializarLadron();
     }
 
     public Tablero(ArrayList<Hexagono> listaHexagonos, ArrayList<Produccion> listaNumeros) {
@@ -58,7 +57,6 @@ public class Tablero {
         this.asignarNumeroALosHexagonos();
         this.inicializarVertices();
         this.asignarAdyacentesAVertices();
-        this.inicializarLadron();
     }
 
     private void inicializarHexagonosDefault() {
@@ -226,53 +224,37 @@ public class Tablero {
         return coordsAdyacentes;
     }
 
-    private void inicializarLadron() {
-        List<Hexagono> hexagonos = new ArrayList<>(mapaHexagonos.values());
-        for (Hexagono hexagono : hexagonos) {
-            if (hexagono.esDesierto()) {
-                this.ladron = new Ladron(hexagono);
+    public Hexagono obtenerDesierto(){
+        Hexagono desierto = null;
+        for(Hexagono hexagono : listaHexagonos){
+            if (!hexagono.puedeGenerarRecursos()){
+                desierto = hexagono;
             }
         }
+        return desierto;
     }
 
-    public boolean sePuedeConstruirInicial(Coordenadas coordenadas, Construccion construccion) {
-        if (construccion == null) {
-            return false;
-        }
-        if (!construccion.equals(new Poblado())) {
-            return false;
-        }
 
-        if (!this.sonCoordenadasValidas(coordenadas)) {
-            return false;
+    private void validarVertice(Coordenadas coordenadas, Jugador jugador) {
+        if (!this.sonCoordenadasValidas(coordenadas)){
+            throw new PosInvalidaParaConstruirException();
         }
-
         Vertice vertice = mapaVertices.get(coordenadas);
-        return vertice.cumpleReglaDistancia() && !vertice.tieneConstruccion();
+        if (vertice == null){
+            throw new PosInvalidaParaConstruirException();
+        }
     }
 
     public ArrayList<Recurso> colocarConstruccionInicial(Construccion construccion, Coordenadas coordenadas,
             Jugador jugador) {
-        if (!this.sePuedeConstruirInicial(coordenadas, construccion)) {
-            throw new PosInvalidaParaConstruirException();
-        }
+        validarVertice(coordenadas, jugador);
         Vertice vertice = mapaVertices.get(coordenadas);
-        var recursos = vertice.construirInicial(construccion, jugador);
-        return recursos;
-    }
 
-    public void mezclarHexagonos() {
-        var hexagonosMezclados = new ArrayList<Hexagono>(this.listaHexagonos);
-        Collections.shuffle(hexagonosMezclados);
-        this.listaHexagonos = hexagonosMezclados;
-        this.asignarNumeroALosHexagonos();
-    }
+        if (!construccion.validarConstruccionInicial(vertice, jugador)){
+            throw new NoEsPosibleConstruirException();
+        }
 
-    public void mezclarNumeros() {
-        var numerosMezclados = new ArrayList<Produccion>(this.listaNumeros);
-        Collections.shuffle(numerosMezclados);
-        this.listaNumeros = numerosMezclados;
-        this.asignarNumeroALosHexagonos();
+        return vertice.construirInicial(construccion, jugador);
     }
 
     public boolean sonCoordenadasValidas(Coordenadas coordenadas) {
@@ -280,27 +262,17 @@ public class Tablero {
     }
 
     public void colocarEn(Coordenadas coordenadas, Construccion construccion, Jugador jugador) {
-        if (!this.sePuedeConstruir(coordenadas, construccion, jugador)) {
+        validarVertice(coordenadas, jugador);
+
+        Vertice vertice = mapaVertices.get(coordenadas);
+        
+        if (!construccion.validarConstruccion(vertice, jugador)){
             throw new NoEsPosibleConstruirException();
         }
-        Vertice vertice = mapaVertices.get(coordenadas);
-        if (vertice != null) {
-            vertice.construir(construccion, jugador);
-        } else {
-            throw new PosInvalidaParaConstruirException();
-        }
-
+        var recursosNecesarios = construccion.obtenerRecursosNecesarios();
+        this.cobrar(jugador, recursosNecesarios);
+        vertice.construir(construccion, jugador);
     }
-
-    // public ArrayList<Recurso> producirRecurso(int produccionDado, Jugador jugador) {
-    //     ArrayList<Recurso> produccionDelJugador = new ArrayList<>();
-    //     for (Vertice vertice : mapaVertices.values()) {
-    //         if (vertice.tieneConstruccion() && vertice.esDueno(jugador)) {
-    //             produccionDelJugador.addAll(vertice.producirRecursos(produccionDado));
-    //         }
-    //     }
-    //     return produccionDelJugador;
-    // }
 
     public void producirRecurso(int produccionDado){
         for(Vertice vertice : mapaVertices.values()){
@@ -317,35 +289,8 @@ public class Tablero {
         }
     }
 
-
-
-
-    public boolean sePuedeConstruir(Coordenadas coordenadas, Construccion construccion, Jugador jugador) {
-        if (construccion == null) {
-            throw new NoEsPosibleConstruirException();
-        }
-        if (!this.sonCoordenadasValidas(coordenadas)) {
-            throw new PosInvalidaParaConstruirException();
-        }
-        Vertice vertice = mapaVertices.get(coordenadas);
-
-        if (!jugador.poseeRecursosParaConstruir(construccion)) {
-            return false;
-        }
-
-        if (vertice.cumpleReglaDistancia()) {
-            return vertice.puedeConstruirse(construccion);
-        }
-        return false;
-    }
-
-    public void moverLadronA(Coordenadas coordenadasHexagono) {
-        var jugadoresAfectados = this.obtenerJugadoresAdyacentes(coordenadasHexagono);
-        this.ladron.moverLadronA(this.obtenerHexagono(coordenadasHexagono), jugadoresAfectados);
-    }
-
-    public List<Jugador> obtenerJugadoresAdyacentes(Coordenadas coordenadasHexagono) {
-        List<Jugador> jugadores = new ArrayList<>();
+    public ArrayList<Jugador> obtenerJugadoresAdyacentes(Coordenadas coordenadasHexagono) {
+        ArrayList<Jugador> jugadores = new ArrayList<>();
 
         Coordenadas[] coordsVertices = this.obtenerVerticesDeHexagono(coordenadasHexagono);
 
@@ -363,20 +308,8 @@ public class Tablero {
         return jugadores;
     }
 
-    public void ladronRobaRecurso(Jugador jugadorActual, ProveedorDeDatos proveedor) {
-        ArrayList<Recurso> recursoRobado = ladron.robarRecurso(jugadorActual, proveedor);
-        if (!recursoRobado.isEmpty()) {
-            jugadorActual.agregarRecurso(recursoRobado.get(0));
-        }
-        //return recursoRobado;
-    }
-
     public Hexagono obtenerHexagono(Coordenadas coordenadas) {
         return mapaHexagonos.get(coordenadas);
-    }
-
-    public Hexagono obtenerHexagonoLadron() {
-        return ladron.obtenerHexagonoActual();
     }
 
     public boolean estaConstruidoCon(Construccion construccion, Coordenadas coordenadas, Jugador jugador) {
@@ -384,7 +317,7 @@ public class Tablero {
         return vertice.estaConstruidoCon(construccion, jugador);
     }
 
-    public void construirCarretera(Coordenadas coordenadaExtremo1, Coordenadas coordenadaExtremo2, Jugador jugador) {
+    private void validarVerticesCarretera(Coordenadas coordenadaExtremo1, Coordenadas coordenadaExtremo2, Jugador jugador) {
         if (!this.sonCoordenadasValidas(coordenadaExtremo1) || !this.sonCoordenadasValidas(coordenadaExtremo2)) {
             throw new PosInvalidaParaConstruirException();
         }
@@ -394,31 +327,37 @@ public class Tablero {
         if (!vertice1.esAdyacente(vertice2)) {
             throw new PosInvalidaParaConstruirException();
         }
+    }
 
-        if (!vertice1.poseeCarreterasDe(jugador) && !vertice2.poseeCarreterasDe(jugador)
-                && !(vertice1.esDueno(jugador) || vertice2.esDueno(jugador))) {
+    public void construirCarretera(Coordenadas coordenadaExtremo1, Coordenadas coordenadaExtremo2, Jugador jugador) {
+        this.validarVerticesCarretera(coordenadaExtremo1, coordenadaExtremo2, jugador);
+
+        Vertice vertice1 = mapaVertices.get(coordenadaExtremo1);
+        Vertice vertice2 = mapaVertices.get(coordenadaExtremo2);
+        
+        Carretera carretera = new Carretera();
+        var recursosNecesarios = carretera.obtenerRecursosNecesarios();
+        
+        if (!carretera.validarConstruccion(vertice1, jugador) && !carretera.validarConstruccion(vertice2, jugador)){
             throw new NoEsPosibleConstruirException();
         }
+               
+        this.cobrar(jugador, recursosNecesarios);
+        this.construirCarreteraGeneral(carretera, vertice1, vertice2, jugador);
 
-        var carretera = new Carretera();
-        if (!vertice1.puedeConstruirse(carretera) && !vertice2.puedeConstruirse(carretera)) {
-            throw new NoEsPosibleConstruirException();
-        }
+    }
 
-        if (!jugador.poseeRecursosParaConstruir(carretera)) {
-            throw new NoEsPosibleConstruirException();
-        }
-
-        // consumir recursos
-        List<Recurso> recursosNecesarios = carretera.obtenerRecursosNecesarios();
-        for (Recurso recurso : recursosNecesarios) {
-            jugador.removerRecurso(recurso);
-        }
-
+    private void construirCarreteraGeneral(Carretera carretera, Vertice vertice1, Vertice vertice2, Jugador jugador){
         vertice1.construirCarretera(carretera, jugador);
         vertice2.construirCarretera(carretera, jugador);
         jugador.agregarConstruccion(carretera);
         this.listaCarreteras.add(carretera);
+    }
+
+    private void cobrar(Jugador jugador, ArrayList<Recurso> recursos){
+        for (Recurso recurso : recursos){
+            jugador.removerRecurso(recurso);
+        }
     }
 
     public ArrayList<Banca> obtenerBancasDisponibles(Jugador jugador) {
@@ -433,33 +372,20 @@ public class Tablero {
         return bancasDisponibles;
     }
 
-    public void construirCarreteraGratis(Coordenadas coordenadaExtremo1, Coordenadas coordenadaExtremo2,
-            Jugador jugador) {
-        if (!this.sonCoordenadasValidas(coordenadaExtremo1) || !this.sonCoordenadasValidas(coordenadaExtremo2)) {
-            throw new PosInvalidaParaConstruirException();
-        }
+    public void construirCarreteraGratis(Coordenadas coordenadaExtremo1, Coordenadas coordenadaExtremo2, Jugador jugador) {
+        this.validarVerticesCarretera(coordenadaExtremo1, coordenadaExtremo2, jugador);
 
         Vertice vertice1 = mapaVertices.get(coordenadaExtremo1);
         Vertice vertice2 = mapaVertices.get(coordenadaExtremo2);
-
-        if (!vertice1.esAdyacente(vertice2)) {
-            throw new PosInvalidaParaConstruirException();
-        }
-
-        if (!vertice1.poseeCarreterasDe(jugador) && !vertice2.poseeCarreterasDe(jugador)
-                && !(vertice1.esDueno(jugador) || vertice2.esDueno(jugador))) {
+        
+        Carretera carretera = new Carretera();
+        var recursosNecesarios = carretera.obtenerRecursosNecesarios();
+        
+        if (!carretera.validarConstruccionInicial(vertice1, jugador) && !carretera.validarConstruccionInicial(vertice2, jugador)) {
             throw new NoEsPosibleConstruirException();
         }
-
-        var carretera = new Carretera();
-        if (!vertice1.puedeConstruirse(carretera) && !vertice2.puedeConstruirse(carretera)) {
-            throw new NoEsPosibleConstruirException();
-        }
-
-        vertice1.construirCarretera(carretera, jugador);
-        vertice2.construirCarretera(carretera, jugador);
-        jugador.agregarConstruccion(carretera);
-        this.listaCarreteras.add(carretera);
+        
+        this.construirCarreteraGeneral(carretera, vertice1, vertice2, jugador);
     }
 
     public int obtenerCarreteraMasLarga(Jugador jugador) {
@@ -476,9 +402,7 @@ public class Tablero {
             Vertice v2 = vertices.get(1);
 
             if (v2.tieneConstruccion() && !v2.esDueno(jugador)) {
-                if (mejor < 1) {
-                    mejor = 1;
-                }
+                mejor = Math.max(mejor, 1);
                 continue;
             }
 
@@ -492,27 +416,14 @@ public class Tablero {
 
             visitadosComponentes.addAll(visitados);
 
-            int largo;
-
-            if (extremo1 == null) {
-                largo = dfsLongitud(v1, null,  jugador);
-            } else {
-                largo = dfsLongitud(extremo1, null, jugador);
-            }
-            if (largo > mejor) {
-                mejor = largo;
-            }
-            //REFACTOR: evitar repetir codigo
-            if (extremo2 == null) {
-                largo = dfsLongitud(v2, null,  jugador);
-            } else {
-                largo = dfsLongitud(extremo2, null, jugador);
-            }
-            if (largo > mejor) {
-                mejor = largo;
-            }
+            mejor = Math.max(mejor, longitudDesdeExtremo(extremo1, v1, jugador));
+            mejor = Math.max(mejor, longitudDesdeExtremo(extremo2, v2, jugador));
         }
         return mejor;
+    }
+    private int longitudDesdeExtremo(Vertice extremo, Vertice extremoA, Jugador jugador){
+        Vertice inicio = (extremo == null) ? extremoA : extremo;
+        return dfsLongitud(inicio, null, jugador);
     }
 
     private Vertice dfsBuscarExtremo(Vertice actual, Jugador jugador, Set<Vertice> visitados) {
@@ -580,15 +491,30 @@ public class Tablero {
         this.propietarioCarreteraMasLarga = jugador;
     }
 
-    
-
     public boolean equals(Object obj) {
         if (this == obj)
             return true;
         if (obj == null || getClass() != obj.getClass())
             return false;
         Tablero otro = (Tablero) obj;
-        return listaHexagonos.equals(otro.listaHexagonos) && listaNumeros.equals(otro.listaNumeros);
+        if (listaHexagonos.size() != otro.listaHexagonos.size()
+                || listaNumeros.size() != otro.listaNumeros.size()) {
+            return false;
+        }
+        for (int i = 0; i < listaHexagonos.size(); i++) {
+            Hexagono hex1 = listaHexagonos.get(i);
+            Hexagono hex2 = otro.listaHexagonos.get(i);
+            if (!hex1.equals(hex2)) {
+                return false;
+            }
+        }
+        for (int i = 0; i < listaNumeros.size(); i++) {
+            Produccion num1 = listaNumeros.get(i);
+            Produccion num2 = otro.listaNumeros.get(i);
+            if (!num1.equals(num2)) {
+                return false;
+            }
+        }
+        return true;
     }
-
 }

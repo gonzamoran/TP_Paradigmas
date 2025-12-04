@@ -1,5 +1,6 @@
 package edu.fiuba.algo3.vistas;
 
+
 import javafx.application.Platform;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
@@ -131,9 +132,21 @@ public class ConfiguracionPartida extends VBox {
     private Button crearBotonSalir() {
         Button btn = new Button("Salir");
         btn.getStyleClass().add("exitButton");
-        btn.setOnAction(e -> Platform.exit());
+        btn.setOnAction(e -> 
+            Platform.exit());
         return btn;
     }
+
+    // private Button crearConfirmacionSalir() {
+    //     Label titulo = new Label("Está seguro que desea salir");
+    //     Button btnSalida = new Button("Salir");
+    //     Button btnCancel = new Button("Cancelar");
+    //     btnCancel.setOnAction(e-> Platform.exit());
+    //     btnSalida.getStyleClass().add("exitButton");
+    //     btnSalida.setOnAction(e -> 
+    //         Platform.exit());
+    //     return btn;
+    // }
     
     public static void show(Stage stage) {
         ConfiguracionPartida root = new ConfiguracionPartida(stage);

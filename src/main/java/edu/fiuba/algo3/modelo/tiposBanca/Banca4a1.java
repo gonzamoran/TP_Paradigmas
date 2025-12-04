@@ -18,7 +18,7 @@ public class Banca4a1 extends Banca {
             }
             cantidadOfrecida += recurso.obtenerCantidad();
         }
-        if (!jugador.poseeRecursosParaIntercambiar(oferta)) {
+        if (!jugador.poseeRecursos(oferta)) {
             throw new ComercioInvalidoException();
         }
         int cantidadDemandada = 0;
