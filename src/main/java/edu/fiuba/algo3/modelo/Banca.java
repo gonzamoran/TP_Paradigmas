@@ -13,6 +13,6 @@ public abstract class Banca {
         return true;
     }
     
-    public abstract void comerciar(Jugador jugador, ArrayList<Recurso> oferta, Recurso demanda);
+    public abstract void comerciar(Jugador jugador, ArrayList<Recurso> oferta, ArrayList<Recurso> demanda);
 
 }

@@ -8,14 +8,12 @@ import java.util.ArrayList;
 import edu.fiuba.algo3.modelo.excepciones.ComercioInvalidoException;
 
 public class Banca4a1 extends Banca {
-    public void comerciar(Jugador jugador, ArrayList<Recurso> oferta, Recurso demanda) {
+    public void comerciar(Jugador jugador, ArrayList<Recurso> oferta, ArrayList<Recurso> demanda) {
         int cantidadOfrecida = 0;
-        Class<? extends Recurso> claseRecurso = null;
+        Recurso modelo = oferta.get(0);
 
         for (edu.fiuba.algo3.modelo.Recurso recurso : oferta) {
-            if (claseRecurso == null) {
-                claseRecurso = recurso.getClass();
-            } else if (!claseRecurso.equals(recurso.getClass())) {
+            if (modelo != recurso) {
                 throw new ComercioInvalidoException();
             }
             cantidadOfrecida += recurso.obtenerCantidad();
@@ -23,14 +21,20 @@ public class Banca4a1 extends Banca {
         if (!jugador.poseeRecursosParaIntercambiar(oferta)) {
             throw new ComercioInvalidoException();
         }
+        int cantidadDemandada = 0;
+        for (Recurso recursoDemandado : demanda){
+            cantidadDemandada += recursoDemandado.obtenerCantidad();
+        }
 
-        if (cantidadOfrecida != 4){
+        if (cantidadOfrecida != 4 * cantidadDemandada){
             throw new ComercioInvalidoException();
         }
 
         for (edu.fiuba.algo3.modelo.Recurso recurso : oferta) {
             jugador.removerRecurso(recurso);
         }
-        jugador.agregarRecurso(demanda.obtenerCopia(1));
+        for (Recurso recursoDemandado : demanda){
+            jugador.agregarRecurso(recursoDemandado.obtenerCopia(recursoDemandado.obtenerCantidad()));
+        }
     }    
 }

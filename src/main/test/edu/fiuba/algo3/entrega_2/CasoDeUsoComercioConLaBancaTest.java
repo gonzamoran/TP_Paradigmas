@@ -35,7 +35,7 @@ public class CasoDeUsoComercioConLaBancaTest {
         jugador.agregarRecurso(new Ladrillo(4));
 
         ArrayList<Recurso> oferta = new ArrayList<>(List.of(new Ladrillo(4)));
-        Recurso demanda = new Madera();
+        ArrayList<Recurso> demanda = new ArrayList<>(List.of(new Madera(1)));
         CasoDeUsoComercioConLaBanca caso = new CasoDeUsoComercioConLaBanca(jugador, tablero);
         caso.comerciar(oferta, demanda, banca);
 
@@ -57,7 +57,7 @@ public class CasoDeUsoComercioConLaBancaTest {
         jugador.agregarRecurso(new Grano(1));
 
         ArrayList<Recurso> oferta = new ArrayList<>(List.of(new Ladrillo(1), new Madera(1), new Grano(1)));
-        Recurso demanda = new Lana();
+        ArrayList<Recurso> demanda = new ArrayList<>(List.of(new Lana(1)));
         CasoDeUsoComercioConLaBanca caso = new CasoDeUsoComercioConLaBanca(jugador, tablero);
         caso.comerciar(oferta, demanda, banca);
 
@@ -82,7 +82,7 @@ public class CasoDeUsoComercioConLaBancaTest {
         
         ArrayList<Recurso> oferta = new ArrayList<>(List.of(new Lana(2)));
 
-        Recurso demanda = new Piedra();
+        ArrayList<Recurso> demanda = new ArrayList<>(List.of(new Piedra(1)));
 
         CasoDeUsoComercioConLaBanca caso = new CasoDeUsoComercioConLaBanca(jugador, tablero);
         caso.comerciar(oferta, demanda, banca);
@@ -103,7 +103,7 @@ public class CasoDeUsoComercioConLaBancaTest {
         jugador.agregarRecurso(new Ladrillo(3));
 
         ArrayList<Recurso> oferta = new ArrayList<>(List.of(new Ladrillo(4)));
-        Recurso demanda = new Madera();
+        ArrayList<Recurso> demanda = new ArrayList<>(List.of(new Madera(1)));
         CasoDeUsoComercioConLaBanca caso = new CasoDeUsoComercioConLaBanca(jugador, tablero);
 
         
@@ -121,7 +121,7 @@ public class CasoDeUsoComercioConLaBancaTest {
         jugador.agregarRecurso(new Madera(2));
 
         ArrayList<Recurso> oferta = new ArrayList<>(List.of(new Ladrillo(2), new Madera(2)));
-        Recurso demanda = new Grano();
+        ArrayList<Recurso> demanda = new ArrayList<>(List.of(new Grano(1)));
 
         CasoDeUsoComercioConLaBanca caso = new CasoDeUsoComercioConLaBanca(jugador, tablero);
 
@@ -140,7 +140,7 @@ public class CasoDeUsoComercioConLaBancaTest {
         jugador.agregarRecurso(new Madera(1));
 
         ArrayList<Recurso> oferta = new ArrayList<>(List.of(new Ladrillo(2), new Madera(1)));
-        Recurso demanda = new Grano();
+        ArrayList<Recurso> demanda = new ArrayList<>(List.of(new Grano(1)));
 
         CasoDeUsoComercioConLaBanca caso = new CasoDeUsoComercioConLaBanca(jugador, tablero);
 
@@ -159,7 +159,7 @@ public class CasoDeUsoComercioConLaBancaTest {
         jugador.agregarRecurso(new Lana(1));
 
         ArrayList<Recurso> oferta = new ArrayList<>(List.of(new Lana(2)));
-        Recurso demanda = new Madera();
+        ArrayList<Recurso> demanda = new ArrayList<>(List.of(new Madera(1)));
 
         CasoDeUsoComercioConLaBanca caso = new CasoDeUsoComercioConLaBanca(jugador, tablero);
 
@@ -179,7 +179,7 @@ public class CasoDeUsoComercioConLaBancaTest {
         
         
         ArrayList<Recurso> oferta = new ArrayList<>(List.of(new Ladrillo(2)));
-        Recurso demanda = new Madera();
+        ArrayList<Recurso> demanda = new ArrayList<>(List.of(new Madera(1)));
         
         CasoDeUsoComercioConLaBanca caso = new CasoDeUsoComercioConLaBanca(jugador, tablero);
         
@@ -273,7 +273,7 @@ public class CasoDeUsoComercioConLaBancaTest {
         assertEquals(bancasEsperadas, bancasDisponibles);
 
         ArrayList<Recurso> oferta = new ArrayList<>(List.of(new Madera(2)));
-        Recurso demanda = new Piedra();
+        ArrayList<Recurso> demanda = new ArrayList<>(List.of(new Piedra(1)));
 
         caso.comerciar(oferta, demanda, bancasDisponibles.get(0));
 

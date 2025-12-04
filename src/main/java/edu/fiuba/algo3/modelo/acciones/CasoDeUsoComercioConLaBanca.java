@@ -17,11 +17,11 @@ public class CasoDeUsoComercioConLaBanca {
         this.tablero = tablero;
     }
 
-    public void comerciar(ArrayList<Recurso> oferta, Recurso demanda, Banca banca) {
+    public void comerciar(ArrayList<Recurso> oferta, ArrayList<Recurso> demanda, Banca banca) {
         banca.comerciar(jugador, oferta, demanda);
     }
 
-    public List<Banca> obtenerBancasDisponibles() {
+    public ArrayList<Banca> obtenerBancasDisponibles() {
         return tablero.obtenerBancasDisponibles(this.jugador);
     }
 }

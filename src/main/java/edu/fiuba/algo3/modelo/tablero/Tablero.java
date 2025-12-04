@@ -421,11 +421,11 @@ public class Tablero {
         this.listaCarreteras.add(carretera);
     }
 
-    public List<Banca> obtenerBancasDisponibles(Jugador jugador) {
-        List<Banca> bancasDisponibles = new ArrayList<>();
+    public ArrayList<Banca> obtenerBancasDisponibles(Jugador jugador) {
+        ArrayList<Banca> bancasDisponibles = new ArrayList<>();
         for (Vertice vertice : mapaVertices.values()) {
             if (vertice.tieneConstruccion() && vertice.esDueno(jugador)) {
-                List<Banca> disponibles = vertice.obtenerBancasDisponibles();
+                ArrayList<Banca> disponibles = vertice.obtenerBancasDisponibles();
                 bancasDisponibles.addAll(disponibles);
             }
         }

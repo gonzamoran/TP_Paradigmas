@@ -15,7 +15,7 @@ public class Banca2a1 extends Banca {
         this.recurso = recurso;
     }
 
-    public void comerciar (Jugador jugador,  ArrayList<Recurso> oferta, Recurso demanda){
+    public void comerciar (Jugador jugador,  ArrayList<Recurso> oferta, ArrayList<Recurso> demanda){
         int cantidadOfrecida = 0;
         for(Recurso recursoOfrecido : oferta){
             if(recursoOfrecido.getClass() != recurso.getClass()){
@@ -24,8 +24,14 @@ public class Banca2a1 extends Banca {
                 cantidadOfrecida += recursoOfrecido.obtenerCantidad();
             }
         }
+        
+        int cantidadDemandada = 0;
 
-        if (cantidadOfrecida != 2){
+        for (Recurso recursoDemandado : demanda){
+            cantidadDemandada += recursoDemandado.obtenerCantidad();
+        }
+
+        if (cantidadOfrecida != cantidadDemandada * 2){
             throw new ComercioInvalidoException();
         }
 
@@ -36,6 +42,9 @@ public class Banca2a1 extends Banca {
         for (Recurso recursoOfrecido : oferta){
             jugador.removerRecurso(recursoOfrecido);
         }
-        jugador.agregarRecurso(demanda.obtenerCopia(1));
+
+        for (Recurso recursoDemandado : demanda){
+            jugador.agregarRecurso(recursoDemandado.obtenerCopia(recursoDemandado.obtenerCantidad()));
+        }
     }
 }

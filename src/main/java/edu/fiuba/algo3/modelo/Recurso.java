@@ -52,7 +52,7 @@ public abstract class Recurso {
         if (obj == null || getClass() != obj.getClass())
             return false;
         Recurso recurso = (Recurso) obj;
-        return this.cantidad == recurso.cantidad;
+        return true;
     }
 
     public int hashCode() {

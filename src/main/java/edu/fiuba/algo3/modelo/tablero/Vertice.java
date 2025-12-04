@@ -19,9 +19,9 @@ public class Vertice {
     private List<Hexagono> hexagonosAdyacentes;
     private Construccion construccion;
     private boolean estaConstruido;
-    private List<Vertice> verticesAdyacentes;
-    private List<Carretera> carreterasIngresantes;
-    private List<Banca> bancasDisponibles;
+    private ArrayList<Vertice> verticesAdyacentes;
+    private ArrayList<Carretera> carreterasIngresantes;
+    private ArrayList<Banca> bancasDisponibles;
 
 
     public Vertice() {
@@ -176,7 +176,7 @@ public class Vertice {
         this.bancasDisponibles.add(banca);
     }
 
-    public List<Banca> obtenerBancasDisponibles() {
+    public ArrayList<Banca> obtenerBancasDisponibles() {
         return this.bancasDisponibles;
     }
 

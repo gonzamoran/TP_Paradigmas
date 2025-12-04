@@ -206,11 +206,11 @@ public class GestorDeTurnos {
 
     private void comercioConLaBanca(Jugador jugadorActual){
         CasoDeUsoComercioConLaBanca casoComercioBanca = new CasoDeUsoComercioConLaBanca(jugadorActual, tablero);
-        List<Banca> bancasDisponibles = casoComercioBanca.obtenerBancasDisponibles();
+        ArrayList<Banca> bancasDisponibles = casoComercioBanca.obtenerBancasDisponibles();
         Banca bancaSeleccionada = proveedor.pedirTipoDeBancaAlUsuario(bancasDisponibles);
-        ArrayList<Recurso> recursosAEntregar = proveedor.pedirRecursosAEntregarAlUsuario();
-        Recurso recursoARecibir = proveedor.pedirRecursoADesearAlUsuario();
-        casoComercioBanca.ejecutarComercio(bancaSeleccionada, recursosAEntregar, recursoARecibir);
+        ArrayList<Recurso> oferta = proveedor.pedirOfertaAlUsuario();
+        ArrayList<Recurso> demanda = proveedor.pedirDemandaAlUsuario();
+        casoComercioBanca.comerciar( oferta, demanda, bancaSeleccionada);
     }
 
     private void comercioConJugador(Jugador jugadorActual){
