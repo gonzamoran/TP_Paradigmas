@@ -6,11 +6,9 @@ import edu.fiuba.algo3.modelo.cartas.tiposDeCartaDesarrollo.*;
 import edu.fiuba.algo3.modelo.construcciones.Construccion;
 import edu.fiuba.algo3.modelo.construcciones.Poblado;
 import edu.fiuba.algo3.modelo.tablero.*;
-import edu.fiuba.algo3.modelo.tablero.tiposHexagono.*;
+import edu.fiuba.algo3.modelo.tiposRecurso.*;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
+import java.util.*;
 
 
 public class GestorDeTurnos {
@@ -18,16 +16,19 @@ public class GestorDeTurnos {
     private int indiceJugadorActual;
     private ArrayList<Jugador> jugadores;
     private Tablero tablero;
-    private boolean terminoElJuego;
     private ProveedorDeDatos proveedor;
     private Dados dados;
     private MazoCartasDesarrollo mazo;
     private Ladron ladron;
+    private java.util.concurrent.CompletableFuture<Void> finFaseConstruccion;
 
-    public GestorDeTurnos(ProveedorDeDatos proveedor) {
+    public GestorDeTurnos(ProveedorDeDatos proveedor, ArrayList<Hexagono> hexagonos, ArrayList<Produccion> producciones) {
         this.turnoActual = 0;
         this.indiceJugadorActual = 0;
         this.proveedor = proveedor;
+        CasoDeUsoArmarTablero casoTablero = new CasoDeUsoArmarTablero(hexagonos, producciones);
+        Tablero tablero = casoTablero.armarTablero();
+        this.tablero = tablero;
     }
 
     public void avanzarTurno() {
@@ -48,42 +49,6 @@ public class GestorDeTurnos {
     }
 
     public void inicializarJuego(){
-        ArrayList<Hexagono> hexagonos = new ArrayList<Hexagono>(List.of(
-            new Desierto(),
-            new Campo(), new Campo(), new Campo(), new Campo(),
-            new Bosque(), new Bosque(), new Bosque(), new Bosque(),
-            new Pastizal(), new Pastizal(), new Pastizal(), new Pastizal(),
-            new Colina(), new Colina(), new Colina(),
-            new Montana(), new Montana(), new Montana()
-        ));
-        ArrayList<Produccion> numeros = new ArrayList<Produccion>(List.of(
-                new Produccion(2),
-                new Produccion(3),
-                new Produccion(3),
-                new Produccion(4),
-                new Produccion(4),
-                new Produccion(5),
-                new Produccion(5),
-                new Produccion(6),
-                new Produccion(6),
-                new Produccion(8),
-                new Produccion(8),
-                new Produccion(9),
-                new Produccion(9),
-                new Produccion(10),
-                new Produccion(10),
-                new Produccion(11),
-                new Produccion(11),
-                new Produccion(12)
-        ));
-        Collections.shuffle(hexagonos);
-        Collections.shuffle(numeros);
-
-        //inicializar el ladron y pasarselo a tablero?
-
-        CasoDeUsoArmarTablero casoTablero = new CasoDeUsoArmarTablero(hexagonos, numeros);
-        Tablero tablero = casoTablero.armarTablero();
-        this.tablero = tablero;
         int cantidadDeJugadores = proveedor.pedirCantidadDeJugadoresAlUsuario();
         this.jugadores = new ArrayList<Jugador>();
         for (int i = 0; i < cantidadDeJugadores; i++) {
@@ -113,7 +78,6 @@ public class GestorDeTurnos {
     }
 
     private void comenzarFaseInicial(){
-        // primer turno
         CasoDeUsoColocacionInicial casoColocacion = new CasoDeUsoColocacionInicial(tablero);
         for (int i = 0; i < jugadores.size(); i++) {
             Jugador jugadorActual = jugadores.get(i);
@@ -121,8 +85,9 @@ public class GestorDeTurnos {
             casoColocacion.colocarConstruccionInicial(coordPoblado, new Poblado(), jugadorActual);
             Coordenadas extremoCarretera = proveedor.pedirCoordenadasAlUsuario();
             casoColocacion.colocarCarreteraInicial(coordPoblado, extremoCarretera, jugadorActual);
+            proveedor.notificarCambioInventario(jugadorActual, obtenerInventarioJugador(jugadorActual));
+            proveedor.notificarCambiosPuntosVictoria(jugadorActual, jugadorActual.calculoPuntosVictoria());
         }
-        // segundo turno
         for (int i = jugadores.size() -1 ; i >= 0 ; i--) {
             Jugador jugadorActual = jugadores.get(i);
             Coordenadas coordPoblado = proveedor.pedirCoordenadasAlUsuario();
@@ -132,6 +97,8 @@ public class GestorDeTurnos {
             }
             Coordenadas extremoCarretera = proveedor.pedirCoordenadasAlUsuario();
             casoColocacion.colocarCarreteraInicial(coordPoblado, extremoCarretera, jugadorActual);
+            proveedor.notificarCambioInventario(jugadorActual, obtenerInventarioJugador(jugadorActual));
+            proveedor.notificarCambiosPuntosVictoria(jugadorActual, jugadorActual.calculoPuntosVictoria());
         }
     }
 
@@ -142,69 +109,59 @@ public class GestorDeTurnos {
     }
 
     private void iniciarFaseConstruccionYComercio(Jugador jugadorActual){
-        boolean terminoFase = false;
-        while (!terminoFase){
-            String accion = proveedor.pedirSiguienteAccionARealizarAlUsuario();
-            switch (accion) {
-                case "TERMINAR_TURNO":
-                    terminoFase = true;
-                    break;
-                case "CONSTRUIR":
-                    CasoDeUsoConstruccion casoConstruir = new CasoDeUsoConstruccion(tablero, jugadores);
-                    Coordenadas coordenadas = proveedor.pedirCoordenadasAlUsuario();
-                    Construccion construccion = proveedor.pedirTipoDeConstruccionAlUsuario();
-                    casoConstruir.construirEn(coordenadas, construccion, jugadorActual);
-                    break;
-                case "COMPRAR_CARTA_DESARROLLO":
-                    CasoDeUsoSacarCartasDelMazoDeDesarrollo casoDeUsoCartas = new CasoDeUsoSacarCartasDelMazoDeDesarrollo();
-                    casoDeUsoCartas.comprarCartaDesarrollo(mazo, jugadorActual, turnoActual);
-                    break;
-                case "COMERCIAR_BANCA":
-                    while(true){
-                        this.comercioConLaBanca(jugadorActual);
-                        if (!proveedor.quiereSeguirComerciando()) {
-                            break;
-                        }
-                    }
-                    break;
-                case "COMERCIAR_JUGADOR":
-                    while (true) {
-                        this.comercioConJugador(jugadorActual);
-                        if (!proveedor.quiereSeguirComerciando()) {
-                            break;
-                        }
-                    }
-                    break;
-                default:
-                    terminoFase = true;
-                    break;
-            }
+        finFaseConstruccion = new java.util.concurrent.CompletableFuture<>();
+        finFaseConstruccion.join();
+    }
+
+    public void finalizarFaseConstruccion() {
+        if (finFaseConstruccion != null && !finFaseConstruccion.isDone()) {
+            finFaseConstruccion.complete(null);
         }
     }
 
-    private void comercioConLaBanca(Jugador jugadorActual){
+    public void construir(Coordenadas coordenadas, Construccion construccion) {
+        Jugador jugadorActual = obtenerJugadorActual();
+        if (jugadorActual == null) return;
+        CasoDeUsoConstruccion casoConstruir = new CasoDeUsoConstruccion(tablero, jugadores);
+        casoConstruir.construirEn(coordenadas, construccion, jugadorActual);
+        proveedor.notificarCambioInventario(jugadorActual, obtenerInventarioJugador(jugadorActual));
+        proveedor.notificarCambiosPuntosVictoria(jugadorActual, jugadorActual.calculoPuntosVictoria());
+    }
+
+    public void comprarCartaDesarrollo() {
+        Jugador jugadorActual = obtenerJugadorActual();
+        if (jugadorActual == null) return;
+        CasoDeUsoSacarCartasDelMazoDeDesarrollo casoDeUsoCartas = new CasoDeUsoSacarCartasDelMazoDeDesarrollo();
+        casoDeUsoCartas.comprarCartaDesarrollo(mazo, jugadorActual, turnoActual);
+        proveedor.notificarCambioInventario(jugadorActual, obtenerInventarioJugador(jugadorActual));
+    }
+
+    public void comerciarConLaBanca() {
+        Jugador jugadorActual = obtenerJugadorActual();
+        if (jugadorActual == null) return;
         CasoDeUsoComercioConLaBanca casoComercioBanca = new CasoDeUsoComercioConLaBanca(jugadorActual, tablero);
         ArrayList<Banca> bancasDisponibles = casoComercioBanca.obtenerBancasDisponibles();
         Banca bancaSeleccionada = proveedor.pedirTipoDeBancaAlUsuario(bancasDisponibles);
         ArrayList<Recurso> oferta = proveedor.pedirOfertaAlUsuario();
         ArrayList<Recurso> demanda = proveedor.pedirDemandaAlUsuario();
-        casoComercioBanca.comerciar( oferta, demanda, bancaSeleccionada);
+        casoComercioBanca.comerciar(oferta, demanda, bancaSeleccionada);
+        proveedor.notificarCambioInventario(jugadorActual, obtenerInventarioJugador(jugadorActual));
     }
 
-    private void comercioConJugador(Jugador jugadorActual){
-        Jugador jugador2 = proveedor.pedirJugadorParaComerciar(jugadorActual, jugadores);
-        CasoDeUsoIntercambio caso = new CasoDeUsoIntercambio(jugadorActual, jugador2);
+    public void comerciarConJugador() {
+        Jugador jugadorActual = obtenerJugadorActual();
+        if (jugadorActual == null) return;
+        Jugador jugadorDestino = proveedor.pedirJugadorParaComerciar(jugadorActual, jugadores);
+        CasoDeUsoIntercambio caso = new CasoDeUsoIntercambio(jugadorActual, jugadorDestino);
 
         ArrayList<Recurso> oferta = proveedor.pedirOfertaAlUsuario();
         ArrayList<Recurso> demanda = proveedor.pedirDemandaAlUsuario();
 
-        if (proveedor.aceptaIntercambio(jugador2, oferta, demanda)) {
+        if (proveedor.aceptaIntercambio(jugadorDestino, oferta, demanda)) {
             caso.ejecutarIntercambio(oferta, demanda);
+            proveedor.notificarCambioInventario(jugadorActual, obtenerInventarioJugador(jugadorActual));
+            proveedor.notificarCambioInventario(jugadorDestino, obtenerInventarioJugador(jugadorDestino));
         }
-    }
-
-    private boolean quiereConstruir(String accion){
-        return new String("CONSTRUIR").equals(accion);
     }
 
     private void iniciarFaseUsoDeCartasDesarrollo(Jugador jugador){
@@ -231,21 +188,21 @@ public class GestorDeTurnos {
         for(Jugador jugador : jugadores){
             if(jugador.calculoPuntosVictoria() >= 10){
                 proveedor.anunciarGanador(jugador);
-                this.terminoElJuego = true;
-
                 return;
             }
         }
     }
+    
     public void jugar(){
         this.inicializarJuego(); 
         this.comenzarFaseInicial(); 
         while(!this.terminoElJuego()){ 
-            var jugadorActual = jugadores.get(indiceJugadorActual); 
+            var jugadorActual = jugadores.get(indiceJugadorActual);
+            proveedor.notificarCambioTurno(jugadorActual, indiceJugadorActual, turnoActual);
+            
             this.iniciarFaseLanzamientoDeDados(jugadorActual); 
             this.iniciarFaseConstruccionYComercio(jugadorActual); 
             if (this.terminoElJuego()){ 
-                terminoElJuego = true; 
                 break; 
             }
             this.iniciarFaseUsoDeCartasDesarrollo(jugadorActual); 
@@ -255,4 +212,45 @@ public class GestorDeTurnos {
         }
         this.finalizarJuego(); 
     }
+    
+    
+    public Jugador obtenerJugadorActual() {
+        if (jugadores != null && !jugadores.isEmpty() && indiceJugadorActual >= 0 && indiceJugadorActual < jugadores.size()) {
+            return jugadores.get(indiceJugadorActual);
+        }
+        return null;
+    }
+    
+
+    public java.util.Map<Recurso, Integer> obtenerInventarioJugador(Jugador jugador) {
+        ArrayList<Recurso> recursos = new ArrayList<Recurso>(List.of(
+            new Madera(), new Ladrillo(), new Grano(), new Lana(), new Piedra()
+        ));
+        Map<Recurso, Integer> inventario = new HashMap<>();
+        for (Recurso recurso : recursos) {
+            int cantidad = jugador.obtenerCantidadRecurso(recurso);
+            if (cantidad > 0) {
+                inventario.put(recurso, cantidad);
+            }
+        }
+        return inventario;
+    }
+    
+    public int obtenerPuntosVictoriaJugadorActual() {
+        Jugador jugador = obtenerJugadorActual();
+        if (jugador == null) {
+            return 0;
+        }
+        return jugador.calculoPuntosVictoria();
+    }
+    
+
+    public int obtenerTurnoActual() {
+        return turnoActual;
+    }
+    
+
+    public ArrayList<Jugador> obtenerJugadores() {
+        return jugadores;
+    }    
 }

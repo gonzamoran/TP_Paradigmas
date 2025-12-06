@@ -7,7 +7,10 @@ import edu.fiuba.algo3.modelo.construcciones.Poblado;
 import edu.fiuba.algo3.modelo.tablero.Coordenadas;
 import edu.fiuba.algo3.modelo.tiposBanca.Banca4a1;
 
+
 import java.util.ArrayList;
+import java.util.Map;
+import java.util.concurrent.CompletableFuture;
 
 public class ProveedorDeDatos {
     
@@ -58,6 +61,13 @@ public class ProveedorDeDatos {
             return vista.solicitarJugadorARobar(jugadores).join();
         }
         return jugadores.get(0);
+    }
+
+    public CompletableFuture<String> pedirAccionConstruccionComercio(){
+        if (vista != null) {
+            return vista.solicitarAccionConstruccionComercio();
+        }
+        return CompletableFuture.completedFuture("TERMINAR_TURNO");
     }
 
     public String pedirSiguienteAccionARealizarAlUsuario(){
@@ -137,4 +147,26 @@ public class ProveedorDeDatos {
         }
         return true;
     }
+    
+
+    public void notificarCambioTurno(Jugador jugadorActual, int indiceJugador, int numeroTurno) {
+        if (vista != null) {
+            vista.notificarCambioTurno(jugadorActual, indiceJugador, numeroTurno);
+        }
+    }
+    
+
+    public void notificarCambioInventario(Jugador jugador, Map<Recurso, Integer> inventario) {
+        if (vista != null) {
+            vista.notificarCambioInventario(jugador, inventario);
+        }
+    }
+    
+
+    public void notificarCambiosPuntosVictoria(Jugador jugador, int puntos) {
+        if (vista != null) {
+            vista.notificarCambiosPuntosVictoria(jugador, puntos);
+        }
+    }
+    
 }

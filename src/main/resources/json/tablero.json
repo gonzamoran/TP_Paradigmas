@@ -1,0 +1,43 @@
+{
+  "hexagonos": [
+    {"tipo": "Desierto"},
+    {"tipo": "Campo"},
+    {"tipo": "Campo"},
+    {"tipo": "Campo"},
+    {"tipo": "Campo"},
+    {"tipo": "Bosque"},
+    {"tipo": "Bosque"},
+    {"tipo": "Bosque"},
+    {"tipo": "Bosque"},
+    {"tipo": "Pastizal"},
+    {"tipo": "Pastizal"},
+    {"tipo": "Pastizal"},
+    {"tipo": "Pastizal"},
+    {"tipo": "Colina"},
+    {"tipo": "Colina"},
+    {"tipo": "Colina"},
+    {"tipo": "Montana"},
+    {"tipo": "Montana"},
+    {"tipo": "Montana"}
+  ],
+  "producciones": [
+    {"numero": 2},
+    {"numero": 3},
+    {"numero": 3},
+    {"numero": 4},
+    {"numero": 4},
+    {"numero": 5},
+    {"numero": 5},
+    {"numero": 6},
+    {"numero": 6},
+    {"numero": 8},
+    {"numero": 8},
+    {"numero": 9},
+    {"numero": 9},
+    {"numero": 10},
+    {"numero": 10},
+    {"numero": 11},
+    {"numero": 11},
+    {"numero": 12}
+  ]
+}

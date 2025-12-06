@@ -1,4 +1,4 @@
-package edu.fiuba.algo3.architecture;
+package edu.fiuba.algo3;
 
 import com.tngtech.archunit.core.domain.JavaClasses;
 import com.tngtech.archunit.core.importer.ClassFileImporter;
@@ -16,7 +16,7 @@ public class ModelDependenciesTest {
     public void elModeloSoloPuedeReferenciarClasesDelModeloAdemasJavaAdemasJunit() {
         JavaClasses importedClasses = new ClassFileImporter().importPackages("edu.fiuba.algo3.modelo");
 
-        String[] listOfPackages = {MODEL, JAVA_LANG, JUNIT};
+        String[] listOfPackages = { MODEL, JAVA_LANG, JUNIT };
 
         ArchRule myRule = classes().that().resideInAPackage(MODEL)
                 .should().onlyDependOnClassesThat().resideInAnyPackage(listOfPackages);

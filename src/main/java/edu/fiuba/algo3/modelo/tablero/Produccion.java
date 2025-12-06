@@ -7,6 +7,10 @@ public class Produccion {
         this.numero = numero;
     }
 
+    public int getNumero() {
+        return numero;
+    }
+
     public boolean equals(Object obj) {
         if (this == obj)
             return true;

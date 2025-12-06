@@ -374,7 +374,6 @@ public class Tablero {
         Vertice vertice2 = mapaVertices.get(coordenadaExtremo2);
         
         Carretera carretera = new Carretera();
-        var recursosNecesarios = carretera.obtenerRecursosNecesarios();
         
         if (!carretera.validarConstruccionInicial(vertice1, jugador) && !carretera.validarConstruccionInicial(vertice2, jugador)) {
             throw new NoEsPosibleConstruirException();

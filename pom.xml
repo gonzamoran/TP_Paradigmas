@@ -1,26 +1,33 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
   <modelVersion>4.0.0</modelVersion>
+
   <groupId>edu.fiuba.algo3</groupId>
   <artifactId>tp2</artifactId>
   <version>0.0.1</version>
+
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-    <maven.compiler.source>11</maven.compiler.source>
-    <maven.compiler.target>11</maven.compiler.target>
-    <junit.jupiter.version>5.4.0</junit.jupiter.version>
-    <mockito.version>5.14.2</mockito.version>
-    <maven-surefire-version>3.0.0-M3</maven-surefire-version>
-    <archunit-version>0.21.0</archunit-version>
-    <!--
-    Therefore, we are very proud to announce the availability of JavaFX 17-ea+8 for MacOS AArch64, also known as the Apple M1. You can now download the JavaFX SDK for this platform from our JavaFX Download Page. Ref.: https://gluonhq.com/javafx-for-apple-m1/
+    <maven.compiler.source>21</maven.compiler.source>
+    <maven.compiler.target>21</maven.compiler.target>
 
-    Replace the line below by: <javafx-version>18.0.2</javafx-version>
-    -->
-    <javafx-version>17.0.2</javafx-version>
+    <junit.jupiter.version>5.10.0</junit.jupiter.version>
+    <mockito.version>5.14.2</mockito.version>
+    <maven-surefire-version>3.1.2</maven-surefire-version>
+    <archunit-version>0.21.0</archunit-version>
+    <bytebuddy.version>1.15.4</bytebuddy.version>
+
+    <javafx-version>21.0.4</javafx-version>
+
     <pitest-plugin-version>1.17.3</pitest-plugin-version>
     <pitest-junit5-plugin-version>1.0.0</pitest-junit5-plugin-version>
+
     <main-class>edu.fiuba.algo3.Main</main-class>
+
+    <!-- Flags para perfiles -->
+    <skipJacoco>false</skipJacoco>
+    <skipPit>false</skipPit>
+    <mockito.agent></mockito.agent>
   </properties>
   <dependencies>
     <dependency>
@@ -59,6 +66,31 @@
     </dependency>
   </dependencies>
   <profiles>
+
+    <!-- Profile dev: simplifica ejecución dentro de VS Code -->
+    <profile>
+      <id>dev</id>
+      <activation>
+        <activeByDefault>true</activeByDefault>
+      </activation>
+      <properties>
+        <skipJacoco>true</skipJacoco>
+        <skipPit>true</skipPit>
+      </properties>
+    </profile>
+
+    <!-- Mockito agent: solo activarlo cuando lo necesites -->
+    <profile>
+      <id>mockito-agent</id>
+      <activation>
+        <activeByDefault>false</activeByDefault>
+      </activation>
+      <properties>
+        <mockito.agent>-javaagent:${settings.localRepository}/net/bytebuddy/byte-buddy-agent/${bytebuddy.version}/byte-buddy-agent-${bytebuddy.version}.jar</mockito.agent>
+      </properties>
+    </profile>
+
+    <!-- Packaging JavaFX multiplataforma -->
     <profile>
       <id>package</id>
       <dependencies>
@@ -82,30 +114,53 @@
         </dependency>
       </dependencies>
     </profile>
+
   </profiles>
   <build>
-    <testSourceDirectory>src/main/test</testSourceDirectory>
     <plugins>
+
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-dependency-plugin</artifactId>
+        <version>3.6.0</version>
+        <executions>
+          <execution>
+            <phase>process-test-classes</phase>
+            <goals>
+              <goal>properties</goal>
+            </goals>
+          </execution>
+        </executions>
+      </plugin>
+
+      <!-- PIT mutation testing -->
       <plugin>
         <groupId>org.pitest</groupId>
         <artifactId>pitest-maven</artifactId>
-	<version>${pitest-plugin-version}</version>
+        <version>${pitest-plugin-version}</version>
+        <configuration>
+          <skip>${skipPit}</skip>
+        </configuration>
         <dependencies>
           <dependency>
             <groupId>org.pitest</groupId>
             <artifactId>pitest-junit5-plugin</artifactId>
-	    <version>${pitest-junit5-plugin-version}</version>
+            <version>${pitest-junit5-plugin-version}</version>
           </dependency>
         </dependencies>
       </plugin>
+
+      <!-- Compilador -->
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-compiler-plugin</artifactId>
-        <version>3.8.0</version>
+        <version>3.14.1</version>
         <configuration>
-          <release>11</release>
+          <release>21</release>
         </configuration>
       </plugin>
+
+      <!-- JavaFX runner -->
       <plugin>
         <groupId>org.openjfx</groupId>
         <artifactId>javafx-maven-plugin</artifactId>
@@ -114,6 +169,8 @@
           <mainClass>edu.fiuba.algo3/${main-class}</mainClass>
         </configuration>
       </plugin>
+
+      <!-- Shade: generar JAR ejecutable -->
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-shade-plugin</artifactId>
@@ -134,18 +191,26 @@
           </execution>
         </executions>
       </plugin>
+
+      <!-- Surefire: ejecutar tests -->
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-surefire-plugin</artifactId>
         <version>${maven-surefire-version}</version>
         <configuration>
-          <argLine>${argLine} -XX:MaxPermSize=256m</argLine>
+          <argLine>${argLine} ${mockito.agent} -XX:+EnableDynamicAgentLoading</argLine>
+          <useSystemClassLoader>false</useSystemClassLoader>
         </configuration>
       </plugin>
+
+      <!-- JaCoCo -->
       <plugin>
         <groupId>org.jacoco</groupId>
         <artifactId>jacoco-maven-plugin</artifactId>
-        <version>0.8.2</version>
+        <version>0.8.14</version>
+        <configuration>
+          <skip>${skipJacoco}</skip>
+        </configuration>
         <executions>
           <execution>
             <goals>
@@ -161,6 +226,7 @@
           </execution>
         </executions>
       </plugin>
+
     </plugins>
   </build>
 </project>

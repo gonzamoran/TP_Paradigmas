@@ -36,7 +36,6 @@ public class CasoDeUsoGirarElDadoTest {
         Hexagono desierto = tablero.obtenerDesierto();
         Ladron ladron = new Ladron(desierto);
         Jugador jugador = new Jugador("Azul");
-        Coordenadas origen = new Coordenadas(2, 4);
         jugador.agregarRecurso(new Lana(8));
         jugador.agregarRecurso(new Madera(8));
         jugador.agregarRecurso(new Grano(8));
@@ -90,7 +89,6 @@ public class CasoDeUsoGirarElDadoTest {
         // arrange
         Tablero tablero = new Tablero();
         Jugador jugador = new Jugador("Azul");
-        Coordenadas origen = new Coordenadas(2, 2);
     
         Hexagono desierto = tablero.obtenerDesierto();
         Ladron ladron = new Ladron(desierto);
@@ -206,7 +204,6 @@ public class CasoDeUsoGirarElDadoTest {
 
         candidatos.add(jugador1);
         candidatos.add(jugador2);
-        Coordenadas origen = new Coordenadas(2, 2);
         CasoDeUsoGirarElDado caso = new CasoDeUsoGirarElDado(tablero, ladron);
         tablero.colocarConstruccionInicial(new Poblado(), new Coordenadas(0, 6), jugador1);
 

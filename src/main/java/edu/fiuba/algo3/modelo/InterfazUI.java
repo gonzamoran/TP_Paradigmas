@@ -5,6 +5,7 @@ import edu.fiuba.algo3.modelo.construcciones.Construccion;
 import edu.fiuba.algo3.modelo.tablero.Coordenadas;
 
 import java.util.ArrayList;
+import java.util.Map;
 import java.util.concurrent.CompletableFuture;
 
 public interface InterfazUI {
@@ -22,6 +23,8 @@ public interface InterfazUI {
     CompletableFuture<Jugador> solicitarJugadorARobar(ArrayList<Jugador> jugadores);
     
     CompletableFuture<String> solicitarSiguienteAccion();
+
+    CompletableFuture<String> solicitarAccionConstruccionComercio();
     
     CompletableFuture<Construccion> solicitarTipoConstruccion();
     
@@ -42,4 +45,8 @@ public interface InterfazUI {
     CompletableFuture<CartasDesarrollo> solicitarCartaDesarrollo(Jugador jugador, ArrayList<CartasDesarrollo> cartasDelJugador, ArrayList<CartasDesarrollo> cartasJugables);
     
     CompletableFuture<Boolean> solicitarUsarCartaDesarrollo(Jugador jugador);
+
+    default void notificarCambioTurno(Jugador jugadorActual, int indiceJugador, int numeroTurno) {}
+    default void notificarCambioInventario(Jugador jugador, Map<Recurso, Integer> inventario) {}
+    default void notificarCambiosPuntosVictoria(Jugador jugador, int puntos) {}
 }

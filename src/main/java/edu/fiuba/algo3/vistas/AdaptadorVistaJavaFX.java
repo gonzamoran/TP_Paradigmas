@@ -12,19 +12,25 @@ import javafx.stage.Stage;
 import javafx.application.Platform;
 
 import java.util.ArrayList;
+import java.util.Map;
 import java.util.concurrent.CompletableFuture;
 
 public class AdaptadorVistaJavaFX implements InterfazUI {
     
-    private Stage stagePrincipal;
+    private Stage escenarioPrincipal;
     private VentanaConstruirCarretera ventanaCarretera;
     private VentanaConstruirPoblado ventanaPoblado;
     private VentanaComerciar ventanaComerciar;
     private VentanaCartasDesarrollos ventanaCartas;
     private VentanaVictoria ventanaVictoria;
+    private CampoDeJuego campoDeJuego;
     
-    public AdaptadorVistaJavaFX(Stage stagePrincipal) {
-        this.stagePrincipal = stagePrincipal;
+    public AdaptadorVistaJavaFX(Stage escenarioPrincipal) {
+        this.escenarioPrincipal = escenarioPrincipal;
+    }
+    
+    public void setCampoDeJuego(CampoDeJuego campoDeJuego) {
+        this.campoDeJuego = campoDeJuego;
     }
     
     @Override
@@ -75,7 +81,7 @@ public class AdaptadorVistaJavaFX implements InterfazUI {
     public CompletableFuture<Integer> solicitarCantidadJugadores() {
 
         CompletableFuture<Integer> futuro = new CompletableFuture<>();
-        futuro.complete(2); // Default
+        futuro.complete(2);
         return futuro;
     }
     
@@ -95,6 +101,13 @@ public class AdaptadorVistaJavaFX implements InterfazUI {
         
         CompletableFuture<String> futuro = new CompletableFuture<>();
         futuro.complete("Terminar turno");
+        return futuro;
+    }
+
+    @Override
+    public CompletableFuture<String> solicitarAccionConstruccionComercio() {
+        CompletableFuture<String> futuro = new CompletableFuture<>();
+        futuro.complete("TERMINAR_TURNO");
         return futuro;
     }
     
@@ -159,13 +172,6 @@ public class AdaptadorVistaJavaFX implements InterfazUI {
     
     @Override
     public void mostrarGanador(Jugador jugador) {
-        // Platform.runLater(() -> {
-        //     if (ventanaVictoria == null) {
-        //         ventanaVictoria = new VentanaVictoria(stagePrincipal);
-        //     }
-        //     ventanaVictoria.setGanador(jugador);
-        //     ventanaVictoria.mostrar();
-        // });
     }
     
     @Override
@@ -185,4 +191,26 @@ public class AdaptadorVistaJavaFX implements InterfazUI {
         futuro.complete(false);
         return futuro;
     }
+
+    @Override
+    public void notificarCambioTurno(Jugador jugadorActual, int indiceJugador, int numeroTurno) {
+        if (campoDeJuego != null) {
+            campoDeJuego.actualizarTurno(jugadorActual.obtenerNombre(), numeroTurno);
+        }
+    }
+
+    @Override
+    public void notificarCambioInventario(Jugador jugador, Map<Recurso, Integer> inventario) {
+        if (campoDeJuego != null) {
+            campoDeJuego.actualizarInventario(inventario);
+        }
+    }
+
+    @Override
+    public void notificarCambiosPuntosVictoria(Jugador jugador, int puntos) {
+        if (campoDeJuego != null) {
+            campoDeJuego.actualizarPuntosVictoria(puntos);
+        }
+    }
 }
+

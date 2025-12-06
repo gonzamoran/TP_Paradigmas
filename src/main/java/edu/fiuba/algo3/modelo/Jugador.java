@@ -10,7 +10,7 @@ import edu.fiuba.algo3.modelo.excepciones.RecursosInsuficientesException;
 import java.util.ArrayList;
 
 public class Jugador {
-    private final String color;
+    private final String nombre;
     private CartasJugador mazos;
     private ArrayList<Construccion> construccionesJugador;
     private int puntosDeVictoria;
@@ -18,8 +18,8 @@ public class Jugador {
 
     private int caminoMasLargo;
 
-    public Jugador(String color) {
-        this.color = color;
+    public Jugador(String nombre) {
+        this.nombre = nombre;
         this.puntosDeVictoria = 0;
         this.caballerosJugador = 0;
         this.construccionesJugador = new ArrayList<>();
@@ -73,10 +73,6 @@ public class Jugador {
 
     public void intercambiar(ArrayList<Recurso> recursosAEntregar, ArrayList<Recurso> recursosARecibir,
             Jugador jugador2) {
-        // if (!this.poseeRecursosParaIntercambiar(recursosAEntregar)
-        //         || !jugador2.poseeRecursosParaIntercambiar(recursosARecibir)) {
-        //     throw new IntercambioInvalidoException();
-        // }
         if (!this.poseeRecursos(recursosAEntregar)
                 || !jugador2.poseeRecursos(recursosARecibir)) {
             throw new IntercambioInvalidoException();
@@ -186,7 +182,11 @@ public class Jugador {
         if (obj == null || getClass() != obj.getClass())
             return false;
         Jugador jugador = (Jugador) obj;
-        return this.color == jugador.color;
+        return this.nombre.equals(jugador.nombre);
+    }
+
+    public String obtenerNombre() {
+        return this.nombre;
     }
 
 }

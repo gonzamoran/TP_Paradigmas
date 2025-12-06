@@ -106,7 +106,7 @@ public class ConfiguracionPartida extends VBox {
                 for(TextField txt : listaDeInputs) {
                     nombresJugadores.add(txt.getText());
                 }
-                Juego.show(stage, nombresJugadores);
+                CampoDeJuego.show(stage, nombresJugadores);
             }
         });
         return btn;
