@@ -57,7 +57,6 @@ public class ConfiguracionPartida extends VBox {
         ComboBox<String> comboBox = new ComboBox<>();
         comboBox.getItems().addAll("3 Jugadores", "4 Jugadores", "5 Jugadores", "6 Jugadores");
         comboBox.setPromptText("Seleccionar...");
-        //pedirCantidadDeJugadoresAlUsuario()
         comboBox.getStyleClass().add("comboBox"); 
 
         comboBox.setOnAction(e -> {
@@ -76,9 +75,6 @@ public class ConfiguracionPartida extends VBox {
         for (int i = 0; i < cantidad; i++) {
             
             Label labelNombre = new Label("Nombre Jugador " + (i + 1) + ":");
-
-            //pedirNombreJugadorAlUsuario(int cantidadDeJugadores)
-
             labelNombre.getStyleClass().add("labelText"); 
 
             TextField input = new TextField();
@@ -137,17 +133,6 @@ public class ConfiguracionPartida extends VBox {
         return btn;
     }
 
-    // private Button crearConfirmacionSalir() {
-    //     Label titulo = new Label("Está seguro que desea salir");
-    //     Button btnSalida = new Button("Salir");
-    //     Button btnCancel = new Button("Cancelar");
-    //     btnCancel.setOnAction(e-> Platform.exit());
-    //     btnSalida.getStyleClass().add("exitButton");
-    //     btnSalida.setOnAction(e -> 
-    //         Platform.exit());
-    //     return btn;
-    // }
-    
     public static void show(Stage stage) {
         ConfiguracionPartida root = new ConfiguracionPartida(stage);
         Scene scene = new Scene(root, 600, 500);

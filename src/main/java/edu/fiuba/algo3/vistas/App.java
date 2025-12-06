@@ -4,9 +4,7 @@ import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 
-/**
- * JavaFX App
- */
+
 public class App extends Application {
 
   private static final int ANCHO = 800;

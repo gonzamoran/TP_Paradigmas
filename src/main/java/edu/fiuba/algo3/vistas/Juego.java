@@ -42,12 +42,10 @@ public class Juego {
             );
             root.setBackground(new Background(backgroundImage));
 
-        //BARRA SUPERIOR
         BorderPane topBar = new BorderPane();
         topBar.setPadding(new Insets(10));
         topBar.setStyle("-fx-background-color: rgba(0, 0, 0, 0.4);");
 
-        // IZQUIERDA
         HBox listaJugadores = new HBox(10);
         listaJugadores.setAlignment(Pos.CENTER_LEFT);
         if (playerNames != null && !playerNames.isEmpty()) {
@@ -58,7 +56,6 @@ public class Juego {
             }
         }
 
-        // DERECHA
         HBox indicadoresPanel = new HBox(15);
         indicadoresPanel.setAlignment(Pos.CENTER_RIGHT);
 
@@ -67,7 +64,6 @@ public class Juego {
         VBox boxTurno = crearIndicadorHUD("TURNO", primerJugador, "#f1c40f");
         VBox boxFase = crearIndicadorHUD("FASE", "Construcción", "#e67e22");
 
-        //para actualizaciones futuras
         labelNombreTurno = (Label) boxTurno.getChildren().get(1);
         labelNombreFase = (Label) boxFase.getChildren().get(1);
 
@@ -79,7 +75,6 @@ public class Juego {
 
         VBox panelInventario = crearPanelInventario(primerJugador);
 
-        //PANEL DERECHO
         VBox rightPanel = new VBox(10);
         rightPanel.setPadding(new Insets(10));
         rightPanel.setAlignment(Pos.TOP_CENTER);
@@ -102,22 +97,17 @@ public class Juego {
 
         rightPanel.getChildren().addAll(boxPuntos, botonesBox);
 
-        //PANEL DERECHO
         VBox rightContainer = new VBox(12, panelInventario, rightPanel);
         rightContainer.setAlignment(Pos.TOP_CENTER);
         rightContainer.setPadding(new Insets(10));
         rightContainer.setMinWidth(220);
         root.setRight(rightContainer);
 
-        //CENTRO
         StackPane centerPane = new StackPane();
         centerPane.setPadding(new Insets(20));
 
-        //agregar logica del tablero acca
-
         root.setCenter(centerPane);
 
-        //BARRA INFERIOR
         HBox bottomBar = new HBox();
         bottomBar.setPadding(new Insets(20));
         bottomBar.setAlignment(Pos.CENTER);
@@ -140,7 +130,6 @@ public class Juego {
         botonSalir.setStyle("-fx-font-size: 16px; -fx-padding: 10 20; -fx-base: #e74c3c; -fx-cursor: hand; -fx-font-weight: bold;");
         botonSalir.setOnAction(e -> stage.close());
 
-        //agrego botones
         bottomBar.getChildren().addAll(botonBaraja, botonDados, botonDesarrollo, botonSalir);
 
         root.setBottom(bottomBar);
@@ -189,7 +178,6 @@ public class Juego {
         panel.setStyle("-fx-background-color: rgba(20, 20, 20, 0.85); -fx-background-radius: 10; -fx-border-color: #7f8c8d; -fx-border-radius: 10;");
         panel.setMinWidth(160);
 
-        // Inventario
         labelTituloInventario = new Label("Inventario (" + nombreJugador + ")");
         labelTituloInventario.setTextFill(Color.WHITE);
         labelTituloInventario.setFont(Font.font("Arial", FontWeight.BOLD, 14));
@@ -200,7 +188,6 @@ public class Juego {
         Label separador = new Label("________________");
         separador.setTextFill(Color.GRAY);
 
-        // Filas de Recursos
         HBox filaMadera = crearFilaRecurso("Madera", "#2ecc71");
         lblMadera = (Label) filaMadera.getChildren().get(2); 
 
@@ -285,12 +272,7 @@ public class Juego {
         stageDados.setScene(scene);
         stageDados.show();
     }
-        //para actualizar indicadores desde la lógica del juego
-
     public static void actualizarInventario(String nombreJugador, int madera, int ladrillo, int lana, int grano, int mineral) {
-
-        //pedirRecursoAlUsuario();
-
         if (labelTituloInventario != null) labelTituloInventario.setText("Inventario (" + nombreJugador + ")");
         if (lblMadera != null) lblMadera.setText(String.valueOf(madera));
         if (lblLadrillo != null) lblLadrillo.setText(String.valueOf(ladrillo));

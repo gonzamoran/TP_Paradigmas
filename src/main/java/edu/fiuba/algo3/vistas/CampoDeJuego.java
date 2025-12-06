@@ -33,7 +33,7 @@ public class CampoDeJuego extends BorderPane {
     private VBox boxTurno;
     private VBox boxFase;
     private Label lblPuntosVictoria;
-    private java.util.Map<String, Label> labelsInventario = new java.util.HashMap<>();
+    private PanelRecursos panelRecursos;
 
     public CampoDeJuego(Stage escenario, GestorDeTurnos gestor, ArrayList<Hexagono> hexagones, ArrayList<Produccion> producciones, ProveedorDeDatos proveedor, List<String> nombresJugadores) {
         this.escenario = escenario;
@@ -85,7 +85,7 @@ public class CampoDeJuego extends BorderPane {
         barraSuperior.setRight(indicadoresPanel);
         this.setTop(barraSuperior);
 
-        VBox panelInventario = crearPanelInventario(primerJugador);
+        panelRecursos = new PanelRecursos(primerJugador);
 
         VBox panelDerecho = new VBox(10);
         panelDerecho.setPadding(new Insets(10));
@@ -111,7 +111,7 @@ public class CampoDeJuego extends BorderPane {
 
         panelDerecho.getChildren().addAll(boxPuntos, botonesBox);
 
-        VBox contenedorDerecho = new VBox(12, panelInventario, panelDerecho);
+        VBox contenedorDerecho = new VBox(12, panelRecursos, panelDerecho);
         contenedorDerecho.setAlignment(Pos.TOP_CENTER);
         contenedorDerecho.setPadding(new Insets(10));
         contenedorDerecho.setMinWidth(220);
@@ -191,60 +191,6 @@ public class CampoDeJuego extends BorderPane {
         return btn;
     }
 
-    private VBox crearPanelInventario(String nombreJugador) {
-        VBox panel = new VBox(10);
-        panel.setPadding(new Insets(15));
-        panel.setStyle("-fx-background-color: rgba(20, 20, 20, 0.85); -fx-background-radius: 10; -fx-border-color: #7f8c8d; -fx-border-radius: 10;");
-        panel.setMinWidth(160);
-        
-        Label lblInventario = new Label("Inventario (" + nombreJugador + ")");
-        lblInventario.setTextFill(Color.WHITE);
-        lblInventario.setFont(Font.font("Arial", FontWeight.BOLD, 14));
-        lblInventario.setWrapText(true);
-        lblInventario.setMaxWidth(140);
-        
-        Label separador = new Label("________________");
-        separador.setTextFill(Color.GRAY);
-        
-        HBox filaMadera = crearFilaRecurso("Madera", "#2ecc71");
-        HBox filaLadrillo = crearFilaRecurso("Ladrillo", "#e74c3c");
-        HBox filaLana = crearFilaRecurso("Lana", "#ecf0f1");
-        HBox filaGrano = crearFilaRecurso("Grano", "#f1c40f");
-        HBox filaMineral = crearFilaRecurso("Piedra", "#95a5a6");
-        
-        panel.getChildren().addAll(lblInventario, separador, filaMadera, filaLadrillo, filaLana, filaGrano, filaMineral);
-        return panel;
-    }
-
-    private HBox crearFilaRecurso(String nombre, String colorWeb) {
-        HBox fila = new HBox();
-        fila.setAlignment(Pos.CENTER_LEFT);
-        fila.setSpacing(10);
-        
-        Label colorBox = new Label("■");
-        colorBox.setTextFill(Color.web(colorWeb));
-        colorBox.setFont(Font.font("Arial", 18));
-        
-        Label lblNombre = new Label(nombre);
-        lblNombre.setTextFill(Color.web(colorWeb));
-        lblNombre.setFont(Font.font("Arial", FontWeight.BOLD, 12));
-        lblNombre.setMinWidth(60);
-        
-        Label lblCantidad = new Label("0");
-        lblCantidad.setTextFill(Color.WHITE);
-        lblCantidad.setFont(Font.font("Arial", FontWeight.BOLD, 14));
-        labelsInventario.put(nombre.toLowerCase(), lblCantidad);
-        
-        HBox info = new HBox(5, colorBox, lblNombre);
-        info.setAlignment(Pos.CENTER_LEFT);
-        
-        Region spacer = new Region();
-        HBox.setHgrow(spacer, Priority.ALWAYS);
-        
-        fila.getChildren().addAll(info, spacer, lblCantidad);
-        return fila;
-    }
-
     private void abrirVentanaDados() {
         Stage stageDados = new Stage();
         Random rand = new Random();
@@ -305,19 +251,15 @@ public class CampoDeJuego extends BorderPane {
     
     public void actualizarTurno(String nombreJugador, int numeroTurno) {
         actualizarEtiquetaEnIndicador(boxTurno, "Turno " + numeroTurno + ": " + nombreJugador);
+        if (panelRecursos != null) {
+            panelRecursos.setJugador(nombreJugador);
+        }
     }
 
     public void actualizarInventario(java.util.Map<edu.fiuba.algo3.modelo.Recurso, Integer> inventario) {
-        javafx.application.Platform.runLater(() -> {
-            labelsInventario.forEach((nombre, label) -> label.setText("0"));
-            inventario.forEach((recurso, cantidad) -> {
-                String key = recurso.getClass().getSimpleName().toLowerCase();
-                Label lbl = labelsInventario.get(key);
-                if (lbl != null) {
-                    lbl.setText(String.valueOf(cantidad));
-                }
-            });
-        });
+        if (panelRecursos != null) {
+            panelRecursos.actualizarInventario(inventario);
+        }
     }
 
     public void actualizarPuntosVictoria(int puntos) {

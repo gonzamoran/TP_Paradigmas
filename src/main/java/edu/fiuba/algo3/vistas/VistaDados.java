@@ -1,5 +1,4 @@
 package edu.fiuba.algo3.vistas;
-import edu.fiuba.algo3.modelo.Dados;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.image.Image;
@@ -35,6 +34,7 @@ public class VistaDados extends VBox {
         this.getChildren().addAll(titulo, contenedorDados, total);
     }
 
+    //tiene que mostrar el resultado de los dados del gestor, no uno random
     private Node crearDado(int valor) {
         try {
             String ruta = "algo3/imagenes/dado" + valor + ".png";

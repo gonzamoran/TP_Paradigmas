@@ -54,10 +54,6 @@ public class VentanaBaraja extends VBox {
             panelCartas.getChildren().add(vacio);
         } else {
             for (String nombreCarta : cartas) {
-                        //this.recursos = new ArrayList<>();
-                        //buscarRecurso(Recurso recursoBuscado)
-                        //agregarRecursos(Recurso recurso)
-                        //obtenerCantidadCartasRecurso(Recurso recurso)
                 panelCartas.getChildren().add(crearCartaVisual(nombreCarta));
             }
         }

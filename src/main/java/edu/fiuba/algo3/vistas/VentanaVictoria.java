@@ -74,10 +74,6 @@ public class VentanaVictoria {
         });
 
     }
-
-    //public void setGanador(Jugador jugador) {
-      //  this.labelGanador.setText(jugador.getNombre() + " ha ganado!!!");
-    //}
     public void mostrar() {
         this.ventanaDeLaVictoria.show();
     }

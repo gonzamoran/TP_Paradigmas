@@ -53,7 +53,6 @@ public class VentanaCartasDesarrollos extends VBox {
             panelCartas.getChildren().add(vacio);
         } else {
             for (String nombreCarta : cartas) {
-                //agregarCartaDesarrollo(CartasDesarrollo cartas)
                 panelCartas.getChildren().add(crearCartaVisual(nombreCarta));
             }
         }

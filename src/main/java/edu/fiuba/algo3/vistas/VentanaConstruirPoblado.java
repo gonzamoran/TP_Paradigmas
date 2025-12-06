@@ -34,13 +34,11 @@ public class VentanaConstruirPoblado extends VBox {
         lblInstruccion.setStyle("-fx-font-size: 12px; -fx-text-fill: white;");
 
 
-        // Coordenada X
         TextField txtHexX = new TextField();
         txtHexX.setPromptText("X");
         txtHexX.setPrefWidth(60);
         txtHexX.setStyle("-fx-background-radius: 5;");
-        
-        // Coordenada Y
+
         TextField txtHexY = new TextField();
         txtHexY.setPromptText("Y");
         txtHexY.setPrefWidth(60);
