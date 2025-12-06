@@ -24,7 +24,6 @@
 
     <main-class>edu.fiuba.algo3.Main</main-class>
 
-    <!-- Flags para perfiles -->
     <skipJacoco>false</skipJacoco>
     <skipPit>false</skipPit>
     <mockito.agent></mockito.agent>
@@ -67,7 +66,6 @@
   </dependencies>
   <profiles>
 
-    <!-- Profile dev: simplifica ejecución dentro de VS Code -->
     <profile>
       <id>dev</id>
       <activation>
@@ -79,7 +77,6 @@
       </properties>
     </profile>
 
-    <!-- Mockito agent: solo activarlo cuando lo necesites -->
     <profile>
       <id>mockito-agent</id>
       <activation>
@@ -90,7 +87,6 @@
       </properties>
     </profile>
 
-    <!-- Packaging JavaFX multiplataforma -->
     <profile>
       <id>package</id>
       <dependencies>
@@ -133,7 +129,7 @@
         </executions>
       </plugin>
 
-      <!-- PIT mutation testing -->
+
       <plugin>
         <groupId>org.pitest</groupId>
         <artifactId>pitest-maven</artifactId>
@@ -150,7 +146,7 @@
         </dependencies>
       </plugin>
 
-      <!-- Compilador -->
+
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-compiler-plugin</artifactId>
@@ -160,7 +156,7 @@
         </configuration>
       </plugin>
 
-      <!-- JavaFX runner -->
+
       <plugin>
         <groupId>org.openjfx</groupId>
         <artifactId>javafx-maven-plugin</artifactId>
@@ -170,7 +166,6 @@
         </configuration>
       </plugin>
 
-      <!-- Shade: generar JAR ejecutable -->
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-shade-plugin</artifactId>
@@ -192,7 +187,7 @@
         </executions>
       </plugin>
 
-      <!-- Surefire: ejecutar tests -->
+
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-surefire-plugin</artifactId>
@@ -203,7 +198,7 @@
         </configuration>
       </plugin>
 
-      <!-- JaCoCo -->
+
       <plugin>
         <groupId>org.jacoco</groupId>
         <artifactId>jacoco-maven-plugin</artifactId>
