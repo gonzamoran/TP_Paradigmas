@@ -253,4 +253,8 @@ public class GestorDeTurnos {
     public ArrayList<Jugador> obtenerJugadores() {
         return jugadores;
     }    
+
+    public int obtenerIndiceJugadorActual() {
+        return indiceJugadorActual;
+    }
 }
