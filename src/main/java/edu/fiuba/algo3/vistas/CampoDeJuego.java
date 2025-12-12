@@ -104,7 +104,7 @@ public class CampoDeJuego extends BorderPane {
         btnPoblado.setOnAction(e -> ejecutarConstruccion());
         btnCarretera.setOnAction(e -> ejecutarConstruccion());
         btnComerciar.setOnAction(e -> ejecutarComercioBanca());
-        btnTerminarFase.setOnAction(e -> gestor.finalizarFaseConstruccion());
+        btnTerminarFase.setOnAction(e -> terminarFaseYAvanzarTurno());
         
         VBox botonesBox = new VBox(8, btnPoblado, btnCarretera, btnComerciar, btnTerminarFase);
         botonesBox.setAlignment(Pos.TOP_CENTER);
@@ -295,5 +295,19 @@ public class CampoDeJuego extends BorderPane {
 
     private void ejecutarComercioBanca() {
         new Thread(() -> gestor.comerciarConLaBanca()).start();
+    }
+
+    private void terminarFaseYAvanzarTurno() {
+        new Thread(() -> {
+            gestor.finalizarFaseConstruccion();
+            gestor.avanzarTurno();
+            var jugadorActual = gestor.obtenerJugadorActual();
+            if (jugadorActual != null) {
+                int indiceJugador = gestor.obtenerIndiceJugadorActual();
+                int turno = gestor.obtenerTurnoActual();
+                proveedor.notificarCambioTurno(jugadorActual, indiceJugador, turno);
+                mostrarMensaje("Ahora juega: " + jugadorActual.obtenerNombre());
+            }
+        }).start();
     }
 }
