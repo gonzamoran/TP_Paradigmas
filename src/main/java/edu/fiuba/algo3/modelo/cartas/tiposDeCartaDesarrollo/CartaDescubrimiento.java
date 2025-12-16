@@ -1,7 +1,6 @@
 package edu.fiuba.algo3.modelo.cartas.tiposDeCartaDesarrollo;
 
 import edu.fiuba.algo3.modelo.Jugador;
-import edu.fiuba.algo3.modelo.ProveedorDeDatos;
 import edu.fiuba.algo3.modelo.Recurso;
 import edu.fiuba.algo3.modelo.excepciones.NoSePuedeJugarEstaCartaException;
 
@@ -25,15 +24,15 @@ public class CartaDescubrimiento extends CartasDesarrollo {
     }
 
     @Override
-    public void usar(ContextoCartaDesarrollo contexto, ProveedorDeDatos proveedor) {
+    public void usar(ContextoCartaDesarrollo contexto) {
         this.fueUsada = true;
 
         if (!contexto.sePuedeJugarCarta(this.turnoDeCompra)) {
             throw new NoSePuedeJugarEstaCartaException();
         }
 
-        ArrayList<Recurso> recursosElegidos = proveedor.pedirGrupoRecursosAlUsuario(2);
         Jugador jugador = contexto.conseguirJugadorQueUsaLaCarta();
+        ArrayList<Recurso> recursosElegidos = contexto.obtenerRecursosElegidos();
 
         for (Recurso recurso : recursosElegidos) {
             jugador.agregarRecurso(recurso);

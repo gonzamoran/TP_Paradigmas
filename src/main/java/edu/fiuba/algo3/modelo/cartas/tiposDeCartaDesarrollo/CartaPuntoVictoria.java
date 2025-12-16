@@ -1,7 +1,5 @@
 package edu.fiuba.algo3.modelo.cartas.tiposDeCartaDesarrollo;
 
-import edu.fiuba.algo3.modelo.ProveedorDeDatos;
-
 public class CartaPuntoVictoria extends CartasDesarrollo {
 
     public CartaPuntoVictoria() {
@@ -27,7 +25,7 @@ public class CartaPuntoVictoria extends CartasDesarrollo {
     }
 
     @Override
-    public void usar(ContextoCartaDesarrollo contexto, ProveedorDeDatos proveedor) {
+    public void usar(ContextoCartaDesarrollo contexto) {
        return;
     }
 }

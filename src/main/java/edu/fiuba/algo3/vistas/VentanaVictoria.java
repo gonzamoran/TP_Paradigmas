@@ -1,5 +1,4 @@
 package edu.fiuba.algo3.vistas;
-import edu.fiuba.algo3.modelo.Jugador;
 import javafx.animation.Animation;
 import javafx.animation.ScaleTransition;
 import javafx.application.Platform;
@@ -21,7 +20,6 @@ public class VentanaVictoria {
 
     private final Label labelGanador;
     private final Stage ventanaDeLaVictoria;
-    private Jugador jugadorGanador;
 
     public VentanaVictoria() {
 
@@ -72,12 +70,16 @@ public class VentanaVictoria {
                 event.consume();
             }
         });
-
     }
+    
     public void mostrar() {
         this.ventanaDeLaVictoria.show();
     }
-
+    
+    public void actualizarGanador(String nombreGanador) {
+        this.labelGanador.setText("¡" + nombreGanador + " ha ganado!");
+        this.labelGanador.setStyle("-fx-font-size: 24px; -fx-font-weight: bold; -fx-text-fill: gold;");
+    }
 }
 
 

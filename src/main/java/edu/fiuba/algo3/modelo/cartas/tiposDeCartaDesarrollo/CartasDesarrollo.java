@@ -1,7 +1,5 @@
 package edu.fiuba.algo3.modelo.cartas.tiposDeCartaDesarrollo;
 
-import edu.fiuba.algo3.modelo.ProveedorDeDatos;
-
 public abstract class CartasDesarrollo {
 
     protected int turnoDeCompra;
@@ -34,7 +32,7 @@ public abstract class CartasDesarrollo {
         return contexto.sePuedeJugarCarta(this.turnoDeCompra);
     }
 
-    public abstract void usar(ContextoCartaDesarrollo contexto, ProveedorDeDatos proveedor);
+    public abstract void usar(ContextoCartaDesarrollo contexto);
 
     public abstract CartasDesarrollo comprarCarta(int turnoActual);
 }

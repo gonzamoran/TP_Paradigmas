@@ -1,7 +1,6 @@
 package edu.fiuba.algo3.modelo.cartas.tiposDeCartaDesarrollo;
 
 import edu.fiuba.algo3.modelo.Jugador;
-import edu.fiuba.algo3.modelo.ProveedorDeDatos;
 import edu.fiuba.algo3.modelo.Recurso;
 
 //  El jugador nombra un recurso. Todos los demás
@@ -19,9 +18,9 @@ public class CartaMonopolio extends CartasDesarrollo {
     }
 
     @Override
-    public void usar(ContextoCartaDesarrollo contexto, ProveedorDeDatos proveedor) {
-        Recurso recursoElegido = proveedor.pedirRecursoAlUsuario();
+    public void usar(ContextoCartaDesarrollo contexto) {
         Jugador jugadorActual = contexto.conseguirJugadorQueUsaLaCarta();
+        Recurso recursoElegido = contexto.obtenerRecursoElegido();
 
         for (Jugador jugador : contexto.conseguirJugadoresAfectados()) {
             if (!jugador.equals(jugadorActual)) {

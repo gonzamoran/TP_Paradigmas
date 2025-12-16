@@ -1,11 +1,14 @@
 package edu.fiuba.algo3.modelo.cartas.tiposDeCartaDesarrollo;
 
 import edu.fiuba.algo3.modelo.Jugador;
-import edu.fiuba.algo3.modelo.ProveedorDeDatos;
 import edu.fiuba.algo3.modelo.excepciones.CoordenadasInvalidasException;
 import edu.fiuba.algo3.modelo.excepciones.NoSePuedeJugarEstaCartaException;
 import edu.fiuba.algo3.modelo.tablero.Coordenadas;
 import edu.fiuba.algo3.modelo.tablero.Tablero;
+
+
+import java.util.ArrayList;
+import java.util.List;
 
 /*
  * Permite construir 2 Carreteras gratuitamente (debe
@@ -28,7 +31,7 @@ public class CartaConstruccionCarretera extends CartasDesarrollo {
     }
 
     @Override
-    public void usar(ContextoCartaDesarrollo contexto, ProveedorDeDatos proveedor) {
+    public void usar(ContextoCartaDesarrollo contexto) {
         this.fueUsada = true;
 
         if (!contexto.sePuedeJugarCarta(this.turnoDeCompra)) {
@@ -37,19 +40,16 @@ public class CartaConstruccionCarretera extends CartasDesarrollo {
 
         Jugador jugador = contexto.conseguirJugadorQueUsaLaCarta();
         Tablero tablero = contexto.obtenerTablero();
+        ArrayList<List<Coordenadas>> coordenadasCarreteras = contexto.obtenerCoordenadasCarreteras();
 
-        int caminosColocados = 0;
-
-        while (caminosColocados < 2) {
-            Coordenadas origen = proveedor.pedirCoordenadasAlUsuario();
-            Coordenadas destino = proveedor.pedirCoordenadasAlUsuario();
+        for (List<Coordenadas> camino : coordenadasCarreteras) {
+            Coordenadas origen = camino.get(0);
+            Coordenadas destino = camino.get(1);
             if (!tablero.sonCoordenadasValidas(origen) || !tablero.sonCoordenadasValidas(destino)) {
                 throw new CoordenadasInvalidasException();
-                // continue;
             }
 
             tablero.construirCarreteraGratis(origen, destino, jugador);
-            caminosColocados++;
         }
     }
 }

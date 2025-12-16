@@ -17,20 +17,20 @@ import java.util.regex.Pattern;
 public class CargadorTableroJSON {
     
     public static class TableroData {
-        public ArrayList<Hexagono> hexagonos;
-        public ArrayList<Produccion> producciones;
+        private final ArrayList<Hexagono> hexagonos;
+        private final ArrayList<Produccion> producciones;
         
         public TableroData(ArrayList<Hexagono> hexagonos, ArrayList<Produccion> producciones) {
-            this.hexagonos = hexagonos;
-            this.producciones = producciones;
+            this.hexagonos = new ArrayList<>(hexagonos);
+            this.producciones = new ArrayList<>(producciones);
         }
 
         public ArrayList<Hexagono> obtenerHexagonos() {
-            return this.hexagonos;
+            return new ArrayList<>(this.hexagonos);
         }
 
         public ArrayList<Produccion> obtenerProducciones() {
-            return this.producciones;
+            return new ArrayList<>(this.producciones);
         }
     }
     

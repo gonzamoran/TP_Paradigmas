@@ -2,7 +2,6 @@ package edu.fiuba.algo3.modelo.acciones;
 
 import edu.fiuba.algo3.modelo.Dados;
 import edu.fiuba.algo3.modelo.Jugador;
-import edu.fiuba.algo3.modelo.ProveedorDeDatos;
 import edu.fiuba.algo3.modelo.tablero.Coordenadas;
 import edu.fiuba.algo3.modelo.tablero.Hexagono;
 import edu.fiuba.algo3.modelo.tablero.Ladron;
@@ -22,13 +21,16 @@ public class CasoDeUsoGirarElDado {
      public int tirarDado(Dados dados){
           return dados.lanzarDados();
      }
+     public void resolverResultado(int resultado, Jugador jugador){
+          if (resultado != 7) {
+               tablero.producirRecurso(resultado);
+          }
+     }
 
-     public void resolverResultado(int resultado, Jugador jugador, ProveedorDeDatos proveedor){
+     public void resolverResultado(int resultado, Jugador jugador, Coordenadas destinoLadron, Jugador jugadorARobar){
           if (resultado == 7){
 
                jugador.descartarse();
-
-               Coordenadas destinoLadron = proveedor.pedirCoordenadasAlUsuario();
 
                Hexagono coordenadasHexagono = tablero.obtenerHexagono(destinoLadron);
                
@@ -36,12 +38,13 @@ public class CasoDeUsoGirarElDado {
 
                ArrayList<Jugador> jugadoresAfectados = tablero.obtenerJugadoresAdyacentes(destinoLadron);
                
-               ladron.moverLadronA(coordenadasHexagono);
-               
-               ladron.robarRecurso(jugador, jugadoresAfectados, proveedor);
-          } 
-          tablero.producirRecurso(resultado);
+               if (jugadorARobar != null && jugadoresAfectados.contains(jugadorARobar)) {
+                    ladron.robarRecurso(jugador, jugadorARobar);
+               }
+          }
      }
+
+
 
 
 }

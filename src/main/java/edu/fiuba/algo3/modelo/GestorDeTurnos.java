@@ -16,19 +16,154 @@ public class GestorDeTurnos {
     private int indiceJugadorActual;
     private ArrayList<Jugador> jugadores;
     private Tablero tablero;
-    private ProveedorDeDatos proveedor;
     private Dados dados;
+    private int ultimoResultadoDados;
     private MazoCartasDesarrollo mazo;
     private Ladron ladron;
-    private java.util.concurrent.CompletableFuture<Void> finFaseConstruccion;
-
-    public GestorDeTurnos(ProveedorDeDatos proveedor, ArrayList<Hexagono> hexagonos, ArrayList<Produccion> producciones) {
+    private int colocacionesInicialesRealizadas = 0;
+    
+    public GestorDeTurnos(ArrayList<Hexagono> hexagonos, ArrayList<Produccion> producciones) {
         this.turnoActual = 0;
         this.indiceJugadorActual = 0;
-        this.proveedor = proveedor;
         CasoDeUsoArmarTablero casoTablero = new CasoDeUsoArmarTablero(hexagonos, producciones);
-        Tablero tablero = casoTablero.armarTablero();
-        this.tablero = tablero;
+        this.tablero = casoTablero.armarTablero();
+        this.dados = new Dados();
+        this.ultimoResultadoDados = 0;
+    }
+    
+    public void inicializarJuego(List<String> nombresJugadores) {
+        this.jugadores = new ArrayList<>();
+        for (String nombre : nombresJugadores) {
+            this.jugadores.add(new Jugador(nombre));
+        }
+        this.colocacionesInicialesRealizadas = 0;
+        
+        ArrayList<CartasDesarrollo> cartas = new ArrayList<>(List.of(
+            new CartaCaballero(), new CartaCaballero(), new CartaCaballero(), new CartaCaballero(), new CartaCaballero(),
+            new CartaCaballero(), new CartaCaballero(), new CartaCaballero(), new CartaCaballero(), new CartaCaballero(),
+            new CartaCaballero(), new CartaCaballero(), new CartaCaballero(), new CartaCaballero(), new CartaCaballero(),
+            new CartaConstruccionCarretera(), new CartaConstruccionCarretera(), new CartaConstruccionCarretera(),
+            new CartaMonopolio(), new CartaMonopolio(), new CartaMonopolio(),
+            new CartaDescubrimiento(), new CartaDescubrimiento(), new CartaDescubrimiento(),
+            new CartaPuntoVictoria(), new CartaPuntoVictoria(), new CartaPuntoVictoria(),
+            new CartaPuntoVictoria(), new CartaPuntoVictoria()
+        ));
+        
+        this.mazo = new MazoCartasDesarrollo(cartas);
+        Hexagono desierto = tablero.obtenerDesierto();
+        this.ladron = new Ladron(desierto);
+    }
+
+    public void colocacionInicial(Coordenadas coordPoblado, Coordenadas coordCarretera) {
+        Jugador jugadorActual = obtenerJugadorActual();
+        if (jugadorActual == null) return;
+        
+        CasoDeUsoColocacionInicial casoColocacion = new CasoDeUsoColocacionInicial(tablero);
+        ArrayList<Recurso> recursos = casoColocacion.colocarConstruccionInicial(coordPoblado, new Poblado(), jugadorActual);
+        
+        if (jugadores != null && colocacionesInicialesRealizadas >= jugadores.size()) {
+            for (Recurso recurso : recursos) {
+                jugadorActual.agregarRecurso(recurso);
+            }
+        }
+        casoColocacion.colocarCarreteraInicial(coordPoblado, coordCarretera, jugadorActual);
+        colocacionesInicialesRealizadas++;
+        notificarCambios();
+    }
+
+    public int tirarDados() {
+        Jugador jugadorActual = obtenerJugadorActual();
+        if (jugadorActual == null) return 0;
+        
+        CasoDeUsoGirarElDado casoGirarDado = new CasoDeUsoGirarElDado(tablero, ladron);
+        int resultado = casoGirarDado.tirarDado(dados);
+        this.ultimoResultadoDados = resultado;
+        
+        notificarCambios();
+        return resultado;
+    }
+    
+    public void resolverResultadoDado(int resultado) {
+        Jugador jugadorActual = obtenerJugadorActual();
+        if (jugadorActual == null) return;
+        
+        CasoDeUsoGirarElDado casoGirarDado = new CasoDeUsoGirarElDado(tablero, ladron);
+        casoGirarDado.resolverResultado(resultado, jugadorActual);
+        notificarCambios();
+    }
+    
+    public void resolverResultadoDadoSiete(int resultado, Coordenadas destino, Jugador jugadorARobar) {
+        Jugador jugadorActual = obtenerJugadorActual();
+        if (jugadorActual == null) return;
+        
+        CasoDeUsoGirarElDado casoGirarDado = new CasoDeUsoGirarElDado(tablero, ladron);
+        casoGirarDado.resolverResultado(resultado, jugadorActual, destino, jugadorARobar);
+        notificarCambios();
+    }
+
+    public int obtenerUltimoResultadoDados() {
+        return ultimoResultadoDados;
+    }
+    
+    public Tablero obtenerTablero() {
+        return tablero;
+    }
+    
+    public Ladron obtenerLadron() {
+        return ladron;
+    }
+
+    public void construir(Coordenadas coordenadas, Construccion construccion) {
+        Jugador jugadorActual = obtenerJugadorActual();
+        if (jugadorActual == null) return;
+        
+        CasoDeUsoConstruccion casoConstruir = new CasoDeUsoConstruccion(tablero, jugadores);
+        casoConstruir.construirEn(coordenadas, construccion, jugadorActual);
+        notificarCambios();
+    }
+
+    public void construirCarretera(Coordenadas origen, Coordenadas destino) {
+        Jugador jugadorActual = obtenerJugadorActual();
+        if (jugadorActual == null) return;
+
+        CasoDeUsoConstruccion casoConstruir = new CasoDeUsoConstruccion(tablero, jugadores);
+        casoConstruir.construirCarretera(origen, destino, jugadorActual);
+        notificarCambios();
+    }
+
+    public void comprarCartaDesarrollo() {
+        Jugador jugadorActual = obtenerJugadorActual();
+        if (jugadorActual == null) return;
+        
+        CasoDeUsoSacarCartasDelMazoDeDesarrollo casoDeUsoCartas = new CasoDeUsoSacarCartasDelMazoDeDesarrollo();
+        casoDeUsoCartas.comprarCartaDesarrollo(mazo, jugadorActual, turnoActual);
+        notificarCambios();
+    }
+
+    public void comerciarConLaBanca(Banca banca, ArrayList<Recurso> oferta, ArrayList<Recurso> demanda) {
+        Jugador jugadorActual = obtenerJugadorActual();
+        if (jugadorActual == null) return;
+        
+        CasoDeUsoComercioConLaBanca casoComercioBanca = new CasoDeUsoComercioConLaBanca(jugadorActual, tablero);
+        casoComercioBanca.comerciar(oferta, demanda, banca);
+        notificarCambios();
+    }
+    
+    public ArrayList<Banca> obtenerBancasDisponibles() {
+        Jugador jugadorActual = obtenerJugadorActual();
+        if (jugadorActual == null) return new ArrayList<>();
+        
+        CasoDeUsoComercioConLaBanca casoComercioBanca = new CasoDeUsoComercioConLaBanca(jugadorActual, tablero);
+        return casoComercioBanca.obtenerBancasDisponibles();
+    }
+
+    public void comerciarConJugador(Jugador jugadorDestino, ArrayList<Recurso> oferta, ArrayList<Recurso> demanda) {
+        Jugador jugadorActual = obtenerJugadorActual();
+        if (jugadorActual == null) return;
+        
+        CasoDeUsoIntercambio caso = new CasoDeUsoIntercambio(jugadorActual, jugadorDestino);
+        caso.ejecutarIntercambio(oferta, demanda);
+        notificarCambios();
     }
 
     public void avanzarTurno() {
@@ -36,7 +171,7 @@ public class GestorDeTurnos {
         if (indiceJugadorActual == 0) {
             turnoActual++;
         }
-        turnoActual++;
+        notificarCambios();
     }
 
     public boolean terminoElJuego() {
@@ -47,172 +182,18 @@ public class GestorDeTurnos {
         }
         return false;
     }
-
-    public void inicializarJuego(){
-        int cantidadDeJugadores = proveedor.pedirCantidadDeJugadoresAlUsuario();
-        this.jugadores = new ArrayList<Jugador>();
-        for (int i = 0; i < cantidadDeJugadores; i++) {
-            Jugador jugador = proveedor.pedirNombreJugadorAlUsuario(cantidadDeJugadores);
-            this.jugadores.add(jugador);
-        }
-        this.dados = new Dados();
-        ArrayList<CartasDesarrollo> cartas = new ArrayList<CartasDesarrollo>(List.of(
-
-            new CartaCaballero(), new CartaCaballero(), new CartaCaballero(), new CartaCaballero(), new CartaCaballero(),
-            new CartaCaballero(), new CartaCaballero(), new CartaCaballero(), new CartaCaballero(), new CartaCaballero(),
-            new CartaCaballero(), new CartaCaballero(), new CartaCaballero(), new CartaCaballero(), new CartaCaballero(),
-
-            new CartaConstruccionCarretera(), new CartaConstruccionCarretera(), new CartaConstruccionCarretera(),
-            new CartaMonopolio(), new CartaMonopolio(), new CartaMonopolio(),
-            new CartaDescubrimiento(), new CartaDescubrimiento(), new CartaDescubrimiento(),
-
-            new CartaPuntoVictoria(), new CartaPuntoVictoria(), new CartaPuntoVictoria(),
-            new CartaPuntoVictoria(), new CartaPuntoVictoria()
-        ));
-
-        MazoCartasDesarrollo mazoCartasDesarrollo = new MazoCartasDesarrollo(cartas);
-        this.mazo = mazoCartasDesarrollo;
-
-        Hexagono desierto = tablero.obtenerDesierto();
-        this.ladron = new Ladron(desierto);
-    }
-
-    private void comenzarFaseInicial(){
-        CasoDeUsoColocacionInicial casoColocacion = new CasoDeUsoColocacionInicial(tablero);
-        for (int i = 0; i < jugadores.size(); i++) {
-            Jugador jugadorActual = jugadores.get(i);
-            Coordenadas coordPoblado = proveedor.pedirCoordenadasAlUsuario();
-            casoColocacion.colocarConstruccionInicial(coordPoblado, new Poblado(), jugadorActual);
-            Coordenadas extremoCarretera = proveedor.pedirCoordenadasAlUsuario();
-            casoColocacion.colocarCarreteraInicial(coordPoblado, extremoCarretera, jugadorActual);
-            proveedor.notificarCambioInventario(jugadorActual, obtenerInventarioJugador(jugadorActual));
-            proveedor.notificarCambiosPuntosVictoria(jugadorActual, jugadorActual.calculoPuntosVictoria());
-        }
-        for (int i = jugadores.size() -1 ; i >= 0 ; i--) {
-            Jugador jugadorActual = jugadores.get(i);
-            Coordenadas coordPoblado = proveedor.pedirCoordenadasAlUsuario();
-            ArrayList<Recurso> recursos = casoColocacion.colocarConstruccionInicial(coordPoblado, new Poblado(), jugadorActual);
-            for (Recurso recurso : recursos){
-                jugadorActual.agregarRecurso(recurso);
-            }
-            Coordenadas extremoCarretera = proveedor.pedirCoordenadasAlUsuario();
-            casoColocacion.colocarCarreteraInicial(coordPoblado, extremoCarretera, jugadorActual);
-            proveedor.notificarCambioInventario(jugadorActual, obtenerInventarioJugador(jugadorActual));
-            proveedor.notificarCambiosPuntosVictoria(jugadorActual, jugadorActual.calculoPuntosVictoria());
-        }
-    }
-
-    private void iniciarFaseLanzamientoDeDados(Jugador jugadorActual){
-        CasoDeUsoGirarElDado casoDado = new CasoDeUsoGirarElDado(tablero, ladron);
-        var resultado = casoDado.tirarDado(dados);
-        casoDado.resolverResultado(resultado, jugadorActual, proveedor);
-    }
-
-    private void iniciarFaseConstruccionYComercio(Jugador jugadorActual){
-        finFaseConstruccion = new java.util.concurrent.CompletableFuture<>();
-        finFaseConstruccion.join();
-    }
-
-    public void finalizarFaseConstruccion() {
-        if (finFaseConstruccion != null && !finFaseConstruccion.isDone()) {
-            finFaseConstruccion.complete(null);
-        }
-    }
-
-    public void construir(Coordenadas coordenadas, Construccion construccion) {
-        Jugador jugadorActual = obtenerJugadorActual();
-        if (jugadorActual == null) return;
-        CasoDeUsoConstruccion casoConstruir = new CasoDeUsoConstruccion(tablero, jugadores);
-        casoConstruir.construirEn(coordenadas, construccion, jugadorActual);
-        proveedor.notificarCambioInventario(jugadorActual, obtenerInventarioJugador(jugadorActual));
-        proveedor.notificarCambiosPuntosVictoria(jugadorActual, jugadorActual.calculoPuntosVictoria());
-    }
-
-    public void comprarCartaDesarrollo() {
-        Jugador jugadorActual = obtenerJugadorActual();
-        if (jugadorActual == null) return;
-        CasoDeUsoSacarCartasDelMazoDeDesarrollo casoDeUsoCartas = new CasoDeUsoSacarCartasDelMazoDeDesarrollo();
-        casoDeUsoCartas.comprarCartaDesarrollo(mazo, jugadorActual, turnoActual);
-        proveedor.notificarCambioInventario(jugadorActual, obtenerInventarioJugador(jugadorActual));
-    }
-
-    public void comerciarConLaBanca() {
-        Jugador jugadorActual = obtenerJugadorActual();
-        if (jugadorActual == null) return;
-        CasoDeUsoComercioConLaBanca casoComercioBanca = new CasoDeUsoComercioConLaBanca(jugadorActual, tablero);
-        ArrayList<Banca> bancasDisponibles = casoComercioBanca.obtenerBancasDisponibles();
-        Banca bancaSeleccionada = proveedor.pedirTipoDeBancaAlUsuario(bancasDisponibles);
-        ArrayList<Recurso> oferta = proveedor.pedirOfertaAlUsuario();
-        ArrayList<Recurso> demanda = proveedor.pedirDemandaAlUsuario();
-        casoComercioBanca.comerciar(oferta, demanda, bancaSeleccionada);
-        proveedor.notificarCambioInventario(jugadorActual, obtenerInventarioJugador(jugadorActual));
-    }
-
-    public void comerciarConJugador() {
-        Jugador jugadorActual = obtenerJugadorActual();
-        if (jugadorActual == null) return;
-        Jugador jugadorDestino = proveedor.pedirJugadorParaComerciar(jugadorActual, jugadores);
-        CasoDeUsoIntercambio caso = new CasoDeUsoIntercambio(jugadorActual, jugadorDestino);
-
-        ArrayList<Recurso> oferta = proveedor.pedirOfertaAlUsuario();
-        ArrayList<Recurso> demanda = proveedor.pedirDemandaAlUsuario();
-
-        if (proveedor.aceptaIntercambio(jugadorDestino, oferta, demanda)) {
-            caso.ejecutarIntercambio(oferta, demanda);
-            proveedor.notificarCambioInventario(jugadorActual, obtenerInventarioJugador(jugadorActual));
-            proveedor.notificarCambioInventario(jugadorDestino, obtenerInventarioJugador(jugadorDestino));
-        }
-    }
-
-    private void iniciarFaseUsoDeCartasDesarrollo(Jugador jugador){
-        while(proveedor.quiereUsarCartaDesarrollo(jugador)){
-            ArrayList<CartasDesarrollo> cartasDelJugador = jugador.obtenerCartasDeDesarrollo();
-            ArrayList<CartasDesarrollo> cartasJugables = new ArrayList<CartasDesarrollo>();
-            ContextoCartaDesarrollo contexto = new ContextoCartaDesarrollo(jugador, jugadores, turnoActual, tablero, ladron);
-            for (CartasDesarrollo carta : cartasDelJugador){
-                if(carta.esJugable(new ContextoCartaDesarrollo(jugador, jugadores, turnoActual, tablero, ladron))){
-                    cartasJugables.add(carta);
-                }
-            }
-            CartasDesarrollo cartaElegida = proveedor.elegirCartaDesarrolloParaUsar(jugador, cartasDelJugador, cartasJugables);
-            if (cartaElegida == null){
-                return;
-            }
-            
-            CasoDeUsoSacarCartasDelMazoDeDesarrollo casoDeUsoCartas = new CasoDeUsoSacarCartasDelMazoDeDesarrollo();
-            casoDeUsoCartas.usarCartaDesarrollo(cartaElegida, jugador, contexto, proveedor);
-        }
-    }
     
-    private void finalizarJuego(){
-        for(Jugador jugador : jugadores){
-            if(jugador.calculoPuntosVictoria() >= 10){
-                proveedor.anunciarGanador(jugador);
-                return;
+    public String obtenerGanador() {
+        for (Jugador jugador : jugadores) {
+            if (jugador.calculoPuntosVictoria() >= 10) {
+                return jugador.obtenerNombre();
             }
         }
+        return null;
     }
-    
-    public void jugar(){
-        this.inicializarJuego(); 
-        this.comenzarFaseInicial(); 
-        while(!this.terminoElJuego()){ 
-            var jugadorActual = jugadores.get(indiceJugadorActual);
-            proveedor.notificarCambioTurno(jugadorActual, indiceJugadorActual, turnoActual);
-            
-            this.iniciarFaseLanzamientoDeDados(jugadorActual); 
-            this.iniciarFaseConstruccionYComercio(jugadorActual); 
-            if (this.terminoElJuego()){ 
-                break; 
-            }
-            this.iniciarFaseUsoDeCartasDesarrollo(jugadorActual); 
-            
 
-            this.avanzarTurno();
-        }
-        this.finalizarJuego(); 
+    private void notificarCambios() {
     }
-    
     
     public Jugador obtenerJugadorActual() {
         if (jugadores != null && !jugadores.isEmpty() && indiceJugadorActual >= 0 && indiceJugadorActual < jugadores.size()) {
@@ -221,9 +202,8 @@ public class GestorDeTurnos {
         return null;
     }
     
-
-    public java.util.Map<Recurso, Integer> obtenerInventarioJugador(Jugador jugador) {
-        ArrayList<Recurso> recursos = new ArrayList<Recurso>(List.of(
+    public Map<Recurso, Integer> obtenerInventarioJugador(Jugador jugador) {
+        ArrayList<Recurso> recursos = new ArrayList<>(List.of(
             new Madera(), new Ladrillo(), new Grano(), new Lana(), new Piedra()
         ));
         Map<Recurso, Integer> inventario = new HashMap<>();
@@ -244,17 +224,19 @@ public class GestorDeTurnos {
         return jugador.calculoPuntosVictoria();
     }
     
-
     public int obtenerTurnoActual() {
         return turnoActual;
     }
     
-
     public ArrayList<Jugador> obtenerJugadores() {
         return jugadores;
     }    
 
     public int obtenerIndiceJugadorActual() {
         return indiceJugadorActual;
+    }
+
+    public void jugar() {
+        System.out.println("Iniciando juego...");
     }
 }

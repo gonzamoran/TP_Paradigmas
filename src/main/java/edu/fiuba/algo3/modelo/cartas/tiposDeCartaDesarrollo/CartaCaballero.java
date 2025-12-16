@@ -1,7 +1,6 @@
 package edu.fiuba.algo3.modelo.cartas.tiposDeCartaDesarrollo;
 
 import edu.fiuba.algo3.modelo.Jugador;
-import edu.fiuba.algo3.modelo.ProveedorDeDatos;
 import edu.fiuba.algo3.modelo.excepciones.CoordenadasInvalidasException;
 import edu.fiuba.algo3.modelo.tablero.Coordenadas;
 import edu.fiuba.algo3.modelo.tablero.Ladron;
@@ -25,9 +24,9 @@ public class CartaCaballero extends CartasDesarrollo {
         super(turnoDeCompra);
     }
 
-    public void usar(ContextoCartaDesarrollo contexto, ProveedorDeDatos proveedor) {
+    public void usar(ContextoCartaDesarrollo contexto) {
         this.fueUsada = true;
-        Coordenadas coordDestino = proveedor.pedirCoordenadasAlUsuario();
+        Coordenadas coordDestino = contexto.obtenerCoordenadasDestino();
 
         Tablero tablero = contexto.obtenerTablero();
         if (!tablero.sonCoordenadasValidas(coordDestino)) {
@@ -37,10 +36,9 @@ public class CartaCaballero extends CartasDesarrollo {
         Ladron ladron = contexto.obtenerLadron();
         ladron.moverLadronA(tablero.obtenerHexagono(coordDestino));
         Jugador jugador = contexto.conseguirJugadorQueUsaLaCarta();
-        //conseguirJugadoresAfectados es la lista de jugadores entera, no los del hexagono donde se mueve el ladron
         ArrayList<Jugador> jugadoresAfectados = tablero.obtenerJugadoresAdyacentes(coordDestino);
-        
-        ladron.robarRecurso(jugador, jugadoresAfectados, proveedor);
+        Jugador jugadorElegido = contexto.obtenerJugadorARobar(jugadoresAfectados);
+        ladron.robarRecurso(jugador, jugadorElegido);
 
         jugador.sumarCaballero();
         if (jugador.obtenerCantidadCaballerosUsados() >= 3) {

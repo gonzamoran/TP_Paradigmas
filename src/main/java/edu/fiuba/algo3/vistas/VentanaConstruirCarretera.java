@@ -1,114 +1,78 @@
 package edu.fiuba.algo3.vistas;
-import java.util.concurrent.CompletableFuture;
 
-import edu.fiuba.algo3.modelo.ProveedorDeDatos;
+import edu.fiuba.algo3.modelo.GestorDeTurnos;
 import edu.fiuba.algo3.modelo.tablero.Coordenadas;
-import javafx.geometry.Insets;
-import javafx.geometry.Pos;
-import javafx.scene.Scene;
-import javafx.scene.control.Alert;
-import javafx.scene.control.Button;
 import javafx.scene.control.Label;
-import javafx.scene.control.TextField;
-
-import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
+public class VentanaConstruirCarretera extends VentanaModalBase {
+    private final GestorDeTurnos gestor;
+    private final Coordenadas[] origen = { null };
+    private final Coordenadas[] destino = { null };
+    private Label lblOrigen;
+    private Label lblDestino;
 
-public class VentanaConstruirCarretera extends VBox {
-    
-    private CompletableFuture<Coordenadas[]> resultadoFuturo;
-    private Stage stage;
+    public VentanaConstruirCarretera(Stage stage, String nombreJugador, GestorDeTurnos gestor, TableroUI tableroUI) {
+        super(stage, "Construir Carretera", nombreJugador, tableroUI);
+        this.gestor = gestor;
+        construirYMostrar();
+    }
 
-    public VentanaConstruirCarretera(Stage stage, String nombreJugador) {
-        this.stage = stage;
-        stage.setTitle("Construir Carretera");
+    @Override
+    protected String getTitulo() {
+        return "Construcción de Carretera";
+    }
 
-        VBox root = new VBox(20);
-        root.setPadding(new Insets(30));
-        root.setAlignment(Pos.CENTER);
-        root.setStyle("-fx-background-color: #2c3e50; -fx-min-width: 400;");
+    @Override
+    protected String getInstruccion() {
+        return "Selecciona ORIGEN y DESTINO haciendo clic en dos VÉRTICES del tablero";
+    }
 
+    @Override
+    protected VBox crearContenidoPersonalizado() {
+        lblOrigen = new Label("Origen: ninguno");
+        lblDestino = new Label("Destino: ninguno");
+        lblOrigen.setStyle("-fx-font-size: 12px; -fx-text-fill: #7f8c8d;");
+        lblDestino.setStyle("-fx-font-size: 12px; -fx-text-fill: #7f8c8d;");
 
-        Label lblTitulo = new Label("Construcción de Poblado");
-        lblTitulo.setStyle("-fx-font-size: 20px; -fx-font-weight: bold; -fx-text-fill: white;");
-
-        Label lblJugador = new Label("Jugador: " + nombreJugador);
-        lblJugador.setStyle("-fx-font-size: 14px; -fx-text-fill: #bdc3c7;");
-
-        Label lblInstruccion = new Label("Seleccione las coordenadas del hexágono:");
-        lblInstruccion.setStyle("-fx-font-size: 12px; -fx-text-fill: white;");
-
-        TextField txtHexX = new TextField();
-        txtHexX.setPromptText("X");
-        txtHexX.setPrefWidth(60);
-        txtHexX.setStyle("-fx-background-radius: 5;");
-
-        TextField txtHexY = new TextField();
-        txtHexY.setPromptText("Y");
-        txtHexY.setPrefWidth(60);
-        txtHexY.setStyle("-fx-background-radius: 5;");
-
-        HBox boxCoords = new HBox(10, new Label("Hexágono (X, Y):"), txtHexX, txtHexY);
-        boxCoords.setAlignment(Pos.CENTER);
-
-        ((Label)boxCoords.getChildren().get(0)).setStyle("-fx-text-fill: white;");
-
- 
-        Button btnConstruir = new Button("Construir");
-        btnConstruir.setStyle("-fx-background-color: #27ae60; -fx-text-fill: white; -fx-font-weight: bold; -fx-cursor: hand;");
-        
-        Button btnCancelar = new Button("Cancelar");
-        btnCancelar.setStyle("-fx-background-color: #e74c3c; -fx-text-fill: white; -fx-cursor: hand;");
-
-        HBox boxBotones = new HBox(20, btnConstruir, btnCancelar);
-        boxBotones.setAlignment(Pos.CENTER);
-
-
-        btnConstruir.setOnAction(e -> {
-            try {
-
-                String xStr = txtHexX.getText();
-                String yStr = txtHexY.getText();
-
-
-                int x = Integer.parseInt(xStr);
-                int y = Integer.parseInt(yStr);
-
-                Coordenadas coord = new Coordenadas(x, y);
-                
-                if (resultadoFuturo != null) {
-                    resultadoFuturo.complete(new Coordenadas[]{coord, coord});
+        if (tableroUI != null) {
+            tableroUI.deshabilitarSeleccionHexagono();
+            tableroUI.habilitarSeleccionVertice(coord -> {
+                if (origen[0] == null) {
+                    origen[0] = coord;
+                    lblOrigen.setText("Origen: (" + coord.obtenerCoordenadaX() + ", " + coord.obtenerCoordenadaY() + ")");
+                    lblOrigen.setStyle("-fx-font-size: 12px; -fx-text-fill: #27ae60; -fx-font-weight: bold;");
+                } else if (destino[0] == null) {
+                    destino[0] = coord;
+                    lblDestino.setText("Destino: (" + coord.obtenerCoordenadaX() + ", " + coord.obtenerCoordenadaY() + ")");
+                    lblDestino.setStyle("-fx-font-size: 12px; -fx-text-fill: #27ae60; -fx-font-weight: bold;");
+                } else {
+                    if (tableroUI != null) tableroUI.resetearResaltadoVertices();
+                    origen[0] = coord;
+                    destino[0] = null;
+                    lblOrigen.setText("Origen: (" + coord.obtenerCoordenadaX() + ", " + coord.obtenerCoordenadaY() + ")");
+                    lblDestino.setText("Destino: ninguno");
+                    lblOrigen.setStyle("-fx-font-size: 12px; -fx-text-fill: #27ae60; -fx-font-weight: bold;");
+                    lblDestino.setStyle("-fx-font-size: 12px; -fx-text-fill: #7f8c8d;");
+                    if (tableroUI != null) tableroUI.resaltarVertice(coord);
                 }
-                
-                System.out.println("Construyendo poblado para " + nombreJugador + 
-                                   " en Hex[" + x + "," + y + "]");
-                
-                stage.close();
+            });
+        }
 
-            } catch (NumberFormatException ex) {
-                mostrarAlerta("Error de Formato", "Las coordenadas deben ser números enteros.");
-            }
-        });
-
-        btnCancelar.setOnAction(e -> stage.close());
-
-        root.getChildren().addAll(lblTitulo, lblJugador, lblInstruccion, boxCoords, boxBotones);
-
-        Scene scene = new Scene(root);
-        stage.setScene(scene);
-        stage.showAndWait();
+        VBox contenido = new VBox(8, lblOrigen, lblDestino);
+        return contenido;
     }
 
-    private static void mostrarAlerta(String titulo, String mensaje) {
-        Alert alert = new Alert(Alert.AlertType.WARNING);
-        alert.setTitle(titulo);
-        alert.setHeaderText(null);
-    }
-    public CompletableFuture<Coordenadas[]> solicitarCoordenadas() {
-        resultadoFuturo = new CompletableFuture<>();
-        stage.show();
-        return resultadoFuturo;
+    @Override
+    protected void alConfirmar() {
+        if (origen[0] == null || destino[0] == null) {
+            mostrarError("Debes elegir dos vértices para la carretera.");
+            return;
+        }
+        ocultarError();
+        limpiarSelecciones();
+        gestor.construirCarretera(origen[0], destino[0]);
+        stage.close();
     }
 }

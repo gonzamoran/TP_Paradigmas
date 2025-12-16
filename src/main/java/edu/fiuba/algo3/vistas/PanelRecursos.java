@@ -33,7 +33,7 @@ public class PanelRecursos extends VBox {
         this.setStyle("-fx-background-color: rgba(20, 20, 20, 0.85); -fx-background-radius: 10; -fx-border-color: #7f8c8d; -fx-border-radius: 10;");
         this.setMinWidth(160);
 
-        titulo = new Label("Inventario (" + nombreJugador + ")");
+        titulo = new Label("Inventario");
         titulo.setTextFill(Color.WHITE);
         titulo.setStyle("-fx-font-size: 14px; -fx-font-weight: bold;");
         titulo.setWrapText(true);
@@ -66,7 +66,7 @@ public class PanelRecursos extends VBox {
     }
 
     public void setJugador(String nombreJugador) {
-        Platform.runLater(() -> titulo.setText("Inventario (" + nombreJugador + ")"));
+        Platform.runLater(() -> titulo.setText("Inventario"));
     }
 
     private HBox crearFilaRecurso(String nombre, String colorWeb) {

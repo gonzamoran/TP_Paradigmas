@@ -1,10 +1,8 @@
 package edu.fiuba.algo3.modelo.tablero;
 
 import edu.fiuba.algo3.modelo.Jugador;
-import edu.fiuba.algo3.modelo.ProveedorDeDatos;
 import edu.fiuba.algo3.modelo.Recurso;
 
-import java.util.ArrayList;
 
 public class Ladron {
     private Hexagono hexagonoActual;
@@ -19,18 +17,8 @@ public class Ladron {
         this.hexagonoActual.colocarLadron();
     }
     
-    public void robarRecurso(Jugador jugadorActual, ArrayList<Jugador> jugadoresAfectados, ProveedorDeDatos proveedor) {
+    public void robarRecurso(Jugador jugadorActual, Jugador jugadorARobar) {
         Recurso recursoRobado = null;
-        if (jugadoresAfectados == null || jugadoresAfectados.isEmpty()) {
-            return;
-        }
-
-        ArrayList<Jugador> candidatos = new ArrayList<>(jugadoresAfectados);
-        candidatos.removeIf(j -> j.equals(jugadorActual));
-        if (candidatos.isEmpty()) {
-            return;
-        }
-        Jugador jugadorARobar = proveedor.pedirJugadorARobar(candidatos);
         if (jugadorARobar.tieneRecursos()) {
             Recurso robado = jugadorARobar.removerRecursoAleatorio();
             recursoRobado = robado;

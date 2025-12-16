@@ -1,6 +1,5 @@
 package edu.fiuba.algo3.modelo.cartas;
 
-import edu.fiuba.algo3.modelo.ProveedorDeDatos;
 import edu.fiuba.algo3.modelo.Recurso;
 import edu.fiuba.algo3.modelo.cartas.tiposDeCartaDesarrollo.CartasDesarrollo;
 import edu.fiuba.algo3.modelo.cartas.tiposDeCartaDesarrollo.ContextoCartaDesarrollo;
@@ -165,8 +164,7 @@ public class CartasJugador {
         return recurso.obtenerCopia(cantidad);
     }
 
-    public void usarCartaDesarrollo(CartasDesarrollo carta, ContextoCartaDesarrollo contexto,
-            ProveedorDeDatos proveedor) {
+    public void usarCartaDesarrollo(CartasDesarrollo carta, ContextoCartaDesarrollo contexto) {
         if (this.cartasDesarrollo.isEmpty() || !cartasDesarrollo.contains(carta)) {
             throw new NoSePuedeJugarEstaCartaException();
         }
@@ -182,7 +180,7 @@ public class CartasJugador {
             throw new NoSePuedeJugarEstaCartaException();
         }
         cartasDesarrollo.remove(cartaAUsar);
-        cartaAUsar.usar(contexto, proveedor);
+        cartaAUsar.usar(contexto);
     }
 
     public int obtenerPVdeCartas() {

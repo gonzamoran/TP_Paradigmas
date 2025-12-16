@@ -1,10 +1,6 @@
 package edu.fiuba.algo3.vistas;
 
-import edu.fiuba.algo3.modelo.cartas.CartasJugador;
 import edu.fiuba.algo3.modelo.cartas.tiposDeCartaDesarrollo.CartasDesarrollo;
-import edu.fiuba.algo3.modelo.cartas.tiposDeCartaDesarrollo.CartaPuntoVictoria;
-import edu.fiuba.algo3.modelo.cartas.tiposDeCartaDesarrollo.ContextoCartaDesarrollo;
-import edu.fiuba.algo3.modelo.ProveedorDeDatos;
 
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
@@ -25,7 +21,6 @@ import java.util.Random;
 
 public class VentanaCartasDesarrollos extends VBox {
 
-    private ArrayList<CartasDesarrollo> cartasDesarrollo;
 
     public VentanaCartasDesarrollos(Stage stage, String nombreJugador) {
         this.setAlignment(Pos.CENTER);

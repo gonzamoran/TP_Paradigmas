@@ -123,8 +123,8 @@ public class Jugador {
         return mazos.obtenerCantidadCartasDesarrollo();
     }
 
-    public void usarCartaDesarrollo(CartasDesarrollo carta, ContextoCartaDesarrollo contexto, ProveedorDeDatos proveedor) {
-        mazos.usarCartaDesarrollo(carta, contexto, proveedor);
+    public void usarCartaDesarrollo(CartasDesarrollo carta, ContextoCartaDesarrollo contexto) {
+        mazos.usarCartaDesarrollo(carta, contexto);
     }
 
     public ArrayList<CartasDesarrollo> obtenerCartasDeDesarrollo() {

@@ -1,98 +1,59 @@
 package edu.fiuba.algo3.vistas;
 
-import javafx.geometry.Insets;
-import javafx.geometry.Pos;
-import javafx.scene.Scene;
-import javafx.scene.control.Alert;
-import javafx.scene.control.Button;
+import edu.fiuba.algo3.modelo.GestorDeTurnos;
+import edu.fiuba.algo3.modelo.construcciones.Poblado;
+import edu.fiuba.algo3.modelo.tablero.Coordenadas;
 import javafx.scene.control.Label;
-import javafx.scene.control.TextField;
-
-import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
+public class VentanaConstruirPoblado extends VentanaModalBase {
+    private final GestorDeTurnos gestor;
+    private final Coordenadas[] seleccion = { null };
+    private Label lblSeleccion;
 
-public class VentanaConstruirPoblado extends VBox {
-
-    public VentanaConstruirPoblado(Stage stage, String nombreJugador) {
-        stage.setTitle("Construir Poblado");
-
-        VBox root = new VBox(20);
-        root.setPadding(new Insets(30));
-        root.setAlignment(Pos.CENTER);
-        root.setStyle("-fx-background-color: #2c3e50; -fx-min-width: 400;");
-
-
-        Label lblTitulo = new Label("Construcción de Poblado");
-        lblTitulo.setStyle("-fx-font-size: 20px; -fx-font-weight: bold; -fx-text-fill: white;");
-
-        Label lblJugador = new Label("Jugador: " + nombreJugador);
-        lblJugador.setStyle("-fx-font-size: 14px; -fx-text-fill: #bdc3c7;");
-
-        Label lblInstruccion = new Label("Seleccione las coordenadas del hexágono:");
-        lblInstruccion.setStyle("-fx-font-size: 12px; -fx-text-fill: white;");
-
-
-        TextField txtHexX = new TextField();
-        txtHexX.setPromptText("X");
-        txtHexX.setPrefWidth(60);
-        txtHexX.setStyle("-fx-background-radius: 5;");
-
-        TextField txtHexY = new TextField();
-        txtHexY.setPromptText("Y");
-        txtHexY.setPrefWidth(60);
-        txtHexY.setStyle("-fx-background-radius: 5;");
-
-        HBox boxCoords = new HBox(10, new Label("Hexágono (X, Y):"), txtHexX, txtHexY);
-        boxCoords.setAlignment(Pos.CENTER);
-
-        ((Label)boxCoords.getChildren().get(0)).setStyle("-fx-text-fill: white;");
-
-        Button btnConstruir = new Button("Construir");
-        btnConstruir.setStyle("-fx-background-color: #27ae60; -fx-text-fill: white; -fx-font-weight: bold; -fx-cursor: hand;");
-        
-        Button btnCancelar = new Button("Cancelar");
-        btnCancelar.setStyle("-fx-background-color: #e74c3c; -fx-text-fill: white; -fx-cursor: hand;");
-
-        HBox boxBotones = new HBox(20, btnConstruir, btnCancelar);
-        boxBotones.setAlignment(Pos.CENTER);
-
-        btnConstruir.setOnAction(e -> {
-            try {
-                
-                String xStr = txtHexX.getText();
-                String yStr = txtHexY.getText();
-
-
-                int x = Integer.parseInt(xStr);
-                int y = Integer.parseInt(yStr);
-
-        
-                System.out.println("Construyendo poblado para " + nombreJugador + 
-                                   " en Hex[" + x + "," + y + "]");
-                
-                stage.close();
-
-            } catch (NumberFormatException ex) {
-                mostrarAlerta("Error de Formato", "Las coordenadas deben ser números enteros.");
-            }
-        });
-
-        btnCancelar.setOnAction(e -> stage.close());
-
-        root.getChildren().addAll(lblTitulo, lblJugador, lblInstruccion, boxCoords, boxBotones);
-
-        Scene scene = new Scene(root);
-        stage.setScene(scene);
-        stage.showAndWait();
+    public VentanaConstruirPoblado(Stage stage, String nombreJugador, GestorDeTurnos gestor, TableroUI tableroUI) {
+        super(stage, "Construir Poblado", nombreJugador, tableroUI);
+        this.gestor = gestor;
+        construirYMostrar();
     }
 
-    private static void mostrarAlerta(String titulo, String mensaje) {
-        Alert alert = new Alert(Alert.AlertType.WARNING);
-        alert.setTitle(titulo);
-        alert.setHeaderText(null);
-        alert.setContentText(mensaje);
-        alert.showAndWait();
+    @Override
+    protected String getTitulo() {
+        return "Construcción de Poblado";
+    }
+
+    @Override
+    protected String getInstruccion() {
+        return "Haz clic en un vértice del tablero para colocar el poblado";
+    }
+
+    @Override
+    protected VBox crearContenidoPersonalizado() {
+        lblSeleccion = new Label("Ningún vértice seleccionado");
+        lblSeleccion.setStyle("-fx-font-size: 12px; -fx-text-fill: #7f8c8d;");
+
+        if (tableroUI != null) {
+            tableroUI.habilitarSeleccionVertice(coord -> {
+                seleccion[0] = coord;
+                lblSeleccion.setText("Vértice seleccionado: (" + coord.obtenerCoordenadaX() + ", " + coord.obtenerCoordenadaY() + ")");
+                lblSeleccion.setStyle("-fx-font-size: 12px; -fx-text-fill: #27ae60; -fx-font-weight: bold;");
+            });
+        }
+
+        VBox contenido = new VBox(lblSeleccion);
+        return contenido;
+    }
+
+    @Override
+    protected void alConfirmar() {
+        if (seleccion[0] == null) {
+            mostrarError("Debes elegir un vértice para el poblado.");
+            return;
+        }
+        ocultarError();
+        limpiarSelecciones();
+        gestor.construir(seleccion[0], new Poblado());
+        stage.close();
     }
 }

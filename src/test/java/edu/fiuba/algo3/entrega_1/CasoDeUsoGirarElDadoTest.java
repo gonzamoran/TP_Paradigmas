@@ -2,7 +2,6 @@ package edu.fiuba.algo3.entrega_1;
 
 import edu.fiuba.algo3.modelo.Dados;
 import edu.fiuba.algo3.modelo.Jugador;
-import edu.fiuba.algo3.modelo.ProveedorDeDatos;
 import edu.fiuba.algo3.modelo.acciones.CasoDeUsoGirarElDado;
 import edu.fiuba.algo3.modelo.construcciones.Ciudad;
 import edu.fiuba.algo3.modelo.construcciones.Poblado;
@@ -16,7 +15,6 @@ import org.junit.jupiter.api.Test;
 import java.util.ArrayList;
 
 import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.Mockito.*;
 
 public class CasoDeUsoGirarElDadoTest {
     @Test
@@ -50,7 +48,7 @@ public class CasoDeUsoGirarElDadoTest {
         
         var dado = new DadoCargado(8);
         int valorDado = caso.tirarDado(dado);
-        caso.resolverResultado(valorDado, jugador, null);
+        caso.resolverResultado(valorDado, jugador);
 
         int cantidadEsperada = 12; // Gasto 2 lanas en poblados, queda en 8 y levanta 4.
         int cantidadLana = jugador.obtenerCantidadRecurso(new Lana());
@@ -73,7 +71,7 @@ public class CasoDeUsoGirarElDadoTest {
 
         var dado = new DadoCargado(6);
         int resultadoDado = dado.lanzarDados();
-        caso.resolverResultado(resultadoDado, jugador,null);
+        caso.resolverResultado(resultadoDado, jugador);
 
         int cantidadLanaEsperada = 1;
         int cantLanaJ1 = jugador.obtenerCantidadRecurso(new Lana());
@@ -95,14 +93,12 @@ public class CasoDeUsoGirarElDadoTest {
         CasoDeUsoGirarElDado caso = new CasoDeUsoGirarElDado(tablero, ladron);
        
         Coordenadas destino = new Coordenadas(3, 5);
-        ProveedorDeDatos provedorMockeado = mock(ProveedorDeDatos.class);
-        when(provedorMockeado.pedirCoordenadasAlUsuario()).thenReturn(destino);
 
         // act
         var dado = new DadoCargado(7);
         var resultadoDado = dado.lanzarDados();
 
-        caso.resolverResultado(resultadoDado, jugador, provedorMockeado);
+        caso.resolverResultado(resultadoDado, jugador, destino, null);
  
         // assert
         assertEquals(tablero.obtenerHexagono(destino), ladron.obtenerHexagonoActual());
@@ -120,14 +116,11 @@ public class CasoDeUsoGirarElDadoTest {
         
         Coordenadas destino = new Coordenadas(0, 6);
 
-        ProveedorDeDatos provedorMockeado = mock(ProveedorDeDatos.class);
-        when(provedorMockeado.pedirCoordenadasAlUsuario()).thenReturn(destino);
-
         // act
         var dado = new DadoCargado(7);
         var resultadoDado = dado.lanzarDados();
 
-        caso.resolverResultado(resultadoDado, jugador, provedorMockeado);
+        caso.resolverResultado(resultadoDado, jugador, destino, null);
 
         // assert
         assertTrue(tablero.obtenerHexagono(origen).puedeGenerarRecursos());
@@ -150,14 +143,11 @@ public class CasoDeUsoGirarElDadoTest {
 
         var destino = new Coordenadas(0,6);
 
-        ProveedorDeDatos provedorMockeado = mock(ProveedorDeDatos.class);
-        when(provedorMockeado.pedirCoordenadasAlUsuario()).thenReturn(destino);
-
         // act
         var dado = new DadoCargado(7);
         var resultadoDado = dado.lanzarDados();
 
-        caso.resolverResultado(resultadoDado, jugador, provedorMockeado);
+        caso.resolverResultado(resultadoDado, jugador, destino, null);
         int totalRecursosDespuesDeRobar = jugador.obtenerCantidadCartasRecurso();
 
         // assert
@@ -177,14 +167,12 @@ public class CasoDeUsoGirarElDadoTest {
         CasoDeUsoGirarElDado caso = new CasoDeUsoGirarElDado(tablero, ladron);
         
         var destino = new Coordenadas(0, 6);
-        ProveedorDeDatos provedorMockeado = mock(ProveedorDeDatos.class);
-        when(provedorMockeado.pedirCoordenadasAlUsuario()).thenReturn(destino);
         
         // act
         var dado = new DadoCargado(7);
         var resultadoDado = dado.lanzarDados();
 
-        caso.resolverResultado(resultadoDado, jugador, provedorMockeado);
+        caso.resolverResultado(resultadoDado, jugador, destino, null);
         int totalRecursosDespuesDeRobar = jugador.obtenerCantidadCartasRecurso();
 
         // assert
@@ -209,14 +197,10 @@ public class CasoDeUsoGirarElDadoTest {
 
         Coordenadas destino = new Coordenadas(0, 6);
 
-        ProveedorDeDatos proveedorMockeado = mock(ProveedorDeDatos.class);
-        when(proveedorMockeado.pedirCoordenadasAlUsuario()).thenReturn(destino);
-        when(proveedorMockeado.pedirJugadorARobar(any(ArrayList.class))).thenReturn(jugador1);
-
         var dado = new DadoCargado(7);
         var resultadoDado = dado.lanzarDados();
         
-        caso.resolverResultado(resultadoDado, jugador2, proveedorMockeado);
+        caso.resolverResultado(resultadoDado, jugador2, destino, jugador1);
         
         assertEquals(1, jugador2.obtenerCantidadCartasRecurso());
 
