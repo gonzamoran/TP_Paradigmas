@@ -4,6 +4,7 @@ import edu.fiuba.algo3.modelo.GestorDeTurnos;
 import edu.fiuba.algo3.modelo.tablero.Coordenadas;
 import edu.fiuba.algo3.modelo.tablero.Hexagono;
 import edu.fiuba.algo3.modelo.tablero.Produccion;
+import edu.fiuba.algo3.controllers.ReproductorDeSonido;
 
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
