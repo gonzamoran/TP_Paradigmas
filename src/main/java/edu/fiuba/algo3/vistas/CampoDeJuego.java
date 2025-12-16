@@ -59,6 +59,10 @@ public class CampoDeJuego extends BorderPane {
         hiloJuego.start();
     }
 
+    private void reproducirSonido() {
+        ReproductorDeSonido.getInstance().reproducirSonidoDados();
+    }
+
     private void construirInterfaz() {
         BorderPane barraSuperior = new BorderPane();
         barraSuperior.setPadding(new Insets(10));
@@ -198,6 +202,7 @@ public class CampoDeJuego extends BorderPane {
         int dado2 = rand.nextInt(6) + 1;
         
         VistaDados vista = new VistaDados(dado1, dado2);
+        reproducirSonido();
         
         Scene scene = new Scene(vista, 300, 250);
         stageDados.setTitle("Dados");
@@ -294,7 +299,36 @@ public class CampoDeJuego extends BorderPane {
     }
 
     private void ejecutarComercioBanca() {
-        new Thread(() -> gestor.comerciarConLaBanca()).start();
+        new Thread(() -> {
+            var jugadorActual = gestor.obtenerJugadorActual();
+            gestor.comerciarConLaBanca()).start();
+            actualizarInventario(gestor.obtenerInventarioJugador(jugadorActual));
+        }).start();
+    }
+
+    private void ejecutarComercioConJugador() {
+        new Thread(() -> {
+            var jugadorActual = gestor.obtenerJugadorActual();
+            var jugadores = gestor.obtenerJugadores();
+            if (jugadores == null || jugadores.size() < 2) {
+                mostrarMensaje("Se necesitan al menos 2 jugadores para comerciar");
+                return;
+            }
+            gestor.comerciarConJugador();
+            actualizarInventario(gestor.obtenerInventarioJugador(jugadorActual));
+        }).start();
+    }
+
+    private void ejecutarComprarCartaDesarrollo() {
+        new Thread(() -> {
+            var jugadorActual = gestor.obtenerJugadorActual();
+            if (jugadorActual == null) {
+                mostrarMensaje("No hay jugador activo");
+                return;
+            }
+            gestor.comprarCartaDesarrollo();
+            actualizarInventario(gestor.obtenerInventarioJugador(jugadorActual));
+        }).start();
     }
 
     private void terminarFaseYAvanzarTurno() {
@@ -306,6 +340,9 @@ public class CampoDeJuego extends BorderPane {
                 int indiceJugador = gestor.obtenerIndiceJugadorActual();
                 int turno = gestor.obtenerTurnoActual();
                 proveedor.notificarCambioTurno(jugadorActual, indiceJugador, turno);
+                actualizarInventario(gestor.obtenerInventarioJugador(jugadorActual));
+                actualizarPuntosVictoria(gestor.obtenerPuntosVictoriaJugadorActual());
+                actualizarTurno(jugadorActual.obtenerNombre(), turno);
                 mostrarMensaje("Ahora juega: " + jugadorActual.obtenerNombre());
             }
         }).start();
