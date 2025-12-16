@@ -52,6 +52,10 @@ public class CampoDeJuego extends BorderPane {
         hiloJuego.start();
     }
 
+    private void reproducirSonido() {
+        ReproductorDeSonido.getInstance().reproducirSonidoDados();
+    }
+
     private void construirInterfaz() {
         String primerJugador = !nombresJugadores.isEmpty() ? nombresJugadores.get(0) : "Esperando...";
 
@@ -191,7 +195,6 @@ public class CampoDeJuego extends BorderPane {
 
         CampoDeJuego campo = new CampoDeJuego(stage, gestor, hexagonos, producciones, nombresJugadores);
         stage.show();
-
         campo.ejecutarColocacionInicial();
     }
 
@@ -239,7 +242,6 @@ public class CampoDeJuego extends BorderPane {
             tableroUI.marcarCarretera(p, c, indiceJugador);
             
             gestor.avanzarTurno();
-
 
             String nuevo = gestor.obtenerJugadorActual() != null ? gestor.obtenerJugadorActual().obtenerNombre() : "---";
             int indiceNuevo = gestor.obtenerIndiceJugadorActual();
