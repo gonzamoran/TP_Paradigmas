@@ -10,6 +10,9 @@ import javafx.scene.layout.HBox;
 import javafx.scene.control.Spinner;
 import javafx.scene.control.SpinnerValueFactory;
 import javafx.stage.Stage;
+import javafx.scene.control.ComboBox;
+import javafx.application.Platform;
+
 import edu.fiuba.algo3.modelo.GestorDeTurnos;
 import edu.fiuba.algo3.modelo.Jugador;
 import edu.fiuba.algo3.modelo.Banca;
@@ -167,7 +170,7 @@ public class VentanaComerciar extends VBox {
             spinnersOferta.put(r, sp);
         }
 
-        javafx.scene.control.ComboBox<String> cmbRecibir = new javafx.scene.control.ComboBox<>();
+        ComboBox<String> cmbRecibir = new ComboBox<>();
         cmbRecibir.getItems().addAll(RECURSOS);
         cmbRecibir.setPromptText("Recurso a recibir");
         Spinner<Integer> spDeseo = new Spinner<>();
@@ -211,7 +214,7 @@ public class VentanaComerciar extends VBox {
                 ArrayList<Recurso> demanda = new ArrayList<>(List.of(crearRecurso(recibir, cantidadDeseada)));
                 gestor.comerciarConLaBanca(banca, oferta, demanda);
                 stage.close();
-                javafx.application.Platform.runLater(() -> {
+                Platform.runLater(() -> {
                     if (onTradeCompleted != null)
                         onTradeCompleted.run();
                 });
@@ -260,13 +263,13 @@ public class VentanaComerciar extends VBox {
         Label lblDesc = new Label("Entrega múltiplos de 2 del recurso del puerto y recibe la cantidad deseada.");
         lblDesc.setStyle("-fx-font-size: 13px; -fx-text-fill: #bdc3c7;");
 
-        javafx.scene.control.ComboBox<String> cmbPuerto = new javafx.scene.control.ComboBox<>();
+        ComboBox<String> cmbPuerto = new ComboBox<>();
 
         Set<String> recursos21 = recursosConPuerto21();
         cmbPuerto.getItems().addAll(recursos21);
         cmbPuerto.setPromptText("Tipo de puerto (recurso 2:1)");
 
-        javafx.scene.control.ComboBox<String> cmbRecibir = new javafx.scene.control.ComboBox<>();
+        ComboBox<String> cmbRecibir = new ComboBox<>();
         cmbRecibir.getItems().addAll(RECURSOS);
         cmbRecibir.setPromptText("Recurso a recibir (x1)");
 
@@ -312,7 +315,7 @@ public class VentanaComerciar extends VBox {
                 ArrayList<Recurso> demanda = new ArrayList<>(List.of(crearRecurso(recibir, cantDeseo)));
                 gestor.comerciarConLaBanca(banca, oferta, demanda);
                 stage.close();
-                javafx.application.Platform.runLater(() -> {
+                Platform.runLater(() -> {
                     if (onTradeCompleted != null)
                         onTradeCompleted.run();
                 });
@@ -343,7 +346,7 @@ public class VentanaComerciar extends VBox {
         Label lblDesc = new Label("Entrega N×4 de un mismo recurso y recibe N del recurso elegido.");
         lblDesc.setStyle("-fx-font-size: 13px; -fx-text-fill: #bdc3c7;");
 
-        javafx.scene.control.ComboBox<String> cmbDar = new javafx.scene.control.ComboBox<>();
+        ComboBox<String> cmbDar = new ComboBox<>();
         cmbDar.getItems().addAll(RECURSOS);
         cmbDar.setPromptText("Recurso a entregar");
 
@@ -351,7 +354,7 @@ public class VentanaComerciar extends VBox {
         spOferta.setValueFactory(new SpinnerValueFactory.IntegerSpinnerValueFactory(4, 400, 4, 4));
         spOferta.setEditable(true);
 
-        javafx.scene.control.ComboBox<String> cmbRecibir = new javafx.scene.control.ComboBox<>();
+        ComboBox<String> cmbRecibir = new ComboBox<>();
         cmbRecibir.getItems().addAll(RECURSOS);
         cmbRecibir.setPromptText("Recurso a recibir");
 
@@ -390,7 +393,7 @@ public class VentanaComerciar extends VBox {
                 ArrayList<Recurso> demanda = new ArrayList<>(List.of(crearRecurso(recibir, cantDeseo)));
                 gestor.comerciarConLaBanca(banca, oferta, demanda);
                 stage.close();
-                javafx.application.Platform.runLater(() -> {
+                Platform.runLater(() -> {
                     if (onTradeCompleted != null)
                         onTradeCompleted.run();
                 });
@@ -472,7 +475,7 @@ public class VentanaComerciar extends VBox {
 
         Label lblJugadorDestino = new Label("Elegir jugador con el que se quiere intercambiar:");
         lblJugadorDestino.setStyle("-fx-text-fill: white; -fx-font-weight: bold");
-        javafx.scene.control.ComboBox<String> cmbJugadoresBox = new javafx.scene.control.ComboBox<>();
+        ComboBox<String> cmbJugadoresBox = new ComboBox<>();
 
         List<Jugador> otrosJugadores = gestor.obtenerOtrosJugadores();
 
@@ -482,7 +485,7 @@ public class VentanaComerciar extends VBox {
 
         Label lblOfrecer = new Label("Yo ofrezco");
         lblOfrecer.setStyle("-fx-text-fill: #2ecc71;");
-        javafx.scene.control.ComboBox<String> cmbRecursosOfrecidos = new javafx.scene.control.ComboBox<>();
+        ComboBox<String> cmbRecursosOfrecidos = new ComboBox<>();
         cmbRecursosOfrecidos.getItems().addAll(RECURSOS);
         Spinner<Integer> spCantOfrecer = new Spinner<>(1, 20, 1);
         Button btnAgregarOferta = new Button("Agregar");
@@ -502,23 +505,23 @@ public class VentanaComerciar extends VBox {
 
         Label lblPedir = new Label("Yo pido");
         lblPedir.setStyle("-fx-text-fill: #2ecc71;");
-        javafx.scene.control.ComboBox<String> cmbRecursosPedir = new javafx.scene.control.ComboBox<>();
+        ComboBox<String> cmbRecursosPedir = new ComboBox<>();
         cmbRecursosPedir.getItems().addAll(RECURSOS);
         Spinner<Integer> spCantPedir = new Spinner<>(1, 20, 1);
 
         Button btnAgregarDemanda = new Button("Agregar");
         estilarBoton(btnAgregarDemanda, "#27ae60");
 
-        btnAgregarOferta.setOnAction(e -> {
-            String recurso = cmbRecursosOfrecidos.getValue();
-            int cantidad = spCantOfrecer.getValue();
+        btnAgregarDemanda.setOnAction(e -> {
+            String recurso = cmbRecursosPedir.getValue();
+            int cantidad = spCantPedir.getValue();
             if (recurso != null) {
                 listaDemanda.add(crearRecurso(recurso, cantidad));
             }
         });
-        Button btnLimpiarDemanda = new Button("Borrar oferta");
-        btnAgregarDemanda.setOnAction(e -> {
-            listaOferta.clear();
+        Button btnLimpiarDemanda = new Button("Borrar demanda");
+        btnLimpiarDemanda.setOnAction(e -> {
+            listaDemanda.clear();
         });
 
         HBox boxIntercambio = new HBox(15,
@@ -536,27 +539,39 @@ public class VentanaComerciar extends VBox {
             int cantOfrecer = spCantOfrecer.getValue();
             int cantPedir = spCantPedir.getValue();
 
-            if (nombreDestino == null || recursoOfrecer == null || recursoPedir == null) {
+            if (nombreDestino == null) {
+                lblDesc.setText(("Faltan datos para poder realizar el intercambio"));
+                lblDesc.setStyle("-fx-text-fill: #e74c3c");
+                return;
+            }
+
+            if (listaOferta.isEmpty()) {
+                if (recursoOfrecer != null) {
+                    listaOferta.add(crearRecurso(recursoOfrecer, cantOfrecer));
+                }
+            }
+            if (listaDemanda.isEmpty()) {
+                if (recursoPedir != null) {
+                    listaDemanda.add(crearRecurso(recursoPedir, cantPedir));
+                }
+            }
+
+            if (listaOferta.isEmpty() || listaDemanda.isEmpty()) {
                 lblDesc.setText(("Faltan datos para poder realizar el intercambio"));
                 lblDesc.setStyle("-fx-text-fill: #e74c3c");
                 return;
             }
 
             try {
-                // ArrayList<Recurso> oferta = new ArrayList<>();
-                // oferta.add(crearRecurso(recursoOfrecer, cantOfrecer));
-
-                // ArrayList<Recurso> demanda = new ArrayList<>();
-                // demanda.add(crearRecurso(recursoPedir, cantPedir));
-
                 Jugador jugadorDestino = gestor.obtenerJugadorPorNombre(nombreDestino);
 
                 gestor.comerciarConJugador(jugadorDestino, listaOferta, listaDemanda);
-                System.out.println("Se realizo el intercambio entre " + jugadorAcString + "y" + jugadorDestino);
 
                 stage.close();
-                if (onTradeCompleted != null)
-                    onTradeCompleted.run();
+                Platform.runLater(() -> {
+                    if (onTradeCompleted != null)
+                        onTradeCompleted.run();
+                });
             } catch (RuntimeException exception) {
                 lblDesc.setText("Error: " + exception.getMessage());
                 lblDesc.setStyle("-fx-text-fill: #e74c3c");
