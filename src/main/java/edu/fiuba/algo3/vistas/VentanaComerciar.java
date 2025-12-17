@@ -11,6 +11,7 @@ import javafx.scene.control.Spinner;
 import javafx.scene.control.SpinnerValueFactory;
 import javafx.stage.Stage;
 import edu.fiuba.algo3.modelo.GestorDeTurnos;
+import edu.fiuba.algo3.modelo.Jugador;
 import edu.fiuba.algo3.modelo.Banca;
 import edu.fiuba.algo3.modelo.Recurso;
 import edu.fiuba.algo3.modelo.tiposBanca.Banca2a1;
@@ -60,7 +61,6 @@ public class VentanaComerciar extends VBox {
         this.onTradeCompleted = callback;
     }
 
-
     private void mostrarMenuPrincipal(VBox root, Stage stage, String nombreJugador) {
         root.getChildren().clear();
 
@@ -71,28 +71,26 @@ public class VentanaComerciar extends VBox {
         lblSubtitulo.setStyle("-fx-font-size: 14px; -fx-text-fill: #bdc3c7;");
 
         Button btnInterior = new Button("Comercio Interior");
-        estilarBoton(btnInterior, "#27ae60"); 
+        estilarBoton(btnInterior, "#27ae60");
         btnInterior.setOnAction(e -> {
-            System.out.println("Iniciando Comercio Interior para " + nombreJugador);
-            stage.close();
+            mostrarComercioInterior(root, stage, nombreJugador);
         });
 
         Button btnMaritimo = new Button("Comercio Marítimo");
-        estilarBoton(btnMaritimo, "#3498db"); 
+        estilarBoton(btnMaritimo, "#3498db");
         btnMaritimo.setOnAction(e -> {
             mostrarOpcionesMaritimas(root, stage, nombreJugador);
         });
 
         Button btnCancelar = new Button("Cancelar");
-        estilarBoton(btnCancelar, "#e74c3c"); 
+        estilarBoton(btnCancelar, "#e74c3c");
         btnCancelar.setOnAction(e -> stage.close());
 
         root.getChildren().addAll(lblTitulo, lblSubtitulo, btnInterior, btnMaritimo, btnCancelar);
     }
 
-    
     private void mostrarOpcionesMaritimas(VBox root, Stage stage, String nombreJugador) {
-        root.getChildren().clear(); 
+        root.getChildren().clear();
 
         Label lblTitulo = new Label("Comercio Marítimo");
         lblTitulo.setStyle("-fx-font-size: 22px; -fx-font-weight: bold; -fx-text-fill: white;");
@@ -100,9 +98,8 @@ public class VentanaComerciar extends VBox {
         Label lblInstruccion = new Label("Seleccione la tasa de cambio:");
         lblInstruccion.setStyle("-fx-font-size: 14px; -fx-text-fill: #bdc3c7;");
 
-        
         Button btnEstandar = new Button("Tasa Estándar (4:1)");
-        estilarBoton(btnEstandar, "#f39c12"); 
+        estilarBoton(btnEstandar, "#f39c12");
         btnEstandar.setOnAction(e -> mostrarEstandar41(root, stage, nombreJugador));
 
         Button btnGenerico = new Button("Puerto Genérico (3:1)");
@@ -128,15 +125,16 @@ public class VentanaComerciar extends VBox {
         });
 
         Button btnVolver = new Button("Volver al Menú Anterior");
-        estilarBoton(btnVolver, "#95a5a6"); 
+        estilarBoton(btnVolver, "#95a5a6");
         btnVolver.setOnAction(e -> mostrarMenuPrincipal(root, stage, nombreJugador));
 
         root.getChildren().addAll(lblTitulo, lblInstruccion, btnEstandar, btnGenerico, btnEspecifico, btnVolver);
     }
 
     private static void estilarBoton(Button btn, String colorHex) {
-        btn.setStyle("-fx-background-color: " + colorHex + "; -fx-text-fill: white; -fx-font-weight: bold; -fx-cursor: hand; -fx-min-width: 250px; -fx-font-size: 14px;");
-        VBox.setMargin(btn, new Insets(5, 0, 5, 0)); 
+        btn.setStyle("-fx-background-color: " + colorHex
+                + "; -fx-text-fill: white; -fx-font-weight: bold; -fx-cursor: hand; -fx-min-width: 250px; -fx-font-size: 14px;");
+        VBox.setMargin(btn, new Insets(5, 0, 5, 0));
     }
 
     private static final String[] RECURSOS = new String[] { "Madera", "Ladrillo", "Lana", "Grano", "Piedra" };
@@ -147,7 +145,8 @@ public class VentanaComerciar extends VBox {
         Label lblTitulo = new Label("Puerto Genérico 3:1");
         lblTitulo.setStyle("-fx-font-size: 22px; -fx-font-weight: bold; -fx-text-fill: white;");
 
-        Label lblDesc = new Label("Entrega recursos que sumen 3 por cada unidad que quieras recibir. Puedes mezclar tipos.");
+        Label lblDesc = new Label(
+                "Entrega recursos que sumen 3 por cada unidad que quieras recibir. Puedes mezclar tipos.");
         lblDesc.setStyle("-fx-font-size: 13px; -fx-text-fill: #bdc3c7;");
 
         Map<String, Spinner<Integer>> spinnersOferta = new LinkedHashMap<>();
@@ -175,7 +174,7 @@ public class VentanaComerciar extends VBox {
         spDeseo.setValueFactory(new SpinnerValueFactory.IntegerSpinnerValueFactory(1, 99, 1));
         spDeseo.setEditable(true);
         HBox boxDemanda = new HBox(10, new Label("Cantidad a RECIBIR:"), spDeseo);
-        ((Label)boxDemanda.getChildren().get(0)).setStyle("-fx-text-fill: #bdc3c7;");
+        ((Label) boxDemanda.getChildren().get(0)).setStyle("-fx-text-fill: #bdc3c7;");
         boxDemanda.setAlignment(Pos.CENTER);
 
         Button btnConfirmar = new Button("Confirmar 3:1");
@@ -212,9 +211,13 @@ public class VentanaComerciar extends VBox {
                 ArrayList<Recurso> demanda = new ArrayList<>(List.of(crearRecurso(recibir, cantidadDeseada)));
                 gestor.comerciarConLaBanca(banca, oferta, demanda);
                 stage.close();
-                javafx.application.Platform.runLater(() -> { if (onTradeCompleted != null) onTradeCompleted.run(); });
+                javafx.application.Platform.runLater(() -> {
+                    if (onTradeCompleted != null)
+                        onTradeCompleted.run();
+                });
             } catch (RuntimeException ex) {
-                lblDesc.setText("No fue posible realizar el comercio: " + (ex.getMessage() != null ? ex.getMessage() : "verifica tus recursos"));
+                lblDesc.setText("No fue posible realizar el comercio: "
+                        + (ex.getMessage() != null ? ex.getMessage() : "verifica tus recursos"));
                 lblDesc.setStyle("-fx-font-size: 13px; -fx-text-fill: #e74c3c;");
             }
         });
@@ -274,11 +277,10 @@ public class VentanaComerciar extends VBox {
         spDeseo.setValueFactory(new SpinnerValueFactory.IntegerSpinnerValueFactory(1, 100, 1));
         spDeseo.setEditable(true);
         HBox boxCantidades = new HBox(10,
-            new Label("Cantidad a ENTREGAR:"), spOferta,
-            new Label("Cantidad a RECIBIR:"), spDeseo
-        );
+                new Label("Cantidad a ENTREGAR:"), spOferta,
+                new Label("Cantidad a RECIBIR:"), spDeseo);
         for (int i = 0; i < boxCantidades.getChildren().size(); i += 2) {
-            ((Label)boxCantidades.getChildren().get(i)).setStyle("-fx-text-fill: #bdc3c7;");
+            ((Label) boxCantidades.getChildren().get(i)).setStyle("-fx-text-fill: #bdc3c7;");
         }
         boxCantidades.setAlignment(Pos.CENTER);
 
@@ -310,9 +312,13 @@ public class VentanaComerciar extends VBox {
                 ArrayList<Recurso> demanda = new ArrayList<>(List.of(crearRecurso(recibir, cantDeseo)));
                 gestor.comerciarConLaBanca(banca, oferta, demanda);
                 stage.close();
-                javafx.application.Platform.runLater(() -> { if (onTradeCompleted != null) onTradeCompleted.run(); });
+                javafx.application.Platform.runLater(() -> {
+                    if (onTradeCompleted != null)
+                        onTradeCompleted.run();
+                });
             } catch (RuntimeException ex) {
-                lblDesc.setText("No fue posible realizar el comercio: " + (ex.getMessage() != null ? ex.getMessage() : "verifica tus recursos"));
+                lblDesc.setText("No fue posible realizar el comercio: "
+                        + (ex.getMessage() != null ? ex.getMessage() : "verifica tus recursos"));
                 lblDesc.setStyle("-fx-font-size: 13px; -fx-text-fill: #e74c3c;");
             }
         });
@@ -354,11 +360,10 @@ public class VentanaComerciar extends VBox {
         spDeseo.setEditable(true);
 
         HBox boxCantidades = new HBox(10,
-            new Label("Cantidad a ENTREGAR:"), spOferta,
-            new Label("Cantidad a RECIBIR:"), spDeseo
-        );
+                new Label("Cantidad a ENTREGAR:"), spOferta,
+                new Label("Cantidad a RECIBIR:"), spDeseo);
         for (int i = 0; i < boxCantidades.getChildren().size(); i += 2) {
-            ((Label)boxCantidades.getChildren().get(i)).setStyle("-fx-text-fill: #bdc3c7;");
+            ((Label) boxCantidades.getChildren().get(i)).setStyle("-fx-text-fill: #bdc3c7;");
         }
         boxCantidades.setAlignment(Pos.CENTER);
 
@@ -385,9 +390,13 @@ public class VentanaComerciar extends VBox {
                 ArrayList<Recurso> demanda = new ArrayList<>(List.of(crearRecurso(recibir, cantDeseo)));
                 gestor.comerciarConLaBanca(banca, oferta, demanda);
                 stage.close();
-                javafx.application.Platform.runLater(() -> { if (onTradeCompleted != null) onTradeCompleted.run(); });
+                javafx.application.Platform.runLater(() -> {
+                    if (onTradeCompleted != null)
+                        onTradeCompleted.run();
+                });
             } catch (RuntimeException ex) {
-                lblDesc.setText("No fue posible realizar el comercio: " + (ex.getMessage() != null ? ex.getMessage() : "verifica tus recursos"));
+                lblDesc.setText("No fue posible realizar el comercio: "
+                        + (ex.getMessage() != null ? ex.getMessage() : "verifica tus recursos"));
                 lblDesc.setStyle("-fx-font-size: 13px; -fx-text-fill: #e74c3c;");
             }
         });
@@ -405,14 +414,16 @@ public class VentanaComerciar extends VBox {
 
     private boolean poseeBanca31() {
         for (Banca b : bancasDisponibles) {
-            if (b instanceof Banca3a1) return true;
+            if (b instanceof Banca3a1)
+                return true;
         }
         return false;
     }
 
     private boolean poseeBanca21() {
         for (Banca b : bancasDisponibles) {
-            if (b instanceof Banca2a1) return true;
+            if (b instanceof Banca2a1)
+                return true;
         }
         return false;
     }
@@ -423,7 +434,8 @@ public class VentanaComerciar extends VBox {
             if (b instanceof Banca2a1 banca) {
                 // Determinar el tipo de recurso del puerto por su clase
                 String nombre = nombreRecursoDesdeBanca2a1(banca);
-                if (nombre != null) res.add(nombre);
+                if (nombre != null)
+                    res.add(nombre);
             }
         }
         return res;
@@ -446,23 +458,150 @@ public class VentanaComerciar extends VBox {
         return null;
     }
 
+    private void mostrarComercioInterior(VBox root, Stage stage, String jugadorAcString) {
+        root.getChildren().clear();
+
+        ArrayList<Recurso> listaOferta = new ArrayList<>();
+        ArrayList<Recurso> listaDemanda = new ArrayList<>();
+
+        Label lblTitulo = new Label("Comercio entre Jugadores");
+        lblTitulo.setStyle("-fx-font-size: 22px; -fx-font-weight: bold; -fx-text-fill: white;");
+
+        Label lblDesc = new Label("Ponerse de acuerdo con el intercambio y ejecutarlo.");
+        lblDesc.setStyle("-fx-font-size: 13px; -fx-text-fill: #bdc3c7;");
+
+        Label lblJugadorDestino = new Label("Elegir jugador con el que se quiere intercambiar:");
+        lblJugadorDestino.setStyle("-fx-text-fill: white; -fx-font-weight: bold");
+        javafx.scene.control.ComboBox<String> cmbJugadoresBox = new javafx.scene.control.ComboBox<>();
+
+        List<Jugador> otrosJugadores = gestor.obtenerOtrosJugadores();
+
+        for (Jugador jugador : otrosJugadores) {
+            cmbJugadoresBox.getItems().add(jugador.obtenerNombre());
+        }
+
+        Label lblOfrecer = new Label("Yo ofrezco");
+        lblOfrecer.setStyle("-fx-text-fill: #2ecc71;");
+        javafx.scene.control.ComboBox<String> cmbRecursosOfrecidos = new javafx.scene.control.ComboBox<>();
+        cmbRecursosOfrecidos.getItems().addAll(RECURSOS);
+        Spinner<Integer> spCantOfrecer = new Spinner<>(1, 20, 1);
+        Button btnAgregarOferta = new Button("Agregar");
+        estilarBoton(btnAgregarOferta, "#27ae60");
+
+        btnAgregarOferta.setOnAction(e -> {
+            String recurso = cmbRecursosOfrecidos.getValue();
+            int cantidad = spCantOfrecer.getValue();
+            if (recurso != null) {
+                listaOferta.add(crearRecurso(recurso, cantidad));
+            }
+        });
+        Button btnLimpiarOferta = new Button("Borrar oferta");
+        btnLimpiarOferta.setOnAction(e -> {
+            listaOferta.clear();
+        });
+
+        Label lblPedir = new Label("Yo pido");
+        lblPedir.setStyle("-fx-text-fill: #2ecc71;");
+        javafx.scene.control.ComboBox<String> cmbRecursosPedir = new javafx.scene.control.ComboBox<>();
+        cmbRecursosPedir.getItems().addAll(RECURSOS);
+        Spinner<Integer> spCantPedir = new Spinner<>(1, 20, 1);
+
+        Button btnAgregarDemanda = new Button("Agregar");
+        estilarBoton(btnAgregarDemanda, "#27ae60");
+
+        btnAgregarOferta.setOnAction(e -> {
+            String recurso = cmbRecursosOfrecidos.getValue();
+            int cantidad = spCantOfrecer.getValue();
+            if (recurso != null) {
+                listaDemanda.add(crearRecurso(recurso, cantidad));
+            }
+        });
+        Button btnLimpiarDemanda = new Button("Borrar oferta");
+        btnAgregarDemanda.setOnAction(e -> {
+            listaOferta.clear();
+        });
+
+        HBox boxIntercambio = new HBox(15,
+                new VBox(5, lblOfrecer, cmbRecursosOfrecidos, spCantOfrecer),
+                new VBox(5, lblPedir, cmbRecursosPedir, spCantPedir));
+        boxIntercambio.setAlignment(Pos.CENTER);
+
+        Button btnConfirmar = new Button("Confirmar Intercambio");
+        estilarBoton(btnConfirmar, "#8e44ad");
+
+        btnConfirmar.setOnAction(e -> {
+            String nombreDestino = cmbJugadoresBox.getValue();
+            String recursoOfrecer = cmbRecursosOfrecidos.getValue();
+            String recursoPedir = cmbRecursosPedir.getValue();
+            int cantOfrecer = spCantOfrecer.getValue();
+            int cantPedir = spCantPedir.getValue();
+
+            if (nombreDestino == null || recursoOfrecer == null || recursoPedir == null) {
+                lblDesc.setText(("Faltan datos para poder realizar el intercambio"));
+                lblDesc.setStyle("-fx-text-fill: #e74c3c");
+                return;
+            }
+
+            try {
+                // ArrayList<Recurso> oferta = new ArrayList<>();
+                // oferta.add(crearRecurso(recursoOfrecer, cantOfrecer));
+
+                // ArrayList<Recurso> demanda = new ArrayList<>();
+                // demanda.add(crearRecurso(recursoPedir, cantPedir));
+
+                Jugador jugadorDestino = gestor.obtenerJugadorPorNombre(nombreDestino);
+
+                gestor.comerciarConJugador(jugadorDestino, listaOferta, listaDemanda);
+                System.out.println("Se realizo el intercambio entre " + jugadorAcString + "y" + jugadorDestino);
+
+                stage.close();
+                if (onTradeCompleted != null)
+                    onTradeCompleted.run();
+            } catch (RuntimeException exception) {
+                lblDesc.setText("Error: " + exception.getMessage());
+                lblDesc.setStyle("-fx-text-fill: #e74c3c");
+            }
+        });
+        Button btnVolver = new Button("Volver");
+        estilarBoton(btnVolver, "#95a5a6");
+        btnVolver.setOnAction(ev -> mostrarMenuPrincipal(root, stage, jugadorAcString));
+
+        VBox cont = new VBox(12, lblTitulo, lblDesc, lblJugadorDestino, cmbJugadoresBox, boxIntercambio, btnConfirmar,
+                btnVolver);
+        cont.setAlignment(Pos.CENTER);
+        cont.setPadding(new Insets(20));
+
+        root.getChildren().add(cont);
+    }
+
     private String nombreDeRecurso(Recurso recurso) {
-        if (recurso instanceof Madera) return "Madera";
-        if (recurso instanceof Ladrillo) return "Ladrillo";
-        if (recurso instanceof Lana) return "Lana";
-        if (recurso instanceof Grano) return "Grano";
-        if (recurso instanceof Piedra) return "Piedra";
+        if (recurso instanceof Madera)
+            return "Madera";
+        if (recurso instanceof Ladrillo)
+            return "Ladrillo";
+        if (recurso instanceof Lana)
+            return "Lana";
+        if (recurso instanceof Grano)
+            return "Grano";
+        if (recurso instanceof Piedra)
+            return "Piedra";
         return null;
     }
 
     private Recurso crearRecurso(String nombre, int cantidad) {
         switch (nombre) {
-            case "Madera": return new Madera().obtenerCopia(cantidad);
-            case "Ladrillo": return new Ladrillo().obtenerCopia(cantidad);
-            case "Lana": return new Lana().obtenerCopia(cantidad);
-            case "Grano": return new Grano().obtenerCopia(cantidad);
-            case "Piedra": return new Piedra().obtenerCopia(cantidad);
-            default: return new Nulo().obtenerCopia(0);
+            case "Madera":
+                return new Madera().obtenerCopia(cantidad);
+            case "Ladrillo":
+                return new Ladrillo().obtenerCopia(cantidad);
+            case "Lana":
+                return new Lana().obtenerCopia(cantidad);
+            case "Grano":
+                return new Grano().obtenerCopia(cantidad);
+            case "Piedra":
+                return new Piedra().obtenerCopia(cantidad);
+            default:
+                return new Nulo().obtenerCopia(0);
         }
     }
 }
