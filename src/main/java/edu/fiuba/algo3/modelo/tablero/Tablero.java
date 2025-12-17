@@ -163,7 +163,7 @@ public class Tablero {
                 new Banca3a1(), new Banca2a1(new Lana()),
                 new Banca2a1(new Ladrillo())));
         int indiceBancas = 0;
-        for (int i = 0; i < coordenadasPuertos.size() - 2; i += 2) {
+        for (int i = 0; i < coordenadasPuertos.size(); i += 2) {
             mapaBancas.put(coordenadasPuertos.get(i), bancas.get(indiceBancas));
             mapaBancas.put(coordenadasPuertos.get(i + 1), bancas.get(indiceBancas));
             indiceBancas++;
@@ -232,11 +232,11 @@ public class Tablero {
 
     private void validarVertice(Coordenadas coordenadas, Jugador jugador) {
         if (!this.sonCoordenadasValidas(coordenadas)){
-            throw new PosInvalidaParaConstruirException();
+            throw new PosInvalidaParaConstruirException("Coordenadas inválidas para construir");
         }
         Vertice vertice = mapaVertices.get(coordenadas);
         if (vertice == null){
-            throw new PosInvalidaParaConstruirException();
+            throw new PosInvalidaParaConstruirException("Vertice inexistente");
         }
     }
 
@@ -246,7 +246,7 @@ public class Tablero {
         Vertice vertice = mapaVertices.get(coordenadas);
 
         if (!construccion.validarConstruccionInicial(vertice, jugador)){
-            throw new NoEsPosibleConstruirException();
+            throw new NoEsPosibleConstruirException("Este vertice no cumple las reglas de esta construccion");
         }
 
         return vertice.construirInicial(construccion, jugador);
@@ -262,7 +262,7 @@ public class Tablero {
         Vertice vertice = mapaVertices.get(coordenadas);
         
         if (!construccion.validarConstruccion(vertice, jugador)){
-            throw new NoEsPosibleConstruirException();
+            throw new NoEsPosibleConstruirException("Este vertice no cumple las reglas de esta construccion");
         }
         var recursosNecesarios = construccion.obtenerRecursosNecesarios();
         this.cobrar(jugador, recursosNecesarios);
@@ -307,6 +307,12 @@ public class Tablero {
         return mapaHexagonos.get(coordenadas);
     }
 
+    public ArrayList<Banca> obtenerBancasEn(Coordenadas coordenadas) {
+        Vertice v = mapaVertices.get(coordenadas);
+        if (v == null) return new ArrayList<>();
+        return v.obtenerBancasDisponibles();
+    }
+
     public boolean estaConstruidoCon(Construccion construccion, Coordenadas coordenadas, Jugador jugador) {
         Vertice vertice = mapaVertices.get(coordenadas);
         return vertice.estaConstruidoCon(construccion, jugador);
@@ -314,13 +320,13 @@ public class Tablero {
 
     private void validarVerticesCarretera(Coordenadas coordenadaExtremo1, Coordenadas coordenadaExtremo2, Jugador jugador) {
         if (!this.sonCoordenadasValidas(coordenadaExtremo1) || !this.sonCoordenadasValidas(coordenadaExtremo2)) {
-            throw new PosInvalidaParaConstruirException();
+            throw new PosInvalidaParaConstruirException("Coordenadas inválidas para construir carretera");
         }
         Vertice vertice1 = mapaVertices.get(coordenadaExtremo1);
         Vertice vertice2 = mapaVertices.get(coordenadaExtremo2);
 
         if (!vertice1.esAdyacente(vertice2)) {
-            throw new PosInvalidaParaConstruirException();
+            throw new PosInvalidaParaConstruirException("Los vertices no son adyacentes");
         }
     }
 
@@ -334,7 +340,7 @@ public class Tablero {
         var recursosNecesarios = carretera.obtenerRecursosNecesarios();
         
         if (!carretera.validarConstruccion(vertice1, jugador) && !carretera.validarConstruccion(vertice2, jugador)){
-            throw new NoEsPosibleConstruirException();
+            throw new NoEsPosibleConstruirException("Uno de los vertices no cumple con las reglas de construccion");
         }
                
         this.cobrar(jugador, recursosNecesarios);
@@ -376,7 +382,7 @@ public class Tablero {
         Carretera carretera = new Carretera();
         
         if (!carretera.validarConstruccionInicial(vertice1, jugador) && !carretera.validarConstruccionInicial(vertice2, jugador)) {
-            throw new NoEsPosibleConstruirException();
+            throw new NoEsPosibleConstruirException("Uno de los vertices no cumple con las reglas de construccion inicial");
         }
         
         this.construirCarreteraGeneral(carretera, vertice1, vertice2, jugador);

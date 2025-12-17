@@ -12,6 +12,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.layout.*;
+import javafx.scene.Cursor;
 import javafx.stage.Stage;
 
 import java.util.ArrayList;
@@ -83,6 +84,15 @@ public class CampoDeJuego extends BorderPane {
         this.controladorDados = new ControladorDados(gestor, controladorFases);
         this.controladorConstruccion = new ControladorConstruccion(gestor, primerJugador);
         this.controladorVentanas = new ControladorVentanas(primerJugador);
+        // - Para comercio: sólo actualizar inventario (no reconstruir tablero)
+        controladorConstruccion.setOnVentanaComerciarCerrada(() -> {
+            actualizarInterfaz();
+        });
+        // - Para construcciones/mejoras: actualizar inventario y refrescar tablero
+        controladorConstruccion.setOnModalClosed(() -> {
+            actualizarInterfaz();
+            if (tableroUI != null) tableroUI.refrescarDesdeModelo();
+        });
         
         BorderPane barraSuperior = new BorderPane();
         barraSuperior.setPadding(new Insets(10));
@@ -108,6 +118,7 @@ public class CampoDeJuego extends BorderPane {
         
         this.btnTerminarFase = controladorConstruccion.getBtnTerminarFase();
         btnTerminarFase.setDisable(true);
+        btnTerminarFase.setCursor(Cursor.HAND);
         btnTerminarFase.setOnAction(e -> terminarFaseYAvanzarTurno());
         
         panelDerecho.getChildren().addAll(boxPuntos, panelConstruccion, btnTerminarFase);
@@ -152,10 +163,6 @@ public class CampoDeJuego extends BorderPane {
         });
         controladorDados.actualizarVisibilidadSegunFase(controladorFases.getFaseActual());
         
-        Button botonBaraja = new Button("Ver Baraja");
-        botonBaraja.setStyle("-fx-font-size: 16px; -fx-padding: 10 20; -fx-base: #3498db; -fx-cursor: hand; -fx-font-weight: bold;");
-        botonBaraja.setOnAction(e -> controladorVentanas.abrirVentanaBaraja());
-        
         Button botonDesarrollo = new Button("Ver Cartas Desarrollo");
         botonDesarrollo.setStyle("-fx-font-size: 16px; -fx-padding: 10 20; -fx-base: #3498db; -fx-cursor: hand; -fx-font-weight: bold;");
         botonDesarrollo.setOnAction(e -> controladorVentanas.abrirVentanaCartasDesarrollo());
@@ -172,8 +179,13 @@ public class CampoDeJuego extends BorderPane {
                 ex.printStackTrace();
             }
         });
-        
-        barraInferior.getChildren().addAll(botonBaraja, btnTirarDados, botonDesarrollo, botonSalir);
+
+        Region separador = new Region();
+        HBox.setHgrow(separador, Priority.ALWAYS);
+        Region separador2 = new Region();
+        HBox.setHgrow(separador2, Priority.ALWAYS);
+
+        barraInferior.getChildren().addAll(botonSalir, separador, btnTirarDados, botonDesarrollo, separador2, btnTerminarFase);
         this.setBottom(barraInferior);
     }
 

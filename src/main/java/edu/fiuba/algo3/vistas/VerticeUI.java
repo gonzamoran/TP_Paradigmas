@@ -9,6 +9,7 @@ import javafx.scene.shape.Rectangle;
 public class VerticeUI extends Group {
     private boolean seleccionado = false;
     private Integer indiceJugadorConstruccion = null;
+    private boolean esCiudad = false;
     private static final Color COLOR_VACIO = Color.web("#ffcc66");
     private static final Color COLOR_BORDE_VACIO = Color.web("#8b4513");
     private final Circle circulo;
@@ -32,6 +33,9 @@ public class VerticeUI extends Group {
     }
 
     public void habilitarSeleccion(Runnable onSeleccionado) {
+        seleccionado = false;
+        limpiarResaltado();
+        
         setOnMouseClicked(e -> {
             seleccionado = true;
             resaltarSeleccion();
@@ -42,7 +46,6 @@ public class VerticeUI extends Group {
             if (!seleccionado) {
                 circulo.setStrokeWidth(3);
                 circulo.setStroke(Color.DODGERBLUE);
-                // Ocultar temporalmente la casa para ver el vértice
                 if (indiceJugadorConstruccion != null) {
                     casaGrupo.setOpacity(0.3);
                 }
@@ -56,7 +59,6 @@ public class VerticeUI extends Group {
                     circulo.setStroke(COLOR_BORDE_VACIO);
                 } else {
                     circulo.setStroke(ColoresJugadores.obtenerColorBorde(indiceJugadorConstruccion));
-                    // Restaurar opacidad de la casa
                     casaGrupo.setOpacity(1.0);
                 }
             }
@@ -102,6 +104,7 @@ public class VerticeUI extends Group {
 
     public void marcarConstruccion(int indiceJugador) {
         this.indiceJugadorConstruccion = indiceJugador;
+        this.esCiudad = false;
         limpiarResaltado();
         dibujarCasa(indiceJugador);
         casaGrupo.setOpacity(1.0);
@@ -111,9 +114,19 @@ public class VerticeUI extends Group {
 
     public void desmarcarConstruccion() {
         this.indiceJugadorConstruccion = null;
+        this.esCiudad = false;
         limpiarResaltado();
         casaGrupo.getChildren().clear();
         casaGrupo.setVisible(false);
+        setMouseTransparent(false);
+    }
+
+    public void marcarCiudad(int indiceJugador) {
+        this.indiceJugadorConstruccion = indiceJugador;
+        this.esCiudad = true;
+        limpiarResaltado();
+        dibujarCiudad(indiceJugador);
+        casaGrupo.setOpacity(1.0);
         setMouseTransparent(false);
     }
     
@@ -125,6 +138,10 @@ public class VerticeUI extends Group {
 
     public Integer obtenerIndiceJugadorConstruccion() {
         return indiceJugadorConstruccion;
+    }
+
+    public boolean esCiudad() {
+        return esCiudad;
     }
     
 
@@ -149,6 +166,42 @@ public class VerticeUI extends Group {
         techo.setStrokeWidth(1.5);
         
         casaGrupo.getChildren().addAll(techo, base);
+        casaGrupo.setVisible(true);
+    }
+
+    private void dibujarCiudad(int indiceJugador) {
+        casaGrupo.getChildren().clear();
+
+        Color colorCasa = ColoresJugadores.obtenerColorPoblado(indiceJugador);
+        Color colorBorde = ColoresJugadores.obtenerColorBorde(indiceJugador);
+        
+        Rectangle chimenea = new Rectangle(2, -18, 4, 10); 
+        chimenea.setFill(colorCasa.darker()); 
+        chimenea.setStroke(colorBorde);
+        chimenea.setStrokeWidth(1);
+
+        Rectangle cuadradoTrasero = new Rectangle(-6, -12, 12, 12);
+        cuadradoTrasero.setFill(colorCasa.darker());
+        cuadradoTrasero.setStroke(colorBorde);
+        cuadradoTrasero.setStrokeWidth(1);
+
+
+        Rectangle edificioFrente = new Rectangle(-10, -6, 20, 12);
+        edificioFrente.setFill(colorCasa);
+        edificioFrente.setStroke(colorBorde);
+        edificioFrente.setStrokeWidth(1.5);
+
+
+        Group ventanas = new Group();
+        for (int i = 0; i < 3; i++) {
+            double xVentana = -7 + (i * 5.5); 
+            Rectangle ventana = new Rectangle(xVentana, -3, 3, 4);
+            ventana.setFill(Color.web("#FFFFE0"));
+            ventana.setStroke(colorBorde);
+            ventana.setStrokeWidth(0.5);
+            ventanas.getChildren().add(ventana);
+        }
+        casaGrupo.getChildren().addAll(chimenea, cuadradoTrasero, edificioFrente, ventanas);
         casaGrupo.setVisible(true);
     }
 }

@@ -68,7 +68,6 @@ public class GestorDeTurnos {
         }
         casoColocacion.colocarCarreteraInicial(coordPoblado, coordCarretera, jugadorActual);
         colocacionesInicialesRealizadas++;
-        notificarCambios();
     }
 
     public int tirarDados() {
@@ -78,8 +77,6 @@ public class GestorDeTurnos {
         CasoDeUsoGirarElDado casoGirarDado = new CasoDeUsoGirarElDado(tablero, ladron);
         int resultado = casoGirarDado.tirarDado(dados);
         this.ultimoResultadoDados = resultado;
-        
-        notificarCambios();
         return resultado;
     }
     
@@ -89,7 +86,6 @@ public class GestorDeTurnos {
         
         CasoDeUsoGirarElDado casoGirarDado = new CasoDeUsoGirarElDado(tablero, ladron);
         casoGirarDado.resolverResultado(resultado, jugadorActual);
-        notificarCambios();
     }
     
     public void resolverResultadoDadoSiete(int resultado, Coordenadas destino, Jugador jugadorARobar) {
@@ -98,7 +94,6 @@ public class GestorDeTurnos {
         
         CasoDeUsoGirarElDado casoGirarDado = new CasoDeUsoGirarElDado(tablero, ladron);
         casoGirarDado.resolverResultado(resultado, jugadorActual, destino, jugadorARobar);
-        notificarCambios();
     }
 
     public int obtenerUltimoResultadoDados() {
@@ -107,6 +102,19 @@ public class GestorDeTurnos {
     
     public Tablero obtenerTablero() {
         return tablero;
+    }
+
+    public List<Jugador> obtenerJugadoresAdyacentes(Coordenadas coordenadas) {
+        if (coordenadas == null) {
+            return List.of();
+        }
+        Jugador actual = obtenerJugadorActual();
+        ArrayList<Jugador> adyacentes = tablero.obtenerJugadoresAdyacentes(coordenadas);
+        LinkedHashSet<Jugador> unicos = new LinkedHashSet<>(adyacentes);
+        if (actual != null) {
+            unicos.remove(actual);
+        }
+        return new ArrayList<>(unicos);
     }
     
     public Ladron obtenerLadron() {
@@ -119,7 +127,6 @@ public class GestorDeTurnos {
         
         CasoDeUsoConstruccion casoConstruir = new CasoDeUsoConstruccion(tablero, jugadores);
         casoConstruir.construirEn(coordenadas, construccion, jugadorActual);
-        notificarCambios();
     }
 
     public void construirCarretera(Coordenadas origen, Coordenadas destino) {
@@ -128,7 +135,6 @@ public class GestorDeTurnos {
 
         CasoDeUsoConstruccion casoConstruir = new CasoDeUsoConstruccion(tablero, jugadores);
         casoConstruir.construirCarretera(origen, destino, jugadorActual);
-        notificarCambios();
     }
 
     public void comprarCartaDesarrollo() {
@@ -137,7 +143,6 @@ public class GestorDeTurnos {
         
         CasoDeUsoSacarCartasDelMazoDeDesarrollo casoDeUsoCartas = new CasoDeUsoSacarCartasDelMazoDeDesarrollo();
         casoDeUsoCartas.comprarCartaDesarrollo(mazo, jugadorActual, turnoActual);
-        notificarCambios();
     }
 
     public void comerciarConLaBanca(Banca banca, ArrayList<Recurso> oferta, ArrayList<Recurso> demanda) {
@@ -146,7 +151,6 @@ public class GestorDeTurnos {
         
         CasoDeUsoComercioConLaBanca casoComercioBanca = new CasoDeUsoComercioConLaBanca(jugadorActual, tablero);
         casoComercioBanca.comerciar(oferta, demanda, banca);
-        notificarCambios();
     }
     
     public ArrayList<Banca> obtenerBancasDisponibles() {
@@ -163,7 +167,6 @@ public class GestorDeTurnos {
         
         CasoDeUsoIntercambio caso = new CasoDeUsoIntercambio(jugadorActual, jugadorDestino);
         caso.ejecutarIntercambio(oferta, demanda);
-        notificarCambios();
     }
 
     public void avanzarTurno() {
@@ -171,7 +174,6 @@ public class GestorDeTurnos {
         if (indiceJugadorActual == 0) {
             turnoActual++;
         }
-        notificarCambios();
     }
 
     public boolean terminoElJuego() {
@@ -190,9 +192,6 @@ public class GestorDeTurnos {
             }
         }
         return null;
-    }
-
-    private void notificarCambios() {
     }
     
     public Jugador obtenerJugadorActual() {

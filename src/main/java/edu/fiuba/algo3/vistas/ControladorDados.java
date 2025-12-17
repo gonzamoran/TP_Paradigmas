@@ -1,17 +1,29 @@
 package edu.fiuba.algo3.vistas;
 
 import edu.fiuba.algo3.modelo.GestorDeTurnos;
+import edu.fiuba.algo3.modelo.Jugador;
 import edu.fiuba.algo3.modelo.tablero.Coordenadas;
+import javafx.scene.control.ToggleButton;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.control.ToggleGroup;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
+import javafx.scene.layout.StackPane;
+import javafx.scene.text.Text;
+import javafx.scene.shape.Circle;
+import javafx.scene.paint.Color;
+import edu.fiuba.algo3.vistas.ColoresJugadores;
+import javafx.stage.Screen;
+import javafx.geometry.Rectangle2D;
+import javafx.geometry.Bounds;
 
 import java.util.Random;
+import java.util.List;
 
 public class ControladorDados {
     
@@ -79,6 +91,16 @@ public class ControladorDados {
     
     private void mostrarVentanaDados(int dado1, int dado2, int resultado, Runnable onDadosResueltos) {
         final Stage stageDados = new Stage();
+        if (tableroUI != null && tableroUI.getScene() != null && tableroUI.getScene().getWindow() instanceof Stage owner) {
+            stageDados.initOwner(owner);
+            stageDados.setAlwaysOnTop(true);
+            stageDados.setOnShown(ev -> {
+                stageDados.setX(owner.getX() + 30);
+                stageDados.setY(owner.getY() + 30);
+            });
+        } else {
+            stageDados.setAlwaysOnTop(true);
+        }
         VistaDados vista = new VistaDados(dado1, dado2);
         
         Button btnContinuar = new Button("Continuar");
@@ -112,23 +134,31 @@ public class ControladorDados {
             stageSeleccion.initOwner(owner);
         }
         stageSeleccion.setAlwaysOnTop(true);
-        VBox contenedor = new VBox(15);
-        contenedor.setPadding(new Insets(20));
-        contenedor.setAlignment(Pos.CENTER);
-        contenedor.setStyle("-fx-background-color: white;");
-        
+        VBox contenedor = new VBox(14);
+        contenedor.setPadding(new Insets(18));
+        contenedor.setAlignment(Pos.TOP_CENTER);
+        contenedor.setStyle("-fx-background-color: white; -fx-pref-width: 240; -fx-max-width: 240;");
+
         Label titulo = new Label("¡Salió 7! Debes mover el ladrón");
-        titulo.setStyle("-fx-font-size: 16px; -fx-font-weight: bold;");
-        
+        titulo.setStyle("-fx-font-size: 14px; -fx-font-weight: bold;");
+        titulo.setWrapText(true);
+        titulo.setMaxWidth(210);
+
         Label instrucciones = new Label("Haz clic en un hexágono del tablero para mover el ladrón");
-        instrucciones.setStyle("-fx-font-size: 12px;");
+        instrucciones.setStyle("-fx-font-size: 11px;");
+        instrucciones.setWrapText(true);
+        instrucciones.setMaxWidth(210);
         instrucciones.setWrapText(true);
         
         Label coordSeleccionadas = new Label("Ningún hexágono seleccionado");
-        coordSeleccionadas.setStyle("-fx-font-size: 12px; -fx-text-fill: #7f8c8d;");
+        coordSeleccionadas.setStyle("-fx-font-size: 11px; -fx-text-fill: #7f8c8d;");
+        coordSeleccionadas.setWrapText(true);
+        coordSeleccionadas.setMaxWidth(210);
         
         Label lblError = new Label("Debes seleccionar un hexágono");
-        lblError.setStyle("-fx-text-fill: red; -fx-font-weight: bold;");
+        lblError.setStyle("-fx-text-fill: red; -fx-font-weight: bold; -fx-font-size: 10px;");
+        lblError.setWrapText(true);
+        lblError.setMaxWidth(210);
         lblError.setVisible(false);
         
         final Coordenadas[] coordenadasSeleccionadas = {null};
@@ -141,30 +171,209 @@ public class ControladorDados {
         });
         
         Button btnConfirmar = new Button("Confirmar");
-        btnConfirmar.setStyle("-fx-font-size: 14px; -fx-padding: 8 20; -fx-background-color: #27ae60; -fx-text-fill: white;");
+        btnConfirmar.setStyle("-fx-font-size: 12px; -fx-padding: 6 12; -fx-background-color: #27ae60; -fx-text-fill: white; -fx-cursor: hand;");
+        btnConfirmar.setMaxWidth(Double.MAX_VALUE);
         btnConfirmar.setOnAction(e -> {
             if (coordenadasSeleccionadas[0] == null) {
                 lblError.setVisible(true);
                 return;
             }
             tableroUI.deshabilitarSeleccionHexagono();
-            gestor.resolverResultadoDadoSiete(resultado, coordenadasSeleccionadas[0], null);
+            List<Jugador> jugadoresRobables = gestor.obtenerJugadoresAdyacentes(coordenadasSeleccionadas[0]);
+            if (jugadoresRobables.isEmpty()) {
+                gestor.resolverResultadoDadoSiete(resultado, coordenadasSeleccionadas[0], null);
+                tableroUI.actualizarLadronEn(coordenadasSeleccionadas[0]);
+                onDadosResueltos.run();
+                stageSeleccion.close();
+                return;
+            }
 
-            tableroUI.actualizarLadronEn(coordenadasSeleccionadas[0]);
-            onDadosResueltos.run();
             stageSeleccion.close();
+            abrirSeleccionRobo(jugadoresRobables, resultado, coordenadasSeleccionadas[0], onDadosResueltos);
         });
         
-        HBox botones = new HBox(10, btnConfirmar);
+        VBox botones = new VBox(8, btnConfirmar);
         botones.setAlignment(Pos.CENTER);
         
         contenedor.getChildren().addAll(titulo, instrucciones, coordSeleccionadas, lblError, botones);
         
-        Scene scene = new Scene(contenedor, 400, 240);
+        contenedor.setMinHeight(280);
+        Scene scene = new Scene(contenedor);
         stageSeleccion.setTitle("Mover Ladrón");
         stageSeleccion.setScene(scene);
-        
+        stageSeleccion.sizeToScene();
+        stageSeleccion.setOnShown(ev -> {
+            stageSeleccion.sizeToScene();
+            posicionarFueraDelTablero(stageSeleccion);
+        });
         stageSeleccion.setOnCloseRequest(e -> tableroUI.deshabilitarSeleccionHexagono());
         stageSeleccion.show();
+    }
+
+    private void abrirSeleccionRobo(List<Jugador> jugadoresRobables, int resultado, Coordenadas coordenadas, Runnable onDadosResueltos) {
+        Stage stageRobo = new Stage();
+        if (tableroUI != null && tableroUI.getScene() != null && tableroUI.getScene().getWindow() instanceof Stage owner) {
+            stageRobo.initOwner(owner);
+        }
+        stageRobo.setAlwaysOnTop(true);
+
+        VBox contenedor = new VBox(12);
+        contenedor.setPadding(new Insets(18));
+        contenedor.setAlignment(Pos.TOP_CENTER);
+        contenedor.setStyle("-fx-background-color: white; -fx-pref-width: 220; -fx-max-width: 220;");
+
+        Label titulo = new Label("Elige a quién robar");
+        titulo.setStyle("-fx-font-size: 14px; -fx-font-weight: bold;");
+        titulo.setWrapText(true);
+        titulo.setMaxWidth(190);
+
+        ToggleGroup grupo = new ToggleGroup();
+        VBox opciones = new VBox(8);
+        opciones.setAlignment(Pos.CENTER);
+        for (Jugador j : jugadoresRobables) {
+            ToggleButton tarjeta = crearTarjetaJugador(j, grupo);
+            opciones.getChildren().add(tarjeta);
+        }
+
+        Label lblError = new Label("Debes elegir un jugador");
+        lblError.setStyle("-fx-text-fill: red; -fx-font-weight: bold; -fx-font-size: 10px;");
+        lblError.setWrapText(true);
+        lblError.setMaxWidth(190);
+        lblError.setVisible(false);
+
+        Button btnConfirmar = new Button("Robar");
+        btnConfirmar.setStyle("-fx-font-size: 12px; -fx-padding: 6 12; -fx-background-color: #27ae60; -fx-text-fill: white; -fx-cursor: hand;");
+        btnConfirmar.setMaxWidth(Double.MAX_VALUE);
+        btnConfirmar.setOnAction(e -> {
+            if (grupo.getSelectedToggle() == null) {
+                lblError.setVisible(true);
+                return;
+            }
+            Jugador victima = (Jugador) grupo.getSelectedToggle().getUserData();
+            gestor.resolverResultadoDadoSiete(resultado, coordenadas, victima);
+            tableroUI.actualizarLadronEn(coordenadas);
+            onDadosResueltos.run();
+            stageRobo.close();
+        });
+
+        contenedor.getChildren().addAll(titulo, opciones, lblError, btnConfirmar);
+
+        contenedor.setMinHeight(320);
+        Scene scene = new Scene(contenedor);
+        stageRobo.setTitle("Selecciona jugador a robar");
+        stageRobo.setScene(scene);
+        stageRobo.sizeToScene();
+        stageRobo.setOnShown(ev -> {
+            stageRobo.sizeToScene();
+            posicionarFueraDelTablero(stageRobo);
+        });
+        stageRobo.show();
+    }
+
+    private void posicionarFueraDelTablero(Stage stage) {
+        if (tableroUI == null || tableroUI.getScene() == null || !(tableroUI.getScene().getWindow() instanceof Stage owner)) {
+            return;
+        }
+        Rectangle2D screen = Screen.getPrimary().getVisualBounds();
+        double stageW = stage.getWidth();
+        double stageH = stage.getHeight();
+        double margin = 16;
+
+        Bounds tableroBounds = tableroUI.localToScreen(tableroUI.getBoundsInLocal());
+        if (tableroBounds != null) {
+            double targetX = tableroBounds.getMinX() - stageW - margin;
+            if (targetX < -100) {
+                targetX = tableroBounds.getMaxX() + margin;
+                if (targetX + stageW > screen.getMaxX()) {
+                    targetX = screen.getMinX() + 80;
+                }
+            } else if (targetX < screen.getMinX()) {
+                targetX = screen.getMinX() + 80;
+            }
+
+            double targetY = tableroBounds.getMinY();
+            if (targetY + stageH > screen.getMaxY() - margin) {
+                targetY = screen.getMaxY() - stageH - margin;
+            }
+            if (targetY < screen.getMinY() + margin) {
+                targetY = screen.getMinY() + margin;
+            }
+
+            stage.setX(targetX);
+            stage.setY(targetY);
+            return;
+        }
+
+        double ownerX = owner.getX();
+        double ownerY = owner.getY();
+        double ownerW = owner.getWidth();
+        double ownerH = owner.getHeight();
+
+        double targetX = ownerX - stageW - margin;
+        if (targetX < screen.getMinX()) {
+            targetX = ownerX + ownerW + margin;
+        }
+        if (targetX + stageW > screen.getMaxX()) {
+            targetX = screen.getMaxX() - stageW - margin;
+        }
+
+        double targetY = ownerY + (ownerH - stageH) / 2.0;
+        targetY = Math.max(screen.getMinY() + margin, Math.min(targetY, screen.getMaxY() - stageH - margin));
+
+        stage.setX(targetX);
+        stage.setY(targetY);
+    }
+
+    private ToggleButton crearTarjetaJugador(Jugador jugador, ToggleGroup grupo) {
+        int indice = -1;
+        if (gestor.obtenerJugadores() != null) {
+            indice = gestor.obtenerJugadores().indexOf(jugador);
+        }
+        Color colorBase = (indice >= 0) ? ColoresJugadores.obtenerColorPoblado(indice) : Color.GRAY;
+        Color colorBorde = (indice >= 0) ? ColoresJugadores.obtenerColorBorde(indice) : Color.DARKGRAY;
+
+        Circle avatar = new Circle(24);
+        avatar.setFill(colorBase);
+        avatar.setStroke(colorBorde);
+        avatar.setStrokeWidth(2);
+
+        String inicial = jugador.obtenerNombre() != null && !jugador.obtenerNombre().isEmpty()
+                ? jugador.obtenerNombre().substring(0, 1).toUpperCase()
+                : "?";
+        Text letra = new Text(inicial);
+        letra.setFill(Color.WHITE);
+        letra.setStyle("-fx-font-weight: bold; -fx-font-size: 16;");
+
+        StackPane retrato = new StackPane(avatar, letra);
+        retrato.setPrefSize(60, 60);
+
+        Label nombre = new Label(jugador.obtenerNombre());
+        nombre.setStyle("-fx-font-size: 12px; -fx-font-weight: bold;");
+        nombre.setTextFill(Color.web("#2c3e50"));
+
+        VBox contenido = new VBox(8, retrato, nombre);
+        contenido.setAlignment(Pos.CENTER);
+
+        ToggleButton btn = new ToggleButton();
+        btn.setUserData(jugador);
+        btn.setToggleGroup(grupo);
+        btn.setGraphic(contenido);
+        btn.setStyle("-fx-background-color: #ecf0f1; -fx-border-color: #bdc3c7; -fx-border-radius: 8; -fx-background-radius: 8; -fx-padding: 10;");
+        btn.setOnAction(e -> {
+            if (btn.isSelected()) {
+                btn.setStyle("-fx-background-color: #dff9fb; -fx-border-color: " + toRgbString(colorBase) + "; -fx-border-radius: 8; -fx-background-radius: 8; -fx-padding: 10;");
+            } else {
+                btn.setStyle("-fx-background-color: #ecf0f1; -fx-border-color: #bdc3c7; -fx-border-radius: 8; -fx-background-radius: 8; -fx-padding: 10;");
+            }
+        });
+
+        return btn;
+    }
+
+    private String toRgbString(Color color) {
+        int r = (int) Math.round(color.getRed() * 255);
+        int g = (int) Math.round(color.getGreen() * 255);
+        int b = (int) Math.round(color.getBlue() * 255);
+        return String.format("rgb(%d,%d,%d)", r, g, b);
     }
 }

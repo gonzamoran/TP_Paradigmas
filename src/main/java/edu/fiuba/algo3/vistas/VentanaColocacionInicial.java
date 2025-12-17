@@ -39,6 +39,13 @@ public class VentanaColocacionInicial extends VentanaModalBase {
         lblPoblado.setStyle("-fx-font-size: 12px; -fx-text-fill: #7f8c8d;");
         lblCarretera.setStyle("-fx-font-size: 12px; -fx-text-fill: #7f8c8d;");
 
+        configurarSeleccion();
+
+        VBox contenido = new VBox(8, lblPoblado, lblCarretera);
+        return contenido;
+    }
+
+    private void configurarSeleccion() {
         if (tableroUI != null) {
             tableroUI.deshabilitarSeleccionHexagono();
             tableroUI.habilitarSeleccionVertice(coord -> {
@@ -62,9 +69,6 @@ public class VentanaColocacionInicial extends VentanaModalBase {
                 }
             });
         }
-
-        VBox contenido = new VBox(8, lblPoblado, lblCarretera);
-        return contenido;
     }
 
     @Override
@@ -74,9 +78,32 @@ public class VentanaColocacionInicial extends VentanaModalBase {
             return;
         }
         ocultarError();
+        
         limpiarSelecciones();
-        if (onConfirm != null) onConfirm.accept(poblado[0], extremoCarretera[0]);
-        stage.close();
+        
+        try {
+            if (onConfirm != null) onConfirm.accept(poblado[0], extremoCarretera[0]);
+            
+            confirmado = true;
+            stage.close();
+        } catch (RuntimeException ex) {
+            configurarSeleccion();
+            
+            mostrarError(ex.getMessage() != null ? ex.getMessage() : "Error al colocar construcciones iniciales. Intenta de nuevo.");
+            resetearSelecciones();
+        }
+    }
+
+    private void resetearSelecciones() {
+        poblado[0] = null;
+        extremoCarretera[0] = null;
+        lblPoblado.setText("Poblado: ninguno");
+        lblCarretera.setText("Carretera hacia: ninguno");
+        lblPoblado.setStyle("-fx-font-size: 12px; -fx-text-fill: #7f8c8d;");
+        lblCarretera.setStyle("-fx-font-size: 12px; -fx-text-fill: #7f8c8d;");
+        if (tableroUI != null) {
+            tableroUI.resetearResaltadoVertices();
+        }
     }
 
     @Override

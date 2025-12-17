@@ -1,21 +1,21 @@
 package edu.fiuba.algo3.vistas;
 
 import edu.fiuba.algo3.modelo.GestorDeTurnos;
-import edu.fiuba.algo3.modelo.construcciones.Poblado;
+import edu.fiuba.algo3.modelo.construcciones.Ciudad;
 import edu.fiuba.algo3.modelo.excepciones.NoEsPosibleConstruirException;
 import edu.fiuba.algo3.modelo.tablero.Coordenadas;
 import javafx.scene.control.Label;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
-public class VentanaConstruirPoblado extends VentanaModalBase {
+public class VentanaMejorarPoblado extends VentanaModalBase {
     private final GestorDeTurnos gestor;
     private final Coordenadas[] seleccion = { null };
     private Label lblSeleccion;
     private final Runnable onBuilt;
 
-    public VentanaConstruirPoblado(Stage stage, String nombreJugador, GestorDeTurnos gestor, TableroUI tableroUI, Runnable onBuilt) {
-        super(stage, "Construir Poblado", nombreJugador, tableroUI);
+    public VentanaMejorarPoblado(Stage stage, String nombreJugador, GestorDeTurnos gestor, TableroUI tableroUI, Runnable onBuilt) {
+        super(stage, "Mejorar Poblado", nombreJugador, tableroUI);
         this.gestor = gestor;
         this.onBuilt = onBuilt;
         construirYMostrar();
@@ -23,12 +23,12 @@ public class VentanaConstruirPoblado extends VentanaModalBase {
 
     @Override
     protected String getTitulo() {
-        return "Construcción de Poblado";
+        return "Mejora de Poblado";
     }
 
     @Override
     protected String getInstruccion() {
-        return "Haz clic en un vértice del tablero para colocar el poblado";
+        return "Haz clic en un vértice con poblado para mejorarlo a ciudad";
     }
 
     @Override
@@ -56,7 +56,7 @@ public class VentanaConstruirPoblado extends VentanaModalBase {
     @Override
     protected void alConfirmar() {
         if (seleccion[0] == null) {
-            mostrarError("Debes elegir un vértice para el poblado.");
+            mostrarError("Debes elegir un vértice para mejorar.");
             return;
         }
         ocultarError();
@@ -64,20 +64,14 @@ public class VentanaConstruirPoblado extends VentanaModalBase {
         limpiarSelecciones();
         
         try {
-            gestor.construir(seleccion[0], new Poblado());
+            gestor.construir(seleccion[0], new Ciudad());
+            if (onBuilt != null) {
+                try { onBuilt.run(); } catch (Exception e) { e.printStackTrace(); }
+            }
 
             try {
                 int indiceJugador = gestor.obtenerIndiceJugadorActual();
-                if (tableroUI != null) tableroUI.marcarPoblado(seleccion[0], indiceJugador);
-            } catch (Exception ex) {
-                ex.printStackTrace();
-            }
-
-            if (onBuilt != null) {
-                try { onBuilt.run(); } catch (Exception ex) { ex.printStackTrace(); }
-            }
-
-            try {
+                if (tableroUI != null) tableroUI.marcarCiudad(seleccion[0], indiceJugador);
                 if (tableroUI != null) tableroUI.refrescarDesdeModelo();
             } catch (Exception ex) {
                 ex.printStackTrace();
@@ -88,7 +82,7 @@ public class VentanaConstruirPoblado extends VentanaModalBase {
         } catch (NoEsPosibleConstruirException ex) {
             configurarSeleccion();
             
-            mostrarError(ex.getMessage() != null ? ex.getMessage() : "No es posible construir en esta ubicación. Intenta en otro lugar.");
+            mostrarError(ex.getMessage() != null ? ex.getMessage() : "No es posible mejorar este poblado. Intenta con otro.");
             resetearSeleccion();
         }
     }
@@ -106,4 +100,5 @@ public class VentanaConstruirPoblado extends VentanaModalBase {
             tableroUI.deshabilitarSeleccionVertice();
         }
     }
+
 }

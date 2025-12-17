@@ -197,6 +197,9 @@ public class HexagonoUI extends Pane {
     }
     
     public void habilitarSeleccion(Runnable onSeleccionado) {
+        seleccionado = false;
+        resetSeleccion();
+        
         poligonoHexagono.setOnMouseClicked(e -> {
             if (onSeleccionado != null) {
                 seleccionado = true;

@@ -15,6 +15,14 @@ public class ControladorConstruccion {
     private Button btnPoblado;
     private Button btnCarretera;
     private Button btnComerciar;
+    private Button btnMejorarPoblado;
+    
+    private Stage ventanaConstruirPoblado;
+    private Stage ventanaConstruirCarretera;
+    private Stage ventanaComerciar;
+    private Stage ventanaMejorarPoblado;
+    private Runnable onVentanaComerciarCerrada;
+    private Runnable onModalClosed;
     
     public ControladorConstruccion(GestorDeTurnos gestor, String nombreJugador) {
         this.gestor = gestor;
@@ -24,21 +32,32 @@ public class ControladorConstruccion {
     public void setTableroUI(TableroUI tableroUI) {
         this.tableroUI = tableroUI;
     }
+
+    public void setOnVentanaComerciarCerrada(Runnable callback) {
+        this.onVentanaComerciarCerrada = callback;
+    }
+
+    public void setOnModalClosed(Runnable callback) {
+        this.onModalClosed = callback;
+    }
     
     public VBox crearPanelBotonesConstruccion() {
         btnPoblado = crearBotonAccion("Construir Poblado", "#27ae60");
         btnCarretera = crearBotonAccion("Construir Carretera", "#27ae60");
+        btnMejorarPoblado = crearBotonAccion("Mejorar Poblado", "#f39c12");
         btnComerciar = crearBotonAccion("Comerciar", "#3498db");
         
         btnPoblado.setOnAction(e -> abrirVentanaConstruirPoblado());
         btnCarretera.setOnAction(e -> abrirVentanaConstruirCarretera());
+        btnMejorarPoblado.setOnAction(e -> abrirVentanaMejorarPoblado());
         btnComerciar.setOnAction(e -> abrirVentanaComerciar());
         
         btnPoblado.setVisible(false);
         btnCarretera.setVisible(false);
+        btnMejorarPoblado.setVisible(false);
         btnComerciar.setVisible(false);
 
-        VBox botonesBox = new VBox(8, btnPoblado, btnCarretera, btnComerciar);
+        VBox botonesBox = new VBox(8, btnPoblado, btnCarretera, btnMejorarPoblado, btnComerciar);
         botonesBox.setAlignment(Pos.TOP_CENTER);
         
         return botonesBox;
@@ -53,18 +72,75 @@ public class ControladorConstruccion {
     }
     
     private void abrirVentanaConstruirPoblado() {
-        Stage stage = new Stage();
-        new VentanaConstruirPoblado(stage, nombreJugador, gestor, tableroUI);
+        if (ventanaConstruirPoblado != null && ventanaConstruirPoblado.isShowing()) {
+            ventanaConstruirPoblado.requestFocus();
+            return;
+        }
+        ventanaConstruirPoblado = new Stage();
+        ventanaConstruirPoblado.setOnCloseRequest(e -> {
+            ventanaConstruirPoblado = null;
+            if (onModalClosed != null) onModalClosed.run();
+        });
+        VentanaConstruirPoblado ventana = new VentanaConstruirPoblado(
+            ventanaConstruirPoblado,
+            nombreJugador,
+            gestor,
+            tableroUI,
+            () -> { if (onModalClosed != null) onModalClosed.run(); }
+        );
     }
     
     private void abrirVentanaConstruirCarretera() {
-        Stage stage = new Stage();
-        new VentanaConstruirCarretera(stage, nombreJugador, gestor, tableroUI);
+        if (ventanaConstruirCarretera != null && ventanaConstruirCarretera.isShowing()) {
+            ventanaConstruirCarretera.requestFocus();
+            return;
+        }
+        ventanaConstruirCarretera = new Stage();
+        ventanaConstruirCarretera.setOnCloseRequest(e -> {
+            ventanaConstruirCarretera = null;
+            if (onModalClosed != null) onModalClosed.run();
+        });
+        VentanaConstruirCarretera ventana = new VentanaConstruirCarretera(
+            ventanaConstruirCarretera,
+            nombreJugador,
+            gestor,
+            tableroUI,
+            () -> { if (onModalClosed != null) onModalClosed.run(); }
+        );
     }
     
     private void abrirVentanaComerciar() {
-        Stage stage = new Stage();
-        new VentanaComerciar(stage, nombreJugador);
+        if (ventanaComerciar != null && ventanaComerciar.isShowing()) {
+            ventanaComerciar.requestFocus();
+            return;
+        }
+        ventanaComerciar = new Stage();
+
+        ventanaComerciar.setOnCloseRequest(e -> {
+            ventanaComerciar = null;
+        });
+        VentanaComerciar ventana = new VentanaComerciar(ventanaComerciar, nombreJugador, gestor, () -> {
+            if (onVentanaComerciarCerrada != null) onVentanaComerciarCerrada.run();
+        });
+    }
+    
+    private void abrirVentanaMejorarPoblado() {
+        if (ventanaMejorarPoblado != null && ventanaMejorarPoblado.isShowing()) {
+            ventanaMejorarPoblado.requestFocus();
+            return;
+        }
+        ventanaMejorarPoblado = new Stage();
+        ventanaMejorarPoblado.setOnCloseRequest(e -> {
+            ventanaMejorarPoblado = null;
+            if (onModalClosed != null) onModalClosed.run();
+        });
+        VentanaMejorarPoblado ventana = new VentanaMejorarPoblado(
+            ventanaMejorarPoblado,
+            nombreJugador,
+            gestor,
+            tableroUI,
+            () -> { if (onModalClosed != null) onModalClosed.run(); }
+        );
     }
     
     public void mostrarVentanaVictoria() {
@@ -81,6 +157,7 @@ public class ControladorConstruccion {
         boolean enConstruccion = (indiceFase == 1);
         if (btnPoblado != null) btnPoblado.setVisible(enConstruccion);
         if (btnCarretera != null) btnCarretera.setVisible(enConstruccion);
+        if (btnMejorarPoblado != null) btnMejorarPoblado.setVisible(enConstruccion);
         if (btnComerciar != null) btnComerciar.setVisible(enConstruccion);
     }
 }

@@ -14,6 +14,10 @@ public class Banca2a1 extends Banca {
         this.recurso = recurso;
     }
 
+    public Recurso obtenerRecursoTipo() {
+        return recurso.obtenerCopia(0);
+    }
+
     public void comerciar (Jugador jugador,  ArrayList<Recurso> oferta, ArrayList<Recurso> demanda){
         int cantidadOfrecida = 0;
         for(Recurso recursoOfrecido : oferta){

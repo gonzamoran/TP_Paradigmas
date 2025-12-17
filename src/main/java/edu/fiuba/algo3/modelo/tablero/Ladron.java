@@ -9,6 +9,9 @@ public class Ladron {
 
     public Ladron(Hexagono hexagonoInicial) {
         this.hexagonoActual = hexagonoInicial;
+        if (this.hexagonoActual != null) {
+            this.hexagonoActual.colocarLadron();
+        }
     }
 
     public void moverLadronA(Hexagono hexagono) {
