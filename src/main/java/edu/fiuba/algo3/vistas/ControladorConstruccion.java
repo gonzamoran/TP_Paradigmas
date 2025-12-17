@@ -1,4 +1,5 @@
 package edu.fiuba.algo3.vistas;
+import edu.fiuba.algo3.controllers.ReproductorDeSonido;
 
 import edu.fiuba.algo3.modelo.GestorDeTurnos;
 import javafx.geometry.Insets;
@@ -30,9 +31,18 @@ public class ControladorConstruccion {
         btnCarretera = crearBotonAccion("Construir Carretera", "#27ae60");
         btnComerciar = crearBotonAccion("Comerciar", "#3498db");
         
-        btnPoblado.setOnAction(e -> abrirVentanaConstruirPoblado());
-        btnCarretera.setOnAction(e -> abrirVentanaConstruirCarretera());
-        btnComerciar.setOnAction(e -> abrirVentanaComerciar());
+        btnPoblado.setOnAction(e -> {
+            ReproductorDeSonido.getInstance().playClick();
+            abrirVentanaConstruirPoblado();
+        });
+        btnCarretera.setOnAction(e -> {
+            ReproductorDeSonido.getInstance().playClick();
+            abrirVentanaConstruirCarretera();
+        });
+        btnComerciar.setOnAction(e -> {
+            ReproductorDeSonido.getInstance().playClick();
+            abrirVentanaComerciar();
+        });
         
         btnPoblado.setVisible(false);
         btnCarretera.setVisible(false);
