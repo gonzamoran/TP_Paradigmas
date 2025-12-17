@@ -11,6 +11,7 @@ import javafx.scene.control.Spinner;
 import javafx.scene.control.SpinnerValueFactory;
 import javafx.stage.Stage;
 import javafx.scene.control.ComboBox;
+import javafx.scene.control.ListView;
 import javafx.application.Platform;
 
 import edu.fiuba.algo3.modelo.GestorDeTurnos;
@@ -485,9 +486,14 @@ public class VentanaComerciar extends VBox {
 
         Label lblOfrecer = new Label("Yo ofrezco");
         lblOfrecer.setStyle("-fx-text-fill: #2ecc71;");
+
+        javafx.scene.control.ListView<String> vistaOferta = new javafx.scene.control.ListView<>();
+        vistaOferta.setPrefHeight(100);
+
         ComboBox<String> cmbRecursosOfrecidos = new ComboBox<>();
         cmbRecursosOfrecidos.getItems().addAll(RECURSOS);
         Spinner<Integer> spCantOfrecer = new Spinner<>(1, 20, 1);
+
         Button btnAgregarOferta = new Button("Agregar");
         estilarBoton(btnAgregarOferta, "#27ae60");
 
@@ -496,17 +502,32 @@ public class VentanaComerciar extends VBox {
             int cantidad = spCantOfrecer.getValue();
             if (recurso != null) {
                 listaOferta.add(crearRecurso(recurso, cantidad));
+                vistaOferta.getItems().add(cantidad + " " + recurso);
             }
         });
+
         Button btnLimpiarOferta = new Button("Borrar oferta");
         btnLimpiarOferta.setOnAction(e -> {
             listaOferta.clear();
+            vistaOferta.getItems().clear();
         });
+
+        VBox panelOferta = new VBox(5,
+                lblOfrecer,
+                vistaOferta,
+                new HBox(5, cmbRecursosOfrecidos, spCantOfrecer),
+                new HBox(5, btnAgregarOferta, btnLimpiarOferta));
+        panelOferta.setAlignment(Pos.CENTER);
 
         Label lblPedir = new Label("Yo pido");
         lblPedir.setStyle("-fx-text-fill: #2ecc71;");
+
+        javafx.scene.control.ListView<String> vistaDemanda = new javafx.scene.control.ListView<>();
+        vistaOferta.setPrefHeight(100);
+
         ComboBox<String> cmbRecursosPedir = new ComboBox<>();
         cmbRecursosPedir.getItems().addAll(RECURSOS);
+
         Spinner<Integer> spCantPedir = new Spinner<>(1, 20, 1);
 
         Button btnAgregarDemanda = new Button("Agregar");
@@ -517,16 +538,23 @@ public class VentanaComerciar extends VBox {
             int cantidad = spCantPedir.getValue();
             if (recurso != null) {
                 listaDemanda.add(crearRecurso(recurso, cantidad));
+                vistaDemanda.getItems().add(cantidad + " " + recurso);
             }
         });
         Button btnLimpiarDemanda = new Button("Borrar demanda");
         btnLimpiarDemanda.setOnAction(e -> {
             listaDemanda.clear();
+            vistaDemanda.getItems().clear();
         });
 
-        HBox boxIntercambio = new HBox(15,
-                new VBox(5, lblOfrecer, cmbRecursosOfrecidos, spCantOfrecer),
-                new VBox(5, lblPedir, cmbRecursosPedir, spCantPedir));
+        VBox panelDemanda = new VBox(5,
+                lblPedir,
+                vistaDemanda,
+                new HBox(5, cmbRecursosPedir, spCantPedir),
+                new HBox(5, btnAgregarDemanda, btnLimpiarDemanda));
+        panelDemanda.setAlignment(Pos.CENTER);
+
+        HBox boxIntercambio = new HBox(15, panelOferta, panelDemanda);
         boxIntercambio.setAlignment(Pos.CENTER);
 
         Button btnConfirmar = new Button("Confirmar Intercambio");
@@ -543,17 +571,6 @@ public class VentanaComerciar extends VBox {
                 lblDesc.setText(("Faltan datos para poder realizar el intercambio"));
                 lblDesc.setStyle("-fx-text-fill: #e74c3c");
                 return;
-            }
-
-            if (listaOferta.isEmpty()) {
-                if (recursoOfrecer != null) {
-                    listaOferta.add(crearRecurso(recursoOfrecer, cantOfrecer));
-                }
-            }
-            if (listaDemanda.isEmpty()) {
-                if (recursoPedir != null) {
-                    listaDemanda.add(crearRecurso(recursoPedir, cantPedir));
-                }
             }
 
             if (listaOferta.isEmpty() || listaDemanda.isEmpty()) {
