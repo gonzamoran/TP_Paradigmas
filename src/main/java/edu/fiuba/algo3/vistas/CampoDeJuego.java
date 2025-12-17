@@ -165,7 +165,10 @@ public class CampoDeJuego extends BorderPane {
         
         Button botonDesarrollo = new Button("Ver Cartas Desarrollo");
         botonDesarrollo.setStyle("-fx-font-size: 16px; -fx-padding: 10 20; -fx-base: #3498db; -fx-cursor: hand; -fx-font-weight: bold;");
-        botonDesarrollo.setOnAction(e -> controladorVentanas.abrirVentanaCartasDesarrollo());
+        botonDesarrollo.setOnAction(e -> {
+            ReproductorDeSonido.getInstance().playClick();
+            controladorVentanas.abrirVentanaCartasDesarrollo();
+        });
         
         Button botonSalir = new Button("Salir");
         botonSalir.setStyle("-fx-font-size: 16px; -fx-padding: 10 20; -fx-base: #e74c3c; -fx-cursor: hand; -fx-font-weight: bold;");
@@ -174,6 +177,7 @@ public class CampoDeJuego extends BorderPane {
             Stage newStage = new Stage();
             try {
                 menuInicial.start(newStage);
+                ReproductorDeSonido.getInstance().playClick();
                 escenario.close();
             } catch (Exception ex) {
                 ex.printStackTrace();

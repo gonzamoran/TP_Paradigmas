@@ -1,4 +1,5 @@
 package edu.fiuba.algo3.vistas;
+import edu.fiuba.algo3.controllers.ReproductorDeSonido;
 
 import edu.fiuba.algo3.modelo.GestorDeTurnos;
 import javafx.geometry.Insets;
