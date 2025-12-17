@@ -179,8 +179,9 @@ public class CartasJugador {
         if (!cartaAUsar.esJugable(contexto)) {
             throw new NoSePuedeJugarEstaCartaException();
         }
-        cartasDesarrollo.remove(cartaAUsar);
+        // Primero ejecutar la acción; sólo remover la carta si la acción fue exitosa.
         cartaAUsar.usar(contexto);
+        cartasDesarrollo.remove(cartaAUsar);
     }
 
     public int obtenerPVdeCartas() {
@@ -219,5 +220,13 @@ public class CartasJugador {
 
     public void quitarCartaGranRutaComercial(){
         this.tieneLaGranRutaComercial = false;
+    }
+
+    public boolean poseeGranRuta(){
+        return this.tieneLaGranRutaComercial;
+    }
+
+    public boolean poseeGranCaballeria(){
+        return this.tieneLaGranCaballeria;
     }
 }

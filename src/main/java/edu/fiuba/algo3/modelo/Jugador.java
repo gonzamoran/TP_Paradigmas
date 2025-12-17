@@ -151,6 +151,9 @@ public class Jugador {
     public void pierdeGranCaballeria(){
         mazos.pierdeGranCaballeria();
     }
+    public boolean poseeGranCaballeria(){
+        return mazos.poseeGranCaballeria();
+    }
     
     public int obtenerCaminoMasLargoDelJugador(){
         return this.caminoMasLargo;
@@ -166,6 +169,10 @@ public class Jugador {
     public void quitarCartaGranRutaComercial(){
         mazos.quitarCartaGranRutaComercial();
     }
+    public boolean poseeGranRuta(){
+        return mazos.poseeGranRuta();
+    }
+
 
     public boolean poseeRecursos(ArrayList<Recurso> recursos) {
         for (Recurso recurso : recursos) {

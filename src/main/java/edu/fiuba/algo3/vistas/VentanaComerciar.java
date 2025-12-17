@@ -14,6 +14,9 @@ import javafx.scene.control.ComboBox;
 import javafx.scene.control.ListView;
 import javafx.application.Platform;
 
+
+import edu.fiuba.algo3.controllers.ReproductorDeSonido;
+
 import edu.fiuba.algo3.modelo.GestorDeTurnos;
 import edu.fiuba.algo3.modelo.Jugador;
 import edu.fiuba.algo3.modelo.Banca;
@@ -88,13 +91,16 @@ public class VentanaComerciar extends VBox {
         Button btnMaritimo = new Button("Comercio Marítimo");
         estilarBoton(btnMaritimo, "#3498db");
         btnMaritimo.setOnAction(e -> {
+            //ReproductorDeSonido.getInstance().playClick();
             mostrarOpcionesMaritimas(root, stage, nombreJugador);
         });
 
         Button btnCancelar = new Button("Cancelar");
         estilarBoton(btnCancelar, "#e74c3c");
-        btnCancelar.setOnAction(e -> stage.close());
-
+        btnCancelar.setOnAction(e -> {
+            //ReproductorDeSonido.getInstance().playClick();
+            stage.close();
+        });
         root.getChildren().addAll(lblTitulo, lblSubtitulo, btnInterior, btnMaritimo, btnCancelar);
     }
 
@@ -115,6 +121,7 @@ public class VentanaComerciar extends VBox {
         estilarBoton(btnGenerico, "#f39c12");
         btnGenerico.setOnAction(e -> {
             if (!poseeBanca31()) {
+                //ReproductorDeSonido.getInstance().playError();
                 lblInstruccion.setText("No tienes acceso a puertos 3:1.");
                 lblInstruccion.setStyle("-fx-font-size: 14px; -fx-text-fill: #e74c3c;");
             } else {
@@ -126,6 +133,7 @@ public class VentanaComerciar extends VBox {
         estilarBoton(btnEspecifico, "#f39c12");
         btnEspecifico.setOnAction(e -> {
             if (!poseeBanca21()) {
+                //ReproductorDeSonido.getInstance().playError();
                 lblInstruccion.setText("No tienes acceso a puertos 2:1 específicos.");
                 lblInstruccion.setStyle("-fx-font-size: 14px; -fx-text-fill: #e74c3c;");
             } else {
@@ -135,8 +143,10 @@ public class VentanaComerciar extends VBox {
 
         Button btnVolver = new Button("Volver al Menú Anterior");
         estilarBoton(btnVolver, "#95a5a6");
-        btnVolver.setOnAction(e -> mostrarMenuPrincipal(root, stage, nombreJugador));
-
+        btnVolver.setOnAction(e -> {
+            //ReproductorDeSonido.getInstance().playClick();
+            mostrarMenuPrincipal(root, stage, nombreJugador);
+        });
         root.getChildren().addAll(lblTitulo, lblInstruccion, btnEstandar, btnGenerico, btnEspecifico, btnVolver);
     }
 
@@ -189,6 +199,7 @@ public class VentanaComerciar extends VBox {
         Button btnConfirmar = new Button("Confirmar 3:1");
         estilarBoton(btnConfirmar, "#27ae60");
         btnConfirmar.setOnAction(e -> {
+            //ReproductorDeSonido.getInstance().playClick();
             String recibir = cmbRecibir.getValue();
             int cantidadDeseada = spDeseo.getValue();
             if (recibir == null) {
@@ -233,8 +244,10 @@ public class VentanaComerciar extends VBox {
 
         Button btnVolver = new Button("Volver");
         estilarBoton(btnVolver, "#95a5a6");
-        btnVolver.setOnAction(ev -> mostrarOpcionesMaritimas(root, stage, nombreJugador));
-
+        btnVolver.setOnAction(ev -> {
+            //ReproductorDeSonido.getInstance().playClick();
+            mostrarOpcionesMaritimas(root, stage, nombreJugador);
+        });
         VBox cont = new VBox(12, lblTitulo, lblDesc, boxOferta, cmbRecibir, boxDemanda, btnConfirmar, btnVolver);
         cont.setAlignment(Pos.CENTER);
         cont.setPadding(new Insets(20));
@@ -296,6 +309,7 @@ public class VentanaComerciar extends VBox {
         Button btnConfirmar = new Button("Confirmar 2:1");
         estilarBoton(btnConfirmar, "#27ae60");
         btnConfirmar.setOnAction(e -> {
+            //ReproductorDeSonido.getInstance().playClick();
             String puerto = cmbPuerto.getValue();
             String recibir = cmbRecibir.getValue();
             int cantOferta = spOferta.getValue();
@@ -334,8 +348,10 @@ public class VentanaComerciar extends VBox {
 
         Button btnVolver = new Button("Volver");
         estilarBoton(btnVolver, "#95a5a6");
-        btnVolver.setOnAction(ev -> mostrarOpcionesMaritimas(root, stage, nombreJugador));
-
+        btnVolver.setOnAction(ev -> {
+            //ReproductorDeSonido.getInstance().playClick();
+            mostrarOpcionesMaritimas(root, stage, nombreJugador);
+        });
         VBox cont = new VBox(12, lblTitulo, lblDesc, cmbPuerto, cmbRecibir, boxCantidades, btnConfirmar, btnVolver);
         cont.setAlignment(Pos.CENTER);
         cont.setPadding(new Insets(20));
@@ -379,6 +395,7 @@ public class VentanaComerciar extends VBox {
         Button btnConfirmar = new Button("Confirmar 4:1");
         estilarBoton(btnConfirmar, "#27ae60");
         btnConfirmar.setOnAction(e -> {
+            //ReproductorDeSonido.getInstance().playClick();
             String dar = cmbDar.getValue();
             String recibir = cmbRecibir.getValue();
             int cantOferta = spOferta.getValue();
@@ -412,8 +429,10 @@ public class VentanaComerciar extends VBox {
 
         Button btnVolver = new Button("Volver");
         estilarBoton(btnVolver, "#95a5a6");
-        btnVolver.setOnAction(ev -> mostrarOpcionesMaritimas(root, stage, nombreJugador));
-
+        btnVolver.setOnAction(ev -> {
+            //ReproductorDeSonido.getInstance().playClick();
+            mostrarOpcionesMaritimas(root, stage, nombreJugador);
+        });
         VBox cont = new VBox(12, lblTitulo, lblDesc, cmbDar, cmbRecibir, boxCantidades, btnConfirmar, btnVolver);
         cont.setAlignment(Pos.CENTER);
         cont.setPadding(new Insets(20));
@@ -503,6 +522,7 @@ public class VentanaComerciar extends VBox {
         estilarBoton(btnAgregarOferta, "#27ae60");
 
         btnAgregarOferta.setOnAction(e -> {
+            //ReproductorDeSonido.getInstance().playClick();
             String recurso = cmbRecursosOfrecidos.getValue();
             int cantidad = spCantOfrecer.getValue();
             if (recurso != null) {
@@ -513,6 +533,7 @@ public class VentanaComerciar extends VBox {
 
         Button btnLimpiarOferta = new Button("Borrar oferta");
         btnLimpiarOferta.setOnAction(e -> {
+            //ReproductorDeSonido.getInstance().playClick();
             listaOferta.clear();
             vistaOferta.getItems().clear();
         });
@@ -539,6 +560,7 @@ public class VentanaComerciar extends VBox {
         estilarBoton(btnAgregarDemanda, "#27ae60");
 
         btnAgregarDemanda.setOnAction(e -> {
+            //ReproductorDeSonido.getInstance().playClick();
             String recurso = cmbRecursosPedir.getValue();
             int cantidad = spCantPedir.getValue();
             if (recurso != null) {
@@ -548,6 +570,7 @@ public class VentanaComerciar extends VBox {
         });
         Button btnLimpiarDemanda = new Button("Borrar demanda");
         btnLimpiarDemanda.setOnAction(e -> {
+            //ReproductorDeSonido.getInstance().playClick();
             listaDemanda.clear();
             vistaDemanda.getItems().clear();
         });

@@ -12,6 +12,8 @@ import javafx.stage.Stage;
 import javafx.stage.Screen;
 import javafx.geometry.Rectangle2D;
 
+import edu.fiuba.algo3.controllers.ReproductorDeSonido;
+
 
 public abstract class VentanaModalBase {
     
@@ -145,7 +147,10 @@ public abstract class VentanaModalBase {
     private VBox crearBotonera() {
         Button btnConfirmar = new Button("Confirmar");
         btnConfirmar.setStyle("-fx-background-color: #27ae60; -fx-text-fill: white; -fx-font-weight: bold; -fx-cursor: hand; -fx-padding: 6 12; -fx-font-size: 11px;");
-        btnConfirmar.setOnAction(e -> alConfirmar());
+        btnConfirmar.setOnAction(e -> {
+            //ReproductorDeSonido.getInstance().playClick();
+            alConfirmar();
+        });
         btnConfirmar.setMaxWidth(Double.MAX_VALUE);
         
         VBox botonera = new VBox(8);
@@ -154,7 +159,10 @@ public abstract class VentanaModalBase {
         if (mostrarBotonCancelar) {
             Button btnCancelar = new Button("Cancelar");
             btnCancelar.setStyle("-fx-background-color: #e74c3c; -fx-text-fill: white; -fx-cursor: hand; -fx-padding: 6 12; -fx-font-size: 11px;");
-            btnCancelar.setOnAction(e -> alCancelar());
+            btnCancelar.setOnAction(e -> {
+                //ReproductorDeSonido.getInstance().playClick();
+                alCancelar();
+            });
             btnCancelar.setMaxWidth(Double.MAX_VALUE);
             botonera.getChildren().add(btnCancelar);
         }

@@ -12,6 +12,8 @@ import javafx.scene.layout.VBox;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 
+import edu.fiuba.algo3.controllers.ReproductorDeSonido;
+
 import java.io.InputStream;
 
 public class VentanaMostrarCarta {
@@ -31,7 +33,7 @@ public class VentanaMostrarCarta {
         root.setAlignment(Pos.CENTER);
 
         String nombre = nombreCarta(carta);
-        String ruta = "/hellofx/" + nombre + ".png";
+        String ruta = "/resources/imagenes/" + nombre + ".png";
         InputStream is = getClass().getResourceAsStream(ruta);
 
         if (is != null) {
@@ -51,7 +53,10 @@ public class VentanaMostrarCarta {
         }
 
         Button btnOk = new Button("Aceptar");
-        btnOk.setOnAction(e -> stage.close());
+        btnOk.setOnAction(e -> {
+            //ReproductorDeSonido.getInstance().playClick();
+            stage.close();
+        });
         root.getChildren().add(btnOk);
 
         Scene scene = new Scene(root);

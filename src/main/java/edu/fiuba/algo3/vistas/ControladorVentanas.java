@@ -7,18 +7,18 @@ import edu.fiuba.algo3.modelo.GestorDeTurnos;
 
 public class ControladorVentanas {
 
-    private String primerJugador;
+    private String jugador;
     private GestorDeTurnos gestor;
 
-    public ControladorVentanas(String primerJugador, GestorDeTurnos gestor) {
-        this.primerJugador = primerJugador;
+    public ControladorVentanas(String jugador, GestorDeTurnos gestor) {
+        this.jugador = jugador;
         this.gestor = gestor;
     }
 
     public void abrirVentanaBaraja() {
         Stage stageBaraja = new Stage();
 
-        VentanaBaraja ventana = new VentanaBaraja(stageBaraja, primerJugador);
+        VentanaBaraja ventana = new VentanaBaraja(stageBaraja, jugador);
         ScrollPane scroll = new ScrollPane(ventana);
         scroll.setFitToWidth(true);
         scroll.setFitToHeight(true);
@@ -29,10 +29,10 @@ public class ControladorVentanas {
         stageBaraja.show();
     }
 
-    public void abrirVentanaCartasDesarrollo() {
+    public void abrirVentanaCartasDesarrollo(ControladorFases controladorFases, TableroUI tableroUI) {
         Stage stageDesarrollo = new Stage();
 
-        VentanaCartasDesarrollos ventana = new VentanaCartasDesarrollos(stageDesarrollo, primerJugador, gestor);
+        VentanaCartasDesarrollos ventana = new VentanaCartasDesarrollos(stageDesarrollo, jugador, gestor, controladorFases, tableroUI);
         ScrollPane scroll = new ScrollPane(ventana);
         scroll.setFitToWidth(true);
         scroll.setFitToHeight(true);
@@ -46,7 +46,7 @@ public class ControladorVentanas {
     public void abrirVentanaComerciar() {
         Stage stageComercio = new Stage();
 
-        VentanaComerciar ventana = new VentanaComerciar(stageComercio, primerJugador);
+        VentanaComerciar ventana = new VentanaComerciar(stageComercio, jugador);
 
         Scene scene = new Scene(ventana, 500, 300);
         stageComercio.setTitle("Comerciar");
@@ -63,5 +63,19 @@ public class ControladorVentanas {
         stageGanador.setTitle("¡Tenemos un ganador!");
         stageGanador.setScene(scene);
         stageGanador.show();
+    }
+
+    public void abrirVentanaCartasBonificacion() {
+        Stage stageBonificacion = new Stage();
+
+        VentanaCartasBonificacion ventana = new VentanaCartasBonificacion(stageBonificacion, jugador, gestor);
+        ScrollPane scroll = new ScrollPane(ventana);
+        scroll.setFitToWidth(true);
+        scroll.setFitToHeight(true);
+
+        Scene scene = new Scene(scroll, 600, 500);
+        stageBonificacion.setTitle("Cartas de Bonificación");
+        stageBonificacion.setScene(scene);
+        stageBonificacion.show();
     }
 }

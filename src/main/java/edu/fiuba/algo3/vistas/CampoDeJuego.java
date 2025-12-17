@@ -62,7 +62,7 @@ public class CampoDeJuego extends BorderPane {
     }
 
     private void reproducirSonido() {
-        ReproductorDeSonido.getInstance().reproducirSonidoDados();
+        //ReproductorDeSonido.getInstance().reproducirSonidoDados();
     }
 
     private void construirInterfaz() {
@@ -170,11 +170,18 @@ public class CampoDeJuego extends BorderPane {
         });
         controladorDados.actualizarVisibilidadSegunFase(controladorFases.getFaseActual());
         
+        Button botonBonificacion = new Button("Ver Cartas Bonificacion");
+        botonBonificacion.setStyle("-fx-font-size: 16px; -fx-padding: 10 20; -fx-base: #4856db; -fx-cursor: hand; -fx-font-weight: bold;");
+        botonBonificacion.setOnAction(e -> {
+            //ReproductorDeSonido.getInstance().playClick();
+            controladorVentanas.abrirVentanaCartasBonificacion();
+        });
+
         Button botonDesarrollo = new Button("Ver Cartas Desarrollo");
         botonDesarrollo.setStyle("-fx-font-size: 16px; -fx-padding: 10 20; -fx-base: #3498db; -fx-cursor: hand; -fx-font-weight: bold;");
         botonDesarrollo.setOnAction(e -> {
-            ReproductorDeSonido.getInstance().playClick();
-            controladorVentanas.abrirVentanaCartasDesarrollo();
+            //ReproductorDeSonido.getInstance().playClick();
+            controladorVentanas.abrirVentanaCartasDesarrollo(controladorFases, tableroUI);
         });
         
         Button botonSalir = new Button("Salir");
@@ -196,7 +203,7 @@ public class CampoDeJuego extends BorderPane {
         Region separador2 = new Region();
         HBox.setHgrow(separador2, Priority.ALWAYS);
 
-        barraInferior.getChildren().addAll(botonSalir, separador, btnTirarDados, botonDesarrollo, separador2, btnTerminarFase);
+        barraInferior.getChildren().addAll(botonSalir, separador, btnTirarDados, botonDesarrollo, botonBonificacion, separador2, btnTerminarFase);
         this.setBottom(barraInferior);
     }
 

@@ -58,7 +58,7 @@ public class ControladorConstruccion {
         btnMejorarPoblado.setOnAction(e -> abrirVentanaMejorarPoblado());
         btnComerciar.setOnAction(e -> abrirVentanaComerciar());
         btnComprarCartaDesarrollo.setOnAction(e -> {
-            ReproductorDeSonido.getInstance().playClick();
+            //ReproductorDeSonido.getInstance().playClick();
             Alert confirm = new Alert(Alert.AlertType.CONFIRMATION);
             confirm.setTitle("Comprar carta de desarrollo");
             confirm.setHeaderText(null);

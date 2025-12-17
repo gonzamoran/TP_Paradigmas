@@ -1,4 +1,6 @@
 package edu.fiuba.algo3.vistas;
+
+import edu.fiuba.algo3.controllers.ReproductorDeSonido;
 import javafx.animation.Animation;
 import javafx.animation.ScaleTransition;
 import javafx.application.Platform;
@@ -56,6 +58,7 @@ public class VentanaVictoria {
         exitButton.setText("Salir");
         exitButton.getStyleClass().add("exitButton");
         exitButton.setOnAction(e -> {
+            //ReproductorDeSonido.getInstance().playClick();
             Platform.exit();
         });
 
@@ -73,7 +76,8 @@ public class VentanaVictoria {
     }
     
     public void mostrar() {
-        this.ventanaDeLaVictoria.show();
+        this.ventanaDeLaVictoria.show(); 
+        //ReproductorDeSonido.getInstance().playVictoria();
     }
     
     public void actualizarGanador(String nombreGanador) {

@@ -301,4 +301,13 @@ public class GestorDeTurnos {
     public void jugar() {
         System.out.println("Iniciando juego...");
     }
+
+    public boolean poseeGranRutaJugadorActual() {
+        Jugador jugadorActual = obtenerJugadorActual();
+        return jugadorActual.poseeGranRuta();
+    }
+    public boolean poseeGranCaballeriaJugadorActual() {
+        Jugador jugadorActual = obtenerJugadorActual();
+        return jugadorActual.poseeGranCaballeria();
+    }
 }
