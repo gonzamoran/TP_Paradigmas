@@ -1,4 +1,5 @@
 package edu.fiuba.algo3.vistas;
+import edu.fiuba.algo3.controllers.ReproductorDeSonido;
 
 
 import javafx.application.Platform;
@@ -60,6 +61,7 @@ public class ConfiguracionPartida extends VBox {
         comboBox.getStyleClass().add("comboBox"); 
 
         comboBox.setOnAction(e -> {
+            ReproductorDeSonido.getInstance().playClick();
             this.cantidadJugadores = comboBox.getSelectionModel().getSelectedIndex() + 3; 
             generarCamposDeNombres(this.cantidadJugadores);
         });
@@ -95,6 +97,7 @@ public class ConfiguracionPartida extends VBox {
         btn.setStyle("-fx-font-size: 14px; -fx-base: #4CAF50; -fx-cursor: hand;");
         
         btn.setOnAction(e -> {
+            ReproductorDeSonido.getInstance().playClick();
             if (validarDatos()) {
                 System.out.println("Iniciando juego con " + cantidadJugadores + " jugadores.");
 
@@ -128,8 +131,10 @@ public class ConfiguracionPartida extends VBox {
     private Button crearBotonSalir() {
         Button btn = new Button("Salir");
         btn.getStyleClass().add("exitButton");
-        btn.setOnAction(e -> 
-            Platform.exit());
+        btn.setOnAction(e -> {
+            ReproductorDeSonido.getInstance().playClick();
+            Platform.exit();
+        });
         return btn;
     }
 
