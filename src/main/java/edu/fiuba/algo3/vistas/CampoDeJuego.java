@@ -4,6 +4,7 @@ import edu.fiuba.algo3.modelo.GestorDeTurnos;
 import edu.fiuba.algo3.modelo.tablero.Coordenadas;
 import edu.fiuba.algo3.modelo.tablero.Hexagono;
 import edu.fiuba.algo3.modelo.tablero.Produccion;
+import edu.fiuba.algo3.modelo.Jugador;
 import edu.fiuba.algo3.controllers.ReproductorDeSonido;
 
 import javafx.geometry.Insets;
@@ -11,9 +12,15 @@ import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
-import javafx.scene.layout.*;
+import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.VBox;
+import javafx.scene.layout.StackPane;
+import javafx.scene.layout.Region;
+import javafx.scene.layout.Priority;
 import javafx.scene.Cursor;
 import javafx.stage.Stage;
+import javafx.application.Platform;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -83,7 +90,7 @@ public class CampoDeJuego extends BorderPane {
         this.controladorFases = new ControladorFases(controladorIndicadores.obtenerLblFase(), gestor);
         this.controladorDados = new ControladorDados(gestor, controladorFases);
         this.controladorConstruccion = new ControladorConstruccion(gestor, primerJugador);
-        this.controladorVentanas = new ControladorVentanas(primerJugador);
+        this.controladorVentanas = new ControladorVentanas(primerJugador, gestor);
         // - Para comercio: sólo actualizar inventario (no reconstruir tablero)
         controladorConstruccion.setOnVentanaComerciarCerrada(() -> {
             actualizarInterfaz();
@@ -268,5 +275,13 @@ public class CampoDeJuego extends BorderPane {
             
             mostrarVentanaColocacionInicial();
         });
+    }
+    private void lanzarVentanaGanador(){
+        String jugador = gestor.obtenerGanador();
+        if (jugador != null ){
+            Platform.runLater(() -> {
+                controladorVentanas.abrirVentanaGanador(jugador);
+            });
+        }
     }
 }

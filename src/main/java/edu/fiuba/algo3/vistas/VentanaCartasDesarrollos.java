@@ -1,6 +1,9 @@
 package edu.fiuba.algo3.vistas;
 
 import edu.fiuba.algo3.modelo.cartas.tiposDeCartaDesarrollo.CartasDesarrollo;
+import edu.fiuba.algo3.modelo.cartas.tiposDeCartaDesarrollo.ContextoCartaDesarrollo;
+import edu.fiuba.algo3.modelo.Jugador;
+import edu.fiuba.algo3.modelo.GestorDeTurnos;
 
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
@@ -22,7 +25,10 @@ import java.util.Random;
 public class VentanaCartasDesarrollos extends VBox {
 
 
-    public VentanaCartasDesarrollos(Stage stage, String nombreJugador) {
+    private final GestorDeTurnos gestor;
+
+    public VentanaCartasDesarrollos(Stage stage, String nombreJugador, GestorDeTurnos gestor) {
+        this.gestor = gestor;
         this.setAlignment(Pos.CENTER);
         this.setSpacing(20); 
         this.setPadding(new Insets(30)); 
@@ -39,16 +45,22 @@ public class VentanaCartasDesarrollos extends VBox {
         panelCartas.setVgap(20); 
         panelCartas.setAlignment(Pos.CENTER);
 
-        List<String> cartas = generarManoAleatoria();
+        // Obtener cartas reales del jugador actual mediante el gestor
+        Jugador jugador = gestor != null ? gestor.obtenerJugadorActual() : null;
 
-
-        if (cartas.isEmpty()) {
-            Label vacio = new Label("No tienes recursos.");
+        if (jugador == null || jugador.obtenerCartasDeDesarrollo().isEmpty()) {
+            Label vacio = new Label("No tienes cartas de desarrollo.");
             vacio.setStyle("-fx-text-fill: #bdc3c7; -fx-font-size: 16px;");
             panelCartas.getChildren().add(vacio);
         } else {
-            for (String nombreCarta : cartas) {
-                panelCartas.getChildren().add(crearCartaVisual(nombreCarta));
+            java.util.ArrayList<CartasDesarrollo> jugables = gestor.obtenerCartasJugablesJugadorActual();
+            java.util.ArrayList<CartasDesarrollo> noJugables = gestor.obtenerCartasNoJugablesJugadorActual();
+
+            for (CartasDesarrollo carta : jugables) {
+                panelCartas.getChildren().add(crearCartaVisual(carta, true));
+            }
+            for (CartasDesarrollo carta : noJugables) {
+                panelCartas.getChildren().add(crearCartaVisual(carta, false));
             }
         }
 
@@ -65,8 +77,9 @@ public class VentanaCartasDesarrollos extends VBox {
         this.getChildren().addAll(titulo, scroll, btnCerrar);
     }
 
-    private VBox crearCartaVisual(String nombreCartaDesarrollo) {
-        VBox carta = new VBox(10); 
+    private VBox crearCartaVisual(CartasDesarrollo cartaModelo, boolean jugable) {
+        String nombreCartaDesarrollo = obtenerNombreCarta(cartaModelo);
+        VBox carta = new VBox(10);
         carta.setAlignment(Pos.CENTER);
         
         carta.setStyle("-fx-background-color: white; -fx-background-radius: 10; -fx-padding: 10; -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.4), 8, 0, 0, 0);");
@@ -99,19 +112,30 @@ public class VentanaCartasDesarrollos extends VBox {
         }
 
         Label lblNombre = new Label(nombreCartaDesarrollo);
-        
         lblNombre.setStyle("-fx-font-size: 14px; -fx-font-weight: bold; -fx-text-fill: #333;");
         carta.getChildren().add(lblNombre);
+
+        // Si la carta NO es jugable, desaturamos/grisamos visualmente
+        if (!jugable) {
+            carta.setOpacity(0.45);
+            carta.setDisable(true);
+        } else {
+            carta.setOpacity(1.0);
+            carta.setDisable(false);
+        }
 
         return carta;
     }
 
-    private List<String> generarManoAleatoria() {
-        List<String> mano = new ArrayList<>();
-        String[] tipos = {"Caballero", "Monopolio", "Construccion", "PV", "Descubrimiento"};
-        Random rand = new Random();
-        int cant = rand.nextInt(6) + 1;
-        for (int i = 0; i < cant; i++) mano.add(tipos[rand.nextInt(tipos.length)]);
-        return mano;
+    private String obtenerNombreCarta(CartasDesarrollo carta) {
+        String cls = carta.getClass().getSimpleName();
+        if (cls.contains("Caballero")) return "Caballero";
+        if (cls.contains("Monopolio")) return "Monopolio";
+        if (cls.contains("ConstruccionCarretera")) return "Construccion";
+        if (cls.contains("PuntoVictoria")) return "PV";
+        if (cls.contains("Descubrimiento")) return "Descubrimiento";
+        return cls;
     }
+
+    // método anterior eliminado: la vista usa las cartas reales del jugador
 }

@@ -10,7 +10,6 @@ import edu.fiuba.algo3.modelo.tiposRecurso.*;
 
 import java.util.*;
 
-//import javax.print.DocFlavor.STRING;
 
 public class GestorDeTurnos {
     private int turnoActual;
@@ -51,7 +50,7 @@ public class GestorDeTurnos {
                 new CartaDescubrimiento(), new CartaDescubrimiento(), new CartaDescubrimiento(),
                 new CartaPuntoVictoria(), new CartaPuntoVictoria(), new CartaPuntoVictoria(),
                 new CartaPuntoVictoria(), new CartaPuntoVictoria()));
-
+        Collections.shuffle(cartas);
         this.mazo = new MazoCartasDesarrollo(cartas);
         Hexagono desierto = tablero.obtenerDesierto();
         this.ladron = new Ladron(desierto);
@@ -147,13 +146,13 @@ public class GestorDeTurnos {
         casoConstruir.construirCarretera(origen, destino, jugadorActual);
     }
 
-    public void comprarCartaDesarrollo() {
+    public CartasDesarrollo comprarCartaDesarrollo() {
         Jugador jugadorActual = obtenerJugadorActual();
         if (jugadorActual == null)
-            return;
+            return null;
 
         CasoDeUsoSacarCartasDelMazoDeDesarrollo casoDeUsoCartas = new CasoDeUsoSacarCartasDelMazoDeDesarrollo();
-        casoDeUsoCartas.comprarCartaDesarrollo(mazo, jugadorActual, turnoActual);
+        return casoDeUsoCartas.comprarCartaDesarrollo(mazo, jugadorActual, turnoActual);
     }
 
     public void comerciarConLaBanca(Banca banca, ArrayList<Recurso> oferta, ArrayList<Recurso> demanda) {
@@ -208,6 +207,7 @@ public class GestorDeTurnos {
         return null;
     }
 
+
     public Jugador obtenerJugadorActual() {
         if (jugadores != null && !jugadores.isEmpty() && indiceJugadorActual >= 0
                 && indiceJugadorActual < jugadores.size()) {
@@ -260,6 +260,34 @@ public class GestorDeTurnos {
 
     public int obtenerTurnoActual() {
         return turnoActual;
+    }
+
+    public ArrayList<CartasDesarrollo> obtenerCartasJugablesJugadorActual() {
+        Jugador jugador = obtenerJugadorActual();
+        ArrayList<CartasDesarrollo> jugables = new ArrayList<>();
+        if (jugador == null) return jugables;
+
+        ContextoCartaDesarrollo contexto = new ContextoCartaDesarrollo(jugador, jugadores, turnoActual, tablero, ladron);
+        for (CartasDesarrollo carta : jugador.obtenerCartasDeDesarrollo()) {
+            if (carta.esJugable(contexto)) {
+                jugables.add(carta);
+            }
+        }
+        return jugables;
+    }
+
+    public ArrayList<CartasDesarrollo> obtenerCartasNoJugablesJugadorActual() {
+        Jugador jugador = obtenerJugadorActual();
+        ArrayList<CartasDesarrollo> noJugables = new ArrayList<>();
+        if (jugador == null) return noJugables;
+
+        ContextoCartaDesarrollo contexto = new ContextoCartaDesarrollo(jugador, jugadores, turnoActual, tablero, ladron);
+        for (CartasDesarrollo carta : jugador.obtenerCartasDeDesarrollo()) {
+            if (!carta.esJugable(contexto)) {
+                noJugables.add(carta);
+            }
+        }
+        return noJugables;
     }
 
     public ArrayList<Jugador> obtenerJugadores() {

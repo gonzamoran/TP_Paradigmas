@@ -56,13 +56,13 @@ public class ConfiguracionPartida extends VBox {
 
     private ComboBox<String> crearComboBoxCantidad() {
         ComboBox<String> comboBox = new ComboBox<>();
-        comboBox.getItems().addAll("3 Jugadores", "4 Jugadores", "5 Jugadores", "6 Jugadores");
+        comboBox.getItems().addAll("2 jugadores", "3 Jugadores", "4 Jugadores");
         comboBox.setPromptText("Seleccionar...");
         comboBox.getStyleClass().add("comboBox"); 
 
         comboBox.setOnAction(e -> {
-           // ReproductorDeSonido.getInstance().playClick();
-            this.cantidadJugadores = comboBox.getSelectionModel().getSelectedIndex() + 3; 
+            ReproductorDeSonido.getInstance().playClick();
+            this.cantidadJugadores = comboBox.getSelectionModel().getSelectedIndex() + 2; 
             generarCamposDeNombres(this.cantidadJugadores);
         });
 
@@ -97,7 +97,7 @@ public class ConfiguracionPartida extends VBox {
         btn.setStyle("-fx-font-size: 14px; -fx-base: #4CAF50; -fx-cursor: hand;");
         
         btn.setOnAction(e -> {
-           // ReproductorDeSonido.getInstance().playClick();
+            ReproductorDeSonido.getInstance().playClick();
             if (validarDatos()) {
                 System.out.println("Iniciando juego con " + cantidadJugadores + " jugadores.");
 
@@ -132,7 +132,7 @@ public class ConfiguracionPartida extends VBox {
         Button btn = new Button("Salir");
         btn.getStyleClass().add("exitButton");
         btn.setOnAction(e -> {
-           // ReproductorDeSonido.getInstance().playClick();
+            ReproductorDeSonido.getInstance().playClick();
             Platform.exit();
         });
         return btn;

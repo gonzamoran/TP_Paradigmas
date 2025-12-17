@@ -7,9 +7,11 @@ import edu.fiuba.algo3.modelo.cartas.tiposDeCartaDesarrollo.ContextoCartaDesarro
 
 public class CasoDeUsoSacarCartasDelMazoDeDesarrollo {
 
-    public void comprarCartaDesarrollo(MazoCartasDesarrollo mazo, Jugador jugador, int turnoActual) {
+
+    public CartasDesarrollo comprarCartaDesarrollo(MazoCartasDesarrollo mazo, Jugador jugador, int turnoActual) {
         var carta = mazo.sacarCarta();
         jugador.comprarCartaDesarrollo(carta, turnoActual);
+        return carta;
     }
 
     public void usarCartaDesarrollo(CartasDesarrollo carta, Jugador jugador, ContextoCartaDesarrollo contexto) {

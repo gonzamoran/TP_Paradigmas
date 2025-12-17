@@ -21,7 +21,12 @@ import edu.fiuba.algo3.modelo.Recurso;
 import edu.fiuba.algo3.modelo.tiposBanca.Banca2a1;
 import edu.fiuba.algo3.modelo.tiposBanca.Banca3a1;
 import edu.fiuba.algo3.modelo.tiposRecurso.*;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.LinkedHashMap;
+import java.util.LinkedHashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 public class VentanaComerciar extends VBox {
     private final GestorDeTurnos gestor;

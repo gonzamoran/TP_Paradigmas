@@ -19,6 +19,11 @@ public class VentanaColocacionInicial extends VentanaModalBase {
         super(stage, "Colocación Inicial", nombreJugador, tableroUI);
         this.onConfirm = onConfirm;
         this.mostrarBotonCancelar = false;
+
+        stage.setOnCloseRequest(evento -> {
+            evento.consume();
+            mostrarError("Es obligatorio cumplir con la fase de colocacion inicial.");
+        });
         construirYMostrar();
     }
 

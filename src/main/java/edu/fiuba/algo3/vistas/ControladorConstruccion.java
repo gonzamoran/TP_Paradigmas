@@ -2,8 +2,11 @@ package edu.fiuba.algo3.vistas;
 import edu.fiuba.algo3.controllers.ReproductorDeSonido;
 
 import edu.fiuba.algo3.modelo.GestorDeTurnos;
+import edu.fiuba.algo3.modelo.excepciones.RecursosInsuficientesException;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
+import javafx.scene.control.Alert;
+import javafx.scene.control.ButtonType;
 import javafx.scene.control.Button;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
@@ -16,6 +19,7 @@ public class ControladorConstruccion {
     private Button btnPoblado;
     private Button btnCarretera;
     private Button btnComerciar;
+    private Button btnComprarCartaDesarrollo;
     private Button btnMejorarPoblado;
     
     private Stage ventanaConstruirPoblado;
@@ -47,18 +51,46 @@ public class ControladorConstruccion {
         btnCarretera = crearBotonAccion("Construir Carretera", "#27ae60");
         btnMejorarPoblado = crearBotonAccion("Mejorar Poblado", "#f39c12");
         btnComerciar = crearBotonAccion("Comerciar", "#3498db");
+        btnComprarCartaDesarrollo = crearBotonAccion("Comprar carta desarrollo", "#9b59b6");
         
         btnPoblado.setOnAction(e -> abrirVentanaConstruirPoblado());
         btnCarretera.setOnAction(e -> abrirVentanaConstruirCarretera());
         btnMejorarPoblado.setOnAction(e -> abrirVentanaMejorarPoblado());
         btnComerciar.setOnAction(e -> abrirVentanaComerciar());
+        btnComprarCartaDesarrollo.setOnAction(e -> {
+            ReproductorDeSonido.getInstance().playClick();
+            Alert confirm = new Alert(Alert.AlertType.CONFIRMATION);
+            confirm.setTitle("Comprar carta de desarrollo");
+            confirm.setHeaderText(null);
+            confirm.setContentText("¿Deseas comprar una carta de desarrollo por los recursos correspondientes?");
+
+            var resultado = confirm.showAndWait();
+            if (resultado.isPresent() && resultado.get() == ButtonType.OK) {
+                try {
+                    var cartaComprada = gestor.comprarCartaDesarrollo();
+                    if (cartaComprada != null) {
+                        // mostrar modal con la imagen de la carta comprada
+                        Stage modal = new Stage();
+                        VentanaMostrarCarta ventanaCarta = new VentanaMostrarCarta(modal, cartaComprada);
+                    }
+                } catch (RecursosInsuficientesException ex) {
+                    Alert alerta = new Alert(Alert.AlertType.ERROR);
+                    alerta.setTitle("Recursos insuficientes");
+                    alerta.setHeaderText(null);
+                    alerta.setContentText("No tienes los recursos necesarios para comprar una carta de desarrollo.");
+                    alerta.showAndWait();
+                }
+            }
+            if (onModalClosed != null) onModalClosed.run();
+        });
         
         btnPoblado.setVisible(false);
         btnCarretera.setVisible(false);
         btnMejorarPoblado.setVisible(false);
         btnComerciar.setVisible(false);
+        btnComprarCartaDesarrollo.setVisible(false);
 
-        VBox botonesBox = new VBox(8, btnPoblado, btnCarretera, btnMejorarPoblado, btnComerciar);
+        VBox botonesBox = new VBox(8, btnPoblado, btnCarretera, btnMejorarPoblado, btnComerciar, btnComprarCartaDesarrollo);
         botonesBox.setAlignment(Pos.TOP_CENTER);
         
         return botonesBox;
@@ -160,5 +192,6 @@ public class ControladorConstruccion {
         if (btnCarretera != null) btnCarretera.setVisible(enConstruccion);
         if (btnMejorarPoblado != null) btnMejorarPoblado.setVisible(enConstruccion);
         if (btnComerciar != null) btnComerciar.setVisible(enConstruccion);
+        if (btnComprarCartaDesarrollo != null) btnComprarCartaDesarrollo.setVisible(enConstruccion);
     }
 }
