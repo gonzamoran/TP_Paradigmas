@@ -1,0 +1,73 @@
+@startuml secuencia-comprar-carta.puml
+
+title Secuencia: Comprar una Carta de Desarrollo
+
+actor Jugador
+participant Tablero
+participant "MazoCartas" as Mazo
+participant "RecursosJugador" as Recursos
+participant "CartaFactory" as Factory
+participant "CartaNueva" as Carta
+participant "ManoJugador" as Mano
+
+activate Jugador
+
+Jugador -> Tablero: comprarCartaDesarrollo()
+activate Tablero
+
+Tablero -> Recursos: verificarRecursosSuficientes(jugador)
+activate Recursos
+Recursos --> Tablero: recursosSuficientes
+deactivate Recursos
+
+alt recursos suficientes
+    
+    Tablero -> Mazo: obtenerCartaAleatoria()
+    activate Mazo
+    Mazo --> Tablero: tipoCarta
+    deactivate Mazo
+    
+    Tablero -> Factory: crearCarta(tipoCarta, turnoActual)
+    activate Factory
+    
+    alt tipoCarta = CABALLERO
+        Factory -> Carta: new CartaCaballero(turnoActual)
+    else tipoCarta = MONOPOLIO
+        Factory -> Carta: new CartaMonopolio(turnoActual)
+    else tipoCarta = DESCUBRIMIENTO
+        Factory -> Carta: new CartaDescubrimiento(turnoActual)
+    else tipoCarta = CONSTRUCCION_CARRETERA
+        Factory -> Carta: new CartaConstruccionCarretera(turnoActual)
+    else tipoCarta = PUNTO_VICTORIA
+        Factory -> Carta: new CartaPuntoVictoria(turnoActual)
+    end
+    
+    activate Carta
+    Carta --> Factory: instanciaCarta
+    deactivate Carta
+    
+    Factory --> Tablero: cartaCreada
+    deactivate Factory
+    
+    Tablero -> Recursos: descontarRecursos(jugador, costo)
+    activate Recursos
+    Recursos --> Tablero: recursosDescontados
+    deactivate Recursos
+    
+    Tablero -> Mano: agregarCarta(jugador, cartaCreada)
+    activate Mano
+    Mano --> Tablero: cartaAgregada
+    deactivate Mano
+    
+    Tablero --> Jugador: cartaComprada(cartaCreada)
+    
+else recursos insuficientes
+    Tablero --> Jugador: errorRecursosInsuficientes()
+end
+
+deactivate Tablero
+deactivate Jugador
+
+note right of Mano: La carta se almacena\ncon estado:\n- turnoDeCompra = turnoActual\n(para validaciones posteriores)\n- fueUsada = false
+
+@enduml
