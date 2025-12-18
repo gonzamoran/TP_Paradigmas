@@ -1,0 +1,101 @@
+@startuml secuencia-construccion-carretera.puml
+
+title Secuencia: Construcción de Carreteras con Carta
+
+actor Jugador
+participant "CartaConstruccionCarretera" as Carta
+participant Contexto
+participant Tablero
+participant "Camino:List<Coordenadas>" as Camino
+
+activate Jugador
+
+Jugador -> Carta: usar(contexto)
+activate Carta
+
+Carta -> Carta: fueUsada = true
+
+Carta -> Contexto: sePuedeJugarCarta(turnoDeCompra)
+activate Contexto
+Contexto --> Carta: válido
+deactivate Contexto
+
+alt no válido
+    Carta --> Jugador: NoSePuedeJugarEstaCartaException()
+    return
+end
+
+Carta -> Contexto: conseguirJugadorQueUsaLaCarta()
+activate Contexto
+Contexto --> Carta: jugador
+deactivate Contexto
+
+Carta -> Contexto: obtenerTablero()
+activate Contexto
+Contexto --> Carta: tablero
+deactivate Contexto
+
+Carta -> Contexto: obtenerCoordenadasCarreteras()
+activate Contexto
+Contexto --> Carta: listaCaminos
+deactivate Contexto
+
+loop para cada camino en listaCaminos
+    
+    Carta -> Camino: get(0) y get(1)
+    activate Camino
+    Camino --> Carta: origen, destino
+    deactivate Camino
+    
+    Carta -> Tablero: sonCoordenadasValidas(origen)
+    activate Tablero
+    Tablero --> Carta: válidoOrigen
+    deactivate Tablero
+    
+    Carta -> Tablero: sonCoordenadasValidas(destino)
+    activate Tablero
+    Tablero --> Carta: válidoDestino
+    deactivate Tablero
+    
+    alt coordenadas inválidas
+        Carta --> Jugador: CoordenadasInvalidasException()
+        return
+    end
+end
+
+loop para cada camino en listaCaminos
+    
+    Carta -> Camino: get(0) y get(1)
+    activate Camino
+    Camino --> Carta: origen, destino
+    deactivate Camino
+    
+    Carta -> Tablero: puedeConstruirCarreteraGratis(origen, destino, jugador)
+    activate Tablero
+    Tablero --> Carta: construible
+    deactivate Tablero
+    
+    alt no construible
+        Carta --> Jugador: NoEsPosibleConstruirException()
+        return
+    end
+end
+
+loop para cada camino en listaCaminos
+    
+    Carta -> Camino: get(0) y get(1)
+    activate Camino
+    Camino --> Carta: origen, destino
+    deactivate Camino
+    
+    Carta -> Tablero: construirCarreteraGratis(origen, destino, jugador)
+    activate Tablero
+    Tablero --> Carta: carreteraConstruida
+    deactivate Tablero
+end
+
+Carta --> Jugador: construcciónCompletada
+deactivate Carta
+deactivate Jugador
+
+@enduml
