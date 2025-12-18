@@ -1,0 +1,64 @@
+@startuml jugador-simple.puml
+
+title "Sistema del Jugador - Vista Simplificada"
+
+skinparam {
+  Padding 5
+  ClassFontSize 14
+  ArrowFontSize 10
+}
+
+hide empty members
+hide circle
+
+' CLASES PRINCIPALES
+class Jugador {
+  -nombre: String
+  -puntosDeVictoria: int
+  __
+  +agregarRecurso(Recurso)
+  +calculoPuntosVictoria(): int
+  +comprarCartaDesarrollo()
+  +usarCartaDesarrollo()
+  +intercambiar()
+}
+
+class CartasJugador {
+  -recursos: List<Recurso>
+  -cartasDesarrollo: List<CartasDesarrollo>
+  __
+  +agregarRecursos(Recurso)
+  +obtenerPVdeCartas(): int
+  +poseeRecursosParaCartaDesarrollo(): boolean
+}
+
+abstract class Construccion {
+  #puntosVictoria: int
+  __
+  +obtenerPuntosDeVictoria(): int
+  {abstract} +obtenerRecursosNecesarios()
+}
+
+interface CartasDesarrollo {
+  {abstract} +usar(Contexto)
+  {abstract} +conseguirPV(): int
+}
+
+abstract class Recurso {
+  {abstract} +obtenerCantidad(): int
+  {abstract} +sumar(Recurso)
+}
+
+' RELACIONES
+Jugador *--> "1" CartasJugador : tiene
+Jugador o--> "*" Construccion : posee
+CartasJugador o--> "*" CartasDesarrollo : almacena
+CartasJugador o--> "*" Recurso : contiene
+
+' RELACIONES IMPLÍCITAS (opcional, para contexto)
+Jugador ..> CartasDesarrollo : usa
+Construccion <|-- Poblado
+Construccion <|-- Ciudad
+Construccion <|-- Carretera
+
+@enduml
