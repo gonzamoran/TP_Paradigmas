@@ -11,7 +11,6 @@ skinparam {
 hide empty members
 hide circle
 
-' CLASES PRINCIPALES
 class Jugador {
   -nombre: String
   -puntosDeVictoria: int
@@ -49,13 +48,11 @@ abstract class Recurso {
   {abstract} +sumar(Recurso)
 }
 
-' RELACIONES
 Jugador *--> "1" CartasJugador : tiene
 Jugador o--> "*" Construccion : posee
 CartasJugador o--> "*" CartasDesarrollo : almacena
 CartasJugador o--> "*" Recurso : contiene
 
-' RELACIONES IMPLÍCITAS (opcional, para contexto)
 Jugador ..> CartasDesarrollo : usa
 Construccion <|-- Poblado
 Construccion <|-- Ciudad

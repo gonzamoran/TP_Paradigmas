@@ -11,7 +11,6 @@ skinparam {
 hide empty members
 hide circle
 
-' CLASES PRINCIPALES DEL TABLERO
 class Tablero {
   -mapaHexagonos: Map<Coordenadas, Hexagono>
   -mapaVertices: Map<Coordenadas, Vertice>
@@ -76,7 +75,6 @@ class Carretera {
   +obtenerRecursosNecesarios()
 }
 
-' RELACIONES PRINCIPALES
 Tablero *--> "19" Hexagono : contiene
 Tablero *--> "54" Vertice : contiene
 Tablero *--> "*" Carretera : contiene
