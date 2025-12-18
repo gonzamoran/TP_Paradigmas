@@ -16,7 +16,7 @@ loop para cada vertice
             activate Vertice
             deactivate Vertice       
         else no existe la coordenada en el tablero
-            continue
+            'continue
     end
 end
 

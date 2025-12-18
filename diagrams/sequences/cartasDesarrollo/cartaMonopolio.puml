@@ -1,0 +1,62 @@
+@startuml secuencia-monopolio.puml
+
+title Secuencia: Uso de Carta Monopolio
+
+actor Jugador
+participant "CartaMonopolio" as Carta
+participant Contexto
+participant "JugadorActual" as Actual
+participant "JugadorOtros" as Otro
+participant Recurso
+
+activate Jugador
+
+Jugador -> Carta: usar(contexto)
+activate Carta
+
+Carta -> Contexto: conseguirJugadorQueUsaLaCarta()
+activate Contexto
+Contexto --> Carta: jugadorActual
+deactivate Contexto
+
+Carta -> Contexto: obtenerRecursoElegido()
+activate Contexto
+Contexto --> Carta: recursoElegido
+deactivate Contexto
+
+Carta -> Contexto: conseguirJugadoresAfectados()
+activate Contexto
+Contexto --> Carta: listaJugadores
+deactivate Contexto
+
+loop para cada jugador en listaJugadores
+    
+    Carta -> Carta: compararJugador(jugador, jugadorActual)
+    
+    alt jugador ≠ jugadorActual
+        
+        Carta -> Otro: vaciarRecurso(recursoElegido)
+        activate Otro
+        
+        Otro -> Recurso: extraerTodos(recursoElegido)
+        activate Recurso
+        Recurso --> Otro: recursosExtraidos
+        deactivate Recurso
+        
+        Otro --> Carta: recursosMonopolizados
+        deactivate Otro
+        
+        Carta -> Actual: agregarRecurso(recursosMonopolizados)
+        activate Actual
+        Actual --> Carta: ok
+        deactivate Actual
+        
+    end
+end
+
+Carta -> Carta: fueUsada = true
+Carta --> Jugador: monopolioCompletado
+deactivate Carta
+deactivate Jugador
+
+@enduml

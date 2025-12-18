@@ -1,0 +1,85 @@
+@startuml secuencia-caballero-simple.puml
+
+title Secuencia: Uso de Carta Caballero (Simplificado)
+
+actor Jugador
+participant "CartaCaballero" as Carta
+participant Contexto
+participant Tablero
+participant Ladron
+participant "JugadorObjetivo" as Victima
+
+activate Jugador
+
+' uso carta
+Jugador -> Carta: usar(contexto)
+activate Carta
+
+' checks
+Carta -> Contexto: sePuedeJugarCarta(turnoDeCompra)
+activate Contexto
+Contexto --> Carta: válido
+deactivate Contexto
+
+alt no válido
+    Carta --> Jugador: excepción
+end
+
+' mov ladron
+Carta -> Contexto: obtenerCoordenadasDestino()
+activate Contexto
+Contexto --> Carta: coordenadas
+deactivate Contexto
+
+Carta -> Tablero: obtenerHexagono(coordenadas)
+activate Tablero
+Tablero --> Carta: hexagono
+deactivate Tablero
+
+Carta -> Ladron: moverLadronA(hexagono)
+activate Ladron
+Ladron --> Carta: ok
+deactivate Ladron
+
+' robo
+Carta -> Contexto: obtenerJugadorARobar()
+activate Contexto
+Contexto --> Carta: victima
+deactivate Contexto
+
+Carta -> Ladron: robarRecurso(jugadorActual, victima)
+activate Ladron
+
+Ladron -> Victima: obtenerRecursoAleatorio()
+activate Victima
+Victima --> Ladron: recurso
+deactivate Victima
+
+Ladron -> Jugador: agregarRecurso(recurso)
+Ladron --> Carta: ok
+deactivate Ladron
+
+' caballero count
+Carta -> Jugador: sumarCaballero()
+Jugador --> Carta: ok
+
+' gran caballeria?
+Carta -> Jugador: obtenerCantidadCaballerosUsados()
+Jugador --> Carta: cantidad
+
+alt cantidad >= 3
+    Carta -> Carta: pasarGranCaballeria(contexto)
+    activate Carta
+    Carta --> Carta: otorgarGranCaballeria()
+    deactivate Carta
+end
+
+' finalización
+Carta --> Jugador: éxito
+deactivate Carta
+deactivate Jugador
+
+note over Ladron,Victima: Robo mediado por el ladrón
+note over Carta,Jugador: Efecto secundario:\n+1 caballero, posible gran caballería
+
+@enduml
