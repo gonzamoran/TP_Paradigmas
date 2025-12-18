@@ -36,7 +36,7 @@ public class VistaDados extends VBox {
 
     private Node crearDado(int valor) {
         try {
-            String ruta = "algo3/imagenes/dado" + valor + ".png";
+            String ruta = "/imagenes/dado" + valor + ".png";
             Image imagen = new Image(Objects.requireNonNull(getClass().getResourceAsStream(ruta)));
             
             ImageView imageView = new ImageView(imagen);
