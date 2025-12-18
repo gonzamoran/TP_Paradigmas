@@ -42,6 +42,9 @@ public class VentanaCartasDesarrollos extends VBox {
     private final ControladorFases controladorFases;
     private final TableroUI tableroUI;
     private final FlowPane panelCartas;
+    private final List<VBox> cartasJugablesVisuales = new ArrayList<>();
+    private CartasDesarrollo cartaSeleccionada = null;
+    private VBox cartaVisualSeleccionada = null;
     private final Stage stage;
     private final String nombreJugador;
 
@@ -62,8 +65,8 @@ public class VentanaCartasDesarrollos extends VBox {
 
         this.setStyle("-fx-background-color: #2c3e50; -fx-min-width: 600; -fx-min-height: 500;");
 
-        Label titulo = new Label("Cartas Desarrollo de " + nombreJugador);
-
+        String nombreActual = gestor != null && gestor.obtenerJugadorActual() != null ? gestor.obtenerJugadorActual().obtenerNombre() : nombreJugador;
+        Label titulo = new Label("Cartas Desarrollo de " + nombreActual);
         titulo.setStyle("-fx-font-size: 24px; -fx-font-weight: bold; -fx-text-fill: white;");
 
         this.panelCartas = new FlowPane();
@@ -74,6 +77,8 @@ public class VentanaCartasDesarrollos extends VBox {
         // Obtener cartas reales del jugador actual mediante el gestor
         Jugador jugador = gestor != null ? gestor.obtenerJugadorActual() : null;
 
+
+        boolean fasePermiteUso = (controladorFases != null) && controladorFases.getFaseActual() == 2;
         if (jugador == null || jugador.obtenerCartasDeDesarrollo().isEmpty()) {
             Label vacio = new Label("No tienes cartas de desarrollo.");
             vacio.setStyle("-fx-text-fill: #bdc3c7; -fx-font-size: 16px;");
@@ -83,7 +88,9 @@ public class VentanaCartasDesarrollos extends VBox {
             ArrayList<CartasDesarrollo> noJugables = gestor.obtenerCartasNoJugablesJugadorActual();
 
             for (CartasDesarrollo carta : jugables) {
-                panelCartas.getChildren().add(crearCartaVisual(carta, true));
+                VBox cartaVisual = crearCartaVisual(carta, true);
+                cartasJugablesVisuales.add(cartaVisual);
+                panelCartas.getChildren().add(cartaVisual);
             }
             for (CartasDesarrollo carta : noJugables) {
                 panelCartas.getChildren().add(crearCartaVisual(carta, false));
@@ -103,7 +110,57 @@ public class VentanaCartasDesarrollos extends VBox {
             ReproductorDeSonido.getInstance().playClick();
             stage.close();
         });
-        this.getChildren().addAll(titulo, scroll, btnCerrar);
+        // Botón grande para usar carta seleccionada (solo si hay jugables y en fase correcta)
+        Button btnUsarCarta = new Button("Usar carta seleccionada");
+        btnUsarCarta.setStyle("-fx-background-color: #2ecc71; -fx-text-fill: white; -fx-cursor: hand; -fx-font-size: 20px; -fx-padding: 18 36; -fx-font-weight: bold; -fx-border-radius: 10; -fx-background-radius: 10;");
+        btnUsarCarta.setDisable(true);
+
+        btnUsarCarta.setVisible(fasePermiteUso && !cartasJugablesVisuales.isEmpty());
+
+        // Selección de carta jugable solo durante la fase correcta
+        if (fasePermiteUso) {
+            for (VBox cartaVisual : cartasJugablesVisuales) {
+                cartaVisual.setOnMouseClicked(e -> {
+                    // Deseleccionar anterior
+                    if (cartaVisualSeleccionada != null) {
+                        cartaVisualSeleccionada.setStyle(cartaVisualSeleccionada.getStyle().replace("; -fx-border-color: #f1c40f; -fx-border-width: 4;", ""));
+                    }
+                    cartaVisualSeleccionada = cartaVisual;
+                    cartaSeleccionada = (CartasDesarrollo) cartaVisual.getUserData();
+                    cartaVisual.setStyle(cartaVisual.getStyle() + "; -fx-border-color: #f1c40f; -fx-border-width: 4;");
+                    btnUsarCarta.setDisable(false);
+                });
+            }
+        } else {
+            // Si no es la fase, quitar selección y deshabilitar botón
+            cartaSeleccionada = null;
+            cartaVisualSeleccionada = null;
+            btnUsarCarta.setDisable(true);
+        }
+
+        btnUsarCarta.setOnAction(evt -> {
+            if (cartaSeleccionada != null && cartaVisualSeleccionada != null) {
+                // Lógica de uso de carta (idéntica a crearBotonUsar)
+                ReproductorDeSonido.getInstance().playClick();
+                boolean confirmado = confirmarAccion("¿Confirmas usar la carta " + obtenerNombreCarta(cartaSeleccionada) + "?");
+                if (!confirmado) return;
+                if (this.stage != null) this.stage.close();
+                ContextoCartaDesarrollo contexto = new ContextoCartaDesarrollo(
+                        gestor.obtenerJugadorActual(), gestor.obtenerJugadores(), gestor.obtenerTurnoActual(),
+                        gestor.obtenerTablero(), gestor.obtenerLadron());
+                try {
+                    handleUsoCartaSegunTipo(cartaSeleccionada, contexto, cartaVisualSeleccionada, obtenerNombreCarta(cartaSeleccionada));
+                } catch (Exception ex) {
+                    mostrarError("No se pudo usar la carta", ex.getMessage());
+                }
+            }
+        });
+
+        if (fasePermiteUso && !cartasJugablesVisuales.isEmpty()) {
+            this.getChildren().addAll(titulo, scroll, btnUsarCarta, btnCerrar);
+        } else {
+            this.getChildren().addAll(titulo, scroll, btnCerrar);
+        }
     }
 
     private VBox crearCartaVisual(CartasDesarrollo cartaModelo, boolean jugable) {
@@ -135,10 +192,9 @@ public class VentanaCartasDesarrollos extends VBox {
             carta.getChildren().add(lblFalla);
         }
 
-        boolean fasePermiteUso = (controladorFases != null) && controladorFases.getFaseActual() == 2;
-        if (jugable && fasePermiteUso) {
-            Button btnUsar = crearBotonUsar(cartaModelo, nombreCartaDesarrollo, carta);
-            carta.getChildren().add(btnUsar);
+        // Ya no se agrega el botón "Usar" dentro de la carta
+        if (jugable) {
+            carta.setUserData(cartaModelo);
         }
 
         if (!jugable) {

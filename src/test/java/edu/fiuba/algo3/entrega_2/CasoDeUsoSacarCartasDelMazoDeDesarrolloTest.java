@@ -490,6 +490,8 @@ public class CasoDeUsoSacarCartasDelMazoDeDesarrolloTest {
         ArrayList<Jugador> jugadores = new ArrayList<>(List.of(jugador));
         ArrayList<CartasDesarrollo> cartas = new ArrayList<>(List.of(new CartaConstruccionCarretera()));
         tablero.colocarConstruccionInicial(new Poblado(),new Coordenadas(3,3), jugador);
+      //tablero.construirCarreteraGratis(new Coordenadas(3,2),new Coordenadas(3,3),jugador);
+
 
         var caso = new CasoDeUsoSacarCartasDelMazoDeDesarrollo();
         MazoCartasDesarrollo mazo = new MazoTrucado(cartas);
@@ -614,5 +616,42 @@ public class CasoDeUsoSacarCartasDelMazoDeDesarrolloTest {
         assertThrows(NoEsPosibleConstruirException.class, () -> {
             caso.usarCartaDesarrollo(new CartaConstruccionCarretera(), jugador1 ,contextoNuevo);
         });
+    }
+
+    @Test
+    public void test21UsarCartaConstruccionDeCarreterasConUnaDeEllasMalColocadaNoDejaNadaConstruido(){
+        Jugador jugador = new Jugador("Azul");
+        Tablero tablero = new Tablero();
+        Ladron ladron = new Ladron(tablero.obtenerDesierto());
+
+        jugador.agregarRecurso(new Madera(1));
+        jugador.agregarRecurso(new Ladrillo(1));
+        jugador.agregarRecurso(new Lana(2));
+        jugador.agregarRecurso(new Piedra(1));
+        jugador.agregarRecurso(new Grano(2)); 
+
+        ArrayList<Jugador> jugadores = new ArrayList<>(List.of(jugador));
+        ArrayList<CartasDesarrollo> cartas = new ArrayList<>(List.of(new CartaConstruccionCarretera()));
+        tablero.colocarConstruccionInicial(new Poblado(),new Coordenadas(3,3), jugador);
+
+
+        var caso = new CasoDeUsoSacarCartasDelMazoDeDesarrollo();
+        MazoCartasDesarrollo mazo = new MazoTrucado(cartas);
+
+        caso.comprarCartaDesarrollo(mazo, jugador, turnoActual);
+        
+        ContextoCartaDesarrollo contextoNuevo = new ContextoCartaDesarrollo(jugador, jugadores, turnoActual + 1, tablero, ladron);
+
+        ArrayList<List<Coordenadas>> coordenadasCarreteras = new ArrayList<List<Coordenadas>>();
+        coordenadasCarreteras.add( new ArrayList<Coordenadas>(List.of(new Coordenadas(3,3), new Coordenadas(3,4))));
+        coordenadasCarreteras.add( new ArrayList<Coordenadas>(List.of(new Coordenadas(4,4), new Coordenadas(4,5))));
+
+        contextoNuevo.establecerCoordenadasCarreteras(coordenadasCarreteras);
+
+        assertThrows(NoEsPosibleConstruirException.class, () -> caso.usarCartaDesarrollo(new CartaConstruccionCarretera(), jugador ,contextoNuevo));
+        assertFalse(tablero.estaConstruidoCon(new Carretera(), new Coordenadas(3,3), jugador));
+        assertFalse(tablero.estaConstruidoCon(new Carretera(), new Coordenadas(3,4), jugador));
+        assertFalse(tablero.estaConstruidoCon(new Carretera(), new Coordenadas(4,4), jugador));
+        assertFalse(tablero.estaConstruidoCon(new Carretera(), new Coordenadas(4,5), jugador));
     }
 }

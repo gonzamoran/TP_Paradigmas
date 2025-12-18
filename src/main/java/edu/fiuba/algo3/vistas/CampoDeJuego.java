@@ -91,12 +91,12 @@ public class CampoDeJuego extends BorderPane {
         this.controladorDados = new ControladorDados(gestor, controladorFases);
         this.controladorConstruccion = new ControladorConstruccion(gestor, primerJugador);
         this.controladorVentanas = new ControladorVentanas(primerJugador, gestor);
-        // - Para comercio: sólo actualizar inventario (no reconstruir tablero)
+
         controladorConstruccion.setOnVentanaComerciarCerrada(() -> {
             actualizarInterfaz();
         });
-        // - Para construcciones/mejoras: actualizar inventario y refrescar tablero
-        controladorConstruccion.setOnModalClosed(() -> {
+
+        controladorConstruccion.setOnModalCerrada(() -> {
             actualizarInterfaz();
             if (tableroUI != null)
                 tableroUI.refrescarDesdeModelo();
@@ -153,7 +153,47 @@ public class CampoDeJuego extends BorderPane {
             }
         }
 
-        StackPane contenedorCentral = new StackPane(tableroUI);
+        VBox panelAyuda = new VBox(4);
+        panelAyuda.setPadding(new Insets(6, 8, 6, 8));
+        panelAyuda.setStyle("-fx-background-color: rgba(255,255,255,0.92); -fx-border-color: #888; -fx-border-width: 1.2; -fx-background-radius: 8; -fx-border-radius: 8;");
+        panelAyuda.setMaxHeight(200);
+        panelAyuda.setMaxWidth(300);
+        panelAyuda.setAlignment(Pos.TOP_LEFT);
+
+        Label tituloAyuda = new Label("Ayuda de juego");
+        tituloAyuda.setStyle("-fx-font-size: 15px; -fx-font-weight: bold; -fx-text-fill: #222;");
+        panelAyuda.getChildren().add(tituloAyuda);
+
+        VBox leyendaColores = new VBox(2);
+        leyendaColores.setAlignment(Pos.TOP_LEFT);
+        leyendaColores.getChildren().add(new Label("Colores de jugadores:"));
+        for (int i = 0; i < nombresJugadores.size(); i++) {
+            String nombre = nombresJugadores.get(i);
+            HBox fila = new HBox(6);
+            Region colorBox = new Region();
+            colorBox.setPrefSize(18, 18);
+            String[] colores = {"#e74c3c", "#3498db", "#27ae60", "#f1c40f"};
+            String color = colores[i % colores.length];
+            colorBox.setStyle("-fx-background-color: " + color + "; -fx-border-color: #222; -fx-border-width: 1;");
+            Label lblNombre = new Label(nombre);
+            fila.getChildren().addAll(colorBox, lblNombre);
+            leyendaColores.getChildren().add(fila);
+        }
+        panelAyuda.getChildren().add(leyendaColores);
+
+        VBox leyendaConstrucciones = new VBox(2);
+        leyendaConstrucciones.setAlignment(Pos.TOP_LEFT);
+        leyendaConstrucciones.getChildren().add(new Label("Construcciones y costes:"));
+        leyendaConstrucciones.getChildren().add(new Label("Poblado: 1 madera, 1 ladrillo, 1 lana, 1 trigo"));
+        leyendaConstrucciones.getChildren().add(new Label("Ciudad: 3 arcilla, 2 trigo"));
+        leyendaConstrucciones.getChildren().add(new Label("Carretera: 1 madera, 1 ladrillo"));
+        leyendaConstrucciones.getChildren().add(new Label("Carta desarrollo: 1 trigo, 1 lana, 1 mineral"));
+        panelAyuda.getChildren().add(leyendaConstrucciones);
+
+        StackPane contenedorCentral = new StackPane(tableroUI, panelAyuda);
+        StackPane.setAlignment(panelAyuda, Pos.BOTTOM_LEFT);
+        StackPane.setMargin(panelAyuda, new Insets(20, 0, 20, 20));
+        this.setCenter(contenedorCentral);
         contenedorCentral.setPadding(new Insets(10));
         contenedorCentral.setAlignment(Pos.CENTER);
         contenedorCentral.setStyle("-fx-background-color: #4FA3D1;");

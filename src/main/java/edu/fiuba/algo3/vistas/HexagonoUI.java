@@ -178,8 +178,6 @@ public class HexagonoUI extends Pane {
         antifaz.setArcWidth(8);
         antifaz.setArcHeight(8);
         antifaz.setFill(Color.BLACK);
-        antifaz.setStroke(Color.WHITE);
-        antifaz.setStrokeWidth(1.5);
 
         Circle ojoIzq = new Circle(-6, -1, 2.5);
         ojoIzq.setFill(Color.WHITE);

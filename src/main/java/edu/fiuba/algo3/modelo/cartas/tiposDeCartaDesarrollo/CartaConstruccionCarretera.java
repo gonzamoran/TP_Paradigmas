@@ -50,11 +50,20 @@ public class CartaConstruccionCarretera extends CartasDesarrollo {
             }
         }
 
-        for (List<Coordenadas> camino : coordenadasCarreteras) {
+        for (int i = 0; i < coordenadasCarreteras.size(); i++) {
+            List<Coordenadas> camino = coordenadasCarreteras.get(i);
             Coordenadas origen = camino.get(0);
             Coordenadas destino = camino.get(1);
-            if (!tablero.puedeConstruirCarreteraGratis(origen, destino, jugador)) {
-                throw new edu.fiuba.algo3.modelo.excepciones.NoEsPosibleConstruirException("No es posible construir todas las carreteras solicitadas");
+            if (!tablero.puedeConstruirCarreteraGratis(origen, destino, jugador) && i != 0) {
+                var anterior = coordenadasCarreteras.get(i - 1);
+                Coordenadas origenAnterior = anterior.get(0);
+                Coordenadas destinoAnterior = anterior.get(1);
+                if (origen.equals(origenAnterior) || origen.equals(destinoAnterior) ||
+                    destino.equals(origenAnterior) || destino.equals(destinoAnterior)) {
+                    continue;
+                } else{
+                    throw new edu.fiuba.algo3.modelo.excepciones.NoEsPosibleConstruirException("No es posible construir todas las carreteras solicitadas");
+                }
             }
         }
 

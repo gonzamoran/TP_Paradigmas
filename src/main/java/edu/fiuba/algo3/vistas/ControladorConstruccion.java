@@ -28,7 +28,7 @@ public class ControladorConstruccion {
     private Stage ventanaComerciar;
     private Stage ventanaMejorarPoblado;
     private Runnable onVentanaComerciarCerrada;
-    private Runnable onModalClosed;
+    private Runnable onModalCerrada;
 
     public ControladorConstruccion(GestorDeTurnos gestor, String nombreJugador) {
         this.gestor = gestor;
@@ -43,8 +43,8 @@ public class ControladorConstruccion {
         this.onVentanaComerciarCerrada = callback;
     }
 
-    public void setOnModalClosed(Runnable callback) {
-        this.onModalClosed = callback;
+    public void setOnModalCerrada(Runnable callback) {
+        this.onModalCerrada = callback;
     }
 
     public VBox crearPanelBotonesConstruccion() {
@@ -70,13 +70,11 @@ public class ControladorConstruccion {
                 try {
                     var cartaComprada = gestor.comprarCartaDesarrollo();
                     if (cartaComprada != null) {
-                        // mostrar modal con la imagen de la carta comprada
                         Stage modal = new Stage();
                         VentanaMostrarCarta ventanaCarta = new VentanaMostrarCarta(modal, cartaComprada);
                     }
-                    // Refrescar la UI de cartas de desarrollo si está abierta
-                    if (onModalClosed != null)
-                        onModalClosed.run();
+                    if (onModalCerrada != null)
+                        onModalCerrada.run();
                 } catch (RecursosInsuficientesException ex) {
                     Alert alerta = new Alert(Alert.AlertType.ERROR);
                     alerta.setTitle("Recursos insuficientes");
@@ -85,8 +83,8 @@ public class ControladorConstruccion {
                     alerta.showAndWait();
                 }
             } else {
-                if (onModalClosed != null)
-                    onModalClosed.run();
+                if (onModalCerrada != null)
+                    onModalCerrada.run();
             }
         });
 
@@ -120,8 +118,8 @@ public class ControladorConstruccion {
         ventanaConstruirPoblado = new Stage();
         ventanaConstruirPoblado.setOnCloseRequest(e -> {
             ventanaConstruirPoblado = null;
-            if (onModalClosed != null)
-                onModalClosed.run();
+            if (onModalCerrada != null)
+                onModalCerrada.run();
         });
         VentanaConstruirPoblado ventana = new VentanaConstruirPoblado(
                 ventanaConstruirPoblado,
@@ -129,8 +127,8 @@ public class ControladorConstruccion {
                 gestor,
                 tableroUI,
                 () -> {
-                    if (onModalClosed != null)
-                        onModalClosed.run();
+                    if (onModalCerrada != null)
+                        onModalCerrada.run();
                 });
     }
 
@@ -142,8 +140,8 @@ public class ControladorConstruccion {
         ventanaConstruirCarretera = new Stage();
         ventanaConstruirCarretera.setOnCloseRequest(e -> {
             ventanaConstruirCarretera = null;
-            if (onModalClosed != null)
-                onModalClosed.run();
+            if (onModalCerrada != null)
+                onModalCerrada.run();
         });
         VentanaConstruirCarretera ventana = new VentanaConstruirCarretera(
                 ventanaConstruirCarretera,
@@ -151,8 +149,8 @@ public class ControladorConstruccion {
                 gestor,
                 tableroUI,
                 () -> {
-                    if (onModalClosed != null)
-                        onModalClosed.run();
+                    if (onModalCerrada != null)
+                        onModalCerrada.run();
                 });
     }
 
@@ -180,8 +178,8 @@ public class ControladorConstruccion {
         ventanaMejorarPoblado = new Stage();
         ventanaMejorarPoblado.setOnCloseRequest(e -> {
             ventanaMejorarPoblado = null;
-            if (onModalClosed != null)
-                onModalClosed.run();
+            if (onModalCerrada != null)
+                onModalCerrada.run();
         });
         VentanaMejorarPoblado ventana = new VentanaMejorarPoblado(
                 ventanaMejorarPoblado,
@@ -189,8 +187,8 @@ public class ControladorConstruccion {
                 gestor,
                 tableroUI,
                 () -> {
-                    if (onModalClosed != null)
-                        onModalClosed.run();
+                    if (onModalCerrada != null)
+                        onModalCerrada.run();
                 });
     }
 

@@ -498,21 +498,69 @@ public class VentanaComerciar extends VBox {
         Label lblDesc = new Label("Ponerse de acuerdo con el intercambio y ejecutarlo.");
         lblDesc.setStyle("-fx-font-size: 13px; -fx-text-fill: #bdc3c7;");
 
+
         Label lblJugadorDestino = new Label("Elegir jugador con el que se quiere intercambiar:");
         lblJugadorDestino.setStyle("-fx-text-fill: white; -fx-font-weight: bold");
         ComboBox<String> cmbJugadoresBox = new ComboBox<>();
 
         List<Jugador> otrosJugadores = gestor.obtenerOtrosJugadores();
-
         for (Jugador jugador : otrosJugadores) {
             cmbJugadoresBox.getItems().add(jugador.obtenerNombre());
         }
+
+        // Mini inventario del jugador seleccionado
+        VBox miniInventarioBox = new VBox();
+        miniInventarioBox.setAlignment(Pos.CENTER);
+        miniInventarioBox.setPadding(new Insets(5));
+        miniInventarioBox.setStyle("-fx-background-color: rgba(20,20,20,0.7); -fx-background-radius: 8; -fx-border-color: #7f8c8d; -fx-border-radius: 8;");
+        miniInventarioBox.setMinWidth(120);
+        miniInventarioBox.setMaxWidth(140);
+        miniInventarioBox.setVisible(false);
+
+        PanelRecursos miniPanel = new PanelRecursos("");
+        miniPanel.setScaleX(0.7);
+        miniPanel.setScaleY(0.7);
+        miniPanel.setStyle("-fx-background-color: rgba(20,20,20,0.7); -fx-background-radius: 8; -fx-border-color: #7f8c8d; -fx-border-radius: 8; -fx-min-width: 100; -fx-max-width: 140;");
+        miniPanel.setMinWidth(100);
+        miniPanel.setMaxWidth(140);
+        miniPanel.setPrefWidth(120);
+        miniPanel.setVisible(false);
+        miniInventarioBox.getChildren().add(miniPanel);
+
+        cmbJugadoresBox.setOnAction(e -> {
+            String seleccionado = cmbJugadoresBox.getValue();
+            if (seleccionado != null) {
+                Jugador jugadorSel = gestor.obtenerJugadorPorNombre(seleccionado);
+                if (jugadorSel != null) {
+                    // Obtener inventario del jugador seleccionado
+                    Map<edu.fiuba.algo3.modelo.Recurso, Integer> inventario = new java.util.HashMap<>();
+                    for (edu.fiuba.algo3.modelo.Recurso recurso : java.util.List.of(
+                            new edu.fiuba.algo3.modelo.tiposRecurso.Madera(1),
+                            new edu.fiuba.algo3.modelo.tiposRecurso.Ladrillo(1),
+                            new edu.fiuba.algo3.modelo.tiposRecurso.Lana(1),
+                            new edu.fiuba.algo3.modelo.tiposRecurso.Grano(1),
+                            new edu.fiuba.algo3.modelo.tiposRecurso.Piedra(1))) {
+                        int cantidad = jugadorSel.obtenerCantidadRecurso(recurso);
+                        if (cantidad > 0) {
+                            inventario.put(recurso, cantidad);
+                        }
+                    }
+                    miniPanel.actualizarInventario(inventario);
+                    miniPanel.setVisible(true);
+                    miniInventarioBox.setVisible(true);
+                }
+            } else {
+                miniPanel.setVisible(false);
+                miniInventarioBox.setVisible(false);
+            }
+        });
 
         Label lblOfrecer = new Label("Yo ofrezco");
         lblOfrecer.setStyle("-fx-text-fill: #2ecc71;");
 
         javafx.scene.control.ListView<String> vistaOferta = new javafx.scene.control.ListView<>();
         vistaOferta.setPrefHeight(100);
+        vistaOferta.setPrefWidth(120);
 
         ComboBox<String> cmbRecursosOfrecidos = new ComboBox<>();
         cmbRecursosOfrecidos.getItems().addAll(RECURSOS);
@@ -549,7 +597,8 @@ public class VentanaComerciar extends VBox {
         lblPedir.setStyle("-fx-text-fill: #2ecc71;");
 
         javafx.scene.control.ListView<String> vistaDemanda = new javafx.scene.control.ListView<>();
-        vistaOferta.setPrefHeight(100);
+        vistaDemanda.setPrefHeight(100);
+        vistaDemanda.setPrefWidth(120);
 
         ComboBox<String> cmbRecursosPedir = new ComboBox<>();
         cmbRecursosPedir.getItems().addAll(RECURSOS);
@@ -582,7 +631,7 @@ public class VentanaComerciar extends VBox {
                 new HBox(5, btnAgregarDemanda, btnLimpiarDemanda));
         panelDemanda.setAlignment(Pos.CENTER);
 
-        HBox boxIntercambio = new HBox(15, panelOferta, panelDemanda);
+        HBox boxIntercambio = new HBox(15, panelOferta, panelDemanda, miniInventarioBox);
         boxIntercambio.setAlignment(Pos.CENTER);
 
         Button btnConfirmar = new Button("Confirmar Intercambio");
@@ -627,7 +676,7 @@ public class VentanaComerciar extends VBox {
         btnVolver.setOnAction(ev -> mostrarMenuPrincipal(root, stage, jugadorAcString));
 
         VBox cont = new VBox(12, lblTitulo, lblDesc, lblJugadorDestino, cmbJugadoresBox, boxIntercambio, btnConfirmar,
-                btnVolver);
+            btnVolver);
         cont.setAlignment(Pos.CENTER);
         cont.setPadding(new Insets(20));
 
