@@ -1,12 +1,12 @@
-package edu.fiuba.algo3.vistas;
+package edu.fiuba.algo3.vistas.ventanas;
 
+import edu.fiuba.algo3.controllers.ControladorFases;
 import edu.fiuba.algo3.controllers.ReproductorDeSonido;
 
 import edu.fiuba.algo3.modelo.cartas.tiposDeCartaDesarrollo.CartasDesarrollo;
 import edu.fiuba.algo3.modelo.cartas.tiposDeCartaDesarrollo.ContextoCartaDesarrollo;
 import edu.fiuba.algo3.modelo.Jugador;
 import edu.fiuba.algo3.modelo.GestorDeTurnos;
-import edu.fiuba.algo3.vistas.ControladorFases;
 import edu.fiuba.algo3.modelo.cartas.tiposDeCartaDesarrollo.CartaCaballero;
 import edu.fiuba.algo3.modelo.cartas.tiposDeCartaDesarrollo.CartaConstruccionCarretera;
 import edu.fiuba.algo3.modelo.cartas.tiposDeCartaDesarrollo.CartaMonopolio;

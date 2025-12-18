@@ -8,6 +8,8 @@ import edu.fiuba.algo3.modelo.construcciones.Poblado;
 import edu.fiuba.algo3.modelo.tablero.*;
 import edu.fiuba.algo3.modelo.tiposRecurso.*;
 
+import edu.fiuba.algo3.modelo.excepciones.PosInvalidaParaConstruirException;
+
 import java.util.*;
 
 public class GestorDeTurnos {
@@ -60,7 +62,14 @@ public class GestorDeTurnos {
         if (jugadorActual == null)
             return;
 
+        if (coordPoblado.equals(coordCarretera)) {
+            throw new PosInvalidaParaConstruirException("No se puede construir una carretera entre el mismo vértice");
+        }
+
         CasoDeUsoColocacionInicial casoColocacion = new CasoDeUsoColocacionInicial(tablero);
+        if (!casoColocacion.sonCoordenadasAdyacentes(coordPoblado, coordCarretera)) {
+            throw new PosInvalidaParaConstruirException("Las coordenadas de la carretera deben ser adyacentes al poblado");
+        }
         ArrayList<Recurso> recursos = casoColocacion.colocarConstruccionInicial(coordPoblado, new Poblado(),
                 jugadorActual);
 

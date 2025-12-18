@@ -1,8 +1,9 @@
-package edu.fiuba.algo3.vistas;
+package edu.fiuba.algo3.vistas.ventanas;
 
 import edu.fiuba.algo3.modelo.GestorDeTurnos;
 import edu.fiuba.algo3.modelo.Jugador;
 import edu.fiuba.algo3.modelo.tablero.Coordenadas;
+import edu.fiuba.algo3.vistas.TableroUI;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;

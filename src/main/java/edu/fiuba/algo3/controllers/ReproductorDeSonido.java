@@ -44,8 +44,6 @@ public class ReproductorDeSonido {
         reproductorFondo.setVolume(0.25);
         reproductorFondo.setCycleCount(AudioClip.INDEFINITE);
         reproductorFondo.play();
-
-        reproductorDados.play();
     }
 
     public void reproducirSonidoDados() {

@@ -1,6 +1,4 @@
-package edu.fiuba.algo3.vistas;
-
-import edu.fiuba.algo3.controllers.ReproductorDeSonido;
+package edu.fiuba.algo3.controllers;
 
 import javafx.application.Platform;
 import javafx.geometry.Pos;
@@ -15,6 +13,8 @@ import javafx.stage.Stage;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import edu.fiuba.algo3.vistas.CampoDeJuego;
 
 public class ConfiguracionPartida extends VBox {
 

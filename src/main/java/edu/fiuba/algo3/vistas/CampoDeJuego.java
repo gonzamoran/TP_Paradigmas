@@ -5,6 +5,12 @@ import edu.fiuba.algo3.modelo.tablero.Coordenadas;
 import edu.fiuba.algo3.modelo.tablero.Hexagono;
 import edu.fiuba.algo3.modelo.tablero.Produccion;
 import edu.fiuba.algo3.modelo.Jugador;
+import edu.fiuba.algo3.controllers.CargadorTableroJSON;
+import edu.fiuba.algo3.controllers.ControladorConstruccion;
+import edu.fiuba.algo3.controllers.ControladorDados;
+import edu.fiuba.algo3.controllers.ControladorFases;
+import edu.fiuba.algo3.controllers.ControladorIndicadores;
+import edu.fiuba.algo3.controllers.ControladorVentanas;
 import edu.fiuba.algo3.controllers.ReproductorDeSonido;
 
 import javafx.geometry.Insets;
@@ -24,6 +30,9 @@ import javafx.application.Platform;
 
 import java.util.ArrayList;
 import java.util.List;
+import edu.fiuba.algo3.vistas.TableroUI;
+import edu.fiuba.algo3.vistas.ventanas.PanelRecursos;
+import edu.fiuba.algo3.vistas.ventanas.VentanaColocacionInicial;
 
 public class CampoDeJuego extends BorderPane {
 
@@ -82,8 +91,9 @@ public class CampoDeJuego extends BorderPane {
         HBox indicadoresPanel = new HBox(15);
         indicadoresPanel.setAlignment(Pos.CENTER_RIGHT);
         indicadoresPanel.getChildren().addAll(
-                controladorIndicadores.crearBoxTurno(primerJugador),
-                controladorIndicadores.crearBoxFase());
+            controladorIndicadores.crearBoxTurno(primerJugador),
+            controladorIndicadores.crearBoxCaballeros(),
+            controladorIndicadores.crearBoxFase());
 
         controladorIndicadores.actualizarTurno(primerJugador, 0);
 
@@ -268,6 +278,13 @@ public class CampoDeJuego extends BorderPane {
         }
         if (lblPuntosVictoria != null) {
             lblPuntosVictoria.setText(String.valueOf(gestor.obtenerPuntosVictoriaJugadorActual()));
+        }
+        if (controladorIndicadores != null && controladorIndicadores.obtenerLblCaballeros() != null) {
+            int caballos = 0;
+            if (gestor.obtenerJugadorActual() != null) {
+                caballos = gestor.obtenerJugadorActual().obtenerCantidadCaballerosUsados();
+            }
+            controladorIndicadores.obtenerLblCaballeros().setText(String.valueOf(caballos));
         }
     }
 

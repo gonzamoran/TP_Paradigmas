@@ -1,5 +1,9 @@
-package edu.fiuba.algo3.vistas;
+package edu.fiuba.algo3.controllers;
 
+
+import edu.fiuba.algo3.vistas.TableroUI;
+import edu.fiuba.algo3.vistas.ventanas.ColoresJugadores;
+import edu.fiuba.algo3.vistas.ventanas.VistaDados;
 import edu.fiuba.algo3.modelo.GestorDeTurnos;
 import edu.fiuba.algo3.modelo.Jugador;
 import edu.fiuba.algo3.modelo.tablero.Coordenadas;
@@ -17,7 +21,6 @@ import javafx.scene.layout.StackPane;
 import javafx.scene.text.Text;
 import javafx.scene.shape.Circle;
 import javafx.scene.paint.Color;
-import edu.fiuba.algo3.vistas.ColoresJugadores;
 import javafx.stage.Screen;
 import javafx.geometry.Rectangle2D;
 import javafx.geometry.Bounds;

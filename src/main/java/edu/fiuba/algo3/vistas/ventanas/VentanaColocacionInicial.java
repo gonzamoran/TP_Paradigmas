@@ -1,6 +1,7 @@
-package edu.fiuba.algo3.vistas;
+package edu.fiuba.algo3.vistas.ventanas;
 
 import edu.fiuba.algo3.modelo.tablero.Coordenadas;
+import edu.fiuba.algo3.vistas.TableroUI;
 import javafx.scene.control.Label;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;

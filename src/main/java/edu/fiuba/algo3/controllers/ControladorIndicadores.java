@@ -1,5 +1,6 @@
-package edu.fiuba.algo3.vistas;
+package edu.fiuba.algo3.controllers;
 
+import edu.fiuba.algo3.vistas.ventanas.ColoresJugadores;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.Label;
@@ -15,6 +16,7 @@ public class ControladorIndicadores {
     private Label lblPuntosVictoria;
     private Label lblTurno;
     private Label lblFase;
+    private Label lblCaballeros;
     
     public VBox crearBoxTurno(String nombreJugador) {
         this.boxTurno = crearIndicadorHUD("TURNO", nombreJugador, "#f1c40f");
@@ -34,8 +36,18 @@ public class ControladorIndicadores {
         return boxPuntos;
     }
     
+    public VBox crearBoxCaballeros() {
+        VBox boxCaballeros = crearIndicadorHUD("CABALLEROS", "0", "#9b59b6");
+        this.lblCaballeros = (Label) boxCaballeros.getChildren().get(1);
+        return boxCaballeros;
+    }
+    
     public Label obtenerLblPuntosVictoria() {
         return lblPuntosVictoria;
+    }
+
+    public Label obtenerLblCaballeros() {
+        return lblCaballeros;
     }
 
     public Label obtenerLblFase() {

@@ -1,9 +1,14 @@
-package edu.fiuba.algo3.vistas;
-
-import edu.fiuba.algo3.controllers.ReproductorDeSonido;
+package edu.fiuba.algo3.controllers;
 
 import edu.fiuba.algo3.modelo.GestorDeTurnos;
 import edu.fiuba.algo3.modelo.excepciones.RecursosInsuficientesException;
+import edu.fiuba.algo3.vistas.TableroUI;
+import edu.fiuba.algo3.vistas.ventanas.VentanaComerciar;
+import edu.fiuba.algo3.vistas.ventanas.VentanaConstruirCarretera;
+import edu.fiuba.algo3.vistas.ventanas.VentanaConstruirPoblado;
+import edu.fiuba.algo3.vistas.ventanas.VentanaMejorarPoblado;
+import edu.fiuba.algo3.vistas.ventanas.VentanaMostrarCarta;
+import edu.fiuba.algo3.vistas.ventanas.VentanaVictoria;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.Alert;

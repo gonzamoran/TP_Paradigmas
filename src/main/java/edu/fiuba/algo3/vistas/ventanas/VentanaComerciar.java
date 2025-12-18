@@ -1,4 +1,4 @@
-package edu.fiuba.algo3.vistas;
+package edu.fiuba.algo3.vistas.ventanas;
 
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
@@ -24,6 +24,7 @@ import edu.fiuba.algo3.modelo.Recurso;
 import edu.fiuba.algo3.modelo.tiposBanca.Banca2a1;
 import edu.fiuba.algo3.modelo.tiposBanca.Banca3a1;
 import edu.fiuba.algo3.modelo.tiposRecurso.*;
+
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.LinkedHashSet;

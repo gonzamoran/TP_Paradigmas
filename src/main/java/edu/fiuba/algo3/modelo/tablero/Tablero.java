@@ -331,6 +331,9 @@ public class Tablero {
     }
 
     public void construirCarretera(Coordenadas coordenadaExtremo1, Coordenadas coordenadaExtremo2, Jugador jugador) {
+        if (coordenadaExtremo1.equals(coordenadaExtremo2)) {
+            throw new PosInvalidaParaConstruirException("No se puede construir una carretera entre el mismo vértice");
+        }
         this.validarVerticesCarretera(coordenadaExtremo1, coordenadaExtremo2, jugador);
 
         Vertice vertice1 = mapaVertices.get(coordenadaExtremo1);
@@ -359,6 +362,10 @@ public class Tablero {
     }
 
     private void construirCarreteraGeneral(Carretera carretera, Vertice vertice1, Vertice vertice2, Jugador jugador){
+        if (vertice1 == vertice2) {
+            throw new PosInvalidaParaConstruirException("No se puede construir una carretera entre el mismo vértice");
+        }
+        carretera.asignarJugador(jugador);
         vertice1.construirCarretera(carretera, jugador);
         vertice2.construirCarretera(carretera, jugador);
         jugador.agregarConstruccion(carretera);
@@ -384,6 +391,9 @@ public class Tablero {
     }
 
     public void construirCarreteraGratis(Coordenadas coordenadaExtremo1, Coordenadas coordenadaExtremo2, Jugador jugador) {
+        if (coordenadaExtremo1.equals(coordenadaExtremo2)) {
+            throw new PosInvalidaParaConstruirException("No se puede construir una carretera entre el mismo vértice");
+        }
         this.validarVerticesCarretera(coordenadaExtremo1, coordenadaExtremo2, jugador);
 
         Vertice vertice1 = mapaVertices.get(coordenadaExtremo1);
@@ -565,5 +575,14 @@ public class Tablero {
 
     public List<Carretera> obtenerCarreterasConstruidas() {
         return new ArrayList<>(listaCarreteras);
+    }
+
+    public boolean sonCoordenadasAdyacentes(Coordenadas coord1, Coordenadas coord2) {
+        var v1 = mapaVertices.get(coord1);
+        var v2 = mapaVertices.get(coord2);
+        if (v1 == null || v2 == null) {
+            return false;
+        }
+        return v1.esAdyacente(v2);
     }
 }

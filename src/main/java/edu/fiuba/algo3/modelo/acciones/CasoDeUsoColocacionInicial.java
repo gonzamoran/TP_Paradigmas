@@ -24,4 +24,8 @@ public class CasoDeUsoColocacionInicial {
 
         tablero.construirCarreteraGratis(coordenada1, coordenada2, jugador);
     }
+
+    public boolean sonCoordenadasAdyacentes(Coordenadas coord1, Coordenadas coord2) {
+        return tablero.sonCoordenadasAdyacentes(coord1, coord2);
+    }
 }

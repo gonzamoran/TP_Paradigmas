@@ -1,4 +1,4 @@
-package edu.fiuba.algo3.vistas;
+package edu.fiuba.algo3.vistas.ventanas;
 
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
@@ -13,6 +13,7 @@ import javafx.stage.Screen;
 import javafx.geometry.Rectangle2D;
 
 import edu.fiuba.algo3.controllers.ReproductorDeSonido;
+import edu.fiuba.algo3.vistas.TableroUI;
 
 public abstract class VentanaModalBase {
 

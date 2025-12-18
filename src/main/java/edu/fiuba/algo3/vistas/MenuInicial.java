@@ -1,5 +1,6 @@
 package edu.fiuba.algo3.vistas;
 
+import edu.fiuba.algo3.controllers.ConfiguracionPartida;
 import javafx.application.Application;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;

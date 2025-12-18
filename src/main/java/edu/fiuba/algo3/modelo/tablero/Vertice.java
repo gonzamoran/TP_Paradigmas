@@ -134,9 +134,18 @@ public class Vertice {
 
     public void construirCarretera(Construccion carretera, Jugador jugador) {
         Carretera carreteraCast = (Carretera) carretera;
-        carreteraCast.asignarJugador(jugador);
         carreteraCast.asignarVertice(this);
-        this.carreterasIngresantes.add(carreteraCast);
+        boolean existe = false;
+        for (Carretera c : this.carreterasIngresantes) {
+            if (c == carreteraCast) {
+                existe = true;
+                break;
+            }
+        }
+        if (!existe) {
+            this.carreterasIngresantes.add(carreteraCast);
+        }
+
     }
 
     public void agregarBanca(Banca banca) {
