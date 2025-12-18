@@ -10,7 +10,6 @@ import edu.fiuba.algo3.modelo.tiposRecurso.*;
 
 import java.util.*;
 
-
 public class GestorDeTurnos {
     private int turnoActual;
     private int indiceJugadorActual;
@@ -49,8 +48,7 @@ public class GestorDeTurnos {
                 new CartaMonopolio(), new CartaMonopolio(), new CartaMonopolio(),
                 new CartaDescubrimiento(), new CartaDescubrimiento(), new CartaDescubrimiento(),
                 new CartaPuntoVictoria(), new CartaPuntoVictoria(), new CartaPuntoVictoria(),
-                new CartaPuntoVictoria(), new CartaPuntoVictoria()
-                ));
+                new CartaPuntoVictoria(), new CartaPuntoVictoria()));
         Collections.shuffle(cartas);
         this.mazo = new MazoCartasDesarrollo(cartas);
         Hexagono desierto = tablero.obtenerDesierto();
@@ -147,9 +145,11 @@ public class GestorDeTurnos {
         casoConstruir.construirCarretera(origen, destino, jugadorActual);
     }
 
-    public void usarCartaDesarrollo(edu.fiuba.algo3.modelo.cartas.tiposDeCartaDesarrollo.CartasDesarrollo carta, edu.fiuba.algo3.modelo.cartas.tiposDeCartaDesarrollo.ContextoCartaDesarrollo contexto) {
+    public void usarCartaDesarrollo(edu.fiuba.algo3.modelo.cartas.tiposDeCartaDesarrollo.CartasDesarrollo carta,
+            edu.fiuba.algo3.modelo.cartas.tiposDeCartaDesarrollo.ContextoCartaDesarrollo contexto) {
         Jugador jugadorActual = obtenerJugadorActual();
-        if (jugadorActual == null) return;
+        if (jugadorActual == null)
+            return;
         edu.fiuba.algo3.modelo.acciones.CasoDeUsoSacarCartasDelMazoDeDesarrollo caso = new edu.fiuba.algo3.modelo.acciones.CasoDeUsoSacarCartasDelMazoDeDesarrollo();
         caso.usarCartaDesarrollo(carta, jugadorActual, contexto);
     }
@@ -215,7 +215,6 @@ public class GestorDeTurnos {
         return null;
     }
 
-
     public Jugador obtenerJugadorActual() {
         if (jugadores != null && !jugadores.isEmpty() && indiceJugadorActual >= 0
                 && indiceJugadorActual < jugadores.size()) {
@@ -273,9 +272,11 @@ public class GestorDeTurnos {
     public ArrayList<CartasDesarrollo> obtenerCartasJugablesJugadorActual() {
         Jugador jugador = obtenerJugadorActual();
         ArrayList<CartasDesarrollo> jugables = new ArrayList<>();
-        if (jugador == null) return jugables;
+        if (jugador == null)
+            return jugables;
 
-        ContextoCartaDesarrollo contexto = new ContextoCartaDesarrollo(jugador, jugadores, turnoActual, tablero, ladron);
+        ContextoCartaDesarrollo contexto = new ContextoCartaDesarrollo(jugador, jugadores, turnoActual, tablero,
+                ladron);
         for (CartasDesarrollo carta : jugador.obtenerCartasDeDesarrollo()) {
             if (carta.esJugable(contexto)) {
                 jugables.add(carta);
@@ -287,9 +288,11 @@ public class GestorDeTurnos {
     public ArrayList<CartasDesarrollo> obtenerCartasNoJugablesJugadorActual() {
         Jugador jugador = obtenerJugadorActual();
         ArrayList<CartasDesarrollo> noJugables = new ArrayList<>();
-        if (jugador == null) return noJugables;
+        if (jugador == null)
+            return noJugables;
 
-        ContextoCartaDesarrollo contexto = new ContextoCartaDesarrollo(jugador, jugadores, turnoActual, tablero, ladron);
+        ContextoCartaDesarrollo contexto = new ContextoCartaDesarrollo(jugador, jugadores, turnoActual, tablero,
+                ladron);
         for (CartasDesarrollo carta : jugador.obtenerCartasDeDesarrollo()) {
             if (!carta.esJugable(contexto)) {
                 noJugables.add(carta);
@@ -314,6 +317,7 @@ public class GestorDeTurnos {
         Jugador jugadorActual = obtenerJugadorActual();
         return jugadorActual.poseeGranRuta();
     }
+
     public boolean poseeGranCaballeriaJugadorActual() {
         Jugador jugadorActual = obtenerJugadorActual();
         return jugadorActual.poseeGranCaballeria();

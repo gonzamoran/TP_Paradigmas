@@ -16,7 +16,7 @@ public class CartasJugador {
 
     private ArrayList<CartasDesarrollo> cartasDesarrollo;
     private List<Recurso> recursos;
-    private boolean tieneLaGranCaballeria = false; // hacerlo de otra forma
+    private boolean tieneLaGranCaballeria = false;
     private boolean tieneLaGranRutaComercial = false;
 
     public CartasJugador() {
@@ -113,7 +113,6 @@ public class CartasJugador {
 
             Recurso cartaDescartada = recurso.obtenerCopia(1);
 
-
             descarte.add(cartaDescartada);
 
             recurso.restar(1);
@@ -192,7 +191,7 @@ public class CartasJugador {
         if (this.tieneLaGranCaballeria) {
             cartasConPuntos += 2;
         }
-        if (this.tieneLaGranRutaComercial){
+        if (this.tieneLaGranRutaComercial) {
             cartasConPuntos += 2;
         }
         return cartasConPuntos;
@@ -214,19 +213,19 @@ public class CartasJugador {
         this.tieneLaGranCaballeria = false;
     }
 
-    public void otorgarGranRutaComercial(){
+    public void otorgarGranRutaComercial() {
         this.tieneLaGranRutaComercial = true;
     }
 
-    public void quitarCartaGranRutaComercial(){
+    public void quitarCartaGranRutaComercial() {
         this.tieneLaGranRutaComercial = false;
     }
 
-    public boolean poseeGranRuta(){
+    public boolean poseeGranRuta() {
         return this.tieneLaGranRutaComercial;
     }
 
-    public boolean poseeGranCaballeria(){
+    public boolean poseeGranCaballeria() {
         return this.tieneLaGranCaballeria;
     }
 }
