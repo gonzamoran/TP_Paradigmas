@@ -25,7 +25,7 @@ public class CartaDescubrimiento extends CartasDesarrollo {
 
     @Override
     public void usar(ContextoCartaDesarrollo contexto) {
-        this.fueUsada = true;
+        //this.fueUsada = true;
 
         if (!contexto.sePuedeJugarCarta(this.turnoDeCompra)) {
             throw new NoSePuedeJugarEstaCartaException();
@@ -37,5 +37,6 @@ public class CartaDescubrimiento extends CartasDesarrollo {
         for (Recurso recurso : recursosElegidos) {
             jugador.agregarRecurso(recurso);
         }
+        this.fueUsada = true;
     }
 }

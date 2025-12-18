@@ -32,7 +32,7 @@ public class CartaConstruccionCarretera extends CartasDesarrollo {
 
     @Override
     public void usar(ContextoCartaDesarrollo contexto) {
-        this.fueUsada = true;
+        //this.fueUsada = true;
 
         if (!contexto.sePuedeJugarCarta(this.turnoDeCompra)) {
             throw new NoSePuedeJugarEstaCartaException();
@@ -72,5 +72,6 @@ public class CartaConstruccionCarretera extends CartasDesarrollo {
             Coordenadas destino = camino.get(1);
             tablero.construirCarreteraGratis(origen, destino, jugador);
         }
+        this.fueUsada = true;
     }
 }

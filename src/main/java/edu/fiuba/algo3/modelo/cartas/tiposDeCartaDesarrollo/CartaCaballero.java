@@ -25,7 +25,7 @@ public class CartaCaballero extends CartasDesarrollo {
     }
 
     public void usar(ContextoCartaDesarrollo contexto) {
-        this.fueUsada = true;
+        //this.fueUsada = true;
         Coordenadas coordDestino = contexto.obtenerCoordenadasDestino();
 
         Tablero tablero = contexto.obtenerTablero();
@@ -43,6 +43,7 @@ public class CartaCaballero extends CartasDesarrollo {
         if (jugador.obtenerCantidadCaballerosUsados() >= 3) {
             this.pasarGranCaballeria(contexto);
         }
+        this.fueUsada = true;
     }
 
     public void pasarGranCaballeria(ContextoCartaDesarrollo contexto) {
