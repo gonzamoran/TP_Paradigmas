@@ -42,13 +42,14 @@ public class CampoDeJuego extends BorderPane {
     private Label lblPuntosVictoria;
     private Button btnTerminarFase;
 
-    public CampoDeJuego(Stage escenario, GestorDeTurnos gestor, ArrayList<Hexagono> hexagones, ArrayList<Produccion> producciones,List<String> nombresJugadores) {
+    public CampoDeJuego(Stage escenario, GestorDeTurnos gestor, ArrayList<Hexagono> hexagones,
+            ArrayList<Produccion> producciones, List<String> nombresJugadores) {
         this.escenario = escenario;
         this.gestor = gestor;
         this.hexagones = hexagones;
         this.producciones = producciones;
         this.nombresJugadores = nombresJugadores != null ? nombresJugadores : new ArrayList<>();
-        
+
         construirInterfaz();
 
         escenario.setScene(new Scene(this, 1500, 900));
@@ -62,14 +63,14 @@ public class CampoDeJuego extends BorderPane {
     }
 
     private void reproducirSonido() {
-        //ReproductorDeSonido.getInstance().reproducirSonidoDados();
+        ReproductorDeSonido.getInstance().reproducirSonidoDados();
     }
 
     private void construirInterfaz() {
         String primerJugador = !nombresJugadores.isEmpty() ? nombresJugadores.get(0) : "Esperando...";
 
         this.controladorIndicadores = new ControladorIndicadores();
-        
+
         HBox listaJugadores = new HBox(10);
         listaJugadores.setAlignment(Pos.CENTER_LEFT);
         for (String nombre : nombresJugadores) {
@@ -81,12 +82,11 @@ public class CampoDeJuego extends BorderPane {
         HBox indicadoresPanel = new HBox(15);
         indicadoresPanel.setAlignment(Pos.CENTER_RIGHT);
         indicadoresPanel.getChildren().addAll(
-            controladorIndicadores.crearBoxTurno(primerJugador),
-            controladorIndicadores.crearBoxFase()
-        );
-        
+                controladorIndicadores.crearBoxTurno(primerJugador),
+                controladorIndicadores.crearBoxFase());
+
         controladorIndicadores.actualizarTurno(primerJugador, 0);
-        
+
         this.controladorFases = new ControladorFases(controladorIndicadores.obtenerLblFase(), gestor);
         this.controladorDados = new ControladorDados(gestor, controladorFases);
         this.controladorConstruccion = new ControladorConstruccion(gestor, primerJugador);
@@ -98,9 +98,11 @@ public class CampoDeJuego extends BorderPane {
         // - Para construcciones/mejoras: actualizar inventario y refrescar tablero
         controladorConstruccion.setOnModalClosed(() -> {
             actualizarInterfaz();
-            if (tableroUI != null) tableroUI.refrescarDesdeModelo();
+            if (tableroUI != null)
+                tableroUI.refrescarDesdeModelo();
+            lanzarVentanaGanador();
         });
-        
+
         BorderPane barraSuperior = new BorderPane();
         barraSuperior.setPadding(new Insets(10));
         barraSuperior.setStyle("-fx-background-color: rgba(0, 0, 0, 0.4);");
@@ -119,15 +121,15 @@ public class CampoDeJuego extends BorderPane {
 
         VBox boxPuntos = controladorIndicadores.crearBoxPuntos();
         this.lblPuntosVictoria = controladorIndicadores.obtenerLblPuntosVictoria();
-        
+
         VBox panelConstruccion = controladorConstruccion.crearPanelBotonesConstruccion();
         controladorConstruccion.actualizarVisibilidadSegunFase(controladorFases.getFaseActual());
-        
+
         this.btnTerminarFase = controladorConstruccion.getBtnTerminarFase();
         btnTerminarFase.setDisable(true);
         btnTerminarFase.setCursor(Cursor.HAND);
         btnTerminarFase.setOnAction(e -> terminarFaseYAvanzarTurno());
-        
+
         panelDerecho.getChildren().addAll(boxPuntos, panelConstruccion, btnTerminarFase);
 
         VBox contenedorDerecho = new VBox(12, panelRecursos, panelDerecho);
@@ -162,39 +164,48 @@ public class CampoDeJuego extends BorderPane {
         barraInferior.setAlignment(Pos.CENTER);
         barraInferior.setSpacing(20);
         barraInferior.setStyle("-fx-background-color: linear-gradient(to top, rgba(0,0,0,0.6), transparent);");
-        
+
         Button btnTirarDados = controladorDados.crearBotonTirarDados(() -> {
             controladorDados.actualizarVisibilidadSegunFase(controladorFases.getFaseActual());
             btnTerminarFase.setDisable(false);
             actualizarInterfaz();
         });
+
+        btnTirarDados.setOnMousePressed(e -> {
+            ReproductorDeSonido.getInstance().reproducirSonidoDados();
+        });
         controladorDados.actualizarVisibilidadSegunFase(controladorFases.getFaseActual());
-        
+
         Button botonBonificacion = new Button("Ver Cartas Bonificacion");
-        botonBonificacion.setStyle("-fx-font-size: 16px; -fx-padding: 10 20; -fx-base: #4856db; -fx-cursor: hand; -fx-font-weight: bold;");
+        botonBonificacion.setStyle(
+                "-fx-font-size: 16px; -fx-padding: 10 20; -fx-base: #4856db; -fx-cursor: hand; -fx-font-weight: bold;");
         botonBonificacion.setOnAction(e -> {
-            //ReproductorDeSonido.getInstance().playClick();
+            ReproductorDeSonido.getInstance().playClick();
             controladorVentanas.abrirVentanaCartasBonificacion();
         });
 
         Button botonDesarrollo = new Button("Ver Cartas Desarrollo");
-        botonDesarrollo.setStyle("-fx-font-size: 16px; -fx-padding: 10 20; -fx-base: #3498db; -fx-cursor: hand; -fx-font-weight: bold;");
+        botonDesarrollo.setStyle(
+                "-fx-font-size: 16px; -fx-padding: 10 20; -fx-base: #3498db; -fx-cursor: hand; -fx-font-weight: bold;");
         botonDesarrollo.setOnAction(e -> {
-            //ReproductorDeSonido.getInstance().playClick();
+            ReproductorDeSonido.getInstance().playClick();
             controladorVentanas.abrirVentanaCartasDesarrollo(controladorFases, tableroUI, () -> {
                 actualizarInterfaz();
-                if (tableroUI != null) tableroUI.refrescarDesdeModelo();
+                if (tableroUI != null)
+                    tableroUI.refrescarDesdeModelo();
+                lanzarVentanaGanador();
             });
         });
-        
+
         Button botonSalir = new Button("Salir");
-        botonSalir.setStyle("-fx-font-size: 16px; -fx-padding: 10 20; -fx-base: #e74c3c; -fx-cursor: hand; -fx-font-weight: bold;");
+        botonSalir.setStyle(
+                "-fx-font-size: 16px; -fx-padding: 10 20; -fx-base: #e74c3c; -fx-cursor: hand; -fx-font-weight: bold;");
         botonSalir.setOnAction(e -> {
             MenuInicial menuInicial = new MenuInicial();
             Stage newStage = new Stage();
             try {
                 menuInicial.start(newStage);
-                //ReproductorDeSonido.getInstance().playClick();
+                ReproductorDeSonido.getInstance().playClick();
                 escenario.close();
             } catch (Exception ex) {
                 ex.printStackTrace();
@@ -206,7 +217,8 @@ public class CampoDeJuego extends BorderPane {
         Region separador2 = new Region();
         HBox.setHgrow(separador2, Priority.ALWAYS);
 
-        barraInferior.getChildren().addAll(botonSalir, separador, btnTirarDados, botonDesarrollo, botonBonificacion, separador2, btnTerminarFase);
+        barraInferior.getChildren().addAll(botonSalir, separador, btnTirarDados, botonDesarrollo, botonBonificacion,
+                separador2, btnTerminarFase);
         this.setBottom(barraInferior);
     }
 
@@ -223,7 +235,7 @@ public class CampoDeJuego extends BorderPane {
         CargadorTableroJSON.TableroData tableroData = CargadorTableroJSON.cargarTableroDesdeJSON();
         ArrayList<Hexagono> hexagonos = tableroData.obtenerHexagonos();
         ArrayList<Produccion> producciones = tableroData.obtenerProducciones();
-        
+
         GestorDeTurnos gestor = new GestorDeTurnos(hexagonos, producciones);
         gestor.inicializarJuego(nombresJugadores);
 
@@ -233,11 +245,13 @@ public class CampoDeJuego extends BorderPane {
     }
 
     private void terminarFaseYAvanzarTurno() {
-        String jugadorActual = gestor.obtenerJugadorActual() != null ? gestor.obtenerJugadorActual().obtenerNombre() : "---";
+        String jugadorActual = gestor.obtenerJugadorActual() != null ? gestor.obtenerJugadorActual().obtenerNombre()
+                : "---";
         controladorFases.avanzarFase(jugadorActual);
-        
+
         if (controladorFases.estamosEnFaseLanzamiento()) {
-            String nuevoJugador = gestor.obtenerJugadorActual() != null ? gestor.obtenerJugadorActual().obtenerNombre() : "---";
+            String nuevoJugador = gestor.obtenerJugadorActual() != null ? gestor.obtenerJugadorActual().obtenerNombre()
+                    : "---";
             int indiceJugador = gestor.obtenerIndiceJugadorActual();
             controladorIndicadores.actualizarTurno(nuevoJugador, indiceJugador);
             btnTerminarFase.setDisable(true);
@@ -248,7 +262,7 @@ public class CampoDeJuego extends BorderPane {
         controladorConstruccion.actualizarVisibilidadSegunFase(controladorFases.getFaseActual());
 
         controladorDados.actualizarVisibilidadSegunFase(controladorFases.getFaseActual());
-        
+
         actualizarInterfaz();
     }
 
@@ -257,38 +271,40 @@ public class CampoDeJuego extends BorderPane {
             mostrarVentanaColocacionInicial();
         }
     }
-    
+
     private void mostrarVentanaColocacionInicial() {
         if (gestor.obtenerTurnoActual() >= 2) {
             return;
         }
-        
-        String nombreJugador = gestor.obtenerJugadorActual() != null ? gestor.obtenerJugadorActual().obtenerNombre() : "Jugador";
+
+        String nombreJugador = gestor.obtenerJugadorActual() != null ? gestor.obtenerJugadorActual().obtenerNombre()
+                : "Jugador";
 
         Stage modal = new Stage();
         new VentanaColocacionInicial(modal, nombreJugador, tableroUI, (p, c) -> {
             gestor.colocacionInicial(p, c);
-            
+
             int indiceJugador = gestor.obtenerIndiceJugadorActual();
             tableroUI.marcarPoblado(p, indiceJugador);
-            
 
             tableroUI.marcarCarretera(p, c, indiceJugador);
-            
+
             gestor.avanzarTurno();
 
-            String nuevo = gestor.obtenerJugadorActual() != null ? gestor.obtenerJugadorActual().obtenerNombre() : "---";
+            String nuevo = gestor.obtenerJugadorActual() != null ? gestor.obtenerJugadorActual().obtenerNombre()
+                    : "---";
             int indiceNuevo = gestor.obtenerIndiceJugadorActual();
             controladorIndicadores.actualizarTurno(nuevo, indiceNuevo);
-            
+
             actualizarInterfaz();
-            
+
             mostrarVentanaColocacionInicial();
         });
     }
-    private void lanzarVentanaGanador(){
+
+    private void lanzarVentanaGanador() {
         String jugador = gestor.obtenerGanador();
-        if (jugador != null ){
+        if (jugador != null) {
             Platform.runLater(() -> {
                 controladorVentanas.abrirVentanaGanador(jugador);
             });

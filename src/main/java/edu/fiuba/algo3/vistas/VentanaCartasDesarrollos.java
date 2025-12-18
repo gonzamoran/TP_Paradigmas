@@ -1,5 +1,7 @@
 package edu.fiuba.algo3.vistas;
 
+import edu.fiuba.algo3.controllers.ReproductorDeSonido;
+
 import edu.fiuba.algo3.modelo.cartas.tiposDeCartaDesarrollo.CartasDesarrollo;
 import edu.fiuba.algo3.modelo.cartas.tiposDeCartaDesarrollo.ContextoCartaDesarrollo;
 import edu.fiuba.algo3.modelo.Jugador;
@@ -34,9 +36,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-
 public class VentanaCartasDesarrollos extends VBox {
-
 
     private final GestorDeTurnos gestor;
     private final ControladorFases controladorFases;
@@ -47,7 +47,8 @@ public class VentanaCartasDesarrollos extends VBox {
 
     private final Runnable onActualizarUI;
 
-    public VentanaCartasDesarrollos(Stage stage, String nombreJugador, GestorDeTurnos gestor, ControladorFases controladorFases, TableroUI tableroUI, Runnable onActualizarUI) {
+    public VentanaCartasDesarrollos(Stage stage, String nombreJugador, GestorDeTurnos gestor,
+            ControladorFases controladorFases, TableroUI tableroUI, Runnable onActualizarUI) {
         this.stage = stage;
         this.stage.setAlwaysOnTop(true);
         this.nombreJugador = nombreJugador;
@@ -56,19 +57,18 @@ public class VentanaCartasDesarrollos extends VBox {
         this.tableroUI = tableroUI;
         this.onActualizarUI = onActualizarUI;
         this.setAlignment(Pos.CENTER);
-        this.setSpacing(20); 
-        this.setPadding(new Insets(30)); 
-        
-        
+        this.setSpacing(20);
+        this.setPadding(new Insets(30));
+
         this.setStyle("-fx-background-color: #2c3e50; -fx-min-width: 600; -fx-min-height: 500;");
 
         Label titulo = new Label("Cartas Desarrollo de " + nombreJugador);
-        
+
         titulo.setStyle("-fx-font-size: 24px; -fx-font-weight: bold; -fx-text-fill: white;");
 
         this.panelCartas = new FlowPane();
-        this.panelCartas.setHgap(20); 
-        this.panelCartas.setVgap(20); 
+        this.panelCartas.setHgap(20);
+        this.panelCartas.setVgap(20);
         this.panelCartas.setAlignment(Pos.CENTER);
 
         // Obtener cartas reales del jugador actual mediante el gestor
@@ -92,14 +92,15 @@ public class VentanaCartasDesarrollos extends VBox {
 
         ScrollPane scroll = new ScrollPane(panelCartas);
         scroll.setFitToWidth(true);
-        
-        scroll.setPrefHeight(400); 
+
+        scroll.setPrefHeight(400);
         scroll.setStyle("-fx-background: #2c3e50; -fx-border-color: transparent; -fx-background-color: transparent;");
 
         Button btnCerrar = new Button("Cerrar");
-        btnCerrar.setStyle("-fx-background-color: #e74c3c; -fx-text-fill: white; -fx-cursor: hand; -fx-font-size: 14px; -fx-padding: 10 20;");
+        btnCerrar.setStyle(
+                "-fx-background-color: #e74c3c; -fx-text-fill: white; -fx-cursor: hand; -fx-font-size: 14px; -fx-padding: 10 20;");
         btnCerrar.setOnAction(e -> {
-            //ReproductorDeSonido.getInstance().playClick();
+            ReproductorDeSonido.getInstance().playClick();
             stage.close();
         });
         this.getChildren().addAll(titulo, scroll, btnCerrar);
@@ -110,11 +111,12 @@ public class VentanaCartasDesarrollos extends VBox {
         VBox carta = new VBox(10);
         carta.setAlignment(Pos.CENTER);
 
-        carta.setStyle("-fx-background-color: white; -fx-background-radius: 10; -fx-padding: 10; -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.4), 8, 0, 0, 0);");
+        carta.setStyle(
+                "-fx-background-color: white; -fx-background-radius: 10; -fx-padding: 10; -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.4), 8, 0, 0, 0);");
 
         carta.setPrefSize(150, 220);
 
-        String ruta = "/resources/imagenes/" + nombreCartaDesarrollo + ".png";
+        String ruta = "/imagenes/" + nombreCartaDesarrollo + ".png";
         InputStream is = getClass().getResourceAsStream(ruta);
 
         if (is != null) {
@@ -152,11 +154,16 @@ public class VentanaCartasDesarrollos extends VBox {
 
     private String obtenerNombreCarta(CartasDesarrollo carta) {
         String cls = carta.getClass().getSimpleName();
-        if (cls.contains("Caballero")) return "Caballero";
-        if (cls.contains("Monopolio")) return "Monopolio";
-        if (cls.contains("ConstruccionCarretera")) return "Construccion";
-        if (cls.contains("PuntoVictoria")) return "PV";
-        if (cls.contains("Descubrimiento")) return "Descubrimiento";
+        if (cls.contains("Caballero"))
+            return "Caballero";
+        if (cls.contains("Monopolio"))
+            return "Monopolio";
+        if (cls.contains("ConstruccionCarretera"))
+            return "Construccion";
+        if (cls.contains("PuntoVictoria"))
+            return "PV";
+        if (cls.contains("Descubrimiento"))
+            return "Descubrimiento";
         return cls;
     }
 
@@ -164,9 +171,10 @@ public class VentanaCartasDesarrollos extends VBox {
         Button btn = new Button("Usar");
         btn.setStyle("-fx-background-color: #2ecc71; -fx-text-fill: white; -fx-cursor: hand;");
         btn.setOnAction(evt -> {
-            //ReproductorDeSonido.getInstance().playClick();
+            ReproductorDeSonido.getInstance().playClick();
             boolean confirmado = confirmarAccion("¿Confirmas usar la carta " + nombreCartaDesarrollo + "?");
-            if (!confirmado) return;
+            if (!confirmado)
+                return;
 
             // Cerrar la ventana de la baraja de cartas al confirmar
             if (this.stage != null) {
@@ -174,7 +182,8 @@ public class VentanaCartasDesarrollos extends VBox {
             }
 
             ContextoCartaDesarrollo contexto = new ContextoCartaDesarrollo(
-                    gestor.obtenerJugadorActual(), gestor.obtenerJugadores(), gestor.obtenerTurnoActual(), gestor.obtenerTablero(), gestor.obtenerLadron());
+                    gestor.obtenerJugadorActual(), gestor.obtenerJugadores(), gestor.obtenerTurnoActual(),
+                    gestor.obtenerTablero(), gestor.obtenerLadron());
 
             try {
                 handleUsoCartaSegunTipo(cartaModelo, contexto, carta, nombreCartaDesarrollo);
@@ -213,7 +222,8 @@ public class VentanaCartasDesarrollos extends VBox {
         err.showAndWait();
     }
 
-    private void handleUsoCartaSegunTipo(CartasDesarrollo cartaModelo, ContextoCartaDesarrollo contexto, VBox carta, String nombreCarta) {
+    private void handleUsoCartaSegunTipo(CartasDesarrollo cartaModelo, ContextoCartaDesarrollo contexto, VBox carta,
+            String nombreCarta) {
         if (cartaModelo instanceof CartaCaballero) {
             handleCaballero((CartaCaballero) cartaModelo, contexto, carta, nombreCarta);
         } else if (cartaModelo instanceof CartaConstruccionCarretera) {
@@ -227,7 +237,8 @@ public class VentanaCartasDesarrollos extends VBox {
         }
     }
 
-    private void ejecutarUsoCartaEnGestor(CartasDesarrollo cartaModelo, ContextoCartaDesarrollo contexto, VBox carta, String nombreCarta, Runnable uiExtra) {
+    private void ejecutarUsoCartaEnGestor(CartasDesarrollo cartaModelo, ContextoCartaDesarrollo contexto, VBox carta,
+            String nombreCarta, Runnable uiExtra) {
         try {
             gestor.usarCartaDesarrollo(cartaModelo, contexto);
             Platform.runLater(() -> {
@@ -241,17 +252,26 @@ public class VentanaCartasDesarrollos extends VBox {
                                 if (par != null && par.size() >= 2) {
                                     Coordenadas p1 = par.get(0);
                                     Coordenadas p2 = par.get(1);
-                                    try { tableroUI.marcarCarretera(p1, p2, indiceJugador); } catch (Exception ignore) {}
+                                    try {
+                                        tableroUI.marcarCarretera(p1, p2, indiceJugador);
+                                    } catch (Exception ignore) {
+                                    }
                                 }
                             }
                         }
-                    } catch (Exception ignore) {}
+                    } catch (Exception ignore) {
+                    }
 
                     if (uiExtra != null) {
-                        try { uiExtra.run(); } catch (Exception e) { }
+                        try {
+                            uiExtra.run();
+                        } catch (Exception e) {
+                        }
                     }
-                    if (tableroUI != null) tableroUI.refrescarDesdeModelo();
-                    if (onActualizarUI != null) onActualizarUI.run();
+                    if (tableroUI != null)
+                        tableroUI.refrescarDesdeModelo();
+                    if (onActualizarUI != null)
+                        onActualizarUI.run();
                     mostrarInfo("Carta usada correctamente: " + nombreCarta);
                 } catch (Exception ex) {
                     mostrarError("Error al actualizar UI", ex.getMessage());
@@ -259,33 +279,43 @@ public class VentanaCartasDesarrollos extends VBox {
             });
         } catch (Exception ex) {
             Platform.runLater(() -> mostrarError("No se pudo usar la carta", ex.getMessage()));
-            if (tableroUI != null) tableroUI.refrescarDesdeModelo();
+            if (tableroUI != null)
+                tableroUI.refrescarDesdeModelo();
         }
     }
 
-    private void handleCaballero(CartaCaballero cartaModelo, ContextoCartaDesarrollo contexto, VBox carta, String nombreCarta) {
-            if (tableroUI != null) {
-                // Reutilizar ventana dedicada para mover ladrón (permitir cerrar/cancelar en caballero)
-                Stage child = new Stage();
-                if (this.stage != null) child.initOwner(this.stage);
-                new VentanaMoverLadron(child, nombreJugador, gestor, tableroUI, (coord, jugadorObjetivo) -> {
-                    contexto.establecerCoordenadasDestino(coord);
-                    contexto.establecerJugadorObjetivo(jugadorObjetivo);
-                    ejecutarUsoCartaEnGestor(cartaModelo, contexto, carta, nombreCarta, () -> {
-                        try { if (tableroUI != null) tableroUI.actualizarLadronEn(coord); } catch (Exception e) { }
-                    });
-                }, true);
-            } else {
+    private void handleCaballero(CartaCaballero cartaModelo, ContextoCartaDesarrollo contexto, VBox carta,
+            String nombreCarta) {
+        if (tableroUI != null) {
+            // Reutilizar ventana dedicada para mover ladrón (permitir cerrar/cancelar en
+            // caballero)
+            Stage child = new Stage();
+            if (this.stage != null)
+                child.initOwner(this.stage);
+            new VentanaMoverLadron(child, nombreJugador, gestor, tableroUI, (coord, jugadorObjetivo) -> {
+                contexto.establecerCoordenadasDestino(coord);
+                contexto.establecerJugadorObjetivo(jugadorObjetivo);
+                ejecutarUsoCartaEnGestor(cartaModelo, contexto, carta, nombreCarta, () -> {
+                    try {
+                        if (tableroUI != null)
+                            tableroUI.actualizarLadronEn(coord);
+                    } catch (Exception e) {
+                    }
+                });
+            }, true);
+        } else {
             TextInputDialog dx = new TextInputDialog();
             dx.setHeaderText(null);
             dx.setContentText("Coordenada fila (int):");
             Optional<String> sx = dx.showAndWait();
-            if (sx.isEmpty()) return;
+            if (sx.isEmpty())
+                return;
             TextInputDialog dy = new TextInputDialog();
             dy.setHeaderText(null);
             dy.setContentText("Coordenada columna (int):");
             Optional<String> sy = dy.showAndWait();
-            if (sy.isEmpty()) return;
+            if (sy.isEmpty())
+                return;
             try {
                 int x = Integer.parseInt(sx.get());
                 int y = Integer.parseInt(sy.get());
@@ -301,17 +331,20 @@ public class VentanaCartasDesarrollos extends VBox {
         }
     }
 
-    private void handleConstruccionCarretera(CartaConstruccionCarretera cartaModelo, ContextoCartaDesarrollo contexto, VBox carta, String nombreCarta) {
+    private void handleConstruccionCarretera(CartaConstruccionCarretera cartaModelo, ContextoCartaDesarrollo contexto,
+            VBox carta, String nombreCarta) {
         if (tableroUI == null) {
             mostrarError("No es posible", "La selección en tablero no está disponible.");
             return;
         }
         Stage child1 = new Stage();
-        if (this.stage != null) child1.initOwner(this.stage);
+        if (this.stage != null)
+            child1.initOwner(this.stage);
         new VentanaSeleccionCamino(child1, nombreJugador, tableroUI, camino1 -> {
             Platform.runLater(() -> {
                 Stage child2 = new Stage();
-                if (this.stage != null) child2.initOwner(this.stage);
+                if (this.stage != null)
+                    child2.initOwner(this.stage);
                 final boolean[] confirmadoSegundo = { false };
                 child2.setOnHidden(ev -> {
                     if (!confirmadoSegundo[0]) {
@@ -339,31 +372,36 @@ public class VentanaCartasDesarrollos extends VBox {
 
     }
 
-    private void handleMonopolio(CartaMonopolio cartaModelo, ContextoCartaDesarrollo contexto, VBox carta, String nombreCarta) {
+    private void handleMonopolio(CartaMonopolio cartaModelo, ContextoCartaDesarrollo contexto, VBox carta,
+            String nombreCarta) {
         List<String> opciones = List.of("Madera", "Ladrillo", "Grano", "Lana", "Piedra");
         ChoiceDialog<String> dlg = new ChoiceDialog<>(opciones.get(0), opciones);
         dlg.setHeaderText(null);
         dlg.setContentText("Elegí recurso para monopolizar:");
         Optional<String> pick = dlg.showAndWait();
-        if (pick.isEmpty()) return;
+        if (pick.isEmpty())
+            return;
         String elegido = pick.get();
         edu.fiuba.algo3.modelo.Recurso recurso = mapearRecurso(elegido);
         contexto.establecerRecursoElegido(recurso);
         ejecutarUsoCartaEnGestor(cartaModelo, contexto, carta, nombreCarta, null);
     }
 
-    private void handleDescubrimiento(CartaDescubrimiento cartaModelo, ContextoCartaDesarrollo contexto, VBox carta, String nombreCarta) {
+    private void handleDescubrimiento(CartaDescubrimiento cartaModelo, ContextoCartaDesarrollo contexto, VBox carta,
+            String nombreCarta) {
         List<String> opciones = List.of("Madera", "Ladrillo", "Grano", "Lana", "Piedra");
         ChoiceDialog<String> d1 = new ChoiceDialog<>(opciones.get(0), opciones);
         d1.setHeaderText(null);
         d1.setContentText("Elegí primer recurso:");
         Optional<String> p1 = d1.showAndWait();
-        if (p1.isEmpty()) return;
+        if (p1.isEmpty())
+            return;
         ChoiceDialog<String> d2 = new ChoiceDialog<>(opciones.get(0), opciones);
         d2.setHeaderText(null);
         d2.setContentText("Elegí segundo recurso:");
         Optional<String> p2 = d2.showAndWait();
-        if (p2.isEmpty()) return;
+        if (p2.isEmpty())
+            return;
         ArrayList<edu.fiuba.algo3.modelo.Recurso> recursosElegidos = new ArrayList<>();
         recursosElegidos.add(mapearRecurso(p1.get()));
         recursosElegidos.add(mapearRecurso(p2.get()));

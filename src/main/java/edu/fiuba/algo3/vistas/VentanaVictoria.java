@@ -58,7 +58,7 @@ public class VentanaVictoria {
         exitButton.setText("Salir");
         exitButton.getStyleClass().add("exitButton");
         exitButton.setOnAction(e -> {
-            //ReproductorDeSonido.getInstance().playClick();
+            ReproductorDeSonido.getInstance().playClick();
             Platform.exit();
         });
 
@@ -74,16 +74,14 @@ public class VentanaVictoria {
             }
         });
     }
-    
+
     public void mostrar() {
-        this.ventanaDeLaVictoria.show(); 
-        //ReproductorDeSonido.getInstance().playVictoria();
+        this.ventanaDeLaVictoria.show();
+        ReproductorDeSonido.getInstance().playVictoria();
     }
-    
+
     public void actualizarGanador(String nombreGanador) {
         this.labelGanador.setText("¡" + nombreGanador + " ha ganado!");
         this.labelGanador.setStyle("-fx-font-size: 24px; -fx-font-weight: bold; -fx-text-fill: gold;");
     }
 }
-
-

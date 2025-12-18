@@ -1,6 +1,6 @@
 package edu.fiuba.algo3.vistas;
-import edu.fiuba.algo3.controllers.ReproductorDeSonido;
 
+import edu.fiuba.algo3.controllers.ReproductorDeSonido;
 
 import javafx.application.Platform;
 import javafx.geometry.Pos;
@@ -19,9 +19,9 @@ import java.util.List;
 public class ConfiguracionPartida extends VBox {
 
     private final Stage stage;
-    private final VBox contenedorNombres; 
+    private final VBox contenedorNombres;
     private final Label errorLabel;
-    private final List<TextField> listaDeInputs = new ArrayList<>(); 
+    private final List<TextField> listaDeInputs = new ArrayList<>();
     private int cantidadJugadores = 0;
 
     public ConfiguracionPartida(Stage stage) {
@@ -33,7 +33,7 @@ public class ConfiguracionPartida extends VBox {
 
         Label titulo = new Label("Configuración de Partida");
         titulo.setStyle("-fx-font-size: 24px; -fx-font-weight: bold;");
-        titulo.getStyleClass().add("title"); 
+        titulo.getStyleClass().add("title");
 
         ComboBox<String> selectorCantidad = crearComboBoxCantidad();
 
@@ -43,26 +43,26 @@ public class ConfiguracionPartida extends VBox {
         errorLabel = new Label("Debe completar todos los nombres para comenzar");
         errorLabel.setStyle("-fx-text-fill: red;");
         errorLabel.setVisible(false);
-        errorLabel.getStyleClass().add("error"); 
+        errorLabel.getStyleClass().add("error");
 
         Button btnJugar = crearBotonJugar();
         Button btnSalir = crearBotonSalir();
         HBox botonera = new HBox(20, btnJugar, btnSalir);
         botonera.setAlignment(Pos.CENTER);
 
-        this.getChildren().addAll(titulo, new Label("Seleccione cantidad de jugadores:"), selectorCantidad, contenedorNombres, errorLabel, botonera);
+        this.getChildren().addAll(titulo, new Label("Seleccione cantidad de jugadores:"), selectorCantidad,
+                contenedorNombres, errorLabel, botonera);
     }
-
 
     private ComboBox<String> crearComboBoxCantidad() {
         ComboBox<String> comboBox = new ComboBox<>();
         comboBox.getItems().addAll("2 jugadores", "3 Jugadores", "4 Jugadores");
         comboBox.setPromptText("Seleccionar...");
-        comboBox.getStyleClass().add("comboBox"); 
+        comboBox.getStyleClass().add("comboBox");
 
         comboBox.setOnAction(e -> {
-            //ReproductorDeSonido.getInstance().playClick();
-            this.cantidadJugadores = comboBox.getSelectionModel().getSelectedIndex() + 2; 
+            ReproductorDeSonido.getInstance().playClick();
+            this.cantidadJugadores = comboBox.getSelectionModel().getSelectedIndex() + 2;
             generarCamposDeNombres(this.cantidadJugadores);
         });
 
@@ -70,39 +70,39 @@ public class ConfiguracionPartida extends VBox {
     }
 
     private void generarCamposDeNombres(int cantidad) {
-        contenedorNombres.getChildren().clear(); 
-        listaDeInputs.clear(); 
+        contenedorNombres.getChildren().clear();
+        listaDeInputs.clear();
         errorLabel.setVisible(false);
 
         for (int i = 0; i < cantidad; i++) {
-            
+
             Label labelNombre = new Label("Nombre Jugador " + (i + 1) + ":");
-            labelNombre.getStyleClass().add("labelText"); 
+            labelNombre.getStyleClass().add("labelText");
 
             TextField input = new TextField();
             input.getStyleClass().add("textField");
-            
+
             listaDeInputs.add(input);
 
             HBox fila = new HBox(10, labelNombre, input);
             fila.setAlignment(Pos.CENTER);
-            
+
             contenedorNombres.getChildren().add(fila);
         }
     }
 
     private Button crearBotonJugar() {
         Button btn = new Button("Jugar Catan!");
-        btn.getStyleClass().add("startButton"); 
+        btn.getStyleClass().add("startButton");
         btn.setStyle("-fx-font-size: 14px; -fx-base: #4CAF50; -fx-cursor: hand;");
-        
+
         btn.setOnAction(e -> {
-            //ReproductorDeSonido.getInstance().playClick();
+            ReproductorDeSonido.getInstance().playClick();
             if (validarDatos()) {
                 System.out.println("Iniciando juego con " + cantidadJugadores + " jugadores.");
 
                 List<String> nombresJugadores = new ArrayList<>();
-                for(TextField txt : listaDeInputs) {
+                for (TextField txt : listaDeInputs) {
                     nombresJugadores.add(txt.getText());
                 }
                 CampoDeJuego.show(stage, nombresJugadores);
@@ -110,7 +110,6 @@ public class ConfiguracionPartida extends VBox {
         });
         return btn;
     }
-
 
     private boolean validarDatos() {
         if (cantidadJugadores == 0) {
@@ -132,7 +131,7 @@ public class ConfiguracionPartida extends VBox {
         Button btn = new Button("Salir");
         btn.getStyleClass().add("exitButton");
         btn.setOnAction(e -> {
-            //ReproductorDeSonido.getInstance().playClick();
+            ReproductorDeSonido.getInstance().playClick();
             Platform.exit();
         });
         return btn;

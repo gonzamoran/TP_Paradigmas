@@ -1,4 +1,5 @@
 package edu.fiuba.algo3.vistas;
+
 import edu.fiuba.algo3.controllers.ReproductorDeSonido;
 
 import edu.fiuba.algo3.modelo.GestorDeTurnos;
@@ -12,7 +13,7 @@ import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
 public class ControladorConstruccion {
-    
+
     private final GestorDeTurnos gestor;
     private final String nombreJugador;
     private TableroUI tableroUI;
@@ -21,19 +22,19 @@ public class ControladorConstruccion {
     private Button btnComerciar;
     private Button btnComprarCartaDesarrollo;
     private Button btnMejorarPoblado;
-    
+
     private Stage ventanaConstruirPoblado;
     private Stage ventanaConstruirCarretera;
     private Stage ventanaComerciar;
     private Stage ventanaMejorarPoblado;
     private Runnable onVentanaComerciarCerrada;
     private Runnable onModalClosed;
-    
+
     public ControladorConstruccion(GestorDeTurnos gestor, String nombreJugador) {
         this.gestor = gestor;
         this.nombreJugador = nombreJugador;
     }
-    
+
     public void setTableroUI(TableroUI tableroUI) {
         this.tableroUI = tableroUI;
     }
@@ -45,20 +46,20 @@ public class ControladorConstruccion {
     public void setOnModalClosed(Runnable callback) {
         this.onModalClosed = callback;
     }
-    
+
     public VBox crearPanelBotonesConstruccion() {
         btnPoblado = crearBotonAccion("Construir Poblado", "#27ae60");
         btnCarretera = crearBotonAccion("Construir Carretera", "#27ae60");
         btnMejorarPoblado = crearBotonAccion("Mejorar Poblado", "#f39c12");
         btnComerciar = crearBotonAccion("Comerciar", "#3498db");
         btnComprarCartaDesarrollo = crearBotonAccion("Comprar carta desarrollo", "#9b59b6");
-        
+
         btnPoblado.setOnAction(e -> abrirVentanaConstruirPoblado());
         btnCarretera.setOnAction(e -> abrirVentanaConstruirCarretera());
         btnMejorarPoblado.setOnAction(e -> abrirVentanaMejorarPoblado());
         btnComerciar.setOnAction(e -> abrirVentanaComerciar());
         btnComprarCartaDesarrollo.setOnAction(e -> {
-            //ReproductorDeSonido.getInstance().playClick();
+            ReproductorDeSonido.getInstance().playClick();
             Alert confirm = new Alert(Alert.AlertType.CONFIRMATION);
             confirm.setTitle("Comprar carta de desarrollo");
             confirm.setHeaderText(null);
@@ -74,7 +75,8 @@ public class ControladorConstruccion {
                         VentanaMostrarCarta ventanaCarta = new VentanaMostrarCarta(modal, cartaComprada);
                     }
                     // Refrescar la UI de cartas de desarrollo si está abierta
-                    if (onModalClosed != null) onModalClosed.run();
+                    if (onModalClosed != null)
+                        onModalClosed.run();
                 } catch (RecursosInsuficientesException ex) {
                     Alert alerta = new Alert(Alert.AlertType.ERROR);
                     alerta.setTitle("Recursos insuficientes");
@@ -83,30 +85,33 @@ public class ControladorConstruccion {
                     alerta.showAndWait();
                 }
             } else {
-                if (onModalClosed != null) onModalClosed.run();
+                if (onModalClosed != null)
+                    onModalClosed.run();
             }
         });
-        
+
         btnPoblado.setVisible(false);
         btnCarretera.setVisible(false);
         btnMejorarPoblado.setVisible(false);
         btnComerciar.setVisible(false);
         btnComprarCartaDesarrollo.setVisible(false);
 
-        VBox botonesBox = new VBox(8, btnPoblado, btnCarretera, btnMejorarPoblado, btnComerciar, btnComprarCartaDesarrollo);
+        VBox botonesBox = new VBox(8, btnPoblado, btnCarretera, btnMejorarPoblado, btnComerciar,
+                btnComprarCartaDesarrollo);
         botonesBox.setAlignment(Pos.TOP_CENTER);
-        
+
         return botonesBox;
     }
-    
+
     private Button crearBotonAccion(String texto, String colorHex) {
         Button btn = new Button(texto);
         btn.setMaxWidth(Double.MAX_VALUE);
-        btn.setStyle("-fx-background-color: " + colorHex + "; -fx-text-fill: white; -fx-font-weight: bold; -fx-padding: 8 12;");
+        btn.setStyle("-fx-background-color: " + colorHex
+                + "; -fx-text-fill: white; -fx-font-weight: bold; -fx-padding: 8 12;");
         VBox.setMargin(btn, new Insets(4, 0, 0, 0));
         return btn;
     }
-    
+
     private void abrirVentanaConstruirPoblado() {
         if (ventanaConstruirPoblado != null && ventanaConstruirPoblado.isShowing()) {
             ventanaConstruirPoblado.requestFocus();
@@ -115,17 +120,20 @@ public class ControladorConstruccion {
         ventanaConstruirPoblado = new Stage();
         ventanaConstruirPoblado.setOnCloseRequest(e -> {
             ventanaConstruirPoblado = null;
-            if (onModalClosed != null) onModalClosed.run();
+            if (onModalClosed != null)
+                onModalClosed.run();
         });
         VentanaConstruirPoblado ventana = new VentanaConstruirPoblado(
-            ventanaConstruirPoblado,
-            nombreJugador,
-            gestor,
-            tableroUI,
-            () -> { if (onModalClosed != null) onModalClosed.run(); }
-        );
+                ventanaConstruirPoblado,
+                nombreJugador,
+                gestor,
+                tableroUI,
+                () -> {
+                    if (onModalClosed != null)
+                        onModalClosed.run();
+                });
     }
-    
+
     private void abrirVentanaConstruirCarretera() {
         if (ventanaConstruirCarretera != null && ventanaConstruirCarretera.isShowing()) {
             ventanaConstruirCarretera.requestFocus();
@@ -134,17 +142,20 @@ public class ControladorConstruccion {
         ventanaConstruirCarretera = new Stage();
         ventanaConstruirCarretera.setOnCloseRequest(e -> {
             ventanaConstruirCarretera = null;
-            if (onModalClosed != null) onModalClosed.run();
+            if (onModalClosed != null)
+                onModalClosed.run();
         });
         VentanaConstruirCarretera ventana = new VentanaConstruirCarretera(
-            ventanaConstruirCarretera,
-            nombreJugador,
-            gestor,
-            tableroUI,
-            () -> { if (onModalClosed != null) onModalClosed.run(); }
-        );
+                ventanaConstruirCarretera,
+                nombreJugador,
+                gestor,
+                tableroUI,
+                () -> {
+                    if (onModalClosed != null)
+                        onModalClosed.run();
+                });
     }
-    
+
     private void abrirVentanaComerciar() {
         if (ventanaComerciar != null && ventanaComerciar.isShowing()) {
             ventanaComerciar.requestFocus();
@@ -156,10 +167,11 @@ public class ControladorConstruccion {
             ventanaComerciar = null;
         });
         VentanaComerciar ventana = new VentanaComerciar(ventanaComerciar, nombreJugador, gestor, () -> {
-            if (onVentanaComerciarCerrada != null) onVentanaComerciarCerrada.run();
+            if (onVentanaComerciarCerrada != null)
+                onVentanaComerciarCerrada.run();
         });
     }
-    
+
     private void abrirVentanaMejorarPoblado() {
         if (ventanaMejorarPoblado != null && ventanaMejorarPoblado.isShowing()) {
             ventanaMejorarPoblado.requestFocus();
@@ -168,22 +180,25 @@ public class ControladorConstruccion {
         ventanaMejorarPoblado = new Stage();
         ventanaMejorarPoblado.setOnCloseRequest(e -> {
             ventanaMejorarPoblado = null;
-            if (onModalClosed != null) onModalClosed.run();
+            if (onModalClosed != null)
+                onModalClosed.run();
         });
         VentanaMejorarPoblado ventana = new VentanaMejorarPoblado(
-            ventanaMejorarPoblado,
-            nombreJugador,
-            gestor,
-            tableroUI,
-            () -> { if (onModalClosed != null) onModalClosed.run(); }
-        );
+                ventanaMejorarPoblado,
+                nombreJugador,
+                gestor,
+                tableroUI,
+                () -> {
+                    if (onModalClosed != null)
+                        onModalClosed.run();
+                });
     }
-    
+
     public void mostrarVentanaVictoria() {
         VentanaVictoria ventana = new VentanaVictoria();
         ventana.mostrar();
     }
-    
+
     public Button getBtnTerminarFase() {
         Button btn = crearBotonAccion("Terminar Fase", "#e67e22");
         return btn;
@@ -191,10 +206,15 @@ public class ControladorConstruccion {
 
     public void actualizarVisibilidadSegunFase(int indiceFase) {
         boolean enConstruccion = (indiceFase == 1);
-        if (btnPoblado != null) btnPoblado.setVisible(enConstruccion);
-        if (btnCarretera != null) btnCarretera.setVisible(enConstruccion);
-        if (btnMejorarPoblado != null) btnMejorarPoblado.setVisible(enConstruccion);
-        if (btnComerciar != null) btnComerciar.setVisible(enConstruccion);
-        if (btnComprarCartaDesarrollo != null) btnComprarCartaDesarrollo.setVisible(enConstruccion);
+        if (btnPoblado != null)
+            btnPoblado.setVisible(enConstruccion);
+        if (btnCarretera != null)
+            btnCarretera.setVisible(enConstruccion);
+        if (btnMejorarPoblado != null)
+            btnMejorarPoblado.setVisible(enConstruccion);
+        if (btnComerciar != null)
+            btnComerciar.setVisible(enConstruccion);
+        if (btnComprarCartaDesarrollo != null)
+            btnComprarCartaDesarrollo.setVisible(enConstruccion);
     }
 }

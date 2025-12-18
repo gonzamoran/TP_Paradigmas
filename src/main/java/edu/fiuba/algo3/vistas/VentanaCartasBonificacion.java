@@ -31,7 +31,6 @@ import java.util.List;
 import java.util.Random;
 import java.util.Optional;
 
-
 public class VentanaCartasBonificacion extends VBox {
 
     private final GestorDeTurnos gestor;
@@ -39,12 +38,12 @@ public class VentanaCartasBonificacion extends VBox {
 
     public VentanaCartasBonificacion(Stage stage, String nombreJugador, GestorDeTurnos gestor) {
         this.gestor = gestor;
-        
+
         this.panelCartas = new FlowPane();
-        this.panelCartas.setHgap(20); 
-        this.panelCartas.setVgap(20); 
+        this.panelCartas.setHgap(20);
+        this.panelCartas.setVgap(20);
         this.panelCartas.setAlignment(Pos.CENTER);
-        
+
         this.setAlignment(Pos.CENTER);
         this.setSpacing(20);
         this.setPadding(new Insets(30));
@@ -52,24 +51,25 @@ public class VentanaCartasBonificacion extends VBox {
         ScrollPane scroll = new ScrollPane(panelCartas);
         scroll.setFitToWidth(true);
 
-        scroll.setPrefHeight(400); 
+        scroll.setPrefHeight(400);
         scroll.setStyle("-fx-background: #2c3e50; -fx-border-color: transparent; -fx-background-color: transparent;");
 
         Button btnCerrar = new Button("Cerrar");
-        btnCerrar.setStyle("-fx-background-color: #e74c3c; -fx-text-fill: white; -fx-cursor: hand; -fx-font-size: 14px; -fx-padding: 10 20;");
+        btnCerrar.setStyle(
+                "-fx-background-color: #e74c3c; -fx-text-fill: white; -fx-cursor: hand; -fx-font-size: 14px; -fx-padding: 10 20;");
         btnCerrar.setOnAction(e -> {
-            //ReproductorDeSonido.getInstance().playClick();
+            ReproductorDeSonido.getInstance().playClick();
             stage.close();
         });
         this.getChildren().addAll(scroll, btnCerrar);
 
         var nombresCartas = new ArrayList<>(List.of("granRuta", "granCaballeria"));
         var cartasBonificacion = new ArrayList<VBox>();
-        if (gestor.poseeGranRutaJugadorActual()){
+        if (gestor.poseeGranRutaJugadorActual()) {
             var cartaRuta = crearCartaVisual(nombresCartas.get(0));
             cartasBonificacion.add(cartaRuta);
         }
-        if (gestor.poseeGranCaballeriaJugadorActual()){
+        if (gestor.poseeGranCaballeriaJugadorActual()) {
             var cartaCaballeria = crearCartaVisual(nombresCartas.get(1));
             cartasBonificacion.add(cartaCaballeria);
         }
@@ -87,7 +87,7 @@ public class VentanaCartasBonificacion extends VBox {
         carta.setAlignment(Pos.CENTER);
         carta.setPrefSize(150, 220);
 
-        String ruta = "/resources/imagenes/" + nombreCartaBonificacion + ".png";
+        String ruta = "/imagenes/" + nombreCartaBonificacion + ".png";
         InputStream is = getClass().getResourceAsStream(ruta);
 
         var jugadorActual = gestor.obtenerJugadorActual();
@@ -106,6 +106,6 @@ public class VentanaCartasBonificacion extends VBox {
             carta.getChildren().add(view);
         }
         return carta;
-}
+    }
 
 }

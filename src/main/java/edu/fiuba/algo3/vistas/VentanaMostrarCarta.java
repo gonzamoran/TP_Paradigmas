@@ -54,7 +54,7 @@ public class VentanaMostrarCarta {
 
         Button btnOk = new Button("Aceptar");
         btnOk.setOnAction(e -> {
-            //ReproductorDeSonido.getInstance().playClick();
+            ReproductorDeSonido.getInstance().playClick();
             stage.close();
         });
         root.getChildren().add(btnOk);
@@ -66,11 +66,16 @@ public class VentanaMostrarCarta {
 
     private String nombreCarta(CartasDesarrollo carta) {
         String cls = carta.getClass().getSimpleName();
-        if (cls.contains("Caballero")) return "Caballero";
-        if (cls.contains("Monopolio")) return "Monopolio";
-        if (cls.contains("ConstruccionCarretera")) return "Construccion";
-        if (cls.contains("PuntoVictoria")) return "PV";
-        if (cls.contains("Descubrimiento")) return "Descubrimiento";
+        if (cls.contains("Caballero"))
+            return "Caballero";
+        if (cls.contains("Monopolio"))
+            return "Monopolio";
+        if (cls.contains("ConstruccionCarretera"))
+            return "Construccion";
+        if (cls.contains("PuntoVictoria"))
+            return "PV";
+        if (cls.contains("Descubrimiento"))
+            return "Descubrimiento";
         return cls;
     }
 }
