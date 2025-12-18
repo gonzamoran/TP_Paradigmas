@@ -48,7 +48,19 @@ public class CartaConstruccionCarretera extends CartasDesarrollo {
             if (!tablero.sonCoordenadasValidas(origen) || !tablero.sonCoordenadasValidas(destino)) {
                 throw new CoordenadasInvalidasException();
             }
+        }
 
+        for (List<Coordenadas> camino : coordenadasCarreteras) {
+            Coordenadas origen = camino.get(0);
+            Coordenadas destino = camino.get(1);
+            if (!tablero.puedeConstruirCarreteraGratis(origen, destino, jugador)) {
+                throw new edu.fiuba.algo3.modelo.excepciones.NoEsPosibleConstruirException("No es posible construir todas las carreteras solicitadas");
+            }
+        }
+
+        for (List<Coordenadas> camino : coordenadasCarreteras) {
+            Coordenadas origen = camino.get(0);
+            Coordenadas destino = camino.get(1);
             tablero.construirCarreteraGratis(origen, destino, jugador);
         }
     }

@@ -9,6 +9,7 @@ public class ControladorVentanas {
 
     private String jugador;
     private GestorDeTurnos gestor;
+    private Stage ventanaCartasDesarrollo;
 
     public ControladorVentanas(String jugador, GestorDeTurnos gestor) {
         this.jugador = jugador;
@@ -29,18 +30,27 @@ public class ControladorVentanas {
         stageBaraja.show();
     }
 
-    public void abrirVentanaCartasDesarrollo(ControladorFases controladorFases, TableroUI tableroUI) {
-        Stage stageDesarrollo = new Stage();
+    public void abrirVentanaCartasDesarrollo(ControladorFases controladorFases, TableroUI tableroUI, Runnable onActualizarUI) {
+        if (ventanaCartasDesarrollo != null && ventanaCartasDesarrollo.isShowing()) {
+            ventanaCartasDesarrollo.requestFocus();
+            return;
+        }
 
-        VentanaCartasDesarrollos ventana = new VentanaCartasDesarrollos(stageDesarrollo, jugador, gestor, controladorFases, tableroUI);
+        ventanaCartasDesarrollo = new Stage();
+        ventanaCartasDesarrollo.setOnCloseRequest(e -> {
+            ventanaCartasDesarrollo = null;
+            if (onActualizarUI != null) onActualizarUI.run();
+        });
+
+        VentanaCartasDesarrollos ventana = new VentanaCartasDesarrollos(ventanaCartasDesarrollo, jugador, gestor, controladorFases, tableroUI, onActualizarUI);
         ScrollPane scroll = new ScrollPane(ventana);
         scroll.setFitToWidth(true);
         scroll.setFitToHeight(true);
 
         Scene scene = new Scene(scroll, 600, 500);
-        stageDesarrollo.setTitle("Cartas de Desarrollo");
-        stageDesarrollo.setScene(scene);
-        stageDesarrollo.show();
+        ventanaCartasDesarrollo.setTitle("Cartas de Desarrollo");
+        ventanaCartasDesarrollo.setScene(scene);
+        ventanaCartasDesarrollo.show();
     }
 
     public void abrirVentanaComerciar() {

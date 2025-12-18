@@ -32,6 +32,7 @@ public class ControladorDados {
     private final Random random;
     private TableroUI tableroUI;
     private Button btnTirarDados;
+    private Label lblError;
     
     public ControladorDados(GestorDeTurnos gestor, ControladorFases controladorFases) {
         this.gestor = gestor;
@@ -48,6 +49,11 @@ public class ControladorDados {
         this.btnTirarDados.setStyle("-fx-font-size: 16px; -fx-padding: 10 20; -fx-base: #ffcc00; -fx-cursor: hand; -fx-font-weight: bold;");
         this.btnTirarDados.setOnAction(e -> abrirVentanaDados(onDadosResueltos));
         this.btnTirarDados.setVisible(false);
+        this.lblError = new Label();
+        lblError.setStyle("-fx-text-fill: red; -fx-font-weight: bold; -fx-font-size: 10px;");
+        lblError.setWrapText(true);
+        lblError.setMaxWidth(350);
+        lblError.setVisible(false);
         return this.btnTirarDados;
     }
 
@@ -206,7 +212,11 @@ public class ControladorDados {
             stageSeleccion.sizeToScene();
             posicionarFueraDelTablero(stageSeleccion);
         });
-        stageSeleccion.setOnCloseRequest(e -> tableroUI.deshabilitarSeleccionHexagono());
+        stageSeleccion.setOnCloseRequest(e -> {
+            e.consume();
+            lblError.setText("Debes seleccionar un hexágono para continuar");
+            lblError.setVisible(true);
+        });
         stageSeleccion.show();
     }
 

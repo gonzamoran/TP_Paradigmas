@@ -36,8 +36,7 @@ public class CartaCaballero extends CartasDesarrollo {
         Ladron ladron = contexto.obtenerLadron();
         ladron.moverLadronA(tablero.obtenerHexagono(coordDestino));
         Jugador jugador = contexto.conseguirJugadorQueUsaLaCarta();
-        ArrayList<Jugador> jugadoresAfectados = tablero.obtenerJugadoresAdyacentes(coordDestino);
-        Jugador jugadorElegido = contexto.obtenerJugadorARobar(jugadoresAfectados);
+        Jugador jugadorElegido = contexto.obtenerJugadorARobar();
         ladron.robarRecurso(jugador, jugadorElegido);
 
         jugador.sumarCaballero();

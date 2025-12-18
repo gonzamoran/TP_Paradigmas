@@ -49,7 +49,8 @@ public class GestorDeTurnos {
                 new CartaMonopolio(), new CartaMonopolio(), new CartaMonopolio(),
                 new CartaDescubrimiento(), new CartaDescubrimiento(), new CartaDescubrimiento(),
                 new CartaPuntoVictoria(), new CartaPuntoVictoria(), new CartaPuntoVictoria(),
-                new CartaPuntoVictoria(), new CartaPuntoVictoria()));
+                new CartaPuntoVictoria(), new CartaPuntoVictoria()
+                ));
         Collections.shuffle(cartas);
         this.mazo = new MazoCartasDesarrollo(cartas);
         Hexagono desierto = tablero.obtenerDesierto();
@@ -144,6 +145,13 @@ public class GestorDeTurnos {
 
         CasoDeUsoConstruccion casoConstruir = new CasoDeUsoConstruccion(tablero, jugadores);
         casoConstruir.construirCarretera(origen, destino, jugadorActual);
+    }
+
+    public void usarCartaDesarrollo(edu.fiuba.algo3.modelo.cartas.tiposDeCartaDesarrollo.CartasDesarrollo carta, edu.fiuba.algo3.modelo.cartas.tiposDeCartaDesarrollo.ContextoCartaDesarrollo contexto) {
+        Jugador jugadorActual = obtenerJugadorActual();
+        if (jugadorActual == null) return;
+        edu.fiuba.algo3.modelo.acciones.CasoDeUsoSacarCartasDelMazoDeDesarrollo caso = new edu.fiuba.algo3.modelo.acciones.CasoDeUsoSacarCartasDelMazoDeDesarrollo();
+        caso.usarCartaDesarrollo(carta, jugadorActual, contexto);
     }
 
     public CartasDesarrollo comprarCartaDesarrollo() {

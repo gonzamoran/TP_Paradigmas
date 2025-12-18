@@ -21,12 +21,18 @@ public class Ladron {
     }
     
     public void robarRecurso(Jugador jugadorActual, Jugador jugadorARobar) {
+        if (jugadorARobar == null) {
+            return;
+        }
+
         Recurso recursoRobado = null;
         if (jugadorARobar.tieneRecursos()) {
             Recurso robado = jugadorARobar.removerRecursoAleatorio();
             recursoRobado = robado;
         }
-        jugadorActual.agregarRecurso(recursoRobado);
+        if (recursoRobado != null) {
+            jugadorActual.agregarRecurso(recursoRobado);
+        }
     }
 
     public Hexagono obtenerHexagonoActual() {

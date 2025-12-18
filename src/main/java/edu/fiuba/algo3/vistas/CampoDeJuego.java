@@ -181,7 +181,10 @@ public class CampoDeJuego extends BorderPane {
         botonDesarrollo.setStyle("-fx-font-size: 16px; -fx-padding: 10 20; -fx-base: #3498db; -fx-cursor: hand; -fx-font-weight: bold;");
         botonDesarrollo.setOnAction(e -> {
             //ReproductorDeSonido.getInstance().playClick();
-            controladorVentanas.abrirVentanaCartasDesarrollo(controladorFases, tableroUI);
+            controladorVentanas.abrirVentanaCartasDesarrollo(controladorFases, tableroUI, () -> {
+                actualizarInterfaz();
+                if (tableroUI != null) tableroUI.refrescarDesdeModelo();
+            });
         });
         
         Button botonSalir = new Button("Salir");
@@ -191,7 +194,7 @@ public class CampoDeJuego extends BorderPane {
             Stage newStage = new Stage();
             try {
                 menuInicial.start(newStage);
-                ReproductorDeSonido.getInstance().playClick();
+                //ReproductorDeSonido.getInstance().playClick();
                 escenario.close();
             } catch (Exception ex) {
                 ex.printStackTrace();

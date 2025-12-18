@@ -4,7 +4,6 @@ import edu.fiuba.algo3.modelo.cartas.tiposDeCartaDesarrollo.CartasDesarrollo;
 import edu.fiuba.algo3.modelo.cartas.tiposDeCartaDesarrollo.ContextoCartaDesarrollo;
 import edu.fiuba.algo3.modelo.Jugador;
 import edu.fiuba.algo3.modelo.GestorDeTurnos;
-import edu.fiuba.algo3.controllers.ReproductorDeSonido;
 import edu.fiuba.algo3.vistas.ControladorFases;
 import edu.fiuba.algo3.modelo.cartas.tiposDeCartaDesarrollo.CartaCaballero;
 import edu.fiuba.algo3.modelo.cartas.tiposDeCartaDesarrollo.CartaConstruccionCarretera;
@@ -33,7 +32,6 @@ import javafx.application.Platform;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Random;
 import java.util.Optional;
 
 
@@ -44,10 +42,19 @@ public class VentanaCartasDesarrollos extends VBox {
     private final ControladorFases controladorFases;
     private final TableroUI tableroUI;
     private final FlowPane panelCartas;
-    public VentanaCartasDesarrollos(Stage stage, String nombreJugador, GestorDeTurnos gestor, ControladorFases controladorFases, TableroUI tableroUI) {
+    private final Stage stage;
+    private final String nombreJugador;
+
+    private final Runnable onActualizarUI;
+
+    public VentanaCartasDesarrollos(Stage stage, String nombreJugador, GestorDeTurnos gestor, ControladorFases controladorFases, TableroUI tableroUI, Runnable onActualizarUI) {
+        this.stage = stage;
+        this.stage.setAlwaysOnTop(true);
+        this.nombreJugador = nombreJugador;
         this.gestor = gestor;
         this.controladorFases = controladorFases;
         this.tableroUI = tableroUI;
+        this.onActualizarUI = onActualizarUI;
         this.setAlignment(Pos.CENTER);
         this.setSpacing(20); 
         this.setPadding(new Insets(30)); 
@@ -161,6 +168,11 @@ public class VentanaCartasDesarrollos extends VBox {
             boolean confirmado = confirmarAccion("¿Confirmas usar la carta " + nombreCartaDesarrollo + "?");
             if (!confirmado) return;
 
+            // Cerrar la ventana de la baraja de cartas al confirmar
+            if (this.stage != null) {
+                this.stage.close();
+            }
+
             ContextoCartaDesarrollo contexto = new ContextoCartaDesarrollo(
                     gestor.obtenerJugadorActual(), gestor.obtenerJugadores(), gestor.obtenerTurnoActual(), gestor.obtenerTablero(), gestor.obtenerLadron());
 
@@ -177,6 +189,12 @@ public class VentanaCartasDesarrollos extends VBox {
         Alert confirm = new Alert(AlertType.CONFIRMATION);
         confirm.setHeaderText(null);
         confirm.setContentText(mensaje);
+        // Forzar que la alerta esté encima de todo
+        Stage alertStage = (Stage) confirm.getDialogPane().getScene().getWindow();
+        alertStage.setAlwaysOnTop(true);
+        if (this.stage != null) {
+            alertStage.initOwner(this.stage);
+        }
         Optional<ButtonType> res = confirm.showAndWait();
         return res.isPresent() && res.get() == ButtonType.OK;
     }
@@ -205,53 +223,59 @@ public class VentanaCartasDesarrollos extends VBox {
         } else if (cartaModelo instanceof CartaDescubrimiento) {
             handleDescubrimiento((CartaDescubrimiento) cartaModelo, contexto, carta, nombreCarta);
         } else {
-            // Uso simple, sin interacción
-            gestor.obtenerJugadorActual().usarCartaDesarrollo(cartaModelo, contexto);
-            panelCartas.getChildren().remove(carta);
-            mostrarInfo("Carta usada correctamente: " + nombreCarta);
+            ejecutarUsoCartaEnGestor(cartaModelo, contexto, carta, nombreCarta, null);
+        }
+    }
+
+    private void ejecutarUsoCartaEnGestor(CartasDesarrollo cartaModelo, ContextoCartaDesarrollo contexto, VBox carta, String nombreCarta, Runnable uiExtra) {
+        try {
+            gestor.usarCartaDesarrollo(cartaModelo, contexto);
+            Platform.runLater(() -> {
+                try {
+                    panelCartas.getChildren().remove(carta);
+                    try {
+                        var coordenadasCarreteras = contexto.obtenerCoordenadasCarreteras();
+                        if (coordenadasCarreteras != null && tableroUI != null && gestor != null) {
+                            int indiceJugador = gestor.obtenerIndiceJugadorActual();
+                            for (java.util.List<Coordenadas> par : coordenadasCarreteras) {
+                                if (par != null && par.size() >= 2) {
+                                    Coordenadas p1 = par.get(0);
+                                    Coordenadas p2 = par.get(1);
+                                    try { tableroUI.marcarCarretera(p1, p2, indiceJugador); } catch (Exception ignore) {}
+                                }
+                            }
+                        }
+                    } catch (Exception ignore) {}
+
+                    if (uiExtra != null) {
+                        try { uiExtra.run(); } catch (Exception e) { }
+                    }
+                    if (tableroUI != null) tableroUI.refrescarDesdeModelo();
+                    if (onActualizarUI != null) onActualizarUI.run();
+                    mostrarInfo("Carta usada correctamente: " + nombreCarta);
+                } catch (Exception ex) {
+                    mostrarError("Error al actualizar UI", ex.getMessage());
+                }
+            });
+        } catch (Exception ex) {
+            Platform.runLater(() -> mostrarError("No se pudo usar la carta", ex.getMessage()));
+            if (tableroUI != null) tableroUI.refrescarDesdeModelo();
         }
     }
 
     private void handleCaballero(CartaCaballero cartaModelo, ContextoCartaDesarrollo contexto, VBox carta, String nombreCarta) {
-        if (tableroUI != null) {
-            mostrarInfo("Seleccioná el hexágono destino en el tablero.");
-            tableroUI.habilitarSeleccionHexagono(coord -> {
-                List<Jugador> candidatos = gestor.obtenerJugadoresAdyacentes(coord);
-                if (candidatos == null || candidatos.isEmpty()) {
-                    Platform.runLater(() -> mostrarError("No hay jugadores para robar", "No hay jugadores adyacentes a ese hexágono."));
-                    tableroUI.deshabilitarSeleccionHexagono();
-                    return;
-                }
-                List<String> nombres = new ArrayList<>();
-                for (Jugador j : candidatos) nombres.add(j.obtenerNombre());
-                ChoiceDialog<String> dlg = new ChoiceDialog<>(nombres.get(0), nombres);
-                dlg.setHeaderText(null);
-                dlg.setContentText("Elegí jugador a robar:");
-                Optional<String> pick = dlg.showAndWait();
-                if (pick.isEmpty()) {
-                    tableroUI.deshabilitarSeleccionHexagono();
-                    return;
-                }
-                String elegido = pick.get();
-                Jugador jugadorObjetivo = null;
-                for (Jugador j : candidatos) if (j.obtenerNombre().equals(elegido)) jugadorObjetivo = j;
-
-                contexto.establecerCoordenadasDestino(coord);
-                contexto.establecerJugadorObjetivo(jugadorObjetivo);
-                try {
-                    gestor.obtenerJugadorActual().usarCartaDesarrollo(cartaModelo, contexto);
-                    Platform.runLater(() -> {
-                        panelCartas.getChildren().remove(carta);
-                        tableroUI.deshabilitarSeleccionHexagono();
-                        tableroUI.refrescarDesdeModelo();
-                        mostrarInfo("Carta usada correctamente: " + nombreCarta);
+            if (tableroUI != null) {
+                // Reutilizar ventana dedicada para mover ladrón (permitir cerrar/cancelar en caballero)
+                Stage child = new Stage();
+                if (this.stage != null) child.initOwner(this.stage);
+                new VentanaMoverLadron(child, nombreJugador, gestor, tableroUI, (coord, jugadorObjetivo) -> {
+                    contexto.establecerCoordenadasDestino(coord);
+                    contexto.establecerJugadorObjetivo(jugadorObjetivo);
+                    ejecutarUsoCartaEnGestor(cartaModelo, contexto, carta, nombreCarta, () -> {
+                        try { if (tableroUI != null) tableroUI.actualizarLadronEn(coord); } catch (Exception e) { }
                     });
-                } catch (Exception ex) {
-                    Platform.runLater(() -> mostrarError("No se pudo usar la carta", ex.getMessage()));
-                    tableroUI.deshabilitarSeleccionHexagono();
-                }
-            });
-        } else {
+                }, true);
+            } else {
             TextInputDialog dx = new TextInputDialog();
             dx.setHeaderText(null);
             dx.setContentText("Coordenada fila (int):");
@@ -270,9 +294,7 @@ public class VentanaCartasDesarrollos extends VBox {
                 List<Jugador> candidatos = gestor.obtenerJugadoresAdyacentes(coord);
                 Jugador jugadorObjetivo = (candidatos == null || candidatos.isEmpty()) ? null : candidatos.get(0);
                 contexto.establecerJugadorObjetivo(jugadorObjetivo);
-                gestor.obtenerJugadorActual().usarCartaDesarrollo(cartaModelo, contexto);
-                panelCartas.getChildren().remove(carta);
-                mostrarInfo("Carta usada correctamente: " + nombreCarta);
+                ejecutarUsoCartaEnGestor(cartaModelo, contexto, carta, nombreCarta, null);
             } catch (Exception ex) {
                 mostrarError("No se pudo usar la carta", ex.getMessage());
             }
@@ -280,49 +302,41 @@ public class VentanaCartasDesarrollos extends VBox {
     }
 
     private void handleConstruccionCarretera(CartaConstruccionCarretera cartaModelo, ContextoCartaDesarrollo contexto, VBox carta, String nombreCarta) {
-        if (tableroUI != null) {
-            mostrarInfo("Seleccioná el primer camino: origen luego destino (dos clicks en vértices).");
-
-            final ArrayList<List<Coordenadas>> caminos = new ArrayList<>();
-            Runnable[] selector = new Runnable[1];
-            selector[0] = () -> {
-                final Coordenadas[] pair = new Coordenadas[2];
-                tableroUI.habilitarSeleccionVertice(o -> {
-                    if (pair[0] == null) {
-                        pair[0] = o;
-                        tableroUI.habilitarSeleccionVertice(d -> {
-                            pair[1] = d;
-                            List<Coordenadas> camino = new ArrayList<>();
-                            camino.add(pair[0]);
-                            camino.add(pair[1]);
-                            caminos.add(camino);
-                            tableroUI.deshabilitarSeleccionVertice();
-                            if (caminos.size() < 2) {
-                                mostrarInfo("Seleccioná el segundo camino: origen luego destino.");
-                                selector[0].run();
-                            } else {
-                                contexto.establecerCoordenadasCarreteras(caminos);
-                                try {
-                                    gestor.obtenerJugadorActual().usarCartaDesarrollo(cartaModelo, contexto);
-                                    Platform.runLater(() -> {
-                                        panelCartas.getChildren().remove(carta);
-                                        tableroUI.deshabilitarSeleccionVertice();
-                                        tableroUI.refrescarDesdeModelo();
-                                        mostrarInfo("Carta usada correctamente: " + nombreCarta);
-                                    });
-                                } catch (Exception ex) {
-                                    Platform.runLater(() -> mostrarError("No se pudo usar la carta", ex.getMessage()));
-                                    tableroUI.deshabilitarSeleccionVertice();
-                                }
-                            }
-                        });
+        if (tableroUI == null) {
+            mostrarError("No es posible", "La selección en tablero no está disponible.");
+            return;
+        }
+        Stage child1 = new Stage();
+        if (this.stage != null) child1.initOwner(this.stage);
+        new VentanaSeleccionCamino(child1, nombreJugador, tableroUI, camino1 -> {
+            Platform.runLater(() -> {
+                Stage child2 = new Stage();
+                if (this.stage != null) child2.initOwner(this.stage);
+                final boolean[] confirmadoSegundo = { false };
+                child2.setOnHidden(ev -> {
+                    if (!confirmadoSegundo[0]) {
+                        tableroUI.refrescarDesdeModelo();
+                        tableroUI.deshabilitarSeleccionVertice();
                     }
                 });
-            };
-            selector[0].run();
-        } else {
-            mostrarError("No es posible", "La selección en tablero no está disponible.");
-        }
+                new VentanaSeleccionCamino(child2, nombreJugador, tableroUI, camino2 -> {
+                    confirmadoSegundo[0] = true;
+                    final ArrayList<List<Coordenadas>> caminos = new ArrayList<>();
+                    caminos.add(camino1);
+                    caminos.add(camino2);
+                    contexto.establecerCoordenadasCarreteras(caminos);
+                    try {
+                        ejecutarUsoCartaEnGestor(cartaModelo, contexto, carta, nombreCarta, () -> {
+                            tableroUI.refrescarDesdeModelo();
+                        });
+                    } catch (Exception ex) {
+                        tableroUI.refrescarDesdeModelo();
+                        mostrarError("No se pudo usar la carta", ex.getMessage());
+                    }
+                }, true, true);
+            });
+        }, true, false);
+
     }
 
     private void handleMonopolio(CartaMonopolio cartaModelo, ContextoCartaDesarrollo contexto, VBox carta, String nombreCarta) {
@@ -335,13 +349,7 @@ public class VentanaCartasDesarrollos extends VBox {
         String elegido = pick.get();
         edu.fiuba.algo3.modelo.Recurso recurso = mapearRecurso(elegido);
         contexto.establecerRecursoElegido(recurso);
-        try {
-            gestor.obtenerJugadorActual().usarCartaDesarrollo(cartaModelo, contexto);
-            panelCartas.getChildren().remove(carta);
-            mostrarInfo("Carta usada correctamente: " + nombreCarta);
-        } catch (Exception ex) {
-            mostrarError("No se pudo usar la carta", ex.getMessage());
-        }
+        ejecutarUsoCartaEnGestor(cartaModelo, contexto, carta, nombreCarta, null);
     }
 
     private void handleDescubrimiento(CartaDescubrimiento cartaModelo, ContextoCartaDesarrollo contexto, VBox carta, String nombreCarta) {
@@ -360,13 +368,7 @@ public class VentanaCartasDesarrollos extends VBox {
         recursosElegidos.add(mapearRecurso(p1.get()));
         recursosElegidos.add(mapearRecurso(p2.get()));
         contexto.establecerRecursosElegidos(recursosElegidos);
-        try {
-            gestor.obtenerJugadorActual().usarCartaDesarrollo(cartaModelo, contexto);
-            panelCartas.getChildren().remove(carta);
-            mostrarInfo("Carta usada correctamente: " + nombreCarta);
-        } catch (Exception ex) {
-            mostrarError("No se pudo usar la carta", ex.getMessage());
-        }
+        ejecutarUsoCartaEnGestor(cartaModelo, contexto, carta, nombreCarta, null);
     }
 
     private edu.fiuba.algo3.modelo.Recurso mapearRecurso(String nombre) {

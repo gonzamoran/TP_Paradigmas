@@ -73,6 +73,8 @@ public class ControladorConstruccion {
                         Stage modal = new Stage();
                         VentanaMostrarCarta ventanaCarta = new VentanaMostrarCarta(modal, cartaComprada);
                     }
+                    // Refrescar la UI de cartas de desarrollo si está abierta
+                    if (onModalClosed != null) onModalClosed.run();
                 } catch (RecursosInsuficientesException ex) {
                     Alert alerta = new Alert(Alert.AlertType.ERROR);
                     alerta.setTitle("Recursos insuficientes");
@@ -80,8 +82,9 @@ public class ControladorConstruccion {
                     alerta.setContentText("No tienes los recursos necesarios para comprar una carta de desarrollo.");
                     alerta.showAndWait();
                 }
+            } else {
+                if (onModalClosed != null) onModalClosed.run();
             }
-            if (onModalClosed != null) onModalClosed.run();
         });
         
         btnPoblado.setVisible(false);

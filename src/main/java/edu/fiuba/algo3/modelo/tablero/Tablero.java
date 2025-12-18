@@ -335,17 +335,27 @@ public class Tablero {
 
         Vertice vertice1 = mapaVertices.get(coordenadaExtremo1);
         Vertice vertice2 = mapaVertices.get(coordenadaExtremo2);
-        
+
+        for (Carretera existente : listaCarreteras) {
+            var vertices = existente.conseguirVertices();
+            if ((vertices.get(0) == vertice1 && vertices.get(1) == vertice2) ||
+                (vertices.get(0) == vertice2 && vertices.get(1) == vertice1)) {
+                if (existente.getJugador().equals(jugador)) {
+                    throw new NoEsPosibleConstruirException("Ya tienes una carretera en esa ubicación");
+                } else {
+                    throw new NoEsPosibleConstruirException("No puedes construir sobre la carretera de otro jugador");
+                }
+            }
+        }
+
         Carretera carretera = new Carretera();
         var recursosNecesarios = carretera.obtenerRecursosNecesarios();
-        
+
         if (!carretera.validarConstruccion(vertice1, jugador) && !carretera.validarConstruccion(vertice2, jugador)){
             throw new NoEsPosibleConstruirException("Uno de los vertices no cumple con las reglas de construccion");
         }
-               
         this.cobrar(jugador, recursosNecesarios);
         this.construirCarreteraGeneral(carretera, vertice1, vertice2, jugador);
-
     }
 
     private void construirCarreteraGeneral(Carretera carretera, Vertice vertice1, Vertice vertice2, Jugador jugador){
@@ -379,13 +389,48 @@ public class Tablero {
         Vertice vertice1 = mapaVertices.get(coordenadaExtremo1);
         Vertice vertice2 = mapaVertices.get(coordenadaExtremo2);
         
+        for (Carretera existente : listaCarreteras) {
+            var vertices = existente.conseguirVertices();
+            if ((vertices.get(0) == vertice1 && vertices.get(1) == vertice2) ||
+                (vertices.get(0) == vertice2 && vertices.get(1) == vertice1)) {
+                if (existente.getJugador().equals(jugador)) {
+                    throw new NoEsPosibleConstruirException("Ya tienes una carretera en esa ubicación");
+                } else {
+                    throw new NoEsPosibleConstruirException("No puedes construir sobre la carretera de otro jugador");
+                }
+            }
+        }
+
         Carretera carretera = new Carretera();
         
+
         if (!carretera.validarConstruccionInicial(vertice1, jugador) && !carretera.validarConstruccionInicial(vertice2, jugador)) {
             throw new NoEsPosibleConstruirException("Uno de los vertices no cumple con las reglas de construccion inicial");
         }
         
         this.construirCarreteraGeneral(carretera, vertice1, vertice2, jugador);
+    }
+
+    public boolean puedeConstruirCarreteraGratis(Coordenadas coordenadaExtremo1, Coordenadas coordenadaExtremo2, Jugador jugador) {
+        validarVerticesCarretera(coordenadaExtremo1, coordenadaExtremo2, jugador);
+
+        Vertice vertice1 = mapaVertices.get(coordenadaExtremo1);
+        Vertice vertice2 = mapaVertices.get(coordenadaExtremo2);
+
+        for (Carretera existente : listaCarreteras) {
+            var vertices = existente.conseguirVertices();
+            if ((vertices.get(0) == vertice1 && vertices.get(1) == vertice2) ||
+                (vertices.get(0) == vertice2 && vertices.get(1) == vertice1)) {
+                return false;
+            }
+        }
+
+        Carretera carretera = new Carretera();
+        if (!carretera.validarConstruccionInicial(vertice1, jugador) && !carretera.validarConstruccionInicial(vertice2, jugador)) {
+            return false;
+        }
+
+        return true;
     }
 
     public int obtenerCarreteraMasLarga(Jugador jugador) {
@@ -516,5 +561,9 @@ public class Tablero {
             }
         }
         return true;
+    }
+
+    public List<Carretera> obtenerCarreterasConstruidas() {
+        return new ArrayList<>(listaCarreteras);
     }
 }

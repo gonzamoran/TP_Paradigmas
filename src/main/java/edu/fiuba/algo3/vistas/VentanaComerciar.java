@@ -54,8 +54,8 @@ public class VentanaComerciar extends VBox {
         VBox root = new VBox(20);
         root.setPadding(new Insets(30));
         root.setAlignment(Pos.CENTER);
-        root.setStyle("-fx-background-color: #2c3e50; -fx-min-width: 700; -fx-min-height: 550;");
-        stage.setMinWidth(700);
+        root.setStyle("-fx-background-color: #2c3e50; -fx-min-width: 900; -fx-min-height: 550;");
+        stage.setMinWidth(900);
         stage.setMinHeight(550);
 
         mostrarMenuPrincipal(root, stage, nombreJugador);

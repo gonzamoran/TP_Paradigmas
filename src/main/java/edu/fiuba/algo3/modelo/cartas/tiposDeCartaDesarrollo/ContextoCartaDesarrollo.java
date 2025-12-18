@@ -74,14 +74,8 @@ public class ContextoCartaDesarrollo {
         this.jugadorObjetivo = jugador;
     }
 
-    public Jugador obtenerJugadorARobar(ArrayList<Jugador> candidatos) {
-        if (this.jugadorObjetivo != null) {
-            return this.jugadorObjetivo;
-        }
-        if (candidatos == null || candidatos.isEmpty()) {
-            return null;
-        }
-        return candidatos.get(0);
+    public Jugador obtenerJugadorARobar() {
+        return this.jugadorObjetivo;
     }
 
     public void establecerRecursoElegido(Recurso recurso) {
