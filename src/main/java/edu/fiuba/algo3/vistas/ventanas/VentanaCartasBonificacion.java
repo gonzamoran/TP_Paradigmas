@@ -1,21 +1,10 @@
 package edu.fiuba.algo3.vistas.ventanas;
 
-import edu.fiuba.algo3.modelo.cartas.tiposDeCartaDesarrollo.CartasDesarrollo;
-import edu.fiuba.algo3.modelo.cartas.tiposDeCartaDesarrollo.ContextoCartaDesarrollo;
-import edu.fiuba.algo3.modelo.Jugador;
-import edu.fiuba.algo3.modelo.GestorDeTurnos;
 import edu.fiuba.algo3.controllers.ReproductorDeSonido;
-
-import edu.fiuba.algo3.modelo.tablero.Coordenadas;
-
+import edu.fiuba.algo3.modelo.GestorDeTurnos;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
-import javafx.scene.control.ChoiceDialog;
-import javafx.scene.control.TextInputDialog;
-import javafx.scene.control.ButtonType;
-import javafx.scene.control.Alert;
-import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.image.Image;
@@ -23,13 +12,10 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
-import javafx.application.Platform;
 
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Random;
-import java.util.Optional;
 
 public class VentanaCartasBonificacion extends VBox {
 

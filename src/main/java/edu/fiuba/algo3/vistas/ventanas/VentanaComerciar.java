@@ -1,29 +1,29 @@
 package edu.fiuba.algo3.vistas.ventanas;
 
+import edu.fiuba.algo3.modelo.Banca;
+import edu.fiuba.algo3.modelo.GestorDeTurnos;
+import edu.fiuba.algo3.modelo.Jugador;
+import edu.fiuba.algo3.modelo.Recurso;
+import edu.fiuba.algo3.modelo.tiposBanca.Banca2a1;
+import edu.fiuba.algo3.modelo.tiposBanca.Banca3a1;
+import edu.fiuba.algo3.modelo.tiposRecurso.Grano;
+import edu.fiuba.algo3.modelo.tiposRecurso.Ladrillo;
+import edu.fiuba.algo3.modelo.tiposRecurso.Lana;
+import edu.fiuba.algo3.modelo.tiposRecurso.Madera;
+import edu.fiuba.algo3.modelo.tiposRecurso.Nulo;
+import edu.fiuba.algo3.modelo.tiposRecurso.Piedra;
+import javafx.application.Platform;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
-import javafx.scene.layout.VBox;
-import javafx.scene.layout.HBox;
 import javafx.scene.control.Spinner;
 import javafx.scene.control.SpinnerValueFactory;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
-import javafx.scene.control.ComboBox;
-import javafx.scene.control.ListView;
-import javafx.application.Platform;
-
-
-import edu.fiuba.algo3.controllers.ReproductorDeSonido;
-
-import edu.fiuba.algo3.modelo.GestorDeTurnos;
-import edu.fiuba.algo3.modelo.Jugador;
-import edu.fiuba.algo3.modelo.Banca;
-import edu.fiuba.algo3.modelo.Recurso;
-import edu.fiuba.algo3.modelo.tiposBanca.Banca2a1;
-import edu.fiuba.algo3.modelo.tiposBanca.Banca3a1;
-import edu.fiuba.algo3.modelo.tiposRecurso.*;
 
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
@@ -70,9 +70,6 @@ public class VentanaComerciar extends VBox {
         this(stage, nombreJugador, null);
     }
 
-    public void setOnTradeCompleted(Runnable callback) {
-        this.onTradeCompleted = callback;
-    }
 
     private void mostrarMenuPrincipal(VBox root, Stage stage, String nombreJugador) {
         root.getChildren().clear();

@@ -25,8 +25,4 @@ public class ColoresJugadores {
         Color color = obtenerColorPoblado(indiceJugador);
         return color.darker().darker();
     }
-    
-    public static int obtenerCantidadColores() {
-        return COLORES_JUGADORES.length;
-    }
 }

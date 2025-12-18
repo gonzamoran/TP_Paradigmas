@@ -2,10 +2,7 @@
 package edu.fiuba.algo3.controllers;
 
 import javafx.scene.media.AudioClip;
-import javafx.scene.media.Media;
-import javafx.scene.media.MediaPlayer;
 
-import java.io.File;
 import java.util.Objects;
 
 public class ReproductorDeSonido {

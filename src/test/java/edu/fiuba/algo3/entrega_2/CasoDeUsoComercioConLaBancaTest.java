@@ -12,7 +12,11 @@ import edu.fiuba.algo3.modelo.tablero.Tablero;
 import edu.fiuba.algo3.modelo.tiposBanca.Banca2a1;
 import edu.fiuba.algo3.modelo.tiposBanca.Banca3a1;
 import edu.fiuba.algo3.modelo.tiposBanca.Banca4a1;
-import edu.fiuba.algo3.modelo.tiposRecurso.*;
+import edu.fiuba.algo3.modelo.tiposRecurso.Grano;
+import edu.fiuba.algo3.modelo.tiposRecurso.Ladrillo;
+import edu.fiuba.algo3.modelo.tiposRecurso.Lana;
+import edu.fiuba.algo3.modelo.tiposRecurso.Madera;
+import edu.fiuba.algo3.modelo.tiposRecurso.Piedra;
 import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;

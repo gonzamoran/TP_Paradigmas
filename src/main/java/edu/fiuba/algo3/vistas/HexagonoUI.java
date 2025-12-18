@@ -1,20 +1,25 @@
 package edu.fiuba.algo3.vistas;
 
-import javafx.scene.layout.Pane;
+import edu.fiuba.algo3.modelo.tablero.Hexagono;
+import edu.fiuba.algo3.modelo.tablero.tiposHexagono.Bosque;
+import edu.fiuba.algo3.modelo.tablero.tiposHexagono.Campo;
+import edu.fiuba.algo3.modelo.tablero.tiposHexagono.Colina;
+import edu.fiuba.algo3.modelo.tablero.tiposHexagono.Desierto;
+import edu.fiuba.algo3.modelo.tablero.tiposHexagono.Montana;
+import edu.fiuba.algo3.modelo.tablero.tiposHexagono.Pastizal;
 import javafx.application.Platform;
-import javafx.scene.shape.StrokeLineCap;
-import javafx.scene.shape.StrokeLineJoin;
 import javafx.geometry.VPos;
+import javafx.scene.Group;
+import javafx.scene.Node;
+import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 import javafx.scene.shape.Polygon;
-import javafx.scene.text.Text;
-import javafx.scene.shape.Rectangle;
-import javafx.scene.Group;
 import javafx.scene.shape.Polyline;
-import javafx.scene.Node;
-import edu.fiuba.algo3.modelo.tablero.Hexagono;
-import edu.fiuba.algo3.modelo.tablero.tiposHexagono.*;
+import javafx.scene.shape.Rectangle;
+import javafx.scene.shape.StrokeLineCap;
+import javafx.scene.shape.StrokeLineJoin;
+import javafx.scene.text.Text;
 
 
 

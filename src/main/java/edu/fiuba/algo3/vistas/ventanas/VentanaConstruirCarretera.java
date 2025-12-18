@@ -1,9 +1,9 @@
 package edu.fiuba.algo3.vistas.ventanas;
 
 import edu.fiuba.algo3.modelo.GestorDeTurnos;
+import edu.fiuba.algo3.modelo.excepciones.NoEsPosibleConstruirException;
 import edu.fiuba.algo3.modelo.tablero.Coordenadas;
 import edu.fiuba.algo3.vistas.TableroUI;
-import edu.fiuba.algo3.modelo.excepciones.NoEsPosibleConstruirException;
 import javafx.scene.control.Label;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;

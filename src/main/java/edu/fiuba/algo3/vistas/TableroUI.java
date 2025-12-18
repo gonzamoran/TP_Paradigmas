@@ -4,16 +4,16 @@ import edu.fiuba.algo3.modelo.tablero.Coordenadas;
 import edu.fiuba.algo3.modelo.tablero.Hexagono;
 import edu.fiuba.algo3.modelo.tablero.Produccion;
 import edu.fiuba.algo3.modelo.tablero.Tablero;
+import edu.fiuba.algo3.modelo.tiposBanca.Banca4a1;
 import javafx.geometry.Bounds;
-import java.util.function.Consumer;
 import javafx.scene.layout.Pane;
 import javafx.scene.shape.Line;
 import javafx.scene.shape.StrokeLineCap;
-import edu.fiuba.algo3.modelo.tiposBanca.Banca4a1;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.function.Consumer;
 
 public class TableroUI extends Pane {
     
@@ -294,9 +294,6 @@ public class TableroUI extends Pane {
         centralizarTablero();
     }
     
-    public HexagonoUI getHexagonoUI(Coordenadas coordenadas) {
-        return hexagonosUI.get(coordenadas);
-    }
 
     public Coordenadas buscarCoordenadasPorHexagono(Hexagono hex) {
         for (Map.Entry<Coordenadas, HexagonoUI> e : hexagonosUI.entrySet()) {
@@ -403,14 +400,7 @@ public class TableroUI extends Pane {
             v.marcarCiudad(indiceJugador);
         }
     }
-    
 
-    public void desmarcarPoblado(Coordenadas coord) {
-        VerticeUI v = verticesUI.get(coord);
-        if (v != null) {
-            v.desmarcarConstruccion();
-        }
-    }
 
     private void configurarOverlayHexagonos() {
         for (HexagonoUI hexUI : hexagonosUI.values()) {
@@ -482,14 +472,6 @@ public class TableroUI extends Pane {
         CarreteraUI carretera = carreterasUI.get(llave);
         if (carretera != null) {
             carretera.marcarConstruccion(indiceJugador);
-        }
-    }
-
-    public void desmarcarCarretera(Coordenadas coord1, Coordenadas coord2) {
-        String llave = crearLlaveCarretera(coord1, coord2);
-        CarreteraUI carretera = carreterasUI.get(llave);
-        if (carretera != null) {
-            carretera.desmarcarConstruccion();
         }
     }
 

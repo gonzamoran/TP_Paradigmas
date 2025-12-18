@@ -9,12 +9,19 @@ import edu.fiuba.algo3.modelo.excepciones.NoEsPosibleConstruirException;
 import edu.fiuba.algo3.modelo.excepciones.PosInvalidaParaConstruirException;
 import edu.fiuba.algo3.modelo.tablero.Coordenadas;
 import edu.fiuba.algo3.modelo.tablero.Tablero;
-import edu.fiuba.algo3.modelo.tiposRecurso.*;
+import edu.fiuba.algo3.modelo.tiposRecurso.Grano;
+import edu.fiuba.algo3.modelo.tiposRecurso.Ladrillo;
+import edu.fiuba.algo3.modelo.tiposRecurso.Lana;
+import edu.fiuba.algo3.modelo.tiposRecurso.Madera;
+import edu.fiuba.algo3.modelo.tiposRecurso.Piedra;
 import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 public class CasoDeUsoConstruccionTest {
 
     @Test

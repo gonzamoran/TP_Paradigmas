@@ -1,10 +1,5 @@
 package edu.fiuba.algo3.vistas;
 
-import edu.fiuba.algo3.modelo.GestorDeTurnos;
-import edu.fiuba.algo3.modelo.tablero.Coordenadas;
-import edu.fiuba.algo3.modelo.tablero.Hexagono;
-import edu.fiuba.algo3.modelo.tablero.Produccion;
-import edu.fiuba.algo3.modelo.Jugador;
 import edu.fiuba.algo3.controllers.CargadorTableroJSON;
 import edu.fiuba.algo3.controllers.ControladorConstruccion;
 import edu.fiuba.algo3.controllers.ControladorDados;
@@ -12,27 +7,29 @@ import edu.fiuba.algo3.controllers.ControladorFases;
 import edu.fiuba.algo3.controllers.ControladorIndicadores;
 import edu.fiuba.algo3.controllers.ControladorVentanas;
 import edu.fiuba.algo3.controllers.ReproductorDeSonido;
-
+import edu.fiuba.algo3.modelo.GestorDeTurnos;
+import edu.fiuba.algo3.modelo.tablero.Coordenadas;
+import edu.fiuba.algo3.modelo.tablero.Hexagono;
+import edu.fiuba.algo3.modelo.tablero.Produccion;
+import edu.fiuba.algo3.vistas.ventanas.PanelRecursos;
+import edu.fiuba.algo3.vistas.ventanas.VentanaColocacionInicial;
+import javafx.application.Platform;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
+import javafx.scene.Cursor;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
-import javafx.scene.layout.VBox;
-import javafx.scene.layout.StackPane;
-import javafx.scene.layout.Region;
 import javafx.scene.layout.Priority;
-import javafx.scene.Cursor;
+import javafx.scene.layout.Region;
+import javafx.scene.layout.StackPane;
+import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
-import javafx.application.Platform;
 
 import java.util.ArrayList;
 import java.util.List;
-import edu.fiuba.algo3.vistas.TableroUI;
-import edu.fiuba.algo3.vistas.ventanas.PanelRecursos;
-import edu.fiuba.algo3.vistas.ventanas.VentanaColocacionInicial;
 
 public class CampoDeJuego extends BorderPane {
 
@@ -71,9 +68,6 @@ public class CampoDeJuego extends BorderPane {
         hiloJuego.start();
     }
 
-    private void reproducirSonido() {
-        ReproductorDeSonido.getInstance().reproducirSonidoDados();
-    }
 
     private void construirInterfaz() {
         String primerJugador = !nombresJugadores.isEmpty() ? nombresJugadores.get(0) : "Esperando...";

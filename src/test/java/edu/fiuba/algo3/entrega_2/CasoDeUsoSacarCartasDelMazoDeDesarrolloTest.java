@@ -1,25 +1,41 @@
 package edu.fiuba.algo3.entrega_2;
 
-import edu.fiuba.algo3.modelo.*;
+import edu.fiuba.algo3.modelo.Jugador;
+import edu.fiuba.algo3.modelo.Recurso;
 import edu.fiuba.algo3.modelo.acciones.CasoDeUsoSacarCartasDelMazoDeDesarrollo;
-import edu.fiuba.algo3.modelo.cartas.*;
-import edu.fiuba.algo3.modelo.cartas.tiposDeCartaDesarrollo.*;
-import edu.fiuba.algo3.modelo.construcciones.*;
+import edu.fiuba.algo3.modelo.cartas.MazoCartasDesarrollo;
+import edu.fiuba.algo3.modelo.cartas.tiposDeCartaDesarrollo.CartaCaballero;
+import edu.fiuba.algo3.modelo.cartas.tiposDeCartaDesarrollo.CartaConstruccionCarretera;
+import edu.fiuba.algo3.modelo.cartas.tiposDeCartaDesarrollo.CartaDescubrimiento;
+import edu.fiuba.algo3.modelo.cartas.tiposDeCartaDesarrollo.CartaMonopolio;
+import edu.fiuba.algo3.modelo.cartas.tiposDeCartaDesarrollo.CartaPuntoVictoria;
+import edu.fiuba.algo3.modelo.cartas.tiposDeCartaDesarrollo.CartasDesarrollo;
+import edu.fiuba.algo3.modelo.cartas.tiposDeCartaDesarrollo.ContextoCartaDesarrollo;
+import edu.fiuba.algo3.modelo.construcciones.Carretera;
+import edu.fiuba.algo3.modelo.construcciones.Poblado;
 import edu.fiuba.algo3.modelo.excepciones.CoordenadasInvalidasException;
 import edu.fiuba.algo3.modelo.excepciones.NoEsPosibleConstruirException;
 import edu.fiuba.algo3.modelo.excepciones.NoSePuedeJugarEstaCartaException;
 import edu.fiuba.algo3.modelo.excepciones.RecursosInsuficientesException;
-import edu.fiuba.algo3.modelo.tablero.*;
-import edu.fiuba.algo3.modelo.tiposRecurso.*;
+import edu.fiuba.algo3.modelo.tablero.Coordenadas;
+import edu.fiuba.algo3.modelo.tablero.Ladron;
+import edu.fiuba.algo3.modelo.tablero.Tablero;
+import edu.fiuba.algo3.modelo.tiposRecurso.Grano;
+import edu.fiuba.algo3.modelo.tiposRecurso.Ladrillo;
+import edu.fiuba.algo3.modelo.tiposRecurso.Lana;
+import edu.fiuba.algo3.modelo.tiposRecurso.Madera;
+import edu.fiuba.algo3.modelo.tiposRecurso.Piedra;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
 import java.util.List;
 
-
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
-
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 
 public class CasoDeUsoSacarCartasDelMazoDeDesarrolloTest {

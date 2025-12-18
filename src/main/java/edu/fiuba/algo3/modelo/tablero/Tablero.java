@@ -8,13 +8,27 @@ import edu.fiuba.algo3.modelo.construcciones.Construccion;
 import edu.fiuba.algo3.modelo.excepciones.CantidadInvalidaDeHexagonosONumerosException;
 import edu.fiuba.algo3.modelo.excepciones.NoEsPosibleConstruirException;
 import edu.fiuba.algo3.modelo.excepciones.PosInvalidaParaConstruirException;
-import edu.fiuba.algo3.modelo.tablero.tiposHexagono.*;
+import edu.fiuba.algo3.modelo.tablero.tiposHexagono.Bosque;
+import edu.fiuba.algo3.modelo.tablero.tiposHexagono.Campo;
+import edu.fiuba.algo3.modelo.tablero.tiposHexagono.Colina;
+import edu.fiuba.algo3.modelo.tablero.tiposHexagono.Desierto;
+import edu.fiuba.algo3.modelo.tablero.tiposHexagono.Montana;
+import edu.fiuba.algo3.modelo.tablero.tiposHexagono.Pastizal;
 import edu.fiuba.algo3.modelo.tiposBanca.Banca2a1;
 import edu.fiuba.algo3.modelo.tiposBanca.Banca3a1;
 import edu.fiuba.algo3.modelo.tiposBanca.Banca4a1;
-import edu.fiuba.algo3.modelo.tiposRecurso.*;
+import edu.fiuba.algo3.modelo.tiposRecurso.Grano;
+import edu.fiuba.algo3.modelo.tiposRecurso.Ladrillo;
+import edu.fiuba.algo3.modelo.tiposRecurso.Lana;
+import edu.fiuba.algo3.modelo.tiposRecurso.Madera;
+import edu.fiuba.algo3.modelo.tiposRecurso.Piedra;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 public class Tablero {
     private ArrayList<Carretera> listaCarreteras;
