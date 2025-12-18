@@ -1,0 +1,63 @@
+@startuml hexagonos.puml
+
+title "Jerarquía de Hexágonos\n<size:12>y Producción de Recursos</size>" 
+
+skinparam {
+  Padding 1
+  WrapWidth 25
+  MaxMessageSize 20
+  NoteFontSize 10
+  ClassFontSize 20
+  ClassAttributeFontSize 12
+  ArrowFontSize 10
+}
+
+abstract class Hexagono {
+  +generarRecurso(int): Recurso
+  +esDesierto(): boolean
+  +puedeGenerarRecursos(): boolean
+}
+
+class Bosque {
+  +generarRecurso(int): Madera
+}
+
+class Campo {
+  +generarRecurso(int): Grano
+}
+
+class Pastizal {
+  +generarRecurso(int): Lana
+}
+
+class Montana {
+  +generarRecurso(int): Piedra
+}
+
+class Colina {
+  +generarRecurso(int): Ladrillo
+}
+
+class Desierto {
+  +esDesierto(): boolean
+  +generarRecurso(int): Nulo
+}
+
+Hexagono <|-- Bosque
+Hexagono <|-- Campo
+Hexagono <|-- Pastizal
+Hexagono <|-- Montana
+Hexagono <|-- Colina
+Hexagono <|-- Desierto
+
+Hexagono --> Produccion : tiene
+Produccion : +numero: int
+
+Bosque ..> Madera : crea
+Campo ..> Grano : crea
+Pastizal ..> Lana : crea
+Montana ..> Piedra : crea
+Colina ..> Ladrillo : crea
+Desierto ..> Nulo : crea
+
+@enduml

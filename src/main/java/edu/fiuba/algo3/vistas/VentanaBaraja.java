@@ -79,7 +79,7 @@ public class VentanaBaraja extends VBox {
         
         carta.setPrefSize(150, 220); 
 
-        String ruta = "/hellofx/" + nombreRecurso + ".png";
+        String ruta = "/resources/imagenes/" + nombreRecurso + ".png";
         InputStream dato = getClass().getResourceAsStream(ruta);
         
         if (dato != null) {

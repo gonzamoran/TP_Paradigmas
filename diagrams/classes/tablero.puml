@@ -1,117 +1,89 @@
-@startuml DiagramaTablero
+@startuml tablero-simple.puml
 
-package "Clases del Tablero" {
-    class Tablero {
-    - ladron: Ladron
-    - listaHexagonos: ArrayList<Hexagono>
-    - listaNumeros: ArrayList<Produccion>
-    - mapaHexagonos: Map<Coordenadas, Hexagono>
-    - mapaVertices: Map<Coordenadas, Vertice>
+title "Sistema del Tablero - Estructura Principal"
 
-    + Tablero()
-    + Tablero()
-    + inicializarTablero()
-    + obtenerHexagonos(): ArrayList<Hexagono>
-    + inicializarHexagonosDefault()
-    + inicializarNumerosDefault()
-    + asignarCoordenadasHexagonos()
-    + crearListaDeCoordenadasHexagonos(): ArrayList<Coordenadas>
-    + asignarNumeroALosHexagonos()
-    + inicializarVertices()
-    + obtenerVerticesDeHexagono()
-    + asignarAdyacentesAVertices()
-    + calcularCoordenadasAdyacentesDeVertice()
-    + inicializarLadron()
-    + sePuedeConstruirInicial()
-    + colocarConstruccionInicial()
-    + mezclarHexagonos()
-    + mezclarNumeros()
-    + sonCoordenadasValidas()
-    + equals()
-    + colocarEn()
-    + producirRecurso()
-    + sePuedeConstruir()
-    + moverLadronA()
-    + obtenerJugadoresAdyacentes()
-    + ladronRobaRecurso()
-    + obtenerHexagono()
-    + obtenerHexagonoLadron()
-    + obtenerCoordenadasHexagono()
-    + estaConstruidoCon()
-    + construirCarretera()
-    }    
+skinparam {
+  Padding 5
+  ClassFontSize 14
+  ArrowFontSize 10
+}
 
-    class Coordenadas {
-        - x: int
-        - y: int
+hide empty members
+hide circle
 
-        + Coordenadas(x: int, y: int)
-        + getVecinas(): ArrayList<Coordenadas>
-        + obtenerCoordenadaX(): int
-        + obtenerCoordenadaY(): int
-        + equals(): boolean
-        + hashCode(): int
-    }
+class Tablero {
+  -mapaHexagonos: Map<Coordenadas, Hexagono>
+  -mapaVertices: Map<Coordenadas, Vertice>
+  -listaCarreteras: ArrayList<Carretera>
+  __
+  +colocarConstruccionInicial()
+  +colocarEn()
+  +construirCarretera()
+  +producirRecurso()
+  +obtenerJugadoresAdyacentes()
+  +obtenerCaminoMasLargo()
+}
 
-    class Hexagono {
-        - tieneLadron: boolean
-        - produccion: Produccion
+class Vertice {
+  -hexagonosAdyacentes: List<Hexagono>
+  -construccion: Construccion
+  -verticesAdyacentes: ArrayList<Vertice>
+  __
+  +construir()
+  +construirInicial()
+  +producirRecursos()
+  +tieneConstruccion()
+  +esAdyacente()
+  +construirCarretera()
+}
 
-        + Hexagono()
-        + esDesierto(): boolean
-        + colocarLadron()
-        + sacarLadron()
-        + puedeGenerarRecurso(): boolean
-        + asignarProduccion()
-        + compararProduccion(): boolean
-        + generarRecurso()
-        + equals(): boolean
-    }
+class Coordenadas {
+  -x: int
+  -y: int
+  __
+  +obtenerCoordenadaX()
+  +obtenerCoordenadaY()
+  +equals()
+  +hashCode()
+}
 
-    class Vertice{
-        - dueno: Jugador
-        - hexagonosAdyacentes: List<Hexagono>
-        - construccion: Construccion
-        - estaConstruido: boolean
-        - verticesAdyacentes: List<Vertice>
-        - carreterasIngresantes: List<Construccion>
+abstract class Hexagono {
+  #produccion: Produccion
+  #tieneLadron: boolean
+  __
+  +generarRecurso()
+  +esDesierto()
+  +puedeGenerarRecursos()
+  +compararProduccion()
+}
 
-        + Vertice()
-        + construir()
-        + agregarHexagono()
-        + obtenerDueno(): Jugador
-        + obtenerHexagonosPorProduccion()
-        + agregarAdyacente()
-        + tieneConstruccion(): boolean
-        + puedeConstruirse(): boolean
-        + cumpleReglaDistancia
-        + construirInicial()
-        + producirRecursos()
-        + esDueno()
-        + estaConstruidoCon()
-        + esAdyacente()
-        + construirCarretera()
-        + poseeCarreterasDe()
-    }
+abstract class Construccion {
+  #puntosVictoria: int
+  #jugador: Jugador
+  __
+  +obtenerPuntosDeVictoria()
+  +obtenerRecursosNecesarios()
+  +validarConstruccion()
+}
 
-    class Produccion {
-        - numero: int
+class Carretera {
+  -vertice1: Vertice
+  -vertice2: Vertice
+  __
+  +conseguirVertices()
+  +conecta()
+  +obtenerRecursosNecesarios()
+}
 
-        + Produccion(numero: int): int
-        + equals(): boolean
-    }
+Tablero *--> "19" Hexagono : contiene
+Tablero *--> "54" Vertice : contiene
+Tablero *--> "*" Carretera : contiene
 
-    class Ladron {
-        - hexagonoActual: Hexagono
-        - jugadoresAfectados: List<Jugador>
+Tablero --> Coordenadas : usa como clave
+Vertice o--> "1..3" Hexagono : adyacente a
+Vertice o--> "0..1" Construccion : tiene
+Vertice --> "*" Vertice : conectado a
 
-        + Ladron()
-        + moverLadronA()
-        + robarRecurso()
-        + obtenerHexagonoActual(): Hexagono
-    }
-}   
-
-
+Carretera --> "2" Vertice : conecta
 
 @enduml
