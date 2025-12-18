@@ -1,0 +1,89 @@
+@startuml cartas-desarrollo-final.puml
+
+title "Cartas de Desarrollo - Catán"
+skinparam {
+  Padding 10
+  ClassFontSize 13
+}
+
+hide empty members
+hide circle
+
+abstract class CartasDesarrollo {
+  #turnoDeCompra: int
+  #fueUsada: boolean
+  __
+  +conseguirPV(): int
+  +esJugable(Contexto): boolean
+  {abstract} +usar(Contexto): void
+  {abstract} +comprarCarta(int): CartasDesarrollo
+}
+
+class ContextoCartaDesarrollo {
+  -jugadorQueUsaLaCarta: Jugador
+  -jugadores: ArrayList<Jugador>
+  -turnoActual: int
+  -tablero: Tablero
+  __
+  +conseguirJugadorQueUsaLaCarta(): Jugador
+  +conseguirJugadoresAfectados(): ArrayList<Jugador>
+  +sePuedeJugarCarta(int): boolean
+  +obtenerTablero(): Tablero
+  +obtenerLadron(): Ladron
+  +obtenerCoordenadasDestino(): Coordenadas
+  +obtenerRecursoElegido(): Recurso
+}
+
+class CartaCaballero {
+  __
+  +usar(Contexto): void
+  -pasarGranCaballeria(Contexto): void
+}
+
+class CartaMonopolio {
+  __
+  +usar(Contexto): void
+}
+
+class CartaDescubrimiento {
+  __
+  +usar(Contexto): void
+}
+
+class CartaConstruccionCarretera {
+  __
+  +usar(Contexto): void
+}
+
+class CartaPuntoVictoria {
+  __
+  +esJugable(Contexto): boolean
+  +conseguirPV(): int
+}
+
+class Jugador
+class Tablero
+class Ladron
+class Coordenadas
+class Recurso
+
+CartasDesarrollo <|-- CartaCaballero
+CartasDesarrollo <|-- CartaMonopolio
+CartasDesarrollo <|-- CartaDescubrimiento
+CartasDesarrollo <|-- CartaConstruccionCarretera
+CartasDesarrollo <|-- CartaPuntoVictoria
+
+CartasDesarrollo ..> ContextoCartaDesarrollo : «usa»
+ContextoCartaDesarrollo --> Jugador : «tiene un»
+ContextoCartaDesarrollo --> Tablero : «tiene un»
+ContextoCartaDesarrollo --> Ladron : «usa»
+ContextoCartaDesarrollo --> Coordenadas : «usa»
+ContextoCartaDesarrollo --> Recurso : «usa»
+
+CartaCaballero ..> Ladron : «usa»
+CartaCaballero ..> Jugador : «modifica»
+CartaMonopolio ..> Recurso : «maneja»
+CartaConstruccionCarretera ..> Coordenadas : «valida»
+CartaDescubrimiento ..> Recurso : «toma»
+
+@enduml
