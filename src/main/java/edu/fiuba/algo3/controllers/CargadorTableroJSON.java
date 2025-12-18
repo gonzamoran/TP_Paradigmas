@@ -2,7 +2,12 @@ package edu.fiuba.algo3.controllers;
 
 import edu.fiuba.algo3.modelo.tablero.Hexagono;
 import edu.fiuba.algo3.modelo.tablero.Produccion;
-import edu.fiuba.algo3.modelo.tablero.tiposHexagono.*;
+import edu.fiuba.algo3.modelo.tablero.tiposHexagono.Bosque;
+import edu.fiuba.algo3.modelo.tablero.tiposHexagono.Campo;
+import edu.fiuba.algo3.modelo.tablero.tiposHexagono.Colina;
+import edu.fiuba.algo3.modelo.tablero.tiposHexagono.Desierto;
+import edu.fiuba.algo3.modelo.tablero.tiposHexagono.Montana;
+import edu.fiuba.algo3.modelo.tablero.tiposHexagono.Pastizal;
 
 import java.io.BufferedReader;
 import java.io.InputStream;

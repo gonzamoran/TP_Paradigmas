@@ -6,10 +6,8 @@ import javafx.geometry.Pos;
 import javafx.scene.control.Label;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
-import javafx.scene.Scene;
 
 import java.util.function.Consumer;
-import javafx.application.Platform;
 
 public class VentanaSeleccionCamino extends VentanaModalBase {
     private final Consumer<java.util.List<Coordenadas>> onSelected;
@@ -21,9 +19,6 @@ public class VentanaSeleccionCamino extends VentanaModalBase {
     private final boolean bloquearCierre;
     private final boolean deshabilitarAlCerrar;
 
-    public VentanaSeleccionCamino(Stage stage, String nombreJugador, TableroUI tableroUI, Consumer<java.util.List<Coordenadas>> onSelected) {
-        this(stage, nombreJugador, tableroUI, onSelected, true, true);
-    }
 
     public VentanaSeleccionCamino(Stage stage, String nombreJugador, TableroUI tableroUI, Consumer<java.util.List<Coordenadas>> onSelected, boolean bloquearCierre, boolean deshabilitarAlCerrar) {
         super(stage, "Seleccionar Camino", nombreJugador, tableroUI);

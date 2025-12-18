@@ -6,7 +6,6 @@ import edu.fiuba.algo3.modelo.excepciones.NoSePuedeJugarEstaCartaException;
 import edu.fiuba.algo3.modelo.tablero.Coordenadas;
 import edu.fiuba.algo3.modelo.tablero.Tablero;
 
-
 import java.util.ArrayList;
 import java.util.List;
 

@@ -11,13 +11,12 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ToggleButton;
 import javafx.scene.control.ToggleGroup;
-import javafx.scene.layout.VBox;
-import javafx.stage.Stage;
 import javafx.scene.layout.StackPane;
-import javafx.scene.shape.Circle;
+import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
+import javafx.scene.shape.Circle;
 import javafx.scene.text.Text;
-import javafx.application.Platform;
+import javafx.stage.Stage;
 
 import java.util.List;
 

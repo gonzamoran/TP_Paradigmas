@@ -1,12 +1,6 @@
 package edu.fiuba.algo3.vistas.ventanas;
 
-import edu.fiuba.algo3.modelo.cartas.CartasJugador;
 import edu.fiuba.algo3.modelo.Recurso;
-import edu.fiuba.algo3.modelo.tiposRecurso.Grano;
-import edu.fiuba.algo3.modelo.tiposRecurso.Ladrillo;
-import edu.fiuba.algo3.modelo.tiposRecurso.Lana;
-import edu.fiuba.algo3.modelo.tiposRecurso.Madera;
-import edu.fiuba.algo3.modelo.tiposRecurso.Piedra;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
@@ -25,8 +19,6 @@ import java.util.Random;
 
 
 public class VentanaBaraja extends VBox {
-
-    private List<Recurso> recursos;
 
     public VentanaBaraja(Stage stage, String nombreJugador) {
 

@@ -1,32 +1,31 @@
 package edu.fiuba.algo3.controllers;
 
 
-import edu.fiuba.algo3.vistas.TableroUI;
-import edu.fiuba.algo3.vistas.ventanas.ColoresJugadores;
-import edu.fiuba.algo3.vistas.ventanas.VistaDados;
 import edu.fiuba.algo3.modelo.GestorDeTurnos;
 import edu.fiuba.algo3.modelo.Jugador;
 import edu.fiuba.algo3.modelo.tablero.Coordenadas;
-import javafx.scene.control.ToggleButton;
+import edu.fiuba.algo3.vistas.TableroUI;
+import edu.fiuba.algo3.vistas.ventanas.ColoresJugadores;
+import edu.fiuba.algo3.vistas.ventanas.VistaDados;
+import javafx.geometry.Bounds;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
+import javafx.geometry.Rectangle2D;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.control.ToggleButton;
 import javafx.scene.control.ToggleGroup;
-import javafx.scene.layout.HBox;
-import javafx.scene.layout.VBox;
-import javafx.stage.Stage;
 import javafx.scene.layout.StackPane;
-import javafx.scene.text.Text;
-import javafx.scene.shape.Circle;
+import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
+import javafx.scene.shape.Circle;
+import javafx.scene.text.Text;
 import javafx.stage.Screen;
-import javafx.geometry.Rectangle2D;
-import javafx.geometry.Bounds;
+import javafx.stage.Stage;
 
-import java.util.Random;
 import java.util.List;
+import java.util.Random;
 
 public class ControladorDados {
     

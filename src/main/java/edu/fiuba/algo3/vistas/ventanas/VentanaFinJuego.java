@@ -1,13 +1,10 @@
 package edu.fiuba.algo3.vistas.ventanas;
 
-import edu.fiuba.algo3.modelo.GestorDeTurnos;
-import javafx.scene.control.Label;
-import javafx.scene.layout.VBox;
-import javafx.scene.control.Button;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
-import javafx.stage.Stage;
-import javafx.scene.Scene;
+import javafx.scene.control.Button;
+import javafx.scene.control.Label;
+import javafx.scene.layout.VBox;
 
 public class VentanaFinJuego extends VBox {
 

@@ -111,16 +111,6 @@ public class VerticeUI extends Group {
         casaGrupo.setOpacity(1.0);
         setMouseTransparent(false);
     }
-    
-
-    public void desmarcarConstruccion() {
-        this.indiceJugadorConstruccion = null;
-        this.esCiudad = false;
-        limpiarResaltado();
-        casaGrupo.getChildren().clear();
-        casaGrupo.setVisible(false);
-        setMouseTransparent(false);
-    }
 
     public void marcarCiudad(int indiceJugador) {
         this.indiceJugadorConstruccion = indiceJugador;

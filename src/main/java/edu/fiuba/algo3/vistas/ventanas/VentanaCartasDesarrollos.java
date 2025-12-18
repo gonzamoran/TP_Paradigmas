@@ -2,34 +2,32 @@ package edu.fiuba.algo3.vistas.ventanas;
 
 import edu.fiuba.algo3.controllers.ControladorFases;
 import edu.fiuba.algo3.controllers.ReproductorDeSonido;
-
-import edu.fiuba.algo3.modelo.cartas.tiposDeCartaDesarrollo.CartasDesarrollo;
-import edu.fiuba.algo3.modelo.cartas.tiposDeCartaDesarrollo.ContextoCartaDesarrollo;
-import edu.fiuba.algo3.modelo.Jugador;
 import edu.fiuba.algo3.modelo.GestorDeTurnos;
+import edu.fiuba.algo3.modelo.Jugador;
 import edu.fiuba.algo3.modelo.cartas.tiposDeCartaDesarrollo.CartaCaballero;
 import edu.fiuba.algo3.modelo.cartas.tiposDeCartaDesarrollo.CartaConstruccionCarretera;
-import edu.fiuba.algo3.modelo.cartas.tiposDeCartaDesarrollo.CartaMonopolio;
 import edu.fiuba.algo3.modelo.cartas.tiposDeCartaDesarrollo.CartaDescubrimiento;
-import edu.fiuba.algo3.vistas.TableroUI;
+import edu.fiuba.algo3.modelo.cartas.tiposDeCartaDesarrollo.CartaMonopolio;
+import edu.fiuba.algo3.modelo.cartas.tiposDeCartaDesarrollo.CartasDesarrollo;
+import edu.fiuba.algo3.modelo.cartas.tiposDeCartaDesarrollo.ContextoCartaDesarrollo;
 import edu.fiuba.algo3.modelo.tablero.Coordenadas;
-
+import edu.fiuba.algo3.vistas.TableroUI;
+import javafx.application.Platform;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
-import javafx.scene.control.Button;
-import javafx.scene.control.ChoiceDialog;
-import javafx.scene.control.TextInputDialog;
-import javafx.scene.control.ButtonType;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
+import javafx.scene.control.Button;
+import javafx.scene.control.ButtonType;
+import javafx.scene.control.ChoiceDialog;
 import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
+import javafx.scene.control.TextInputDialog;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
-import javafx.application.Platform;
 
 import java.io.InputStream;
 import java.util.ArrayList;
@@ -221,33 +219,6 @@ public class VentanaCartasDesarrollos extends VBox {
         if (cls.contains("Descubrimiento"))
             return "Descubrimiento";
         return cls;
-    }
-
-    private Button crearBotonUsar(CartasDesarrollo cartaModelo, String nombreCartaDesarrollo, VBox carta) {
-        Button btn = new Button("Usar");
-        btn.setStyle("-fx-background-color: #2ecc71; -fx-text-fill: white; -fx-cursor: hand;");
-        btn.setOnAction(evt -> {
-            ReproductorDeSonido.getInstance().playClick();
-            boolean confirmado = confirmarAccion("¿Confirmas usar la carta " + nombreCartaDesarrollo + "?");
-            if (!confirmado)
-                return;
-
-            // Cerrar la ventana de la baraja de cartas al confirmar
-            if (this.stage != null) {
-                this.stage.close();
-            }
-
-            ContextoCartaDesarrollo contexto = new ContextoCartaDesarrollo(
-                    gestor.obtenerJugadorActual(), gestor.obtenerJugadores(), gestor.obtenerTurnoActual(),
-                    gestor.obtenerTablero(), gestor.obtenerLadron());
-
-            try {
-                handleUsoCartaSegunTipo(cartaModelo, contexto, carta, nombreCartaDesarrollo);
-            } catch (Exception ex) {
-                mostrarError("No se pudo usar la carta", ex.getMessage());
-            }
-        });
-        return btn;
     }
 
     private boolean confirmarAccion(String mensaje) {

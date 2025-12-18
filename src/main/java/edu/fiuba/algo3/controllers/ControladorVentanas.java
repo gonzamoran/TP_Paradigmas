@@ -1,8 +1,5 @@
 package edu.fiuba.algo3.controllers;
 
-import javafx.scene.control.ScrollPane;
-import javafx.stage.Stage;
-import javafx.scene.Scene;
 import edu.fiuba.algo3.modelo.GestorDeTurnos;
 import edu.fiuba.algo3.vistas.TableroUI;
 import edu.fiuba.algo3.vistas.ventanas.VentanaBaraja;
@@ -10,6 +7,9 @@ import edu.fiuba.algo3.vistas.ventanas.VentanaCartasBonificacion;
 import edu.fiuba.algo3.vistas.ventanas.VentanaCartasDesarrollos;
 import edu.fiuba.algo3.vistas.ventanas.VentanaComerciar;
 import edu.fiuba.algo3.vistas.ventanas.VentanaFinJuego;
+import javafx.scene.Scene;
+import javafx.scene.control.ScrollPane;
+import javafx.stage.Stage;
 
 public class ControladorVentanas {
 

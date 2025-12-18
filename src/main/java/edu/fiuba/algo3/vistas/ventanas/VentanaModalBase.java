@@ -1,19 +1,17 @@
 package edu.fiuba.algo3.vistas.ventanas;
 
+import edu.fiuba.algo3.controllers.ReproductorDeSonido;
+import edu.fiuba.algo3.vistas.TableroUI;
+import javafx.geometry.Bounds;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
-import javafx.geometry.Bounds;
+import javafx.geometry.Rectangle2D;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
-import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
-import javafx.stage.Stage;
 import javafx.stage.Screen;
-import javafx.geometry.Rectangle2D;
-
-import edu.fiuba.algo3.controllers.ReproductorDeSonido;
-import edu.fiuba.algo3.vistas.TableroUI;
+import javafx.stage.Stage;
 
 public abstract class VentanaModalBase {
 

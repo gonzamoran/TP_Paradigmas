@@ -1,16 +1,40 @@
 package edu.fiuba.algo3.modelo;
 
-import edu.fiuba.algo3.modelo.acciones.*;
+import edu.fiuba.algo3.modelo.acciones.CasoDeUsoArmarTablero;
+import edu.fiuba.algo3.modelo.acciones.CasoDeUsoColocacionInicial;
+import edu.fiuba.algo3.modelo.acciones.CasoDeUsoComercioConLaBanca;
+import edu.fiuba.algo3.modelo.acciones.CasoDeUsoConstruccion;
+import edu.fiuba.algo3.modelo.acciones.CasoDeUsoGirarElDado;
+import edu.fiuba.algo3.modelo.acciones.CasoDeUsoIntercambio;
+import edu.fiuba.algo3.modelo.acciones.CasoDeUsoSacarCartasDelMazoDeDesarrollo;
 import edu.fiuba.algo3.modelo.cartas.MazoCartasDesarrollo;
-import edu.fiuba.algo3.modelo.cartas.tiposDeCartaDesarrollo.*;
+import edu.fiuba.algo3.modelo.cartas.tiposDeCartaDesarrollo.CartaCaballero;
+import edu.fiuba.algo3.modelo.cartas.tiposDeCartaDesarrollo.CartaConstruccionCarretera;
+import edu.fiuba.algo3.modelo.cartas.tiposDeCartaDesarrollo.CartaDescubrimiento;
+import edu.fiuba.algo3.modelo.cartas.tiposDeCartaDesarrollo.CartaMonopolio;
+import edu.fiuba.algo3.modelo.cartas.tiposDeCartaDesarrollo.CartaPuntoVictoria;
+import edu.fiuba.algo3.modelo.cartas.tiposDeCartaDesarrollo.CartasDesarrollo;
+import edu.fiuba.algo3.modelo.cartas.tiposDeCartaDesarrollo.ContextoCartaDesarrollo;
 import edu.fiuba.algo3.modelo.construcciones.Construccion;
 import edu.fiuba.algo3.modelo.construcciones.Poblado;
-import edu.fiuba.algo3.modelo.tablero.*;
-import edu.fiuba.algo3.modelo.tiposRecurso.*;
-
 import edu.fiuba.algo3.modelo.excepciones.PosInvalidaParaConstruirException;
+import edu.fiuba.algo3.modelo.tablero.Coordenadas;
+import edu.fiuba.algo3.modelo.tablero.Hexagono;
+import edu.fiuba.algo3.modelo.tablero.Ladron;
+import edu.fiuba.algo3.modelo.tablero.Produccion;
+import edu.fiuba.algo3.modelo.tablero.Tablero;
+import edu.fiuba.algo3.modelo.tiposRecurso.Grano;
+import edu.fiuba.algo3.modelo.tiposRecurso.Ladrillo;
+import edu.fiuba.algo3.modelo.tiposRecurso.Lana;
+import edu.fiuba.algo3.modelo.tiposRecurso.Madera;
+import edu.fiuba.algo3.modelo.tiposRecurso.Piedra;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.LinkedHashSet;
+import java.util.List;
+import java.util.Map;
 
 public class GestorDeTurnos {
     private int turnoActual;

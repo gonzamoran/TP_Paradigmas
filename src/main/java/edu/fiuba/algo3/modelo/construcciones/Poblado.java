@@ -1,7 +1,11 @@
 package edu.fiuba.algo3.modelo.construcciones;
 
 import edu.fiuba.algo3.modelo.Recurso;
-import edu.fiuba.algo3.modelo.reglas.*;
+import edu.fiuba.algo3.modelo.reglas.ReglaAdyacencia;
+import edu.fiuba.algo3.modelo.reglas.ReglaDistancia;
+import edu.fiuba.algo3.modelo.reglas.ReglaRecursos;
+import edu.fiuba.algo3.modelo.reglas.ReglaVerticeVacio;
+import edu.fiuba.algo3.modelo.reglas.ReglasCompuestas;
 import edu.fiuba.algo3.modelo.tiposRecurso.Grano;
 import edu.fiuba.algo3.modelo.tiposRecurso.Ladrillo;
 import edu.fiuba.algo3.modelo.tiposRecurso.Lana;

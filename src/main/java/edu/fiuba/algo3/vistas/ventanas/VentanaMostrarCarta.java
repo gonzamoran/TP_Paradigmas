@@ -1,5 +1,6 @@
 package edu.fiuba.algo3.vistas.ventanas;
 
+import edu.fiuba.algo3.controllers.ReproductorDeSonido;
 import edu.fiuba.algo3.modelo.cartas.tiposDeCartaDesarrollo.CartasDesarrollo;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
@@ -11,8 +12,6 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.VBox;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
-
-import edu.fiuba.algo3.controllers.ReproductorDeSonido;
 
 import java.io.InputStream;
 

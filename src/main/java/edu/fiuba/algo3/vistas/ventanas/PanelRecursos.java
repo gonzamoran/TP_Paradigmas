@@ -65,10 +65,6 @@ public class PanelRecursos extends VBox {
         });
     }
 
-    public void setJugador(String nombreJugador) {
-        Platform.runLater(() -> titulo.setText("Inventario"));
-    }
-
     private HBox crearFilaRecurso(String nombre, String colorWeb) {
         HBox fila = new HBox();
         fila.setAlignment(Pos.CENTER_LEFT);
